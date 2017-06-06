@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">AAV - Sample</string>
+    <string name="name">Nome</string>
+    <string name="email">E-mail</string>
+    <string name="phone">Telefone</string>
+    <string name="password">Senha</string>
+    <string name="validate">Validar</string>
+</resources>
