@@ -1,8 +1,15 @@
 *.iml
 .gradle
 /local.properties
+
+# IDEA config files
+.idea/
 /.idea/workspace.xml
 /.idea/libraries
+/.idea/misc.xml
+.idea/modules.xml
+/.idea/vcs.xml
+
 .DS_Store
 /build
 /captures
