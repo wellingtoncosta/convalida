@@ -10,7 +10,26 @@
 .idea/modules.xml
 /.idea/vcs.xml
 
-.DS_Store
+# Java class files
+*.class
+
+# Legacy Eclipse project files
+.classpath
+.project
+
+### Eclipse ###
+
+.metadata
+tmp/
+*.tmp
+*.bak
+*~.nib
+.settings/
+.loadpath
+.recommenders
+
+
+
 /build
 /captures
 .externalNativeBuild
