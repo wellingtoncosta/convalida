@@ -1,4 +1,4 @@
-package br.com.wellingtoncosta.convalida.sample;
+package convalida.sample;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

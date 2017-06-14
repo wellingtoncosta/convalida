@@ -1,4 +1,4 @@
-package br.com.wellingtoncosta.convalida.sample;
+package convalida.sample;
 
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 
+import br.com.wellingtoncosta.convalida.sample.R;
+import convalida.annotation.NotEmptyValidation;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -15,6 +17,7 @@ public class SampleActivity extends AppCompatActivity {
     @BindView(R.id.activity_sample)
     LinearLayout linearLayout;
 
+    @NotEmptyValidation
     @BindView(R.id.name_layout)
     TextInputLayout nameLayout;
 

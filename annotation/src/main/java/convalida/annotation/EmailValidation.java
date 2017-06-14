@@ -1,4 +1,4 @@
-package br.com.wellingtoncosta.convalida.annotations;
+package convalida.annotation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -11,8 +11,8 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
  */
 @Target(FIELD)
 @Retention(CLASS)
-public @interface PasswordValidation {
+public @interface EmailValidation {
 
-    String errorMessage() default "Password required";
+    String errorMessage() default "Invalid email";
 
 }

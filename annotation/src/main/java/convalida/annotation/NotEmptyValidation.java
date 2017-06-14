@@ -1,4 +1,4 @@
-package br.com.wellingtoncosta.convalida.annotations;
+package convalida.annotation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;

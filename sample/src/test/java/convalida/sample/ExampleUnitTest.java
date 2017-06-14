@@ -1,4 +1,4 @@
-package br.com.wellingtoncosta.convalida.sample;
+package convalida.sample;
 
 import org.junit.Test;
 
