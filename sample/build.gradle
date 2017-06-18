@@ -4,7 +4,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
     defaultConfig {
-        applicationId 'br.com.wellingtoncosta.convalida.sample'
+        applicationId 'convalida.sample'
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
@@ -33,8 +33,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    compile project(':annotation')
-    annotationProcessor project(':compiler')
+    compile project(':annotations')
+    annotationProcessor project(':library')
 
     compile 'com.jakewharton:butterknife:8.6.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'

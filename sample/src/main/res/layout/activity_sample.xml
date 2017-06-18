@@ -12,7 +12,7 @@
     android:orientation="vertical"
     android:focusableInTouchMode="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="br.com.wellingtoncosta.convalida.sample.SampleActivity">
+    tools:context=".SampleActivity">
 
 
     <android.support.design.widget.TextInputLayout
