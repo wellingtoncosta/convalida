@@ -1,1 +1,1 @@
-include ':sample', ':annotations', ':library'
+include ':sample', ':convalida-compiler', ':convalida-library', ':convalida-annotations'

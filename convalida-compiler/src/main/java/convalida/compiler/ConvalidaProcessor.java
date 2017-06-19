@@ -23,9 +23,9 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic.Kind;
 
-import convalida.annotation.EmailValidation;
-import convalida.annotation.NotEmptyValidation;
-import convalida.annotation.PasswordValidation;
+import convalida.annotations.EmailValidation;
+import convalida.annotations.NotEmptyValidation;
+import convalida.annotations.PasswordValidation;
 
 /**
  * @author Wellington Costa on 13/06/2017.
@@ -60,9 +60,11 @@ public class ConvalidaProcessor extends AbstractProcessor {
     @Override
     public Set<String> getSupportedAnnotationTypes() {
         HashSet<String> supportedAnnotations = new HashSet<>();
+
         supportedAnnotations.add(NotEmptyValidation.class.getCanonicalName());
         supportedAnnotations.add(EmailValidation.class.getCanonicalName());
         supportedAnnotations.add(PasswordValidation.class.getCanonicalName());
+
         return supportedAnnotations;
     }
 
@@ -72,7 +74,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
 
         for (Element element : roundEnvironment.getElementsAnnotatedWith(NotEmptyValidation.class)) {
             try {
-                JavaFile javaFile = buildJavaFile(element);
+                JavaFile javaFile = cookJava(element);
                 javaFile.writeTo(filer);
             } catch (Exception e) {
                 error(element, "Couldn't generate validation class");
@@ -82,7 +84,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
         return false;
     }
 
-    private JavaFile buildJavaFile(Element element) {
+    private JavaFile cookJava(Element element) {
         Element parentElement = element.getEnclosingElement();
         TypeName parentTypeName = TypeName.get(parentElement.asType());
 

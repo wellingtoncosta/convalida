@@ -1,4 +1,4 @@
-package convalida.annotation;
+package convalida.annotations;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;

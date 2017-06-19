@@ -6,10 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 
-import convalida.annotation.NotEmptyValidation;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import convalida.annotations.NotEmptyValidation;
+import convalida.library.Convalida;
 
 public class SampleActivity extends AppCompatActivity {
 
@@ -35,10 +36,12 @@ public class SampleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sample);
         ButterKnife.bind(this);
+        Convalida.init(this);
     }
 
     @OnClick(R.id.validate_button)
     public void validateFields() {
-        Snackbar.make(linearLayout, "Validate fields!", Snackbar.LENGTH_LONG).show();
+        boolean isValid = Convalida.validate();
+        Snackbar.make(linearLayout, "Is valid: " + isValid, Snackbar.LENGTH_LONG).show();
     }
 }
