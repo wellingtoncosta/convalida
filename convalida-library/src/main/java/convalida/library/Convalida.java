@@ -1,6 +1,7 @@
 package convalida.library;
 
-import android.content.Context;
+import android.app.Activity;
+import android.support.annotation.UiThread;
 import android.util.Log;
 
 /**
@@ -8,13 +9,9 @@ import android.util.Log;
  */
 public class Convalida {
 
-    public static void init(Context context) {
+    @UiThread
+    public static void init(Activity target) {
         Log.i("Convalida", "init!");
-    }
-
-    public static boolean validate() {
-        Log.i("Convalida", "validate!");
-        return true;
     }
 
 }
