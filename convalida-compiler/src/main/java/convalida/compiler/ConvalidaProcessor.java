@@ -79,12 +79,12 @@ public class ConvalidaProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> typeElements, RoundEnvironment env) {
-        Map<TargetInfo, Set<FieldValidation>> map = findAndParseTargets(env);
+        Map<TargetInfo, Set<FieldInfo>> map = findAndParseTargets(env);
 
-        for (Map.Entry<TargetInfo, Set<FieldValidation>> entry : map.entrySet()) {
+        for (Map.Entry<TargetInfo, Set<FieldInfo>> entry : map.entrySet()) {
             TargetInfo targetInfo = entry.getKey();
             TypeElement typeElement = targetInfo.getTypeElement();
-            Set<FieldValidation> fields = entry.getValue();
+            Set<FieldInfo> fields = entry.getValue();
 
             try {
                 JavaFile javaFile = JavaFiler.cookJava(targetInfo, fields);
@@ -97,16 +97,16 @@ public class ConvalidaProcessor extends AbstractProcessor {
         return false;
     }
 
-    private Map<TargetInfo, Set<FieldValidation>> findAndParseTargets(RoundEnvironment env) {
-        Map<TargetInfo, Set<FieldValidation>> map = new LinkedHashMap<>();
-        Set<TargetInfo> targetElements = new LinkedHashSet<>();
-        Set<FieldValidation> elements = new LinkedHashSet<>();
+    private Map<TargetInfo, Set<FieldInfo>> findAndParseTargets(RoundEnvironment env) {
+        Map<TargetInfo, Set<FieldInfo>> map = new LinkedHashMap<>();
+        Set<TargetInfo> targetInfos = new LinkedHashSet<>();
+        Set<FieldInfo> fieldInfos = new LinkedHashSet<>();
 
         // Process each @NotEmptyValidation element.
         for (Element element : env.getElementsAnnotatedWith(NotEmptyValidation.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
             try {
-                parseNotEmptyValidation(element, targetElements, elements);
+                parseValidation(element, NotEmptyValidation.class, targetInfos, fieldInfos);
             } catch (Exception e) {
                 logParsingError(element, NotEmptyValidation.class, e);
             }
@@ -116,7 +116,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
         for (Element element : env.getElementsAnnotatedWith(EmailValidation.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
             try {
-                parseEmailValidation(element, targetElements, elements);
+                parseValidation(element, EmailValidation.class, targetInfos, fieldInfos);
             } catch (Exception e) {
                 logParsingError(element, EmailValidation.class, e);
             }
@@ -126,7 +126,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
         for (Element element : env.getElementsAnnotatedWith(PasswordValidation.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
             try {
-                parsePasswordValidation(element, targetElements, elements);
+                parseValidation(element, PasswordValidation.class, targetInfos, fieldInfos);
             } catch (Exception e) {
                 logParsingError(element, PasswordValidation.class, e);
             }
@@ -136,71 +136,35 @@ public class ConvalidaProcessor extends AbstractProcessor {
         for (Element element : env.getElementsAnnotatedWith(PatternValidation.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
             try {
-                parsePatternValidation(element, targetElements, elements);
+                parseValidation(element, PatternValidation.class, targetInfos, fieldInfos);
             } catch (Exception e) {
                 logParsingError(element, PatternValidation.class, e);
             }
         }
 
-        TargetInfo targetElement = findTargetElement(targetElements);
+        TargetInfo targetInfo = findTargetInfoElement(targetInfos);
 
-        if (targetElement != null && elements.size() > 0) {
-            map.put(targetElement, elements);
+        if (targetInfo != null && fieldInfos.size() > 0) {
+            map.put(targetInfo, fieldInfos);
         }
 
         return map;
     }
 
-    private void parseNotEmptyValidation(Element element, Set<TargetInfo> targetElements, Set<FieldValidation> fields) {
-        boolean hasError = isInvalid(NotEmptyValidation.class, element) || isInaccessible(NotEmptyValidation.class, element);
+    private void parseValidation(
+            Element element,
+            Class<? extends  Annotation> annotationClass,
+            Set<TargetInfo> targetInfos,
+            Set<FieldInfo> fieldInfos) {
+
+        boolean hasError = isInvalid(annotationClass, element) || isInaccessible(annotationClass, element);
 
         if (hasError) {
             return;
         }
 
-        targetElements.add(new TargetInfo(element.getEnclosingElement(), this.elements));
-        fields.add(new FieldValidation(element));
-
-        note(element, "Processing @NotEmptyValidation element");
-    }
-
-    private void parseEmailValidation(Element element, Set<TargetInfo> targetElements, Set<FieldValidation> fields) {
-        boolean hasError = isInvalid(EmailValidation.class, element) || isInaccessible(EmailValidation.class, element);
-
-        if (hasError) {
-            return;
-        }
-
-        targetElements.add(new TargetInfo(element.getEnclosingElement(), this.elements));
-        fields.add(new FieldValidation(element));
-
-        note(element, "Processing @EmailValidation element");
-    }
-
-    private void parsePasswordValidation(Element element, Set<TargetInfo> targetElements, Set<FieldValidation> fields) {
-        boolean hasError = isInvalid(PasswordValidation.class, element) || isInaccessible(PasswordValidation.class, element);
-
-        if (hasError) {
-            return;
-        }
-
-        targetElements.add(new TargetInfo(element.getEnclosingElement(), this.elements));
-        fields.add(new FieldValidation(element));
-
-        note(element, "Processing @PasswordValidation element");
-    }
-
-    private void parsePatternValidation(Element element, Set<TargetInfo> targetElements, Set<FieldValidation> fields) {
-        boolean hasError = isInvalid(PatternValidation.class, element) || isInaccessible(PatternValidation.class, element);
-
-        if (hasError) {
-            return;
-        }
-
-        targetElements.add(new TargetInfo(element.getEnclosingElement(), this.elements));
-        fields.add(new FieldValidation(element));
-
-        note(element, "Processing @PatternValidation element");
+        targetInfos.add(new TargetInfo(element.getEnclosingElement(), this.elements));
+        fieldInfos.add(new FieldInfo(element, annotationClass.getCanonicalName()));
     }
 
     private boolean isInvalid(Class<? extends Annotation> annotationClass, Element element) {
@@ -297,8 +261,8 @@ public class ConvalidaProcessor extends AbstractProcessor {
         return hasError;
     }
 
-    private TargetInfo findTargetElement(Set<TargetInfo> targetElements) {
-        return targetElements.iterator().hasNext() ? targetElements.iterator().next() : null;
+    private TargetInfo findTargetInfoElement(Set<TargetInfo> targetInfos) {
+        return targetInfos.iterator().hasNext() ? targetInfos.iterator().next() : null;
     }
 
     private void logParsingError(Element element, Class<? extends Annotation> annotation, Exception e) {
@@ -309,10 +273,6 @@ public class ConvalidaProcessor extends AbstractProcessor {
 
     private void error(Element element, String message, Object... args) {
         printMessage(Kind.ERROR, element, message, args);
-    }
-
-    private void note(Element element, String message, Object... args) {
-        printMessage(Kind.NOTE, element, message, args);
     }
 
     private void printMessage(Kind kind, Element element, String message, Object[] args) {

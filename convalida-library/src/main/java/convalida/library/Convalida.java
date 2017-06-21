@@ -20,14 +20,14 @@ public class Convalida {
     }
 
     @UiThread
-    public static Validator init(@NonNull Object target) {
+    public static ConvalidaValidator init(@NonNull Object target) {
         Class<?> targetClass = target.getClass();
 
         if (debug) Log.d(TAG, "Looking up validation for " + targetClass.getName());
-        Constructor<? extends Validator> constructor = findConstructor(targetClass);
+        Constructor<? extends ConvalidaValidator> constructor = findConstructor(targetClass);
 
         if (constructor == null) {
-            return Validator.EMPTY;
+            return ConvalidaValidator.EMPTY;
         }
 
         //noinspection TryWithIdenticalCatches Resolves to API 19+ only type.
@@ -49,7 +49,7 @@ public class Convalida {
         }
     }
 
-    private static Constructor<? extends Validator> findConstructor(Class<?> clazz) {
+    private static Constructor<? extends ConvalidaValidator> findConstructor(Class<?> clazz) {
         String clsName = clazz.getName();
 
         if (clsName.startsWith("android.") || clsName.startsWith("java.")) {
@@ -61,7 +61,7 @@ public class Convalida {
             Class<?> validationClass = clazz.getClassLoader().loadClass(clsName + "_Validation");
             if (debug) Log.d(TAG, "Loaded validation class and constructor.");
             //noinspection unchecked
-            return (Constructor<? extends Validator>) validationClass.getConstructor(clazz);
+            return (Constructor<? extends ConvalidaValidator>) validationClass.getConstructor(clazz);
         } catch (ClassNotFoundException e) {
             if (debug) Log.d(TAG, "Constructor not found. Trying superclass... " + clazz.getSuperclass().getName());
             return findConstructor(clazz.getSuperclass());

@@ -15,6 +15,4 @@ public @interface PasswordValidation {
 
     String errorMessage() default "Password required";
 
-    boolean isConfirmPassword() default false;
-
 }
