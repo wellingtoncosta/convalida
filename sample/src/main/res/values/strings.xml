@@ -4,6 +4,6 @@
     <string name="email">E-mail</string>
     <string name="phone">Telefone</string>
     <string name="password">Senha</string>
-    <string name="validate">Validar</string>
-    <string name="clear">Limpar</string>
+    <string name="validateFields">Validar</string>
+    <string name="clearValidations">Limpar</string>
 </resources>

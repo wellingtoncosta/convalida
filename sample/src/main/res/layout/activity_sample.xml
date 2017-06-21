@@ -94,7 +94,7 @@
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:text="@string/validate" />
+                android:text="@string/validateFields" />
 
             <Button
                 android:id="@+id/clear_button"
@@ -102,7 +102,7 @@
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:text="@string/clear" />
+                android:text="@string/clearValidations" />
 
         </LinearLayout>
 
