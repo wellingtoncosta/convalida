@@ -2,7 +2,6 @@ package convalida.compiler;
 
 import com.google.auto.common.SuperficialValidation;
 import com.google.auto.service.AutoService;
-import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
 
 import java.io.IOException;
@@ -80,8 +79,6 @@ public class ConvalidaProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> typeElements, RoundEnvironment env) {
-        messager.printMessage(Kind.NOTE, "Processing validations...");
-
         Map<TargetInfo, Set<FieldValidation>> map = findAndParseTargets(env);
 
         for (Map.Entry<TargetInfo, Set<FieldValidation>> entry : map.entrySet()) {
@@ -89,14 +86,11 @@ public class ConvalidaProcessor extends AbstractProcessor {
             TypeElement typeElement = targetInfo.getTypeElement();
             Set<FieldValidation> fields = entry.getValue();
 
-            System.out.println("Target info: " + targetInfo);
-            System.out.println("FieldsValidation size: " + String.valueOf(fields.size()));
-
             try {
                 JavaFile javaFile = JavaFiler.cookJava(targetInfo, fields);
                 javaFile.writeTo(this.filer);
             } catch (IOException e) {
-                error(typeElement, "Unable to write binding for type %s: %s", typeElement, e.getMessage());
+                error(typeElement, "Unable to write validation for type %s: %s", typeElement, e.getMessage());
             }
         }
 
@@ -326,7 +320,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
             message = String.format(message, args);
         }
 
-        processingEnv.getMessager().printMessage(kind, message, element);
+        this.messager.printMessage(kind, message, element);
     }
 
 }

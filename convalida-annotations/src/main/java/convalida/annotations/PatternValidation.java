@@ -13,8 +13,8 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
 @Retention(CLASS)
 public @interface PatternValidation {
 
-    String errorMessage() default "Invalid value";
+    String errorMessage() default "Value does not match";
 
-    String pattern() default "";
+    String pattern();
 
 }

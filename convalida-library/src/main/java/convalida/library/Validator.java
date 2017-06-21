@@ -13,4 +13,15 @@ public interface Validator {
     @UiThread
     void clear();
 
+
+    Validator EMPTY = new Validator() {
+
+        @Override
+        public void validate() { }
+
+        @Override
+        public void clear() { }
+
+    };
+
 }

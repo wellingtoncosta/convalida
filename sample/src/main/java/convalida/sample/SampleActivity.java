@@ -9,6 +9,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import convalida.annotations.NotEmptyValidation;
+import convalida.library.Convalida;
+import convalida.library.Validator;
 
 public class SampleActivity extends AppCompatActivity {
 
@@ -31,27 +33,23 @@ public class SampleActivity extends AppCompatActivity {
     @BindView(R.id.password_layout)
     TextInputLayout passwordLayout;
 
-    SampleActivity_Validation validation;
+    private Validator validator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sample);
         ButterKnife.bind(this);
-        //Convalida.init(this);
-        validation = new SampleActivity_Validation(this);
+        validator = Convalida.init(this);
     }
 
     @OnClick(R.id.validate_button)
     public void validateFields() {
-        validation.validate();
+        validator.validate();
     }
 
     @OnClick(R.id.clear_button)
     public void clearFields() {
-        /*boolean isValid = Convalida.validate();
-        Snackbar.make(linearLayout, "Is valid: " + isValid, Snackbar.LENGTH_LONG).show();*/
-
-        validation.clear();
+        validator.clear();
     }
 }

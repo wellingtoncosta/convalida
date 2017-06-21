@@ -13,10 +13,8 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
 @Retention(CLASS)
 public @interface PasswordValidation {
 
-    String passwordErrorMessage() default "Password required";
+    String errorMessage() default "Password required";
 
     boolean isConfirmPassword() default false;
-
-    String confirmPasswordErrorMessage() default "Invalid password";
 
 }
