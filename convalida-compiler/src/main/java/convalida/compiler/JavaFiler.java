@@ -63,13 +63,13 @@ class JavaFiler {
                 .addStatement("this.$N = new $T()", "validationSet", VALIDATION_SET);
 
         for (FieldInfo fieldInfo : fieldInfos) {
-            addValidatorStrategy(constructorBuilder, fieldInfo);
+            chooseValidationStrategy(constructorBuilder, fieldInfo);
         }
 
         return constructorBuilder.build();
     }
 
-    private static void addValidatorStrategy(MethodSpec.Builder constructorBuilder, FieldInfo fieldInfo) {
+    private static void chooseValidationStrategy(MethodSpec.Builder constructorBuilder, FieldInfo fieldInfo) {
         String annotationClass = fieldInfo.getAnnotationClass();
 
         switch (annotationClass) {
