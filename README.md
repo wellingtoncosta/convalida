@@ -60,7 +60,6 @@ public void clearFields() {
 ```
 
 ## Download
---------
 
 ```groovy
 dependencies {
