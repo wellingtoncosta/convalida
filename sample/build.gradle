@@ -33,7 +33,6 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    compile project(':convalida-annotations')
     compile project(':convalida-library')
     annotationProcessor project(':convalida-compiler')
 
