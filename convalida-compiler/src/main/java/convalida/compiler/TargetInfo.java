@@ -35,7 +35,7 @@ class TargetInfo {
         return typeName;
     }
 
-    public TypeElement getTypeElement() {
+    TypeElement getTypeElement() {
         return typeElement;
     }
 }

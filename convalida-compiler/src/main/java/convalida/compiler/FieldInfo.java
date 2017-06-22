@@ -21,7 +21,7 @@ class FieldInfo {
         this.annotationClass = annotationClass;
     }
 
-    public Element getElement() {
+    Element getElement() {
         return element;
     }
 
@@ -33,7 +33,7 @@ class FieldInfo {
         return typeName;
     }
 
-    public String getAnnotationClass() {
+    String getAnnotationClass() {
         return annotationClass;
     }
 }

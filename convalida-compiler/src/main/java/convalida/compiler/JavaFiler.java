@@ -38,6 +38,7 @@ class JavaFiler {
     private static final ClassName PASSWORD_VALIDATOR   = ClassName.get(VALIDATORS_PACKAGE, "PasswordValidator");
     private static final ClassName PATTERN_VALIDATOR    = ClassName.get(VALIDATORS_PACKAGE, "PatternValidator");
 
+
     static JavaFile cookJava(TargetInfo targetInfo, Set<FieldInfo> fieldInfos) {
         TypeSpec classValidator = TypeSpec.classBuilder(targetInfo.getClassName())
                 .addSuperinterface(VALIDATOR)

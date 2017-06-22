@@ -79,9 +79,9 @@ public class ConvalidaProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> typeElements, RoundEnvironment env) {
-        Map<TargetInfo, Set<FieldInfo>> map = findAndParseTargets(env);
+        Map<TargetInfo, Set<FieldInfo>> validationsMap = findAndParseValidations(env);
 
-        for (Map.Entry<TargetInfo, Set<FieldInfo>> entry : map.entrySet()) {
+        for (Map.Entry<TargetInfo, Set<FieldInfo>> entry : validationsMap.entrySet()) {
             TargetInfo targetInfo = entry.getKey();
             TypeElement typeElement = targetInfo.getTypeElement();
             Set<FieldInfo> fields = entry.getValue();
@@ -97,7 +97,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
         return false;
     }
 
-    private Map<TargetInfo, Set<FieldInfo>> findAndParseTargets(RoundEnvironment env) {
+    private Map<TargetInfo, Set<FieldInfo>> findAndParseValidations(RoundEnvironment env) {
         Map<TargetInfo, Set<FieldInfo>> map = new LinkedHashMap<>();
         Set<TargetInfo> targetInfos = new LinkedHashSet<>();
         Set<FieldInfo> fieldInfos = new LinkedHashSet<>();
@@ -205,19 +205,6 @@ public class ConvalidaProcessor extends AbstractProcessor {
         TypeElement enclosingElement = (TypeElement) element.getEnclosingElement();
         boolean hasError = false;
 
-        // Verify element kind
-        if (!element.getKind().equals(FIELD)) {
-            error(
-                    element,
-                    "@%s must only be aplied in fields. (%s.%s)",
-                    annotationClass.getSimpleName(),
-                    enclosingElement.getQualifiedName(),
-                    element.getSimpleName()
-            );
-
-            hasError = true;
-        }
-
         // Verify element modifiers
         Set<Modifier> modifiers = element.getModifiers();
         if (modifiers.contains(PRIVATE) || modifiers.contains(STATIC)) {
@@ -272,15 +259,11 @@ public class ConvalidaProcessor extends AbstractProcessor {
     }
 
     private void error(Element element, String message, Object... args) {
-        printMessage(Kind.ERROR, element, message, args);
-    }
-
-    private void printMessage(Kind kind, Element element, String message, Object[] args) {
         if (args.length > 0) {
             message = String.format(message, args);
         }
 
-        this.messager.printMessage(kind, message, element);
+        this.messager.printMessage(Kind.ERROR, message, element);
     }
 
 }
