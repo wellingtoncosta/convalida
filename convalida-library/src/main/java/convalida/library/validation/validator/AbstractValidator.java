@@ -3,10 +3,12 @@ package convalida.library.validation.validator;
 import android.support.design.widget.TextInputLayout;
 import android.widget.EditText;
 
+import convalida.library.validation.Validator;
+
 /**
  * @author Wellington Costa on 21/06/2017.
  */
-abstract class AbstractValidator {
+abstract class AbstractValidator implements Validator {
 
     private TextInputLayout layout;
     EditText editText;
@@ -58,8 +60,24 @@ abstract class AbstractValidator {
         validatorState.setError(false);
     }
 
+    /**
+     *
+     * @return true if is valid or false if is not valid
+     *
+     */
+    @Override
+    public boolean validate() {
+        executeValidation(editText.getText().toString());
+        return !validatorState.hasError();
+    }
 
-    static class ValidatorState {
+    @Override
+    public void clear() {
+        clearError();
+    }
+
+
+    private static class ValidatorState {
 
         private boolean error;
 

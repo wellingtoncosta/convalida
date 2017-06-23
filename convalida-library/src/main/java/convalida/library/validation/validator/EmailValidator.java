@@ -6,14 +6,10 @@ import android.text.TextWatcher;
 import android.util.Patterns;
 import android.widget.EditText;
 
-import java.util.regex.Pattern;
-
-import convalida.library.validation.Validator;
-
 /**
  * @author Wellington Costa on 21/06/2017.
  */
-public class EmailValidator extends AbstractValidator implements Validator {
+public class EmailValidator extends AbstractValidator {
 
     public EmailValidator(TextInputLayout layout, String errorMessage) {
         super(layout, errorMessage);
@@ -51,17 +47,6 @@ public class EmailValidator extends AbstractValidator implements Validator {
             @Override
             public void afterTextChanged(Editable s) { }
         });
-    }
-
-    @Override
-    public boolean validate() {
-        executeValidation(editText.getText().toString());
-        return validatorState.hasError();
-    }
-
-    @Override
-    public void clear() {
-        clearError();
     }
 
 }

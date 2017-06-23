@@ -50,15 +50,4 @@ public class NotEmptyValidator extends AbstractValidator implements Validator {
         });
     }
 
-    @Override
-    public boolean validate() {
-        executeValidation(editText.getText().toString());
-        return validatorState.hasError();
-    }
-
-    @Override
-    public void clear() {
-        clearError();
-    }
-
 }

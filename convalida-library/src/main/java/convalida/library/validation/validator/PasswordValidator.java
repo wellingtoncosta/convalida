@@ -3,6 +3,7 @@ package convalida.library.validation.validator;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.widget.EditText;
 
 import convalida.library.validation.Validator;
 
@@ -13,6 +14,10 @@ public class PasswordValidator extends AbstractValidator implements Validator {
 
     public PasswordValidator(TextInputLayout layout, String errorMessage) {
         super(layout, errorMessage);
+    }
+
+    public PasswordValidator(EditText editText, String errorMessage) {
+        super(editText, errorMessage);
     }
 
     @Override
@@ -45,14 +50,4 @@ public class PasswordValidator extends AbstractValidator implements Validator {
         });
     }
 
-    @Override
-    public boolean validate() {
-        executeValidation(editText.getText().toString());
-        return validatorState.hasError();
-    }
-
-    @Override
-    public void clear() {
-        clearError();
-    }
 }
