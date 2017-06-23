@@ -28,7 +28,7 @@ TextInputLayout phoneLayout;
 TextInputLayout passwordLayout;
 ```
 
-Now, you must init Convalida calling `init()` method:
+Now, you must initialize Convalida calling `init()` method:
 
 ```java
 private ConvalidaValidator validator;
@@ -59,7 +59,7 @@ public void clearFields() {
 }
 ```
 
-__Remember: You must initialize views (e.g [ButterKnife][1]) before apply validations.__
+__Remember: You must initialize the views (e.g [ButterKnife][1]) before apply the validations.__
 
 ## Download
 
