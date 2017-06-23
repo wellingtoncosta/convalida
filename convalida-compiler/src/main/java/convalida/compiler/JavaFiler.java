@@ -43,7 +43,6 @@ class JavaFiler {
         TypeSpec classValidator = TypeSpec.classBuilder(targetInfo.getClassName())
                 .addSuperinterface(VALIDATOR)
                 .addModifiers(Modifier.PUBLIC)
-                .addField(targetInfo.getTypeName(), "target", Modifier.PRIVATE)
                 .addField(VALIDATION_SET, "validationSet", Modifier.PRIVATE)
                 .addMethod(createConstructor(targetInfo, fieldInfos))
                 .addMethod(createValidateMethod())
@@ -60,7 +59,6 @@ class JavaFiler {
                 .addAnnotation(UI_THREAD)
                 .addModifiers(Modifier.PUBLIC)
                 .addParameter(targetInfo.getTypeName(), "target")
-                .addStatement("this.$N = $N", "target", "target")
                 .addStatement("this.$N = new $T()", "validationSet", VALIDATION_SET);
 
         for (FieldInfo fieldInfo : fieldInfos) {
@@ -76,7 +74,7 @@ class JavaFiler {
         switch (annotationClass) {
             case NOT_EMPTY_ANNOTATION:
                 constructorBuilder.addStatement(
-                        "this.$N.addValidator(new $T(this.$N.$N, $S))",
+                        "this.$N.addValidator(new $T($N.$N, $S))",
                         "validationSet",
                         NOT_EMPTY_VALIDATOR,
                         "target",
@@ -86,7 +84,7 @@ class JavaFiler {
                 break;
             case EMAIL_ANNOTATION:
                 constructorBuilder.addStatement(
-                        "this.$N.addValidator(new $T(this.$N.$N, $S))",
+                        "this.$N.addValidator(new $T($N.$N, $S))",
                         "validationSet",
                         EMAIL_VALIDATOR,
                         "target",
@@ -96,7 +94,7 @@ class JavaFiler {
                 break;
             case PASSWORD_ANNOTATION:
                 constructorBuilder.addStatement(
-                        "this.$N.addValidator(new $T(this.$N.$N, $S))",
+                        "this.$N.addValidator(new $T($N.$N, $S))",
                         "validationSet",
                         PASSWORD_VALIDATOR,
                         "target",
@@ -106,7 +104,7 @@ class JavaFiler {
                 break;
             case PATTERN_ANNOTATION:
                 constructorBuilder.addStatement(
-                        "this.$N.addValidator(new $T(this.$N.$N, $S, $S))",
+                        "this.$N.addValidator(new $T($N.$N, $S, $S))",
                         "validationSet",
                         PATTERN_VALIDATOR,
                         "target",
