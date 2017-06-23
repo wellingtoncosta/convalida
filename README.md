@@ -28,7 +28,7 @@ TextInputLayout phoneLayout;
 TextInputLayout passwordLayout;
 ```
 
-Now, you must initialize Convalida calling `init()` method:
+Now, you must initialize Convalida calling `initialize()` method:
 
 ```java
 private ConvalidaValidator validator;
@@ -37,7 +37,7 @@ private ConvalidaValidator validator;
 protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_sample);
-    validator = Convalida.init(this);
+    validator = Convalida.initialize(this);
 }
 ```
 
