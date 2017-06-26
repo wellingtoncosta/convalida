@@ -18,6 +18,9 @@ import convalida.annotations.PatternValidation;
 import convalida.library.Convalida;
 import convalida.library.ConvalidaValidator;
 
+/**
+ * @author Wellington Costa on 05/06/17.
+ */
 public class SampleActivity extends AppCompatActivity {
 
     private static final String PHONE_PATTERN = "^\\([1-9]{2}\\)?([0-9]{9})$";

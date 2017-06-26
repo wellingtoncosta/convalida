@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * @author  Wellington Costa on 21/06/2017.
+ * @author Wellington Costa on 21/06/2017.
  */
 public class ValidationSet {
 

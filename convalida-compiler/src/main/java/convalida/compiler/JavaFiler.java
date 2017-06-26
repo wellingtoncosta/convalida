@@ -17,7 +17,7 @@ import convalida.annotations.PasswordValidation;
 import convalida.annotations.PatternValidation;
 
 /**
- * @author  Wellington Costa on 19/06/2017.
+ * @author Wellington Costa on 19/06/2017.
  */
 class JavaFiler {
 
