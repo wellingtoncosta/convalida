@@ -30,10 +30,9 @@ dependencies {
     compile project(':convalida-library')
     annotationProcessor project(':convalida-compiler')
 
-    compile deps.butterknife.runtime
-    annotationProcessor deps.butterknife.compiler
+    compile 'com.jakewharton:butterknife:8.6.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
 
-    compile deps.android.appcompat
-    compile deps.android.design
-    compile deps.android.support
+    compile deps.support.compat
+    compile deps.support.design
 }

@@ -1,24 +1,20 @@
 buildscript {
     ext.versions = [
-        'minSdk': 9,
+        'minSdk': 14,
         'compileSdk': 25,
         'buildTools': '25.0.3',
-
-        'androidPlugin': '2.3.3',
-        'supportLibrary': '25.3.1',
-        'butterknife': '8.6.0'
+        'supportLibrary': '25.3.1'
     ]
 
     ext.deps = [
-        'android': [
-            'appcompat': "com.android.support:appcompat-v7:${versions.supportLibrary}",
-            'design': "com.android.support:design:${versions.supportLibrary}",
-            'support': "com.android.support:support-v4:${versions.supportLibrary}",
-            'gradlePlugin': "com.android.tools.build:gradle:${versions.androidPlugin}",
+        android: [
+            'runtime': 'com.google.android:android:4.1.1.4',
+            'gradlePlugin': 'com.android.tools.build:gradle:2.3.3',
         ],
-        'butterknife': [
-            'runtime': "com.jakewharton:butterknife:${versions.butterknife}",
-            'compiler': "com.jakewharton:butterknife-compiler:${versions.butterknife}"
+        support: [
+            'annotations': "com.android.support:support-annotations:${versions.supportLibrary}",
+            'compat': "com.android.support:support-compat:${versions.supportLibrary}",
+            'design': "com.android.support:design:${versions.supportLibrary}"
         ],
         javapoet: 'com.squareup:javapoet:1.9.0',
         autoService: 'com.google.auto.service:auto-service:1.0-rc3'
@@ -31,11 +27,15 @@ subprojects { project ->
 
     repositories {
         jcenter()
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
     }
 
     buildscript {
         repositories {
             jcenter()
+            mavenCentral()
+            maven { url "https://plugins.gradle.org/m2/" }
         }
         dependencies {
             classpath deps.android.gradlePlugin

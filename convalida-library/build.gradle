@@ -14,7 +14,7 @@ dependencies {
 
     compile project(':convalida-annotations')
 
-    compile deps.android.appcompat
-    compile deps.android.design
-    compile deps.android.support
+    compile deps.support.annotations
+    compile deps.support.compat
+    compile deps.support.design
 }
