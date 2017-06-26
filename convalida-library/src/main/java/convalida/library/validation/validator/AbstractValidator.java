@@ -13,7 +13,7 @@ abstract class AbstractValidator implements Validator {
     private TextInputLayout layout;
     EditText editText;
     private String errorMessage;
-    ValidatorState validatorState;
+    private ValidatorState validatorState;
 
     AbstractValidator(TextInputLayout layout, String errorMessage) {
         this.layout = layout;

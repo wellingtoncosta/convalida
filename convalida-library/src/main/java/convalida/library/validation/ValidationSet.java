@@ -1,6 +1,8 @@
 package convalida.library.validation;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -13,7 +15,7 @@ public class ValidationSet {
 
     public ValidationSet() {
         this.validators = new HashSet<>();
-        this.valid = false;
+        this.valid = true;
     }
 
     public void addValidator(Validator validator) {
@@ -26,8 +28,17 @@ public class ValidationSet {
     }
 
     private void executeValidators() {
+        List<Boolean> validationResults = new ArrayList<>();
+
         for (Validator validator : validators) {
-            valid |= validator.validate();
+            validationResults.add(validator.validate());
+        }
+
+        for(Boolean validationResult : validationResults) {
+            valid = validationResult;
+            if (!validationResult) {
+                break;
+            }
         }
     }
 
