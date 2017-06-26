@@ -1,9 +1,14 @@
 <resources>
     <string name="app_name">Convalida</string>
-    <string name="name">Nome</string>
-    <string name="email">E-mail</string>
-    <string name="phone">Telefone</string>
-    <string name="password">Senha</string>
-    <string name="validateFields">Validar</string>
-    <string name="clearValidations">Limpar</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="phone">Phone</string>
+    <string name="password">Password</string>
+    <string name="validateFields">Validate</string>
+    <string name="clearValidations">Clear</string>
+
+    <string name="field_required">Field required</string>
+    <string name="invalid_email">Invalid email</string>
+    <string name="invalid_phone">Invalid phone</string>
+    <string name="password_required">Password required</string>
 </resources>

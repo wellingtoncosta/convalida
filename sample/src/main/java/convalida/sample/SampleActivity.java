@@ -20,25 +20,25 @@ import convalida.library.ConvalidaValidator;
 
 public class SampleActivity extends AppCompatActivity {
 
+    private static final String PHONE_PATTERN = "^\\([1-9]{2}\\)?([0-9]{9})$";
+
     @BindView(R.id.linear_layout)
     LinearLayout linearLayout;
 
-    @NotEmptyValidation(errorMessage = "Campo obrigatório")
     @BindView(R.id.name_layout)
+    @NotEmptyValidation(R.string.field_required)
     TextInputLayout nameLayout;
 
-    @EmailValidation(errorMessage = "E-mail inválido")
     @BindView(R.id.email_layout)
+    @EmailValidation(R.string.invalid_email)
     TextInputLayout emailLayout;
 
-    @PatternValidation(
-            errorMessage = "Telefone inválido",
-            pattern = "^\\([1-9]{2}\\)?([0-9]{9})$")
     @BindView(R.id.phone_layout)
+    @PatternValidation(errorMessage = R.string.invalid_phone, pattern = PHONE_PATTERN)
     TextInputLayout phoneLayout;
 
-    @PasswordValidation(errorMessage = "Senha obrigatória")
     @BindView(R.id.password_layout)
+    @PasswordValidation(R.string.password_required)
     TextInputLayout passwordLayout;
 
     private ConvalidaValidator validator;
@@ -54,7 +54,7 @@ public class SampleActivity extends AppCompatActivity {
     @OnClick(R.id.validate_button)
     public void validateFields() {
         boolean isValid = validator.validateFields();
-        String message = isValid ? "Campos validados" : "Campos inválidos";
+        String message = isValid ? "Yay!" : "Something is wrong :(";
         Snackbar.make(linearLayout, message, Snackbar.LENGTH_LONG).show();
     }
 
