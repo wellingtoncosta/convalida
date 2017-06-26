@@ -15,13 +15,13 @@ abstract class AbstractValidator implements Validator {
     private TextInputLayout layout;
     private EditText editText;
     private String errorMessage;
-    private ValidatorState validatorState;
+    private boolean hasError;
 
     AbstractValidator(TextInputLayout layout, String errorMessage) {
         this.layout = layout;
         this.editText = layout.getEditText();
         this.errorMessage = errorMessage;
-        this.validatorState = new ValidatorState();
+        this.hasError = false;
 
         addTextChangeListener();
     }
@@ -29,7 +29,7 @@ abstract class AbstractValidator implements Validator {
     AbstractValidator(EditText editText, String errorMessage) {
         this.editText = editText;
         this.errorMessage = errorMessage;
-        this.validatorState = new ValidatorState();
+        this.hasError = false;
 
         addTextChangeListener();
     }
@@ -61,7 +61,7 @@ abstract class AbstractValidator implements Validator {
             editText.setError(errorMessage);
         }
 
-        validatorState.setError(true);
+        hasError = true;
     }
 
     void clearError() {
@@ -72,41 +72,18 @@ abstract class AbstractValidator implements Validator {
             editText.setError(null);
         }
 
-        validatorState.setError(false);
+        hasError = false;
     }
 
-    /**
-     *
-     * @return true if is valid or false if is not valid
-     *
-     */
     @Override
     public boolean validate() {
         executeValidation(editText.getText().toString());
-        return !validatorState.hasError();
+        return !hasError;
     }
 
     @Override
     public void clear() {
         clearError();
-    }
-
-
-    private static class ValidatorState {
-
-        private boolean error;
-
-        ValidatorState() {
-            this.error = false;
-        }
-
-        void setError(boolean error) {
-            this.error = error;
-        }
-
-        boolean hasError() {
-            return error;
-        }
     }
 
 }

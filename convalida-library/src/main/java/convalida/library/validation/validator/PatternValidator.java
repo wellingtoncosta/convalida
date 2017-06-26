@@ -1,8 +1,6 @@
 package convalida.library.validation.validator;
 
 import android.support.design.widget.TextInputLayout;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.widget.EditText;
 
 import java.util.regex.Pattern;
