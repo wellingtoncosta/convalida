@@ -1,6 +1,7 @@
 package convalida.compiler;
 
 import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
@@ -73,47 +74,105 @@ class JavaFiler {
 
         switch (annotationClass) {
             case NOT_EMPTY_ANNOTATION:
-                constructorBuilder.addStatement(
-                        "this.$N.addValidator(new $T($N.$N, $S))",
-                        "validationSet",
-                        NOT_EMPTY_VALIDATOR,
-                        "target",
-                        fieldInfo.getName(),
-                        fieldInfo.getElement().getAnnotation(NotEmptyValidation.class).errorMessage()
-                );
+                int notEmptyValidationErrorMessage = fieldInfo.getElement().getAnnotation(NotEmptyValidation.class).value();
+                CodeBlock notEmptyValidationCodeBlock = CodeBlock.builder()
+                        .add("\n{\n")
+                        .add(createElementDeclarationCode(fieldInfo))
+                        .add(createErrorMessageDeclarationCode(notEmptyValidationErrorMessage))
+                        .addStatement(
+                                "  this.$N.addValidator(new $T($N, $N))",
+                                "validationSet",
+                                NOT_EMPTY_VALIDATOR,
+                                fieldInfo.getName(),
+                                "errorMessage"
+                        )
+                        .add("}")
+                        .build();
+
+                constructorBuilder.addCode(notEmptyValidationCodeBlock);
                 break;
             case EMAIL_ANNOTATION:
-                constructorBuilder.addStatement(
-                        "this.$N.addValidator(new $T($N.$N, $S))",
-                        "validationSet",
-                        EMAIL_VALIDATOR,
-                        "target",
-                        fieldInfo.getName(),
-                        fieldInfo.getElement().getAnnotation(EmailValidation.class).errorMessage()
-                );
+                int emailValidationErrorMessage = fieldInfo.getElement().getAnnotation(EmailValidation.class).value();
+                CodeBlock emailValidationCodeBlock = CodeBlock.builder()
+                        .add("\n{\n")
+                        .add(createElementDeclarationCode(fieldInfo))
+                        .add(createErrorMessageDeclarationCode(emailValidationErrorMessage))
+                        .addStatement(
+                                "  this.$N.addValidator(new $T($N, $N))",
+                                "validationSet",
+                                EMAIL_VALIDATOR,
+                                fieldInfo.getName(),
+                                "errorMessage"
+                        )
+                        .add("}")
+                        .build();
+
+                constructorBuilder.addCode(emailValidationCodeBlock);
                 break;
             case PASSWORD_ANNOTATION:
-                constructorBuilder.addStatement(
-                        "this.$N.addValidator(new $T($N.$N, $S))",
-                        "validationSet",
-                        PASSWORD_VALIDATOR,
-                        "target",
-                        fieldInfo.getName(),
-                        fieldInfo.getElement().getAnnotation(PasswordValidation.class).errorMessage()
-                );
+                int passwordValidationErrorMessage = fieldInfo.getElement().getAnnotation(PasswordValidation.class).value();
+                CodeBlock passwordValidationCodeBlock = CodeBlock.builder()
+                        .add("\n{\n")
+                        .add(createElementDeclarationCode(fieldInfo))
+                        .add(createErrorMessageDeclarationCode(passwordValidationErrorMessage))
+                        .addStatement(
+                                "  this.$N.addValidator(new $T($N, $N))",
+                                "validationSet",
+                                PASSWORD_VALIDATOR,
+                                fieldInfo.getName(),
+                                "errorMessage"
+                        )
+                        .add("}")
+                        .build();
+
+                constructorBuilder.addCode(passwordValidationCodeBlock);
                 break;
             case PATTERN_ANNOTATION:
-                constructorBuilder.addStatement(
-                        "this.$N.addValidator(new $T($N.$N, $S, $S))",
-                        "validationSet",
-                        PATTERN_VALIDATOR,
-                        "target",
-                        fieldInfo.getName(),
-                        fieldInfo.getElement().getAnnotation(PatternValidation.class).errorMessage(),
-                        fieldInfo.getElement().getAnnotation(PatternValidation.class).pattern()
-                );
+                int patternValidationErrorMessage = fieldInfo.getElement().getAnnotation(PatternValidation.class).errorMessage();
+                CodeBlock patternValidationCodeBlock = CodeBlock.builder()
+                        .add("\n{\n")
+                        .add(createElementDeclarationCode(fieldInfo))
+                        .add(createErrorMessageDeclarationCode(patternValidationErrorMessage))
+                        .addStatement(
+                                "  String pattern = $S",
+                                fieldInfo.getElement().getAnnotation(PatternValidation.class).pattern()
+                        )
+                        .addStatement(
+                                "  this.$N.addValidator(new $T($N, $N, $N))",
+                                "validationSet",
+                                PATTERN_VALIDATOR,
+                                fieldInfo.getName(),
+                                "errorMessage",
+                                "pattern"
+                        )
+                        .add("}\n")
+                        .build();
+
+                constructorBuilder.addCode(patternValidationCodeBlock);
                 break;
         }
+    }
+
+    private static CodeBlock createElementDeclarationCode(FieldInfo fieldInfo) {
+        return CodeBlock.builder()
+                .addStatement(
+                        "  $T $N = $N.$N",
+                        fieldInfo.getTypeName(),
+                        fieldInfo.getName(),
+                        "target",
+                        fieldInfo.getName()
+                )
+                .build();
+    }
+
+    private static CodeBlock createErrorMessageDeclarationCode(int errorMessage) {
+        return CodeBlock.builder()
+                .addStatement(
+                        "  String errorMessage = $N.getString($L)",
+                        "target",
+                        errorMessage
+                )
+                .build();
     }
 
     private static MethodSpec createValidateMethod() {
