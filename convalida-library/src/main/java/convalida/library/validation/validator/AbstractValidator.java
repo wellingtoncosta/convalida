@@ -1,6 +1,8 @@
 package convalida.library.validation.validator;
 
 import android.support.design.widget.TextInputLayout;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.EditText;
 
 import convalida.library.validation.Validator;
@@ -11,7 +13,7 @@ import convalida.library.validation.Validator;
 abstract class AbstractValidator implements Validator {
 
     private TextInputLayout layout;
-    EditText editText;
+    private EditText editText;
     private String errorMessage;
     private ValidatorState validatorState;
 
@@ -32,11 +34,24 @@ abstract class AbstractValidator implements Validator {
         addTextChangeListener();
     }
 
-    abstract void addTextChangeListener();
-
     abstract boolean isNotValid(String value);
 
     abstract void executeValidation(String value);
+
+    private void addTextChangeListener() {
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                executeValidation(String.valueOf(s));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+    }
 
     void setError() {
         if (layout != null) {
