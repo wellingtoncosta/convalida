@@ -15,16 +15,18 @@ Convalida is a simple, lightweight, powerful and annotation-based way to validat
 First, annotate your fields with [Convalida Annotations][3]:
 
 ```java
-@NotEmptyValidation
+private static final String PHONE_PATTERN = "^\\([1-9]{2}\\)?([0-9]{9})$";
+
+@NotEmptyValidation(R.string.field_required)
 TextInputLayout nameLayout;
 
-@EmailValidation
+@EmailValidation(R.string.invalid_email)
 TextInputLayout emailLayout;
 
-@PatternValidation(pattern = "^\\([1-9]{2}\\)?([0-9]{9})$")
+@PatternValidation(errorMessage = R.string.invalid_phone, pattern = PHONE_PATTERN)
 TextInputLayout phoneLayout;
 
-@PasswordValidation
+@PasswordValidation(R.string.password_required)
 TextInputLayout passwordLayout;
 ```
 
@@ -46,7 +48,7 @@ And then, to execute the validations, you must call `validateFields()` method th
 ```java
 public void validateFields() {
     boolean isValid = validator.validateFields();
-    String message = isValid ? "Is valid!" : "Is not valid!";
+    String message = isValid ? "Yay!" : "Something is wrong :(";
     Snackbar.make(linearLayout, message, Snackbar.LENGTH_LONG).show();
 }
 ```
