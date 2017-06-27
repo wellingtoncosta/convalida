@@ -23,13 +23,4 @@ public class PasswordValidator extends AbstractValidator implements Validator {
         return value.isEmpty();
     }
 
-    @Override
-    void executeValidation(String value) {
-        if (isNotValid(value)) {
-            setError();
-        } else {
-            clearError();
-        }
-    }
-
 }

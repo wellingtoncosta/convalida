@@ -36,7 +36,13 @@ abstract class AbstractValidator implements Validator {
 
     abstract boolean isNotValid(String value);
 
-    abstract void executeValidation(String value);
+    private void executeValidation(String value) {
+        if (isNotValid(value)) {
+            setError();
+        } else {
+            clearError();
+        }
+    }
 
     private void addTextChangeListener() {
         editText.addTextChangedListener(new TextWatcher() {

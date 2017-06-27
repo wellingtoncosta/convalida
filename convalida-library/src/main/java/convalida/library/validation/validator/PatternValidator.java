@@ -29,13 +29,4 @@ public class PatternValidator extends AbstractValidator implements Validator {
         return !Pattern.matches(pattern, value);
     }
 
-    @Override
-    void executeValidation(String value) {
-        if (isNotValid(value)) {
-            setError();
-        } else {
-            clearError();
-        }
-    }
-
 }

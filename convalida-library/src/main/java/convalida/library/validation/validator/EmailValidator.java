@@ -22,13 +22,4 @@ public class EmailValidator extends AbstractValidator {
         return !Patterns.EMAIL_ADDRESS.matcher(value).matches();
     }
 
-    @Override
-    void executeValidation(String value) {
-        if (isNotValid(value)) {
-            setError();
-        } else {
-            clearError();
-        }
-    }
-
 }
