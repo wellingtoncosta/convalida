@@ -71,8 +71,8 @@ public class ConvalidaProcessor extends AbstractProcessor {
 
         supportedAnnotations.add(NotEmptyValidation.class.getCanonicalName());
         supportedAnnotations.add(EmailValidation.class.getCanonicalName());
-        supportedAnnotations.add(PasswordValidation.class.getCanonicalName());
         supportedAnnotations.add(PatternValidation.class.getCanonicalName());
+        supportedAnnotations.add(PasswordValidation.class.getCanonicalName());
 
         return supportedAnnotations;
     }
@@ -103,44 +103,17 @@ public class ConvalidaProcessor extends AbstractProcessor {
         Set<FieldInfo> fieldInfos = new LinkedHashSet<>();
 
         // Process each @NotEmptyValidation element.
-        for (Element element : env.getElementsAnnotatedWith(NotEmptyValidation.class)) {
-            if (!SuperficialValidation.validateElement(element)) continue;
-            try {
-                parseValidation(element, NotEmptyValidation.class, targetInfos, fieldInfos);
-            } catch (Exception e) {
-                logParsingError(element, NotEmptyValidation.class, e);
-            }
-        }
+        processElements(env, NotEmptyValidation.class, targetInfos, fieldInfos);
 
         // Process each @EmailValidation element.
-        for (Element element : env.getElementsAnnotatedWith(EmailValidation.class)) {
-            if (!SuperficialValidation.validateElement(element)) continue;
-            try {
-                parseValidation(element, EmailValidation.class, targetInfos, fieldInfos);
-            } catch (Exception e) {
-                logParsingError(element, EmailValidation.class, e);
-            }
-        }
-
-        // Process each @PasswordValidation element.
-        for (Element element : env.getElementsAnnotatedWith(PasswordValidation.class)) {
-            if (!SuperficialValidation.validateElement(element)) continue;
-            try {
-                parseValidation(element, PasswordValidation.class, targetInfos, fieldInfos);
-            } catch (Exception e) {
-                logParsingError(element, PasswordValidation.class, e);
-            }
-        }
+        processElements(env, EmailValidation.class, targetInfos, fieldInfos);
 
         // Process each @PatternValidation element.
-        for (Element element : env.getElementsAnnotatedWith(PatternValidation.class)) {
-            if (!SuperficialValidation.validateElement(element)) continue;
-            try {
-                parseValidation(element, PatternValidation.class, targetInfos, fieldInfos);
-            } catch (Exception e) {
-                logParsingError(element, PatternValidation.class, e);
-            }
-        }
+        processElements(env, PatternValidation.class, targetInfos, fieldInfos);
+
+        // Process each @PasswordValidation element.
+        processElements(env, PasswordValidation.class, targetInfos, fieldInfos);
+
 
         TargetInfo targetInfo = findTargetInfoElement(targetInfos);
 
@@ -149,6 +122,22 @@ public class ConvalidaProcessor extends AbstractProcessor {
         }
 
         return map;
+    }
+
+    private void processElements(
+            RoundEnvironment env,
+            Class<? extends Annotation> annotation,
+            Set<TargetInfo> targetInfos,
+            Set<FieldInfo> fieldInfos) {
+
+        for (Element element : env.getElementsAnnotatedWith(annotation)) {
+            if (!SuperficialValidation.validateElement(element)) continue;
+            try {
+                parseValidation(element, annotation, targetInfos, fieldInfos);
+            } catch (Exception e) {
+                logParsingError(element, annotation, e);
+            }
+        }
     }
 
     private void parseValidation(
