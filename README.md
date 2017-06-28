@@ -28,6 +28,9 @@ TextInputLayout phoneLayout;
 
 @PasswordValidation(R.string.password_required)
 TextInputLayout passwordLayout;
+
+@ConfirmPasswordValidation(R.string.passwords_not_match)
+TextInputLayout confirmPasswordLayout;
 ```
 
 Now, you must initialize Convalida calling `initialize()` method:
