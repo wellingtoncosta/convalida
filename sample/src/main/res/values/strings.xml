@@ -12,5 +12,5 @@
     <string name="invalid_email">Invalid email</string>
     <string name="invalid_phone">Invalid phone</string>
     <string name="password_required">Password required</string>
-    <string name="confirm_password_not_match">The passwords does not match</string>
+    <string name="passwords_not_match">The passwords does not match</string>
 </resources>

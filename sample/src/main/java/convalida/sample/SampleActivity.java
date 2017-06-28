@@ -44,7 +44,7 @@ public class SampleActivity extends AppCompatActivity {
     TextInputLayout passwordLayout;
 
     @BindView(R.id.confirm_password_layout)
-    @ConfirmPasswordValidation(R.string.confirm_password_not_match)
+    @ConfirmPasswordValidation(R.string.passwords_not_match)
     TextInputLayout confirmPasswordLayout;
 
     private ConvalidaValidator validator;
