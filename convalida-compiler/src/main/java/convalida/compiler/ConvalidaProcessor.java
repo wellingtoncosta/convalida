@@ -27,8 +27,11 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 import javax.tools.Diagnostic.Kind;
 
+import convalida.annotations.ConfirmPasswordValidation;
 import convalida.annotations.EmailValidation;
+import convalida.annotations.LengthValidation;
 import convalida.annotations.NotEmptyValidation;
+import convalida.annotations.NumericOnlyValidation;
 import convalida.annotations.PasswordValidation;
 import convalida.annotations.PatternValidation;
 
@@ -72,7 +75,10 @@ public class ConvalidaProcessor extends AbstractProcessor {
         supportedAnnotations.add(NotEmptyValidation.class.getCanonicalName());
         supportedAnnotations.add(EmailValidation.class.getCanonicalName());
         supportedAnnotations.add(PatternValidation.class.getCanonicalName());
+        supportedAnnotations.add(LengthValidation.class.getCanonicalName());
+        supportedAnnotations.add(NumericOnlyValidation.class.getCanonicalName());
         supportedAnnotations.add(PasswordValidation.class.getCanonicalName());
+        supportedAnnotations.add(ConfirmPasswordValidation.class.getCanonicalName());
 
         return supportedAnnotations;
     }
@@ -111,8 +117,17 @@ public class ConvalidaProcessor extends AbstractProcessor {
         // Process each @PatternValidation element.
         processElements(env, PatternValidation.class, targetInfos, fieldInfos);
 
+        // Process each @LengthValidation element.
+        processElements(env, LengthValidation.class, targetInfos, fieldInfos);
+
+        // Process each @NumericOnlyValidation element.
+        processElements(env, NumericOnlyValidation.class, targetInfos, fieldInfos);
+
         // Process each @PasswordValidation element.
-        processElements(env, PasswordValidation.class, targetInfos, fieldInfos);
+        processPasswordElements(env, targetInfos, fieldInfos);
+
+        // Process each @ConfirmPasswordValidation element.
+        processConfirmPasswordElements(env, targetInfos, fieldInfos);
 
 
         TargetInfo targetInfo = findTargetInfoElement(targetInfos);
@@ -138,6 +153,40 @@ public class ConvalidaProcessor extends AbstractProcessor {
                 logParsingError(element, annotation, e);
             }
         }
+    }
+
+    private void processPasswordElements(
+            RoundEnvironment env,
+            Set<TargetInfo> targetInfos,
+            Set<FieldInfo> fieldInfos) {
+
+        Set<? extends Element> passwordElements = env.getElementsAnnotatedWith(PasswordValidation.class);
+
+        if (passwordElements.size() > 1) {
+            error(
+                    passwordElements.iterator().next(),
+                    "You must have only one element annotated with @PasswordValidation per class"
+            );
+        }
+
+        processElements(env, PasswordValidation.class, targetInfos, fieldInfos);
+    }
+
+    private void processConfirmPasswordElements(
+            RoundEnvironment env,
+            Set<TargetInfo> targetInfos,
+            Set<FieldInfo> fieldInfos) {
+
+        Set<? extends Element> confirmPasswordElements = env.getElementsAnnotatedWith(ConfirmPasswordValidation.class);
+
+        if (confirmPasswordElements.size() > 1) {
+            error(
+                    confirmPasswordElements.iterator().next(),
+                    "You must have only one element annotated with @ConfirmPasswordValidation per class"
+            );
+        }
+
+        processElements(env, ConfirmPasswordValidation.class, targetInfos, fieldInfos);
     }
 
     private void parseValidation(

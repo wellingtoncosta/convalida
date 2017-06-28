@@ -11,6 +11,7 @@ import java.util.Set;
 
 import javax.lang.model.element.Modifier;
 
+import convalida.annotations.ConfirmPasswordValidation;
 import convalida.annotations.EmailValidation;
 import convalida.annotations.NotEmptyValidation;
 import convalida.annotations.PasswordValidation;
@@ -27,17 +28,19 @@ class JavaFiler {
     private static final ClassName VALIDATOR            = ClassName.get("convalida.library", "ConvalidaValidator");
     private static final ClassName VALIDATION_SET       = ClassName.get("convalida.library.validation", "ValidationSet");
 
-    private static final String NOT_EMPTY_ANNOTATION    = "convalida.annotations.NotEmptyValidation";
-    private static final String EMAIL_ANNOTATION        = "convalida.annotations.EmailValidation";
-    private static final String PASSWORD_ANNOTATION     = "convalida.annotations.PasswordValidation";
-    private static final String PATTERN_ANNOTATION      = "convalida.annotations.PatternValidation";
+    private static final String NOT_EMPTY_ANNOTATION        = "convalida.annotations.NotEmptyValidation";
+    private static final String EMAIL_ANNOTATION            = "convalida.annotations.EmailValidation";
+    private static final String PATTERN_ANNOTATION          = "convalida.annotations.PatternValidation";
+    private static final String PASSWORD_ANNOTATION         = "convalida.annotations.PasswordValidation";
+    private static final String CONFIRM_PASSWORD_ANNOTATION = "convalida.annotations.ConfirmPasswordValidation";
 
     private static final String VALIDATORS_PACKAGE      = "convalida.library.validation.validator";
 
-    private static final ClassName NOT_EMPTY_VALIDATOR  = ClassName.get(VALIDATORS_PACKAGE, "NotEmptyValidator");
-    private static final ClassName EMAIL_VALIDATOR      = ClassName.get(VALIDATORS_PACKAGE, "EmailValidator");
-    private static final ClassName PATTERN_VALIDATOR    = ClassName.get(VALIDATORS_PACKAGE, "PatternValidator");
-    private static final ClassName PASSWORD_VALIDATOR   = ClassName.get(VALIDATORS_PACKAGE, "PasswordValidator");
+    private static final ClassName NOT_EMPTY_VALIDATOR          = ClassName.get(VALIDATORS_PACKAGE, "NotEmptyValidator");
+    private static final ClassName EMAIL_VALIDATOR              = ClassName.get(VALIDATORS_PACKAGE, "EmailValidator");
+    private static final ClassName PATTERN_VALIDATOR            = ClassName.get(VALIDATORS_PACKAGE, "PatternValidator");
+    private static final ClassName PASSWORD_VALIDATOR           = ClassName.get(VALIDATORS_PACKAGE, "PasswordValidator");
+    private static final ClassName CONFIRM_PASSWORD_VALIDATOR   = ClassName.get(VALIDATORS_PACKAGE, "ConfirmPasswordValidator");
 
 
     static JavaFile cookJava(TargetInfo targetInfo, Set<FieldInfo> fieldInfos) {
@@ -151,16 +154,22 @@ class JavaFiler {
                 int passwordValidationErrorMessage = fieldInfo.getElement().getAnnotation(PasswordValidation.class).value();
                 CodeBlock passwordValidationCodeBlock = CodeBlock.builder()
                         .add("\n")
+                        .addStatement(
+                                "$T passwordElement = $N.$N",
+                                fieldInfo.getTypeName(),
+                                "target",
+                                fieldInfo.getName()
+                        )
+                        .add("\n")
                         .add("{")
                         .add("\n")
                         .indent()
-                        .add(createElementDeclarationCode(fieldInfo))
                         .add(createErrorMessageDeclarationCode(passwordValidationErrorMessage))
                         .addStatement(
                                 "this.$N.addValidator(new $T($N, $N))",
                                 "validationSet",
                                 PASSWORD_VALIDATOR,
-                                fieldInfo.getName(),
+                                "passwordElement",
                                 "errorMessage"
                         )
                         .unindent()
@@ -169,6 +178,30 @@ class JavaFiler {
                         .build();
 
                 constructorBuilder.addCode(passwordValidationCodeBlock);
+                break;
+            case CONFIRM_PASSWORD_ANNOTATION:
+                int confirmPasswordValidationErrorMessage = fieldInfo.getElement().getAnnotation(ConfirmPasswordValidation.class).value();
+                CodeBlock confirmPasswordValidationCodeBlock = CodeBlock.builder()
+                        .add("\n")
+                        .add("{")
+                        .add("\n")
+                        .indent()
+                        .add(createElementDeclarationCode(fieldInfo))
+                        .add(createErrorMessageDeclarationCode(confirmPasswordValidationErrorMessage))
+                        .addStatement(
+                                "this.$N.addValidator(new $T($N, $N, $N))",
+                                "validationSet",
+                                CONFIRM_PASSWORD_VALIDATOR,
+                                "passwordElement",
+                                fieldInfo.getName(),
+                                "errorMessage"
+                        )
+                        .unindent()
+                        .add("}")
+                        .add("\n")
+                        .build();
+
+                constructorBuilder.addCode(confirmPasswordValidationCodeBlock);
                 break;
         }
     }
