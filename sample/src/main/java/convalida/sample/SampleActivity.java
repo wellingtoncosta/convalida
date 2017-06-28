@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import convalida.annotations.ConfirmPasswordValidation;
 import convalida.annotations.EmailValidation;
 import convalida.annotations.NotEmptyValidation;
 import convalida.annotations.PasswordValidation;
@@ -41,6 +42,10 @@ public class SampleActivity extends AppCompatActivity {
     @BindView(R.id.password_layout)
     @PasswordValidation(R.string.password_required)
     TextInputLayout passwordLayout;
+
+    @BindView(R.id.confirm_password_layout)
+    @ConfirmPasswordValidation(R.string.confirm_password_not_match)
+    TextInputLayout confirmPasswordLayout;
 
     private ConvalidaValidator validator;
 
