@@ -11,24 +11,27 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import convalida.annotations.ConfirmPasswordValidation;
 import convalida.annotations.EmailValidation;
+import convalida.annotations.LengthValidation;
 import convalida.annotations.NotEmptyValidation;
 import convalida.annotations.PasswordValidation;
 import convalida.annotations.PatternValidation;
 import convalida.library.Convalida;
 import convalida.library.ConvalidaValidator;
+import convalida.library.validation.Patterns;
 
 /**
  * @author Wellington Costa on 05/06/17.
  */
 public class SampleActivity extends AppCompatActivity {
 
-    private static final String PHONE_PATTERN = "^\\([1-9]{2}\\)?([0-9]{9})$";
+    private static final String PHONE_PATTERN = "^[1-9]{2}?([0-9]{9})$";
 
     @BindView(R.id.linear_layout)
     LinearLayout linearLayout;
 
     @BindView(R.id.name_layout)
     @NotEmptyValidation(R.string.field_required)
+    @LengthValidation(min = 3, errorMessage = R.string.min_3_characters)
     TextInputLayout nameLayout;
 
     @BindView(R.id.email_layout)
@@ -36,11 +39,11 @@ public class SampleActivity extends AppCompatActivity {
     TextInputLayout emailLayout;
 
     @BindView(R.id.phone_layout)
-    @PatternValidation(errorMessage = R.string.invalid_phone, pattern = PHONE_PATTERN)
+    @PatternValidation(pattern = PHONE_PATTERN, errorMessage = R.string.invalid_phone)
     TextInputLayout phoneLayout;
 
     @BindView(R.id.password_layout)
-    @PasswordValidation(R.string.password_required)
+    @PasswordValidation(min = 3, pattern = Patterns.LOWER_UPPER_CASE_NUMERIC_SPECIAL, errorMessage = R.string.invalid_password)
     TextInputLayout passwordLayout;
 
     @BindView(R.id.confirm_password_layout)
