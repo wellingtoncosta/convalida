@@ -1,10 +1,11 @@
 <resources>
+    <string name="age">Age</string>
     <string name="app_name">Convalida</string>
-    <string name="name">Name</string>
+    <string name="confirm_password">Confirm Password</string>
     <string name="email">Email</string>
+    <string name="name">Name</string>
     <string name="phone">Phone</string>
     <string name="password">Password</string>
-    <string name="confirm_password">Confirm Password</string>
     <string name="validateFields">Validate</string>
     <string name="clearValidations">Clear</string>
 
@@ -12,6 +13,7 @@
     <string name="invalid_email">Invalid email</string>
     <string name="invalid_phone">Invalid phone</string>
     <string name="invalid_password">The password must have letters, numbers and special characters</string>
-    <string name="passwords_not_match">The passwords does not match</string>
     <string name="min_3_characters">Enter at least 3 characters</string>
+    <string name="only_numbers">Only numbers are allowed</string>
+    <string name="passwords_not_match">The passwords does not match</string>
 </resources>

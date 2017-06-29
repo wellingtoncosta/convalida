@@ -1,9 +1,11 @@
 package convalida.sample;
 
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import butterknife.BindView;
@@ -13,6 +15,7 @@ import convalida.annotations.ConfirmPasswordValidation;
 import convalida.annotations.EmailValidation;
 import convalida.annotations.LengthValidation;
 import convalida.annotations.NotEmptyValidation;
+import convalida.annotations.NumericOnlyValidation;
 import convalida.annotations.PasswordValidation;
 import convalida.annotations.PatternValidation;
 import convalida.library.Convalida;
@@ -33,6 +36,10 @@ public class SampleActivity extends AppCompatActivity {
     @NotEmptyValidation(R.string.field_required)
     @LengthValidation(min = 3, errorMessage = R.string.min_3_characters)
     TextInputLayout nameLayout;
+
+    @BindView(R.id.age_layout)
+    @NumericOnlyValidation(R.string.only_numbers)
+    TextInputLayout ageLayout;
 
     @BindView(R.id.email_layout)
     @EmailValidation(R.string.invalid_email)
