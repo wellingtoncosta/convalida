@@ -20,7 +20,7 @@ public class Convalida {
     }
 
     @UiThread
-    public static ConvalidaValidator initialize(@NonNull Object target) {
+    public static ConvalidaValidator init(@NonNull Object target) {
         Class<?> targetClass = target.getClass();
 
         if (debug) Log.d(TAG, "Looking up validation for " + targetClass.getName());

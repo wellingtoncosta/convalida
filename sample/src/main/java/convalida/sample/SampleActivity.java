@@ -57,7 +57,7 @@ public class SampleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sample);
         ButterKnife.bind(this);
-        validator = Convalida.initialize(this);
+        validator = Convalida.init(this);
     }
 
     @OnClick(R.id.validate_button)
