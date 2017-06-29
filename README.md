@@ -27,7 +27,11 @@ TextInputLayout emailLayout;
 @PatternValidation(errorMessage = R.string.invalid_phone, pattern = PHONE_PATTERN)
 TextInputLayout phoneLayout;
 
-@PasswordValidation(min = 3, pattern = Patterns.LOWER_UPPER_CASE_NUMERIC_SPECIAL, errorMessage = R.string.invalid_password)
+@PasswordValidation(
+  min = 3,
+  pattern = Patterns.LOWER_UPPER_CASE_NUMERIC_SPECIAL,
+  errorMessage = R.string.invalid_password
+)
 TextInputLayout passwordLayout;
 
 @ConfirmPasswordValidation(R.string.passwords_not_match)
