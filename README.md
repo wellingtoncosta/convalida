@@ -18,6 +18,7 @@ First, annotate your fields with [Convalida Annotations][3]:
 private static final String PHONE_PATTERN = "^\\([1-9]{2}\\)?([0-9]{9})$";
 
 @NotEmptyValidation(R.string.field_required)
+@LengthValidation(min = 3, errorMessage = R.string.min_3_characters)
 TextInputLayout nameLayout;
 
 @EmailValidation(R.string.invalid_email)
@@ -26,7 +27,7 @@ TextInputLayout emailLayout;
 @PatternValidation(errorMessage = R.string.invalid_phone, pattern = PHONE_PATTERN)
 TextInputLayout phoneLayout;
 
-@PasswordValidation(R.string.password_required)
+@PasswordValidation(min = 3, pattern = Patterns.LOWER_UPPER_CASE_NUMERIC_SPECIAL, errorMessage = R.string.invalid_password)
 TextInputLayout passwordLayout;
 
 @ConfirmPasswordValidation(R.string.passwords_not_match)
