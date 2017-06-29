@@ -109,25 +109,25 @@ public class ConvalidaProcessor extends AbstractProcessor {
         Set<FieldInfo> fieldInfos = new LinkedHashSet<>();
 
         // Process each @NotEmptyValidation element.
-        processElements(env, NotEmptyValidation.class, targetInfos, fieldInfos);
+        processValidations(env, NotEmptyValidation.class, targetInfos, fieldInfos);
 
         // Process each @EmailValidation element.
-        processElements(env, EmailValidation.class, targetInfos, fieldInfos);
+        processValidations(env, EmailValidation.class, targetInfos, fieldInfos);
 
         // Process each @PatternValidation element.
-        processElements(env, PatternValidation.class, targetInfos, fieldInfos);
+        processValidations(env, PatternValidation.class, targetInfos, fieldInfos);
 
         // Process each @LengthValidation element.
-        processElements(env, LengthValidation.class, targetInfos, fieldInfos);
+        processLengthValidations(env, targetInfos, fieldInfos);
 
         // Process each @NumericOnlyValidation element.
-        processElements(env, NumericOnlyValidation.class, targetInfos, fieldInfos);
+        processValidations(env, NumericOnlyValidation.class, targetInfos, fieldInfos);
 
         // Process each @PasswordValidation element.
-        processPasswordElements(env, targetInfos, fieldInfos);
+        processPasswordValidations(env, targetInfos, fieldInfos);
 
         // Process each @ConfirmPasswordValidation element.
-        processConfirmPasswordElements(env, targetInfos, fieldInfos);
+        processConfirmPasswordValidations(env, targetInfos, fieldInfos);
 
 
         TargetInfo targetInfo = findTargetInfoElement(targetInfos);
@@ -139,7 +139,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
         return map;
     }
 
-    private void processElements(
+    private void processValidations(
             RoundEnvironment env,
             Class<? extends Annotation> annotation,
             Set<TargetInfo> targetInfos,
@@ -155,7 +155,36 @@ public class ConvalidaProcessor extends AbstractProcessor {
         }
     }
 
-    private void processPasswordElements(
+    private void processLengthValidations(
+            RoundEnvironment env,
+            Set<TargetInfo> targetInfos,
+            Set<FieldInfo> fieldInfos) {
+
+        Set<? extends Element> lengthElements = env.getElementsAnnotatedWith(LengthValidation.class);
+
+        for (Element element : lengthElements) {
+            if (!SuperficialValidation.validateElement(element)) continue;
+
+            int minLength = element.getAnnotation(LengthValidation.class).min();
+            int maxLength = element.getAnnotation(LengthValidation.class).max();
+
+            if (minLength == 0 && maxLength == 0) {
+                error(element, "The min length and max length must be greater than zero.");
+            }
+
+            if (maxLength > 0 && maxLength < minLength) {
+                error(element, "The max lentgh must be greater than min lentgh.");
+            }
+
+            try {
+                parseValidation(element, LengthValidation.class, targetInfos, fieldInfos);
+            } catch (Exception e) {
+                logParsingError(element, LengthValidation.class, e);
+            }
+        }
+    }
+
+    private void processPasswordValidations(
             RoundEnvironment env,
             Set<TargetInfo> targetInfos,
             Set<FieldInfo> fieldInfos) {
@@ -163,30 +192,44 @@ public class ConvalidaProcessor extends AbstractProcessor {
         Set<? extends Element> passwordElements = env.getElementsAnnotatedWith(PasswordValidation.class);
 
         if (passwordElements.size() > 1) {
+            TypeElement enclosingElement = (TypeElement) passwordElements.iterator().next().getEnclosingElement();
             error(
                     passwordElements.iterator().next(),
-                    "You must have only one element annotated with @PasswordValidation per class"
+                    "%s must have only one element annotated with @PasswordValidation.",
+                    enclosingElement.getQualifiedName()
             );
         }
 
-        processElements(env, PasswordValidation.class, targetInfos, fieldInfos);
+        processValidations(env, PasswordValidation.class, targetInfos, fieldInfos);
     }
 
-    private void processConfirmPasswordElements(
+    private void processConfirmPasswordValidations(
             RoundEnvironment env,
             Set<TargetInfo> targetInfos,
             Set<FieldInfo> fieldInfos) {
 
+        Set<? extends Element> passwordElements = env.getElementsAnnotatedWith(PasswordValidation.class);
         Set<? extends Element> confirmPasswordElements = env.getElementsAnnotatedWith(ConfirmPasswordValidation.class);
 
-        if (confirmPasswordElements.size() > 1) {
+        if (confirmPasswordElements.size() > 0 && passwordElements.isEmpty()) {
+            TypeElement enclosingElement = (TypeElement) confirmPasswordElements.iterator().next().getEnclosingElement();
             error(
                     confirmPasswordElements.iterator().next(),
-                    "You must have only one element annotated with @ConfirmPasswordValidation per class"
+                    "%s must have at least one element annotated with @PasswordValidation.",
+                    enclosingElement.getSimpleName()
             );
         }
 
-        processElements(env, ConfirmPasswordValidation.class, targetInfos, fieldInfos);
+        if (confirmPasswordElements.size() > 1) {
+            TypeElement enclosingElement = (TypeElement) confirmPasswordElements.iterator().next().getEnclosingElement();
+            error(
+                    confirmPasswordElements.iterator().next(),
+                    "%s must have only one element annotated with @ConfirmPasswordValidation.",
+                    enclosingElement.getSimpleName()
+            );
+        }
+
+        processValidations(env, ConfirmPasswordValidation.class, targetInfos, fieldInfos);
     }
 
     private void parseValidation(
