@@ -5,12 +5,10 @@ import android.widget.EditText;
 
 import java.util.regex.Pattern;
 
-import convalida.library.validation.Validator;
-
 /**
  * @author Wellington Costa on 21/06/2017.
  */
-public class PatternValidator extends AbstractValidator implements Validator {
+public class PatternValidator extends AbstractValidator {
 
     private String pattern;
 

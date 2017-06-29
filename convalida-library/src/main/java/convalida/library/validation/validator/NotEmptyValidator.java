@@ -8,7 +8,7 @@ import convalida.library.validation.Validator;
 /**
  * @author Wellington Costa on 21/06/2017.
  */
-public class NotEmptyValidator extends AbstractValidator implements Validator {
+public class NotEmptyValidator extends AbstractValidator {
 
     public NotEmptyValidator(TextInputLayout layout, String errorMessage) {
         super(layout, errorMessage);
