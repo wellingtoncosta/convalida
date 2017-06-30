@@ -50,7 +50,7 @@ private ConvalidaValidator validator;
 protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_sample);
-    validator = Convalida.initialize(this);
+    validator = Convalida.init(this);
 }
 ```
 
