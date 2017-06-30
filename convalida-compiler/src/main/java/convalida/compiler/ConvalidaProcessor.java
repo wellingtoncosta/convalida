@@ -31,7 +31,7 @@ import convalida.annotations.ConfirmPasswordValidation;
 import convalida.annotations.EmailValidation;
 import convalida.annotations.LengthValidation;
 import convalida.annotations.NotEmptyValidation;
-import convalida.annotations.NumericOnlyValidation;
+import convalida.annotations.OnlyNumberValidation;
 import convalida.annotations.PasswordValidation;
 import convalida.annotations.PatternValidation;
 
@@ -76,7 +76,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
         supportedAnnotations.add(EmailValidation.class.getCanonicalName());
         supportedAnnotations.add(PatternValidation.class.getCanonicalName());
         supportedAnnotations.add(LengthValidation.class.getCanonicalName());
-        supportedAnnotations.add(NumericOnlyValidation.class.getCanonicalName());
+        supportedAnnotations.add(OnlyNumberValidation.class.getCanonicalName());
         supportedAnnotations.add(PasswordValidation.class.getCanonicalName());
         supportedAnnotations.add(ConfirmPasswordValidation.class.getCanonicalName());
 
@@ -120,8 +120,8 @@ public class ConvalidaProcessor extends AbstractProcessor {
         // Process each @LengthValidation element.
         processLengthValidations(env, targetInfos, fieldInfos);
 
-        // Process each @NumericOnlyValidation element.
-        processValidations(env, NumericOnlyValidation.class, targetInfos, fieldInfos);
+        // Process each @OnlyNumberValidation element.
+        processValidations(env, OnlyNumberValidation.class, targetInfos, fieldInfos);
 
         // Process each @PasswordValidation element.
         processPasswordValidations(env, targetInfos, fieldInfos);

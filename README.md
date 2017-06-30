@@ -21,7 +21,7 @@ private static final String PHONE_PATTERN = "^\\([1-9]{2}\\)?([0-9]{9})$";
 @LengthValidation(min = 3, errorMessage = R.string.min_3_characters)
 TextInputLayout nameLayout;
 
-@NumericOnlyValidation(R.string.only_numbers)
+@OnlyNumberValidation(R.string.only_numbers)
 TextInputLayout ageLayout;
 
 @EmailValidation(R.string.invalid_email)

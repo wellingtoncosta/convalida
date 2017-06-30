@@ -13,7 +13,7 @@ import static java.lang.annotation.RetentionPolicy.CLASS;
  */
 @Target(FIELD)
 @Retention(CLASS)
-public @interface NumericOnlyValidation {
+public @interface OnlyNumberValidation {
 
     @StringRes int value();
 

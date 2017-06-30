@@ -15,7 +15,7 @@ import convalida.annotations.ConfirmPasswordValidation;
 import convalida.annotations.EmailValidation;
 import convalida.annotations.LengthValidation;
 import convalida.annotations.NotEmptyValidation;
-import convalida.annotations.NumericOnlyValidation;
+import convalida.annotations.OnlyNumberValidation;
 import convalida.annotations.PasswordValidation;
 import convalida.annotations.PatternValidation;
 
@@ -34,7 +34,7 @@ class JavaFiler {
     private static final String EMAIL_ANNOTATION            = "convalida.annotations.EmailValidation";
     private static final String PATTERN_ANNOTATION          = "convalida.annotations.PatternValidation";
     private static final String LENGTH_ANNOTATION           = "convalida.annotations.LengthValidation";
-    private static final String NUMERIC_ONLY_ANNOTATION     = "convalida.annotations.NumericOnlyValidation";
+    private static final String ONLY_NUMBER_ANNOTATION      = "convalida.annotations.OnlyNumberValidation";
     private static final String PASSWORD_ANNOTATION         = "convalida.annotations.PasswordValidation";
     private static final String CONFIRM_PASSWORD_ANNOTATION = "convalida.annotations.ConfirmPasswordValidation";
 
@@ -44,7 +44,7 @@ class JavaFiler {
     private static final ClassName EMAIL_VALIDATOR              = ClassName.get(VALIDATORS_PACKAGE, "EmailValidator");
     private static final ClassName PATTERN_VALIDATOR            = ClassName.get(VALIDATORS_PACKAGE, "PatternValidator");
     private static final ClassName LENGTH_VALIDATOR             = ClassName.get(VALIDATORS_PACKAGE, "LengthValidator");
-    private static final ClassName NUMERIC_ONLY_VALIDATOR       = ClassName.get(VALIDATORS_PACKAGE, "NumericOnlyValidator");
+    private static final ClassName ONLY_NUMBER_VALIDATOR        = ClassName.get(VALIDATORS_PACKAGE, "OnlyNumberValidator");
     private static final ClassName PASSWORD_VALIDATOR           = ClassName.get(VALIDATORS_PACKAGE, "PasswordValidator");
     private static final ClassName CONFIRM_PASSWORD_VALIDATOR   = ClassName.get(VALIDATORS_PACKAGE, "ConfirmPasswordValidator");
 
@@ -186,8 +186,8 @@ class JavaFiler {
                 constructorBuilder.addCode(lengthValidationCodeBlock);
                 break;
 
-            case NUMERIC_ONLY_ANNOTATION:
-                int numericOnlyErrorMessage = fieldInfo.getElement().getAnnotation(NumericOnlyValidation.class).value();
+            case ONLY_NUMBER_ANNOTATION:
+                int numericOnlyErrorMessage = fieldInfo.getElement().getAnnotation(OnlyNumberValidation.class).value();
                 CodeBlock numericOnlyValidationCodeBlock = CodeBlock.builder()
                         .add("\n")
                         .add("{")
@@ -198,7 +198,7 @@ class JavaFiler {
                         .addStatement(
                                 "this.$N.addValidator(new $T($N, $N))",
                                 "validationSet",
-                                NUMERIC_ONLY_VALIDATOR,
+                                ONLY_NUMBER_VALIDATOR,
                                 fieldInfo.getName(),
                                 "errorMessage"
                         )

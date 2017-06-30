@@ -8,13 +8,13 @@ import java.util.regex.Pattern;
 /**
  * @author Wellington Costa on 29/06/2017.
  */
-public class NumericOnlyValidator extends AbstractValidator {
+public class OnlyNumberValidator extends AbstractValidator {
 
-    public NumericOnlyValidator(TextInputLayout layout, String errorMessage) {
+    public OnlyNumberValidator(TextInputLayout layout, String errorMessage) {
         super(layout, errorMessage);
     }
 
-    public NumericOnlyValidator(EditText editText, String errorMessage) {
+    public OnlyNumberValidator(EditText editText, String errorMessage) {
         super(editText, errorMessage);
     }
 
