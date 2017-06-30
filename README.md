@@ -12,7 +12,7 @@ Convalida is a simple, lightweight, powerful and annotation-based way to validat
 
 ## Quick Start
 
-First, annotate your fields with [Convalida Annotations][3]:
+__Step 1 - Annotate your fields with [Convalida Annotations][3]:__
 
 ```java
 private static final String PHONE_PATTERN = "^\\([1-9]{2}\\)?([0-9]{9})$";
@@ -41,7 +41,7 @@ TextInputLayout passwordLayout;
 TextInputLayout confirmPasswordLayout;
 ```
 
-Now, you must initialize Convalida calling `init()` method:
+__Step 2 - Initialize Convalida:__
 
 ```java
 private ConvalidaValidator validator;
@@ -54,7 +54,7 @@ protected void onCreate(Bundle savedInstanceState) {
 }
 ```
 
-And then, to execute the validations, you must call `validateFields()` method that returns the current validation state:
+__Step 3 - Run the validations and get the result:__
 
 ```java
 public void validateFields() {
@@ -64,7 +64,7 @@ public void validateFields() {
 }
 ```
 
-And to clear the fields valitation state, you must call `clearValidations()`:
+__Step 4 - If you want to clear the validations:__
 
 ```java
 public void clearFields() {
