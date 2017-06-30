@@ -41,7 +41,7 @@ TextInputLayout passwordLayout;
 TextInputLayout confirmPasswordLayout;
 ```
 
-Now, you must initialize Convalida calling `initialize()` method:
+Now, you must initialize Convalida calling `init()` method:
 
 ```java
 private ConvalidaValidator validator;
