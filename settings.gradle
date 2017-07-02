@@ -1,5 +1,7 @@
 include ':convalida-annotations'
 include ':convalida-compiler'
-include ':convalida-library'
+include ':convalida'
 
 include ':sample'
+
+rootProject.name = 'convalida-parent'
