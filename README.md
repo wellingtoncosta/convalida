@@ -78,7 +78,7 @@ __Remember: You must initialize the views (e.g [ButterKnife][1]) before apply th
 
 ```groovy
 dependencies {
-  compile 'br.com.wellingtoncosta:convalida-library:1.0.0'
+  compile 'br.com.wellingtoncosta:convalida:1.0.0'
   annotationProcessor 'br.com.wellingtoncosta:convalida-compiler:1.0.0'
 }
 ```
