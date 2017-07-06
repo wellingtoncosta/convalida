@@ -7,16 +7,16 @@ import java.util.regex.Pattern;
  */
 public class Patterns {
 
-    public static final Pattern NUMERIC_ONLY = Pattern.compile("^\\d+$");
+    public static final String NUMERIC_ONLY = Pattern.compile("^\\d+$").pattern();
 
-    public static final Pattern LOWER_CASE_ONLY = Pattern.compile("^[a-z]+$");
+    public static final String LOWER_CASE_ONLY = Pattern.compile("^[a-z]+$").pattern();
 
-    public static final Pattern UPPER_CASE_ONLY = Pattern.compile("^[A-Z]+$");
+    public static final String UPPER_CASE_ONLY = Pattern.compile("^[A-Z]+$").pattern();
 
-    public static final Pattern LOWER_UPPER_CASE = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z]).{1,}+$");
+    public static final String LOWER_UPPER_CASE = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z]).{1,}+$").pattern();
 
-    public static final Pattern LOWER_UPPER_CASE_NUMERIC = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{1,}+$");
+    public static final String LOWER_UPPER_CASE_NUMERIC = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{1,}+$").pattern();
 
-    public static final String LOWER_UPPER_CASE_NUMERIC_SPECIAL = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+=])(?=\\S+$).{1,}$";
+    public static final String LOWER_UPPER_CASE_NUMERIC_SPECIAL = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+=])(?=\\S+$).{1,}$").pattern();
 
 }
