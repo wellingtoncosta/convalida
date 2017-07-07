@@ -1,4 +1,4 @@
-# Convalida [![](https://jitpack.io/v/WellingtonCosta/convalida.svg)](https://jitpack.io/#WellingtonCosta/convalida)
+# Convalida [![Build Status](https://travis-ci.org/WellingtonCosta/convalida.svg?branch=master)](https://travis-ci.org/WellingtonCosta/convalida) [![](https://jitpack.io/v/WellingtonCosta/convalida.svg)](https://jitpack.io/#WellingtonCosta/convalida)
 
 ![Logo](logo.png)
 
