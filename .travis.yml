@@ -1,4 +1,5 @@
 language: android
+
 android:
   components:
     - tools
@@ -13,3 +14,6 @@ script:
    - ./gradlew build connectedCheck
 
 sudo: false
+
+jdk:
+  - oraclejdk8
