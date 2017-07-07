@@ -18,7 +18,8 @@ import convalida.annotations.PasswordValidation;
 import convalida.annotations.PatternValidation;
 import convalida.library.Convalida;
 import convalida.library.ConvalidaValidator;
-import convalida.library.validation.Patterns;
+
+import static convalida.library.validation.Patterns.LOWER_UPPER_CASE_NUMERIC_SPECIAL;
 
 /**
  * @author Wellington Costa on 05/06/17.
@@ -48,7 +49,11 @@ public class SampleActivity extends AppCompatActivity {
     TextInputLayout phoneLayout;
 
     @BindView(R.id.password_layout)
-    @PasswordValidation(min = 3, pattern = Patterns.LOWER_UPPER_CASE_NUMERIC_SPECIAL, errorMessage = R.string.invalid_password)
+    @PasswordValidation(
+            min = 3,
+            pattern = LOWER_UPPER_CASE_NUMERIC_SPECIAL,
+            errorMessage = R.string.invalid_password
+    )
     TextInputLayout passwordLayout;
 
     @BindView(R.id.confirm_password_layout)
