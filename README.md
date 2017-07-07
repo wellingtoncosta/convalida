@@ -91,8 +91,8 @@ __Step 2__ - Add the dependencies:
 
 ```groovy
 dependencies {
-  compile 'com.github.WellingtonCosta.convalida:convalida:1.0.1'
-  annotationProcessor 'com.github.WellingtonCosta.convalida:convalida-compiler:1.0.1'
+  compile 'com.github.WellingtonCosta.convalida:convalida:1.0.2'
+  annotationProcessor 'com.github.WellingtonCosta.convalida:convalida-compiler:1.0.2'
 }
 ```
 
