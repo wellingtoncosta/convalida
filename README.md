@@ -1,4 +1,4 @@
-# Convalida
+# Convalida [![](https://jitpack.io/v/WellingtonCosta/convalida.svg)](https://jitpack.io/#WellingtonCosta/convalida)
 
 ![Logo](logo.png)
 
@@ -12,7 +12,7 @@ Convalida is a simple, lightweight, powerful and annotation-based way to validat
 
 ## Quick Start
 
-__Step 1 - Annotate your fields with [Convalida Annotations][3]:__
+__Step 1__ - Annotate your fields with [Convalida Annotations][3]:
 
 ```java
 private static final String PHONE_PATTERN = "^\\([1-9]{2}\\)?([0-9]{9})$";
@@ -41,7 +41,7 @@ TextInputLayout passwordLayout;
 TextInputLayout confirmPasswordLayout;
 ```
 
-__Step 2 - Initialize Convalida:__
+__Step 2__ - Initialize Convalida:
 
 ```java
 private ConvalidaValidator validator;
@@ -54,7 +54,7 @@ protected void onCreate(Bundle savedInstanceState) {
 }
 ```
 
-__Step 3 - Run the validations and get the result:__
+__Step 3__ - Run the validations and get the result:
 
 ```java
 public void validateFields() {
@@ -64,7 +64,7 @@ public void validateFields() {
 }
 ```
 
-__Step 4 - If you want to clear the validations:__
+__Step 4__ - If you want to clear the validations:
 
 ```java
 public void clearFields() {
@@ -76,10 +76,23 @@ __Remember: You must initialize the views (e.g [ButterKnife][1]) before apply th
 
 ## Download
 
+__Step 1__ - Add the JitPack repository to your root build.gradle file:
+
+```groovy
+allprojects {
+  repositories {
+    ...
+    maven { url 'https://jitpack.io' }
+  }
+}
+```
+
+__Step 2__ - Add the dependencies:
+
 ```groovy
 dependencies {
-  compile 'br.com.wellingtoncosta:convalida:1.0.0'
-  annotationProcessor 'br.com.wellingtoncosta:convalida-compiler:1.0.0'
+  compile 'com.github.WellingtonCosta.convalida:convalida:1.0.1'
+  annotationProcessor 'com.github.WellingtonCosta.convalida:convalida-compiler:1.0.1'
 }
 ```
 
