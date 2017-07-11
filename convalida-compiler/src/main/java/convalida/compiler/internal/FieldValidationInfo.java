@@ -1,4 +1,4 @@
-package convalida.compiler;
+package convalida.compiler.internal;
 
 import com.squareup.javapoet.TypeName;
 import java.lang.annotation.Annotation;
@@ -7,33 +7,39 @@ import javax.lang.model.element.Element;
 /**
  * @author Wellington Costa on 19/06/2017.
  */
-class FieldInfo {
+public class FieldValidationInfo {
 
     private Element element;
     private String name;
     private TypeName typeName;
     private String annotationClass;
+    private Id id;
 
-    FieldInfo(Element element, String annotationClass) {
+    public FieldValidationInfo(Element element, String annotationClass, Id id) {
         this.element = element;
         this.name = element.getSimpleName().toString();
         this.typeName = TypeName.get(element.asType());
         this.annotationClass = annotationClass;
+        this.id = id;
     }
 
-    Element getElement() {
+    public Element getElement() {
         return element;
     }
 
-    String getName() {
+    public String getName() {
         return name;
     }
 
-    TypeName getTypeName() {
+    public TypeName getTypeName() {
         return typeName;
     }
 
-    String getAnnotationClass() {
+    public String getAnnotationClass() {
         return annotationClass;
+    }
+
+    public Id getId() {
+        return id;
     }
 }

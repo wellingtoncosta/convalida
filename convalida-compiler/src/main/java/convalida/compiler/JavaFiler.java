@@ -11,13 +11,12 @@ import java.util.Set;
 
 import javax.lang.model.element.Modifier;
 
-import convalida.annotations.ConfirmPasswordValidation;
-import convalida.annotations.EmailValidation;
 import convalida.annotations.LengthValidation;
-import convalida.annotations.NotEmptyValidation;
-import convalida.annotations.OnlyNumberValidation;
 import convalida.annotations.PasswordValidation;
 import convalida.annotations.PatternValidation;
+import convalida.compiler.internal.FieldValidationInfo;
+import convalida.compiler.internal.Id;
+import convalida.compiler.internal.TargetClassInfo;
 
 /**
  * @author Wellington Costa on 19/06/2017.
@@ -49,53 +48,52 @@ class JavaFiler {
     private static final ClassName CONFIRM_PASSWORD_VALIDATOR   = ClassName.get(VALIDATORS_PACKAGE, "ConfirmPasswordValidator");
 
 
-    static JavaFile cookJava(TargetInfo targetInfo, Set<FieldInfo> fieldInfos) {
-        TypeSpec classValidator = TypeSpec.classBuilder(targetInfo.getClassName())
+    static JavaFile cookJava(TargetClassInfo targetClassInfo, Set<FieldValidationInfo> fieldValidationInfos) {
+        TypeSpec classValidator = TypeSpec.classBuilder(targetClassInfo.getClassName())
                 .addSuperinterface(VALIDATOR)
                 .addModifiers(Modifier.PUBLIC)
                 .addField(VALIDATION_SET, "validationSet", Modifier.PRIVATE)
-                .addMethod(createConstructor(targetInfo, fieldInfos))
+                .addMethod(createConstructor(targetClassInfo, fieldValidationInfos))
                 .addMethod(createValidateMethod())
                 .addMethod(createClearValidationMethod())
                 .build();
 
-        return JavaFile.builder(targetInfo.getPackageName(), classValidator)
+        return JavaFile.builder(targetClassInfo.getPackageName(), classValidator)
                 .addFileComment("Generated code from Convalida. Do not modify!")
                 .build();
     }
 
-    private static MethodSpec createConstructor(TargetInfo targetInfo, Set<FieldInfo> fieldInfos) {
+    private static MethodSpec createConstructor(TargetClassInfo targetClassInfo, Set<FieldValidationInfo> fieldValidationInfos) {
         MethodSpec.Builder constructorBuilder = MethodSpec.constructorBuilder()
                 .addAnnotation(UI_THREAD)
                 .addModifiers(Modifier.PUBLIC)
-                .addParameter(targetInfo.getTypeName(), "target")
+                .addParameter(targetClassInfo.getTypeName(), "target")
                 .addStatement("this.$N = new $T()", "validationSet", VALIDATION_SET);
 
-        for (FieldInfo fieldInfo : fieldInfos) {
-            chooseValidationStrategy(constructorBuilder, fieldInfo);
+        for (FieldValidationInfo fieldValidationInfo : fieldValidationInfos) {
+            chooseValidationStrategy(constructorBuilder, fieldValidationInfo);
         }
 
         return constructorBuilder.build();
     }
 
-    private static void chooseValidationStrategy(MethodSpec.Builder constructorBuilder, FieldInfo fieldInfo) {
-        String annotationClass = fieldInfo.getAnnotationClass();
+    private static void chooseValidationStrategy(MethodSpec.Builder constructorBuilder, FieldValidationInfo fieldValidationInfo) {
+        String annotationClass = fieldValidationInfo.getAnnotationClass();
 
         switch (annotationClass) {
             case NOT_EMPTY_ANNOTATION:
-                int notEmptyErrorMessage = fieldInfo.getElement().getAnnotation(NotEmptyValidation.class).value();
                 CodeBlock notEmptyValidationCodeBlock = CodeBlock.builder()
                         .add("\n")
                         .add("{")
                         .add("\n")
                         .indent()
-                        .add(createElementDeclarationCode(fieldInfo))
-                        .add(createErrorMessageDeclarationCode(notEmptyErrorMessage))
+                        .add(createElementDeclarationCode(fieldValidationInfo))
+                        .add(createErrorMessageDeclarationCode(fieldValidationInfo.getId()))
                         .addStatement(
                                 "this.$N.addValidator(new $T($N, $N))",
                                 "validationSet",
                                 NOT_EMPTY_VALIDATOR,
-                                fieldInfo.getName(),
+                                fieldValidationInfo.getName(),
                                 "errorMessage"
                         )
                         .unindent()
@@ -106,19 +104,18 @@ class JavaFiler {
                 constructorBuilder.addCode(notEmptyValidationCodeBlock);
                 break;
             case EMAIL_ANNOTATION:
-                int emailErrorMessage = fieldInfo.getElement().getAnnotation(EmailValidation.class).value();
                 CodeBlock emailValidationCodeBlock = CodeBlock.builder()
                         .add("\n")
                         .add("{")
                         .add("\n")
                         .indent()
-                        .add(createElementDeclarationCode(fieldInfo))
-                        .add(createErrorMessageDeclarationCode(emailErrorMessage))
+                        .add(createElementDeclarationCode(fieldValidationInfo))
+                        .add(createErrorMessageDeclarationCode(fieldValidationInfo.getId()))
                         .addStatement(
                                 "this.$N.addValidator(new $T($N, $N))",
                                 "validationSet",
                                 EMAIL_VALIDATOR,
-                                fieldInfo.getName(),
+                                fieldValidationInfo.getName(),
                                 "errorMessage"
                         )
                         .unindent()
@@ -129,23 +126,22 @@ class JavaFiler {
                 constructorBuilder.addCode(emailValidationCodeBlock);
                 break;
             case PATTERN_ANNOTATION:
-                int patternErrorMessage = fieldInfo.getElement().getAnnotation(PatternValidation.class).errorMessage();
                 CodeBlock patternValidationCodeBlock = CodeBlock.builder()
                         .add("\n")
                         .add("{")
                         .add("\n")
                         .indent()
-                        .add(createElementDeclarationCode(fieldInfo))
-                        .add(createErrorMessageDeclarationCode(patternErrorMessage))
+                        .add(createElementDeclarationCode(fieldValidationInfo))
+                        .add(createErrorMessageDeclarationCode(fieldValidationInfo.getId()))
                         .addStatement(
                                 "String pattern = $S",
-                                fieldInfo.getElement().getAnnotation(PatternValidation.class).pattern()
+                                fieldValidationInfo.getElement().getAnnotation(PatternValidation.class).pattern()
                         )
                         .addStatement(
                                 "this.$N.addValidator(new $T($N, $N, $N))",
                                 "validationSet",
                                 PATTERN_VALIDATOR,
-                                fieldInfo.getName(),
+                                fieldValidationInfo.getName(),
                                 "errorMessage",
                                 "pattern"
                         )
@@ -157,23 +153,22 @@ class JavaFiler {
                 constructorBuilder.addCode(patternValidationCodeBlock);
                 break;
             case LENGTH_ANNOTATION:
-                int minLength = fieldInfo.getElement().getAnnotation(LengthValidation.class).min();
-                int maxLength = fieldInfo.getElement().getAnnotation(LengthValidation.class).max();
-                int lengthErrorMessage = fieldInfo.getElement().getAnnotation(LengthValidation.class).errorMessage();
+                int minLength = fieldValidationInfo.getElement().getAnnotation(LengthValidation.class).min();
+                int maxLength = fieldValidationInfo.getElement().getAnnotation(LengthValidation.class).max();
                 CodeBlock lengthValidationCodeBlock = CodeBlock.builder()
                         .add("\n")
                         .add("{")
                         .add("\n")
                         .indent()
-                        .add(createElementDeclarationCode(fieldInfo))
+                        .add(createElementDeclarationCode(fieldValidationInfo))
                         .addStatement("int minLength = $L", minLength)
                         .addStatement("int maxLength = $L", maxLength)
-                        .add(createErrorMessageDeclarationCode(lengthErrorMessage))
+                        .add(createErrorMessageDeclarationCode(fieldValidationInfo.getId()))
                         .addStatement(
                                 "this.$N.addValidator(new $T($N, $N, $N, $N))",
                                 "validationSet",
                                 LENGTH_VALIDATOR,
-                                fieldInfo.getName(),
+                                fieldValidationInfo.getName(),
                                 "minLength",
                                 "maxLength",
                                 "errorMessage"
@@ -187,19 +182,18 @@ class JavaFiler {
                 break;
 
             case ONLY_NUMBER_ANNOTATION:
-                int numericOnlyErrorMessage = fieldInfo.getElement().getAnnotation(OnlyNumberValidation.class).value();
                 CodeBlock numericOnlyValidationCodeBlock = CodeBlock.builder()
                         .add("\n")
                         .add("{")
                         .add("\n")
                         .indent()
-                        .add(createElementDeclarationCode(fieldInfo))
-                        .add(createErrorMessageDeclarationCode(numericOnlyErrorMessage))
+                        .add(createElementDeclarationCode(fieldValidationInfo))
+                        .add(createErrorMessageDeclarationCode(fieldValidationInfo.getId()))
                         .addStatement(
                                 "this.$N.addValidator(new $T($N, $N))",
                                 "validationSet",
                                 ONLY_NUMBER_VALIDATOR,
-                                fieldInfo.getName(),
+                                fieldValidationInfo.getName(),
                                 "errorMessage"
                         )
                         .unindent()
@@ -210,16 +204,15 @@ class JavaFiler {
                 constructorBuilder.addCode(numericOnlyValidationCodeBlock);
                 break;
             case PASSWORD_ANNOTATION:
-                int minPasswordLength = fieldInfo.getElement().getAnnotation(PasswordValidation.class).min();
-                String passwordPattern = fieldInfo.getElement().getAnnotation(PasswordValidation.class).pattern();
-                int passwordnErrorMessage = fieldInfo.getElement().getAnnotation(PasswordValidation.class).errorMessage();
+                int minPasswordLength = fieldValidationInfo.getElement().getAnnotation(PasswordValidation.class).min();
+                String passwordPattern = fieldValidationInfo.getElement().getAnnotation(PasswordValidation.class).pattern();
                 CodeBlock passwordValidationCodeBlock = CodeBlock.builder()
                         .add("\n")
                         .addStatement(
                                 "$T passwordField = $N.$N",
-                                fieldInfo.getTypeName(),
+                                fieldValidationInfo.getTypeName(),
                                 "target",
-                                fieldInfo.getName()
+                                fieldValidationInfo.getName()
                         )
                         .add("\n")
                         .add("{")
@@ -227,7 +220,7 @@ class JavaFiler {
                         .indent()
                         .addStatement("int min = $L", minPasswordLength)
                         .addStatement("String pattern = $S", passwordPattern)
-                        .add(createErrorMessageDeclarationCode(passwordnErrorMessage))
+                        .add(createErrorMessageDeclarationCode(fieldValidationInfo.getId()))
                         .addStatement(
                                 "this.$N.addValidator(new $T($N, $N, $N, $N))",
                                 "validationSet",
@@ -245,20 +238,19 @@ class JavaFiler {
                 constructorBuilder.addCode(passwordValidationCodeBlock);
                 break;
             case CONFIRM_PASSWORD_ANNOTATION:
-                int confirmPasswordnErrorMessage = fieldInfo.getElement().getAnnotation(ConfirmPasswordValidation.class).value();
                 CodeBlock confirmPasswordValidationCodeBlock = CodeBlock.builder()
                         .add("\n")
                         .add("{")
                         .add("\n")
                         .indent()
-                        .add(createElementDeclarationCode(fieldInfo))
-                        .add(createErrorMessageDeclarationCode(confirmPasswordnErrorMessage))
+                        .add(createElementDeclarationCode(fieldValidationInfo))
+                        .add(createErrorMessageDeclarationCode(fieldValidationInfo.getId()))
                         .addStatement(
                                 "this.$N.addValidator(new $T($N, $N, $N))",
                                 "validationSet",
                                 CONFIRM_PASSWORD_VALIDATOR,
                                 "passwordField",
-                                fieldInfo.getName(),
+                                fieldValidationInfo.getName(),
                                 "errorMessage"
                         )
                         .unindent()
@@ -271,24 +263,24 @@ class JavaFiler {
         }
     }
 
-    private static CodeBlock createElementDeclarationCode(FieldInfo fieldInfo) {
+    private static CodeBlock createElementDeclarationCode(FieldValidationInfo fieldValidationInfo) {
         return CodeBlock.builder()
                 .addStatement(
                         "$T $N = $N.$N",
-                        fieldInfo.getTypeName(),
-                        fieldInfo.getName(),
+                        fieldValidationInfo.getTypeName(),
+                        fieldValidationInfo.getName(),
                         "target",
-                        fieldInfo.getName()
+                        fieldValidationInfo.getName()
                 )
                 .build();
     }
 
-    private static CodeBlock createErrorMessageDeclarationCode(int errorMessage) {
+    private static CodeBlock createErrorMessageDeclarationCode(Id id) {
         return CodeBlock.builder()
                 .addStatement(
                         "String errorMessage = $N.getString($L)",
                         "target",
-                        errorMessage
+                        id.getCode()
                 )
                 .build();
     }

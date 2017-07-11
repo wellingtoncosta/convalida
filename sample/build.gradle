@@ -22,11 +22,6 @@ android {
             minifyEnabled true
         }
     }
-
-    lintOptions {
-        abortOnError false
-        checkReleaseBuilds false
-    }
 }
 
 dependencies {

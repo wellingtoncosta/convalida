@@ -1,4 +1,4 @@
-package convalida.compiler;
+package convalida.compiler.internal;
 
 import com.squareup.javapoet.TypeName;
 
@@ -9,33 +9,33 @@ import javax.lang.model.util.Elements;
 /**
  * @author Wellington Costa on 19/06/2017.
  */
-class TargetInfo {
+public class TargetClassInfo {
 
     private String packageName;
     private String className;
     private TypeName typeName;
     private TypeElement typeElement;
 
-    TargetInfo(Element element, Elements elements) {
+    public TargetClassInfo(Element element, Elements elements) {
         this.packageName = elements.getPackageOf(element).toString();
         this.className = element.getSimpleName().toString() + "_Validation";
         this.typeName = TypeName.get(element.asType());
         this.typeElement = (TypeElement) element;
     }
 
-    String getPackageName() {
+    public String getPackageName() {
         return packageName;
     }
 
-    String getClassName() {
+    public String getClassName() {
         return className;
     }
 
-    TypeName getTypeName() {
+    public TypeName getTypeName() {
         return typeName;
     }
 
-    TypeElement getTypeElement() {
+    public TypeElement getTypeElement() {
         return typeElement;
     }
 }
