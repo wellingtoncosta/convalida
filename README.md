@@ -7,7 +7,7 @@ Convalida is a simple, lightweight, powerful and annotation-based way to validat
 ## Why Convalida?
 
 - Annotation-based;
-- 100% reflection-free (compile-time);
+- Compile-time;
 - Compatible with other annotation-based libraries and frameworks such as [ButterKnife][1], [AndroidAnnotations][2], etc...
 
 ## Quick Start
