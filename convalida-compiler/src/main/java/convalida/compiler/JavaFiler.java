@@ -82,185 +82,213 @@ class JavaFiler {
 
         switch (annotationClass) {
             case NOT_EMPTY_ANNOTATION:
-                CodeBlock notEmptyValidationCodeBlock = CodeBlock.builder()
-                        .add("\n")
-                        .add("{")
-                        .add("\n")
-                        .indent()
-                        .add(createElementDeclarationCode(fieldValidationInfo))
-                        .add(createErrorMessageDeclarationCode(fieldValidationInfo.getId()))
-                        .addStatement(
-                                "this.$N.addValidator(new $T($N, $N))",
-                                "validationSet",
-                                NOT_EMPTY_VALIDATOR,
-                                fieldValidationInfo.getName(),
-                                "errorMessage"
-                        )
-                        .unindent()
-                        .add("}")
-                        .add("\n")
-                        .build();
-
-                constructorBuilder.addCode(notEmptyValidationCodeBlock);
+                createNotEmptyValidationCodeBlock(constructorBuilder, fieldValidationInfo);
                 break;
             case EMAIL_ANNOTATION:
-                CodeBlock emailValidationCodeBlock = CodeBlock.builder()
-                        .add("\n")
-                        .add("{")
-                        .add("\n")
-                        .indent()
-                        .add(createElementDeclarationCode(fieldValidationInfo))
-                        .add(createErrorMessageDeclarationCode(fieldValidationInfo.getId()))
-                        .addStatement(
-                                "this.$N.addValidator(new $T($N, $N))",
-                                "validationSet",
-                                EMAIL_VALIDATOR,
-                                fieldValidationInfo.getName(),
-                                "errorMessage"
-                        )
-                        .unindent()
-                        .add("}")
-                        .add("\n")
-                        .build();
-
-                constructorBuilder.addCode(emailValidationCodeBlock);
+                createEmailValidationCodeBlock(constructorBuilder, fieldValidationInfo);
                 break;
             case PATTERN_ANNOTATION:
-                CodeBlock patternValidationCodeBlock = CodeBlock.builder()
-                        .add("\n")
-                        .add("{")
-                        .add("\n")
-                        .indent()
-                        .add(createElementDeclarationCode(fieldValidationInfo))
-                        .add(createErrorMessageDeclarationCode(fieldValidationInfo.getId()))
-                        .addStatement(
-                                "String pattern = $S",
-                                fieldValidationInfo.getElement().getAnnotation(PatternValidation.class).pattern()
-                        )
-                        .addStatement(
-                                "this.$N.addValidator(new $T($N, $N, $N))",
-                                "validationSet",
-                                PATTERN_VALIDATOR,
-                                fieldValidationInfo.getName(),
-                                "errorMessage",
-                                "pattern"
-                        )
-                        .unindent()
-                        .add("}")
-                        .add("\n")
-                        .build();
-
-                constructorBuilder.addCode(patternValidationCodeBlock);
+                createPatternValidationCodeBlock(constructorBuilder, fieldValidationInfo);
                 break;
             case LENGTH_ANNOTATION:
-                int minLength = fieldValidationInfo.getElement().getAnnotation(LengthValidation.class).min();
-                int maxLength = fieldValidationInfo.getElement().getAnnotation(LengthValidation.class).max();
-                CodeBlock lengthValidationCodeBlock = CodeBlock.builder()
-                        .add("\n")
-                        .add("{")
-                        .add("\n")
-                        .indent()
-                        .add(createElementDeclarationCode(fieldValidationInfo))
-                        .addStatement("int minLength = $L", minLength)
-                        .addStatement("int maxLength = $L", maxLength)
-                        .add(createErrorMessageDeclarationCode(fieldValidationInfo.getId()))
-                        .addStatement(
-                                "this.$N.addValidator(new $T($N, $N, $N, $N))",
-                                "validationSet",
-                                LENGTH_VALIDATOR,
-                                fieldValidationInfo.getName(),
-                                "minLength",
-                                "maxLength",
-                                "errorMessage"
-                        )
-                        .unindent()
-                        .add("}")
-                        .add("\n")
-                        .build();
-
-                constructorBuilder.addCode(lengthValidationCodeBlock);
+                createLengthValidationCodeBlock(constructorBuilder, fieldValidationInfo);
                 break;
 
             case ONLY_NUMBER_ANNOTATION:
-                CodeBlock numericOnlyValidationCodeBlock = CodeBlock.builder()
-                        .add("\n")
-                        .add("{")
-                        .add("\n")
-                        .indent()
-                        .add(createElementDeclarationCode(fieldValidationInfo))
-                        .add(createErrorMessageDeclarationCode(fieldValidationInfo.getId()))
-                        .addStatement(
-                                "this.$N.addValidator(new $T($N, $N))",
-                                "validationSet",
-                                ONLY_NUMBER_VALIDATOR,
-                                fieldValidationInfo.getName(),
-                                "errorMessage"
-                        )
-                        .unindent()
-                        .add("}")
-                        .add("\n")
-                        .build();
-
-                constructorBuilder.addCode(numericOnlyValidationCodeBlock);
+                createOnlyNumberValidationCodeBlock(constructorBuilder, fieldValidationInfo);
                 break;
             case PASSWORD_ANNOTATION:
-                int minPasswordLength = fieldValidationInfo.getElement().getAnnotation(PasswordValidation.class).min();
-                String passwordPattern = fieldValidationInfo.getElement().getAnnotation(PasswordValidation.class).pattern();
-                CodeBlock passwordValidationCodeBlock = CodeBlock.builder()
-                        .add("\n")
-                        .addStatement(
-                                "$T passwordField = $N.$N",
-                                fieldValidationInfo.getTypeName(),
-                                "target",
-                                fieldValidationInfo.getName()
-                        )
-                        .add("\n")
-                        .add("{")
-                        .add("\n")
-                        .indent()
-                        .addStatement("int min = $L", minPasswordLength)
-                        .addStatement("String pattern = $S", passwordPattern)
-                        .add(createErrorMessageDeclarationCode(fieldValidationInfo.getId()))
-                        .addStatement(
-                                "this.$N.addValidator(new $T($N, $N, $N, $N))",
-                                "validationSet",
-                                PASSWORD_VALIDATOR,
-                                "passwordField",
-                                "min",
-                                "pattern",
-                                "errorMessage"
-                        )
-                        .unindent()
-                        .add("}")
-                        .add("\n")
-                        .build();
-
-                constructorBuilder.addCode(passwordValidationCodeBlock);
+                createPasswordValidationCodeBlock(constructorBuilder, fieldValidationInfo);
                 break;
             case CONFIRM_PASSWORD_ANNOTATION:
-                CodeBlock confirmPasswordValidationCodeBlock = CodeBlock.builder()
-                        .add("\n")
-                        .add("{")
-                        .add("\n")
-                        .indent()
-                        .add(createElementDeclarationCode(fieldValidationInfo))
-                        .add(createErrorMessageDeclarationCode(fieldValidationInfo.getId()))
-                        .addStatement(
-                                "this.$N.addValidator(new $T($N, $N, $N))",
-                                "validationSet",
-                                CONFIRM_PASSWORD_VALIDATOR,
-                                "passwordField",
-                                fieldValidationInfo.getName(),
-                                "errorMessage"
-                        )
-                        .unindent()
-                        .add("}")
-                        .add("\n")
-                        .build();
-
-                constructorBuilder.addCode(confirmPasswordValidationCodeBlock);
+                createConfirmPasswordValidationCodeBlock(constructorBuilder, fieldValidationInfo);
                 break;
         }
+    }
+
+    private static void createNotEmptyValidationCodeBlock(MethodSpec.Builder constructorBuilder, FieldValidationInfo fieldValidationInfo) {
+        CodeBlock notEmptyValidationCodeBlock = CodeBlock.builder()
+                .add("\n")
+                .add("{")
+                .add("\n")
+                .indent()
+                .add(createElementDeclarationCode(fieldValidationInfo))
+                .add(createErrorMessageDeclarationCode(fieldValidationInfo.getId()))
+                .addStatement(
+                        "this.$N.addValidator(new $T($N, $N))",
+                        "validationSet",
+                        NOT_EMPTY_VALIDATOR,
+                        fieldValidationInfo.getName(),
+                        "errorMessage"
+                )
+                .unindent()
+                .add("}")
+                .add("\n")
+                .build();
+
+        constructorBuilder.addCode(notEmptyValidationCodeBlock);
+    }
+
+    private static void createEmailValidationCodeBlock(MethodSpec.Builder constructorBuilder, FieldValidationInfo fieldValidationInfo) {
+        CodeBlock emailValidationCodeBlock = CodeBlock.builder()
+                .add("\n")
+                .add("{")
+                .add("\n")
+                .indent()
+                .add(createElementDeclarationCode(fieldValidationInfo))
+                .add(createErrorMessageDeclarationCode(fieldValidationInfo.getId()))
+                .addStatement(
+                        "this.$N.addValidator(new $T($N, $N))",
+                        "validationSet",
+                        EMAIL_VALIDATOR,
+                        fieldValidationInfo.getName(),
+                        "errorMessage"
+                )
+                .unindent()
+                .add("}")
+                .add("\n")
+                .build();
+
+        constructorBuilder.addCode(emailValidationCodeBlock);
+    }
+
+    private static void createPatternValidationCodeBlock(MethodSpec.Builder constructorBuilder, FieldValidationInfo fieldValidationInfo) {
+        CodeBlock patternValidationCodeBlock = CodeBlock.builder()
+                .add("\n")
+                .add("{")
+                .add("\n")
+                .indent()
+                .add(createElementDeclarationCode(fieldValidationInfo))
+                .add(createErrorMessageDeclarationCode(fieldValidationInfo.getId()))
+                .addStatement(
+                        "String pattern = $S",
+                        fieldValidationInfo.getElement().getAnnotation(PatternValidation.class).pattern()
+                )
+                .addStatement(
+                        "this.$N.addValidator(new $T($N, $N, $N))",
+                        "validationSet",
+                        PATTERN_VALIDATOR,
+                        fieldValidationInfo.getName(),
+                        "errorMessage",
+                        "pattern"
+                )
+                .unindent()
+                .add("}")
+                .add("\n")
+                .build();
+
+        constructorBuilder.addCode(patternValidationCodeBlock);
+    }
+
+    private static void createLengthValidationCodeBlock(MethodSpec.Builder constructorBuilder, FieldValidationInfo fieldValidationInfo) {
+        int minLength = fieldValidationInfo.getElement().getAnnotation(LengthValidation.class).min();
+        int maxLength = fieldValidationInfo.getElement().getAnnotation(LengthValidation.class).max();
+        CodeBlock lengthValidationCodeBlock = CodeBlock.builder()
+                .add("\n")
+                .add("{")
+                .add("\n")
+                .indent()
+                .add(createElementDeclarationCode(fieldValidationInfo))
+                .addStatement("int minLength = $L", minLength)
+                .addStatement("int maxLength = $L", maxLength)
+                .add(createErrorMessageDeclarationCode(fieldValidationInfo.getId()))
+                .addStatement(
+                        "this.$N.addValidator(new $T($N, $N, $N, $N))",
+                        "validationSet",
+                        LENGTH_VALIDATOR,
+                        fieldValidationInfo.getName(),
+                        "minLength",
+                        "maxLength",
+                        "errorMessage"
+                )
+                .unindent()
+                .add("}")
+                .add("\n")
+                .build();
+
+        constructorBuilder.addCode(lengthValidationCodeBlock);
+    }
+
+    private static void createOnlyNumberValidationCodeBlock(MethodSpec.Builder constructorBuilder, FieldValidationInfo fieldValidationInfo) {
+        CodeBlock numericOnlyValidationCodeBlock = CodeBlock.builder()
+                .add("\n")
+                .add("{")
+                .add("\n")
+                .indent()
+                .add(createElementDeclarationCode(fieldValidationInfo))
+                .add(createErrorMessageDeclarationCode(fieldValidationInfo.getId()))
+                .addStatement(
+                        "this.$N.addValidator(new $T($N, $N))",
+                        "validationSet",
+                        ONLY_NUMBER_VALIDATOR,
+                        fieldValidationInfo.getName(),
+                        "errorMessage"
+                )
+                .unindent()
+                .add("}")
+                .add("\n")
+                .build();
+
+        constructorBuilder.addCode(numericOnlyValidationCodeBlock);
+    }
+
+    private static void createPasswordValidationCodeBlock(MethodSpec.Builder constructorBuilder, FieldValidationInfo fieldValidationInfo) {
+        int minPasswordLength = fieldValidationInfo.getElement().getAnnotation(PasswordValidation.class).min();
+        String passwordPattern = fieldValidationInfo.getElement().getAnnotation(PasswordValidation.class).pattern();
+        CodeBlock passwordValidationCodeBlock = CodeBlock.builder()
+                .add("\n")
+                .addStatement(
+                        "$T passwordField = $N.$N",
+                        fieldValidationInfo.getTypeName(),
+                        "target",
+                        fieldValidationInfo.getName()
+                )
+                .add("\n")
+                .add("{")
+                .add("\n")
+                .indent()
+                .addStatement("int min = $L", minPasswordLength)
+                .addStatement("String pattern = $S", passwordPattern)
+                .add(createErrorMessageDeclarationCode(fieldValidationInfo.getId()))
+                .addStatement(
+                        "this.$N.addValidator(new $T($N, $N, $N, $N))",
+                        "validationSet",
+                        PASSWORD_VALIDATOR,
+                        "passwordField",
+                        "min",
+                        "pattern",
+                        "errorMessage"
+                )
+                .unindent()
+                .add("}")
+                .add("\n")
+                .build();
+
+        constructorBuilder.addCode(passwordValidationCodeBlock);
+    }
+
+    private static void createConfirmPasswordValidationCodeBlock(MethodSpec.Builder constructorBuilder, FieldValidationInfo fieldValidationInfo) {
+        CodeBlock confirmPasswordValidationCodeBlock = CodeBlock.builder()
+                .add("\n")
+                .add("{")
+                .add("\n")
+                .indent()
+                .add(createElementDeclarationCode(fieldValidationInfo))
+                .add(createErrorMessageDeclarationCode(fieldValidationInfo.getId()))
+                .addStatement(
+                        "this.$N.addValidator(new $T($N, $N, $N))",
+                        "validationSet",
+                        CONFIRM_PASSWORD_VALIDATOR,
+                        "passwordField",
+                        fieldValidationInfo.getName(),
+                        "errorMessage"
+                )
+                .unindent()
+                .add("}")
+                .add("\n")
+                .build();
+
+        constructorBuilder.addCode(confirmPasswordValidationCodeBlock);
     }
 
     private static CodeBlock createElementDeclarationCode(FieldValidationInfo fieldValidationInfo) {

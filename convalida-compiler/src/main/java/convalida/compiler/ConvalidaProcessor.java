@@ -177,7 +177,14 @@ public class ConvalidaProcessor extends AbstractProcessor {
         }
 
         // Process each @LengthValidation element.
-        processLengthValidations(env, targetClassInfos, fieldValidationInfos);
+        for (Element element : env.getElementsAnnotatedWith(LengthValidation.class)) {
+            if (!SuperficialValidation.validateElement(element)) continue;
+            try {
+                parseLengthValidation(element, targetClassInfos, fieldValidationInfos);
+            } catch (Exception e) {
+                logParsingError(element, LengthValidation.class, e);
+            }
+        }
 
         // Process each @OnlyNumberValidation element.
         for (Element element : env.getElementsAnnotatedWith(OnlyNumberValidation.class)) {
@@ -258,42 +265,36 @@ public class ConvalidaProcessor extends AbstractProcessor {
         fieldValidationInfos.add(new FieldValidationInfo(element, PatternValidation.class.getCanonicalName(), getId(qualifiedId)));
     }
 
-    private void processLengthValidations(
-            RoundEnvironment env,
+    private void parseLengthValidation(
+            Element element,
             Set<TargetClassInfo> targetClassInfos,
             Set<FieldValidationInfo> fieldValidationInfos) {
 
-        Set<? extends Element> lengthElements = env.getElementsAnnotatedWith(LengthValidation.class);
+        int minLength = element.getAnnotation(LengthValidation.class).min();
+        int maxLength = element.getAnnotation(LengthValidation.class).max();
 
-        for (Element element : lengthElements) {
-            if (!SuperficialValidation.validateElement(element)) continue;
+        if (minLength == 0 && maxLength == 0) {
+            error(element, "The min length and max length must be greater than zero.");
+        }
 
-            int minLength = element.getAnnotation(LengthValidation.class).min();
-            int maxLength = element.getAnnotation(LengthValidation.class).max();
+        if (maxLength > 0 && maxLength < minLength) {
+            error(element, "The max lentgh must be greater than min lentgh.");
+        }
 
-            if (minLength == 0 && maxLength == 0) {
-                error(element, "The min length and max length must be greater than zero.");
+        try {
+            boolean hasError = isInvalid(LengthValidation.class, element) || isInaccessible(LengthValidation.class, element);
+
+            if (hasError) {
+                return;
             }
 
-            if (maxLength > 0 && maxLength < minLength) {
-                error(element, "The max lentgh must be greater than min lentgh.");
-            }
+            int errorMessage = element.getAnnotation(LengthValidation.class).errorMessage();
+            QualifiedId qualifiedId = elementToQualifiedId(element, errorMessage);
 
-            try {
-                boolean hasError = isInvalid(LengthValidation.class, element) || isInaccessible(LengthValidation.class, element);
-
-                if (hasError) {
-                    return;
-                }
-
-                int errorMessage = element.getAnnotation(LengthValidation.class).errorMessage();
-                QualifiedId qualifiedId = elementToQualifiedId(element, errorMessage);
-
-                targetClassInfos.add(new TargetClassInfo(element.getEnclosingElement(), this.elementUtils));
-                fieldValidationInfos.add(new FieldValidationInfo(element, LengthValidation.class.getCanonicalName(), getId(qualifiedId)));
-            } catch (Exception e) {
-                logParsingError(element, LengthValidation.class, e);
-            }
+            targetClassInfos.add(new TargetClassInfo(element.getEnclosingElement(), this.elementUtils));
+            fieldValidationInfos.add(new FieldValidationInfo(element, LengthValidation.class.getCanonicalName(), getId(qualifiedId)));
+        } catch (Exception e) {
+            logParsingError(element, LengthValidation.class, e);
         }
     }
 
