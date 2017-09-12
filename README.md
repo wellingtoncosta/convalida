@@ -2,7 +2,7 @@
 
 ![Logo](logo.png)
 
-Convalida is a simple, lightweight, powerful and annotation-based way to validate fields in Android.
+Convalida is a simple, lightweight and powerful library for field validation for Android.
 
 ## Why Convalida?
 
