@@ -8,7 +8,8 @@ Convalida is a simple, lightweight and powerful library for field validation for
 
 - Annotation-based;
 - Compile-time;
-- Compatible with other annotation-based libraries and frameworks such as [ButterKnife][1], [AndroidAnnotations][2], etc...
+- Compatible with other annotation-based libraries and frameworks such as [ButterKnife][1], [AndroidAnnotations][2], etc;
+- Support [Material Design Errors Patterns][4];
 
 ## Quick Start
 
@@ -116,3 +117,4 @@ dependencies {
 [1]: https://github.com/JakeWharton/butterknife
 [2]: https://github.com/androidannotations/androidannotations
 [3]: https://github.com/WellingtonCosta/convalida/tree/master/convalida-annotations/src/main/java/convalida/annotations
+[4]: https://material.io/guidelines/patterns/errors.html
