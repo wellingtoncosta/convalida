@@ -16,4 +16,7 @@
     <string name="min_3_characters">Enter at least 3 characters</string>
     <string name="only_numbers">Only numbers are allowed</string>
     <string name="passwords_not_match">The passwords does not match</string>
+
+    <string name="sample_1">Sample 1</string>
+    <string name="sample_2">Sample 2</string>
 </resources>
