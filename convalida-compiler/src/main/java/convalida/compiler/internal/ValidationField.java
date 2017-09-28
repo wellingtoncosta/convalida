@@ -1,13 +1,14 @@
 package convalida.compiler.internal;
 
 import com.squareup.javapoet.TypeName;
-import java.lang.annotation.Annotation;
+
 import javax.lang.model.element.Element;
 
 /**
- * @author Wellington Costa on 19/06/2017.
+ * @author Wellington Costa on 27/09/2017.
  */
-public class FieldValidationInfo {
+
+public class ValidationField {
 
     private Element element;
     private String name;
@@ -15,7 +16,7 @@ public class FieldValidationInfo {
     private String annotationClass;
     private Id id;
 
-    public FieldValidationInfo(Element element, String annotationClass, Id id) {
+    public ValidationField(Element element, String annotationClass, Id id) {
         this.element = element;
         this.name = element.getSimpleName().toString();
         this.typeName = TypeName.get(element.asType());

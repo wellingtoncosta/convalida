@@ -59,7 +59,7 @@ abstract class AbstractValidator implements Validator {
         });
     }
 
-    void setError() {
+    private void setError() {
         if (layout != null) {
             layout.setErrorEnabled(true);
             layout.setError(errorMessage);
@@ -70,7 +70,7 @@ abstract class AbstractValidator implements Validator {
         hasError = true;
     }
 
-    void clearError() {
+    private void clearError() {
         if (layout != null) {
             layout.setErrorEnabled(false);
             layout.setError(null);

@@ -11,9 +11,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -41,10 +43,10 @@ import convalida.annotations.NotEmptyValidation;
 import convalida.annotations.OnlyNumberValidation;
 import convalida.annotations.PasswordValidation;
 import convalida.annotations.PatternValidation;
-import convalida.compiler.internal.FieldValidationInfo;
 import convalida.compiler.internal.Id;
 import convalida.compiler.internal.QualifiedId;
-import convalida.compiler.internal.TargetClassInfo;
+import convalida.compiler.internal.ValidationClass;
+import convalida.compiler.internal.ValidationField;
 import convalida.compiler.internal.scanners.IdScanner;
 import convalida.compiler.internal.scanners.RClassScanner;
 
@@ -120,28 +122,25 @@ public class ConvalidaProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> typeElements, RoundEnvironment env) {
-        Map<TargetClassInfo, Set<FieldValidationInfo>> validationsMap = findAndParseValidations(env);
+        List<ValidationClass> validationClasses = findAndParseValidations(env);
 
-        for (Map.Entry<TargetClassInfo, Set<FieldValidationInfo>> entry : validationsMap.entrySet()) {
-            TargetClassInfo targetClassInfo = entry.getKey();
-            TypeElement typeElement = targetClassInfo.getTypeElement();
-            Set<FieldValidationInfo> fields = entry.getValue();
-
+        // Generate validation classes source code
+        for (ValidationClass validationClass : validationClasses) {
             try {
-                JavaFile javaFile = JavaFiler.cookJava(targetClassInfo, fields);
+                JavaFile javaFile = JavaFiler.cookJava(validationClass);
                 javaFile.writeTo(this.filer);
             } catch (IOException e) {
-                error(typeElement, "Unable to write validation for type %s: %s", typeElement, e.getMessage());
+                error(validationClass.getTypeElement(), "Unable to write validation for type %s: %s", validationClass.getTypeElement(), e.getMessage());
             }
         }
 
         return false;
     }
 
-    private Map<TargetClassInfo, Set<FieldValidationInfo>> findAndParseValidations(RoundEnvironment env) {
-        Map<TargetClassInfo, Set<FieldValidationInfo>> map = new LinkedHashMap<>();
-        Set<TargetClassInfo> targetClassInfos = new LinkedHashSet<>();
-        Set<FieldValidationInfo> fieldValidationInfos = new LinkedHashSet<>();
+    private List<ValidationClass> findAndParseValidations(RoundEnvironment env) {
+        Set<Element> parents = new HashSet<>();
+        List<ValidationField> validationFields = new ArrayList<>();
+        List<ValidationClass> validationClasses = new ArrayList<>();
 
         scanForRClasses(env);
 
@@ -149,18 +148,17 @@ public class ConvalidaProcessor extends AbstractProcessor {
         for (Element element : env.getElementsAnnotatedWith(NotEmptyValidation.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
             try {
-                parseNotEmptyValidation(element, targetClassInfos, fieldValidationInfos);
+                parseNotEmptyValidation(element, parents, validationFields);
             } catch (Exception e) {
                 logParsingError(element, NotEmptyValidation.class, e);
             }
         }
 
-
-        // Process each @EmailValidation element.
+        // Process each @EmailValidation element
         for (Element element : env.getElementsAnnotatedWith(EmailValidation.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
             try {
-                parseEmailValidation(element, targetClassInfos, fieldValidationInfos);
+                parseEmailValidation(element, parents, validationFields);
             } catch (Exception e) {
                 logParsingError(element, EmailValidation.class, e);
             }
@@ -170,7 +168,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
         for (Element element : env.getElementsAnnotatedWith(PatternValidation.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
             try {
-                parsePatternValidation(element, targetClassInfos, fieldValidationInfos);
+                parsePatternValidation(element, parents, validationFields);
             } catch (Exception e) {
                 logParsingError(element, PatternValidation.class, e);
             }
@@ -180,7 +178,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
         for (Element element : env.getElementsAnnotatedWith(LengthValidation.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
             try {
-                parseLengthValidation(element, targetClassInfos, fieldValidationInfos);
+                parseLengthValidation(element, parents, validationFields);
             } catch (Exception e) {
                 logParsingError(element, LengthValidation.class, e);
             }
@@ -190,86 +188,79 @@ public class ConvalidaProcessor extends AbstractProcessor {
         for (Element element : env.getElementsAnnotatedWith(OnlyNumberValidation.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
             try {
-                parseOnlyNumberValidation(element, targetClassInfos, fieldValidationInfos);
+                parseOnlyNumberValidation(element, parents, validationFields);
             } catch (Exception e) {
                 logParsingError(element, OnlyNumberValidation.class, e);
             }
         }
 
         // Process each @PasswordValidation element.
-        processPasswordValidations(env, targetClassInfos, fieldValidationInfos);
+        processPasswordValidations(env, parents, validationFields);
 
         // Process each @ConfirmPasswordValidation element.
-        processConfirmPasswordValidations(env, targetClassInfos, fieldValidationInfos);
+        processConfirmPasswordValidations(env, parents, validationFields);
 
-        TargetClassInfo targetClassInfo = findTargetInfoElement(targetClassInfos);
 
-        if (targetClassInfo != null && fieldValidationInfos.size() > 0) {
-            map.put(targetClassInfo, fieldValidationInfos);
+        // Assemble the validation classes and fields
+        for (Element parent : parents) {
+            ValidationClass validationClass = new ValidationClass(parent, this.elementUtils);
+
+            for (ValidationField validationField : validationFields) {
+                Element element = validationField.getElement();
+                if (element.getEnclosingElement().equals(parent)) {
+                    validationClass.addField(validationField);
+                }
+            }
+
+            validationClasses.add(validationClass);
         }
 
-        return map;
+        return validationClasses;
     }
 
-    private void parseNotEmptyValidation(
-            Element element,
-            Set<TargetClassInfo> targetClassInfos,
-            Set<FieldValidationInfo> fieldValidationInfos) {
-
+    private void parseNotEmptyValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
         boolean hasError = isInvalid(NotEmptyValidation.class, element) || isInaccessible(NotEmptyValidation.class, element);
 
         if (hasError) {
             return;
         }
 
-        int id = element.getAnnotation(NotEmptyValidation.class).value();
-        QualifiedId qualifiedId = elementToQualifiedId(element, id);
+        int errorMessageResourceId = element.getAnnotation(NotEmptyValidation.class).value();
+        QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
-        targetClassInfos.add(new TargetClassInfo(element.getEnclosingElement(), this.elementUtils));
-        fieldValidationInfos.add(new FieldValidationInfo(element, NotEmptyValidation.class.getCanonicalName(), getId(qualifiedId)));
+        parents.add(element.getEnclosingElement());
+        validationFields.add(new ValidationField(element, NotEmptyValidation.class.getCanonicalName(), getId(qualifiedId)));
     }
 
-    private void parseEmailValidation(
-            Element element,
-            Set<TargetClassInfo> targetClassInfos,
-            Set<FieldValidationInfo> fieldValidationInfos) {
-
+    private void parseEmailValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
         boolean hasError = isInvalid(EmailValidation.class, element) || isInaccessible(EmailValidation.class, element);
 
         if (hasError) {
             return;
         }
 
-        int id = element.getAnnotation(EmailValidation.class).value();
-        QualifiedId qualifiedId = elementToQualifiedId(element, id);
+        int errorMessageResourceId = element.getAnnotation(EmailValidation.class).value();
+        QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
-        targetClassInfos.add(new TargetClassInfo(element.getEnclosingElement(), this.elementUtils));
-        fieldValidationInfos.add(new FieldValidationInfo(element, EmailValidation.class.getCanonicalName(), getId(qualifiedId)));
+        parents.add(element.getEnclosingElement());
+        validationFields.add(new ValidationField(element, EmailValidation.class.getCanonicalName(), getId(qualifiedId)));
     }
 
-    private void parsePatternValidation(
-            Element element,
-            Set<TargetClassInfo> targetClassInfos,
-            Set<FieldValidationInfo> fieldValidationInfos) {
-
+    private void parsePatternValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
         boolean hasError = isInvalid(PatternValidation.class, element) || isInaccessible(PatternValidation.class, element);
 
         if (hasError) {
             return;
         }
 
-        int errorMessage = element.getAnnotation(PatternValidation.class).errorMessage();
-        QualifiedId qualifiedId = elementToQualifiedId(element, errorMessage);
+        int errorMessageResourceId = element.getAnnotation(PatternValidation.class).errorMessage();
+        QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
-        targetClassInfos.add(new TargetClassInfo(element.getEnclosingElement(), this.elementUtils));
-        fieldValidationInfos.add(new FieldValidationInfo(element, PatternValidation.class.getCanonicalName(), getId(qualifiedId)));
+        parents.add(element.getEnclosingElement());
+        validationFields.add(new ValidationField(element, PatternValidation.class.getCanonicalName(), getId(qualifiedId)));
     }
 
-    private void parseLengthValidation(
-            Element element,
-            Set<TargetClassInfo> targetClassInfos,
-            Set<FieldValidationInfo> fieldValidationInfos) {
-
+    private void parseLengthValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
         int minLength = element.getAnnotation(LengthValidation.class).min();
         int maxLength = element.getAnnotation(LengthValidation.class).max();
 
@@ -288,39 +279,31 @@ public class ConvalidaProcessor extends AbstractProcessor {
                 return;
             }
 
-            int errorMessage = element.getAnnotation(LengthValidation.class).errorMessage();
-            QualifiedId qualifiedId = elementToQualifiedId(element, errorMessage);
+            int errorMessageResourceId = element.getAnnotation(LengthValidation.class).errorMessage();
+            QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
-            targetClassInfos.add(new TargetClassInfo(element.getEnclosingElement(), this.elementUtils));
-            fieldValidationInfos.add(new FieldValidationInfo(element, LengthValidation.class.getCanonicalName(), getId(qualifiedId)));
+            parents.add(element.getEnclosingElement());
+            validationFields.add(new ValidationField(element, LengthValidation.class.getCanonicalName(), getId(qualifiedId)));
         } catch (Exception e) {
             logParsingError(element, LengthValidation.class, e);
         }
     }
 
-    private void parseOnlyNumberValidation(
-            Element element,
-            Set<TargetClassInfo> targetClassInfos,
-            Set<FieldValidationInfo> fieldValidationInfos) {
-
+    private void parseOnlyNumberValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
         boolean hasError = isInvalid(OnlyNumberValidation.class, element) || isInaccessible(OnlyNumberValidation.class, element);
 
         if (hasError) {
             return;
         }
 
-        int id = element.getAnnotation(OnlyNumberValidation.class).value();
-        QualifiedId qualifiedId = elementToQualifiedId(element, id);
+        int errorMessageResourceId = element.getAnnotation(OnlyNumberValidation.class).value();
+        QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
-        targetClassInfos.add(new TargetClassInfo(element.getEnclosingElement(), this.elementUtils));
-        fieldValidationInfos.add(new FieldValidationInfo(element, OnlyNumberValidation.class.getCanonicalName(), getId(qualifiedId)));
+        parents.add(element.getEnclosingElement());
+        validationFields.add(new ValidationField(element, OnlyNumberValidation.class.getCanonicalName(), getId(qualifiedId)));
     }
 
-    private void processPasswordValidations(
-            RoundEnvironment env,
-            Set<TargetClassInfo> targetClassInfos,
-            Set<FieldValidationInfo> fieldValidationInfos) {
-
+    private void processPasswordValidations(RoundEnvironment env, Set<Element> parents, List<ValidationField> validationFields) {
         Set<? extends Element> passwordElements = env.getElementsAnnotatedWith(PasswordValidation.class);
 
         if (passwordElements.size() > 1) {
@@ -336,35 +319,28 @@ public class ConvalidaProcessor extends AbstractProcessor {
         for (Element element : env.getElementsAnnotatedWith(PasswordValidation.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
             try {
-                parsePasswordValidation(element, targetClassInfos, fieldValidationInfos);
+                parsePasswordValidation(element, parents, validationFields);
             } catch (Exception e) {
                 logParsingError(element, PasswordValidation.class, e);
             }
         }
     }
 
-    private void parsePasswordValidation(
-            Element element,
-            Set<TargetClassInfo> targetClassInfos,
-            Set<FieldValidationInfo> fieldValidationInfos) {
-
+    private void parsePasswordValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
         boolean hasError = isInvalid(PasswordValidation.class, element) || isInaccessible(PasswordValidation.class, element);
 
         if (hasError) {
             return;
         }
 
-        int errorMessage = element.getAnnotation(PasswordValidation.class).errorMessage();
-        QualifiedId qualifiedId = elementToQualifiedId(element, errorMessage);
+        int errorMessageResourceId = element.getAnnotation(PasswordValidation.class).errorMessage();
+        QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
-        targetClassInfos.add(new TargetClassInfo(element.getEnclosingElement(), this.elementUtils));
-        fieldValidationInfos.add(new FieldValidationInfo(element, PasswordValidation.class.getCanonicalName(), getId(qualifiedId)));
+        parents.add(element.getEnclosingElement());
+        validationFields.add(new ValidationField(element, PasswordValidation.class.getCanonicalName(), getId(qualifiedId)));
     }
 
-    private void processConfirmPasswordValidations(
-            RoundEnvironment env,
-            Set<TargetClassInfo> targetClassInfos,
-            Set<FieldValidationInfo> fieldValidationInfos) {
+    private void processConfirmPasswordValidations(RoundEnvironment env, Set<Element> parents, List<ValidationField> validationFields) {
 
         Set<? extends Element> passwordElements = env.getElementsAnnotatedWith(PasswordValidation.class);
         Set<? extends Element> confirmPasswordElements = env.getElementsAnnotatedWith(ConfirmPasswordValidation.class);
@@ -391,29 +367,25 @@ public class ConvalidaProcessor extends AbstractProcessor {
         for (Element element : env.getElementsAnnotatedWith(ConfirmPasswordValidation.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
             try {
-                parseConfirmPasswordValidation(element, targetClassInfos, fieldValidationInfos);
+                parseConfirmPasswordValidation(element, parents, validationFields);
             } catch (Exception e) {
                 logParsingError(element, ConfirmPasswordValidation.class, e);
             }
         }
     }
 
-    private void parseConfirmPasswordValidation(
-            Element element,
-            Set<TargetClassInfo> targetClassInfos,
-            Set<FieldValidationInfo> fieldValidationInfos) {
-
+    private void parseConfirmPasswordValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
         boolean hasError = isInvalid(ConfirmPasswordValidation.class, element) || isInaccessible(ConfirmPasswordValidation.class, element);
 
         if (hasError) {
             return;
         }
 
-        int id = element.getAnnotation(ConfirmPasswordValidation.class).value();
-        QualifiedId qualifiedId = elementToQualifiedId(element, id);
+        int errorMessageResourceId = element.getAnnotation(ConfirmPasswordValidation.class).value();
+        QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
-        targetClassInfos.add(new TargetClassInfo(element.getEnclosingElement(), this.elementUtils));
-        fieldValidationInfos.add(new FieldValidationInfo(element, ConfirmPasswordValidation.class.getCanonicalName(), getId(qualifiedId)));
+        parents.add(element.getEnclosingElement());
+        validationFields.add(new ValidationField(element, ConfirmPasswordValidation.class.getCanonicalName(), getId(qualifiedId)));
     }
 
     private boolean isInvalid(Class<? extends Annotation> annotationClass, Element element) {
@@ -495,10 +467,6 @@ public class ConvalidaProcessor extends AbstractProcessor {
         }
 
         return hasError;
-    }
-
-    private TargetClassInfo findTargetInfoElement(Set<TargetClassInfo> targetClassInfos) {
-        return targetClassInfos.iterator().hasNext() ? targetClassInfos.iterator().next() : null;
     }
 
     private static AnnotationMirror getMirror(Element element, Class<? extends Annotation> annotation) {
