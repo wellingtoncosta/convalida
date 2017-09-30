@@ -195,10 +195,24 @@ public class ConvalidaProcessor extends AbstractProcessor {
         }
 
         // Process each @PasswordValidation element.
-        processPasswordValidations(env, parents, validationFields);
+        for (Element element : env.getElementsAnnotatedWith(PasswordValidation.class)) {
+            if (!SuperficialValidation.validateElement(element)) continue;
+            try {
+                parsePasswordValidation(element, parents, validationFields);
+            } catch (Exception e) {
+                logParsingError(element, PasswordValidation.class, e);
+            }
+        }
 
         // Process each @ConfirmPasswordValidation element.
-        processConfirmPasswordValidations(env, parents, validationFields);
+        for (Element element : env.getElementsAnnotatedWith(ConfirmPasswordValidation.class)) {
+            if (!SuperficialValidation.validateElement(element)) continue;
+            try {
+                parseConfirmPasswordValidation(element, parents, validationFields);
+            } catch (Exception e) {
+                logParsingError(element, ConfirmPasswordValidation.class, e);
+            }
+        }
 
 
         // Assemble the validation classes and fields
@@ -303,34 +317,29 @@ public class ConvalidaProcessor extends AbstractProcessor {
         validationFields.add(new ValidationField(element, OnlyNumberValidation.class.getCanonicalName(), getId(qualifiedId)));
     }
 
-    private void processPasswordValidations(RoundEnvironment env, Set<Element> parents, List<ValidationField> validationFields) {
-        Set<? extends Element> passwordElements = env.getElementsAnnotatedWith(PasswordValidation.class);
-
-        if (passwordElements.size() > 1) {
-            TypeElement enclosingElement = (TypeElement) passwordElements.iterator().next().getEnclosingElement();
-            error(
-                    passwordElements.iterator().next(),
-                    "%s must have only one element annotated with @PasswordValidation.",
-                    enclosingElement.getQualifiedName()
-            );
-        }
-
-        // Has no errors
-        for (Element element : env.getElementsAnnotatedWith(PasswordValidation.class)) {
-            if (!SuperficialValidation.validateElement(element)) continue;
-            try {
-                parsePasswordValidation(element, parents, validationFields);
-            } catch (Exception e) {
-                logParsingError(element, PasswordValidation.class, e);
-            }
-        }
-    }
-
     private void parsePasswordValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
         boolean hasError = isInvalid(PasswordValidation.class, element) || isInaccessible(PasswordValidation.class, element);
 
         if (hasError) {
             return;
+        }
+
+        List<? extends Element> elementsOfParent = element.getEnclosingElement().getEnclosedElements();
+        int elementsAnnotatedWithPasswordValidation = 0;
+
+        for (Element elementOfParent : elementsOfParent) {
+            if (elementOfParent.getAnnotation(PasswordValidation.class) != null) {
+                elementsAnnotatedWithPasswordValidation++;
+            }
+        }
+
+        if (elementsAnnotatedWithPasswordValidation > 1) {
+            TypeElement enclosingElement = (TypeElement) element.getEnclosingElement();
+            error(
+                    element.getEnclosingElement(),
+                    "%s must have only one element annotated with @PasswordValidation.",
+                    enclosingElement.getQualifiedName()
+            );
         }
 
         int errorMessageResourceId = element.getAnnotation(PasswordValidation.class).errorMessage();
@@ -340,45 +349,44 @@ public class ConvalidaProcessor extends AbstractProcessor {
         validationFields.add(new ValidationField(element, PasswordValidation.class.getCanonicalName(), getId(qualifiedId)));
     }
 
-    private void processConfirmPasswordValidations(RoundEnvironment env, Set<Element> parents, List<ValidationField> validationFields) {
-
-        Set<? extends Element> passwordElements = env.getElementsAnnotatedWith(PasswordValidation.class);
-        Set<? extends Element> confirmPasswordElements = env.getElementsAnnotatedWith(ConfirmPasswordValidation.class);
-
-        if (confirmPasswordElements.size() > 0 && passwordElements.isEmpty()) {
-            TypeElement enclosingElement = (TypeElement) confirmPasswordElements.iterator().next().getEnclosingElement();
-            error(
-                    confirmPasswordElements.iterator().next(),
-                    "%s must have at least one element annotated with @PasswordValidation.",
-                    enclosingElement.getSimpleName()
-            );
-        }
-
-        if (confirmPasswordElements.size() > 1) {
-            TypeElement enclosingElement = (TypeElement) confirmPasswordElements.iterator().next().getEnclosingElement();
-            error(
-                    confirmPasswordElements.iterator().next(),
-                    "%s must have only one element annotated with @ConfirmPasswordValidation.",
-                    enclosingElement.getSimpleName()
-            );
-        }
-
-        // Has no errors
-        for (Element element : env.getElementsAnnotatedWith(ConfirmPasswordValidation.class)) {
-            if (!SuperficialValidation.validateElement(element)) continue;
-            try {
-                parseConfirmPasswordValidation(element, parents, validationFields);
-            } catch (Exception e) {
-                logParsingError(element, ConfirmPasswordValidation.class, e);
-            }
-        }
-    }
-
     private void parseConfirmPasswordValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
         boolean hasError = isInvalid(ConfirmPasswordValidation.class, element) || isInaccessible(ConfirmPasswordValidation.class, element);
 
         if (hasError) {
             return;
+        }
+
+        int elementsAnnotatedWithPasswordValidation = 0;
+        int elementsAnnotatedWithConfirmPasswordValidation = 0;
+
+        List<? extends Element> elementsOfParent = element.getEnclosingElement().getEnclosedElements();
+
+        for (Element elementOfParent : elementsOfParent) {
+            if (elementOfParent.getAnnotation(PasswordValidation.class) != null) {
+                elementsAnnotatedWithPasswordValidation++;
+            }
+
+            if (elementOfParent.getAnnotation(ConfirmPasswordValidation.class) != null) {
+                elementsAnnotatedWithConfirmPasswordValidation++;
+            }
+        }
+
+        if (elementsAnnotatedWithPasswordValidation == 0 && elementsAnnotatedWithConfirmPasswordValidation > 0) {
+            TypeElement enclosingElement = (TypeElement) element.getEnclosingElement();
+            error(
+                    element.getEnclosingElement(),
+                    "%s must have at least one element annotated with @PasswordValidation.",
+                    enclosingElement.getSimpleName()
+            );
+        }
+
+        if (elementsAnnotatedWithConfirmPasswordValidation > 1) {
+            TypeElement enclosingElement = (TypeElement) element.getEnclosingElement();
+            error(
+                    element.getEnclosingElement(),
+                    "%s must have only one element annotated with @ConfirmPasswordValidation.",
+                    enclosingElement.getSimpleName()
+            );
         }
 
         int errorMessageResourceId = element.getAnnotation(ConfirmPasswordValidation.class).value();
@@ -397,7 +405,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
         if (!element.getKind().equals(FIELD)) {
             error(
                     element,
-                    "@%s must only be aplied in fields. (%s.%s)",
+                    "@%s must only be applied in fields. (%s.%s)",
                     annotationClass.getSimpleName(),
                     enclosingElement.getQualifiedName(),
                     element.getSimpleName()
@@ -410,7 +418,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
         if (!TEXT_INPUT_LAYOUT_TYPE.equals(elementType) && !EDIT_TEXT_TYPE.equals(elementType)) {
             error(
                     element,
-                    "@%s must only be aplied in fields of the type TextInputLaytout or EditText. (%s.%s)",
+                    "@%s must only be applied in fields of the type TextInputLaytout or EditText. (%s.%s)",
                     annotationClass.getSimpleName(),
                     enclosingElement.getQualifiedName(),
                     element.getSimpleName()
@@ -431,7 +439,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
         if (modifiers.contains(PRIVATE) || modifiers.contains(STATIC)) {
             error(
                     element,
-                    "@%s must not be aplied in private or static fields. (%s.%s)",
+                    "@%s must not be applied in private or static fields. (%s.%s)",
                     annotationClass.getSimpleName(),
                     enclosingElement.getQualifiedName(),
                     element.getSimpleName()
