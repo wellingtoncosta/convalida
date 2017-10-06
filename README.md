@@ -1,4 +1,4 @@
-# Convalida [![Build Status](https://travis-ci.org/WellingtonCosta/convalida.svg?branch=master)](https://travis-ci.org/WellingtonCosta/convalida) [![](https://jitpack.io/v/WellingtonCosta/convalida.svg)](https://jitpack.io/#WellingtonCosta/convalida)
+# Convalida [![Build Status](https://travis-ci.org/WellingtonCosta/convalida.svg?branch=master)](https://travis-ci.org/WellingtonCosta/convalida) [![](https://jitpack.io/v/WellingtonCosta/convalida.svg)](https://jitpack.io/#WellingtonCosta/convalida) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Convalida-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/6289)
 
 ![Logo](logo.png)
 
