@@ -491,9 +491,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
     }
 
     private Id getId(QualifiedId qualifiedId) {
-        if (symbols.get(qualifiedId) == null) {
-            symbols.put(qualifiedId, new Id(qualifiedId.id));
-        }
+        symbols.computeIfAbsent(qualifiedId, i -> new Id(i.id));
         return symbols.get(qualifiedId);
     }
 
@@ -576,4 +574,5 @@ public class ConvalidaProcessor extends AbstractProcessor {
 
         this.messager.printMessage(Kind.ERROR, message, element);
     }
+
 }

@@ -1,7 +1,5 @@
 package convalida.library.validation;
 
-import java.util.regex.Pattern;
-
 /**
  * @author Wellington Costa on 27/06/2017.
  */

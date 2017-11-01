@@ -1,11 +1,12 @@
 package convalida.compiler;
 
-import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
+
+import java.util.stream.Collectors;
 
 import javax.lang.model.element.Modifier;
 
@@ -21,36 +22,11 @@ import convalida.compiler.internal.ValidationField;
  */
 class JavaFiler {
 
-    private static final ClassName UI_THREAD            = ClassName.get("android.support.annotation", "UiThread");
-    private static final ClassName OVERRIDE             = ClassName.get("java.lang", "Override");
-
-    private static final ClassName VALIDATOR            = ClassName.get("convalida.library", "ConvalidaValidator");
-    private static final ClassName VALIDATION_SET       = ClassName.get("convalida.library.validation", "ValidationSet");
-
-    private static final String NOT_EMPTY_ANNOTATION        = "convalida.annotations.NotEmptyValidation";
-    private static final String EMAIL_ANNOTATION            = "convalida.annotations.EmailValidation";
-    private static final String PATTERN_ANNOTATION          = "convalida.annotations.PatternValidation";
-    private static final String LENGTH_ANNOTATION           = "convalida.annotations.LengthValidation";
-    private static final String ONLY_NUMBER_ANNOTATION      = "convalida.annotations.OnlyNumberValidation";
-    private static final String PASSWORD_ANNOTATION         = "convalida.annotations.PasswordValidation";
-    private static final String CONFIRM_PASSWORD_ANNOTATION = "convalida.annotations.ConfirmPasswordValidation";
-
-    private static final String VALIDATORS_PACKAGE      = "convalida.library.validation.validator";
-
-    private static final ClassName NOT_EMPTY_VALIDATOR          = ClassName.get(VALIDATORS_PACKAGE, "NotEmptyValidator");
-    private static final ClassName EMAIL_VALIDATOR              = ClassName.get(VALIDATORS_PACKAGE, "EmailValidator");
-    private static final ClassName PATTERN_VALIDATOR            = ClassName.get(VALIDATORS_PACKAGE, "PatternValidator");
-    private static final ClassName LENGTH_VALIDATOR             = ClassName.get(VALIDATORS_PACKAGE, "LengthValidator");
-    private static final ClassName ONLY_NUMBER_VALIDATOR        = ClassName.get(VALIDATORS_PACKAGE, "OnlyNumberValidator");
-    private static final ClassName PASSWORD_VALIDATOR           = ClassName.get(VALIDATORS_PACKAGE, "PasswordValidator");
-    private static final ClassName CONFIRM_PASSWORD_VALIDATOR   = ClassName.get(VALIDATORS_PACKAGE, "ConfirmPasswordValidator");
-
-
     static JavaFile cookJava(ValidationClass validationClass) {
         TypeSpec classValidator = TypeSpec.classBuilder(validationClass.getClassName())
-                .addSuperinterface(VALIDATOR)
+                .addSuperinterface(Constants.VALIDATOR)
                 .addModifiers(Modifier.PUBLIC)
-                .addField(VALIDATION_SET, "validationSet", Modifier.PRIVATE)
+                .addField(Constants.VALIDATION_SET, "validationSet", Modifier.PRIVATE)
                 .addMethod(createConstructor(validationClass))
                 .addMethod(createValidateMethod())
                 .addMethod(createClearValidationMethod())
@@ -63,44 +39,51 @@ class JavaFiler {
 
     private static MethodSpec createConstructor(ValidationClass validationClass) {
         MethodSpec.Builder constructorBuilder = MethodSpec.constructorBuilder()
-                .addAnnotation(UI_THREAD)
+                .addAnnotation(Constants.UI_THREAD)
                 .addModifiers(Modifier.PUBLIC)
                 .addParameter(validationClass.getTypeName(), "target")
-                .addStatement("this.$N = new $T()", "validationSet", VALIDATION_SET);
+                .addStatement("this.$N = new $T()", "validationSet", Constants.VALIDATION_SET);
 
-        for (ValidationField validationField : validationClass.getFields()) {
-            chooseValidationStrategy(constructorBuilder, validationField);
-        }
+        chooseValidationStrategy(constructorBuilder, validationClass);
 
         return constructorBuilder.build();
     }
 
-    private static void chooseValidationStrategy(MethodSpec.Builder constructorBuilder, ValidationField validationField) {
-        String annotationClass = validationField.getAnnotationClass();
+    private static void chooseValidationStrategy(MethodSpec.Builder constructorBuilder, ValidationClass validationClass) {
+        validationClass.getFields()
+                .forEach(validationField -> {
+                    String annotationClass = validationField.getAnnotationClass();
 
-        switch (annotationClass) {
-            case NOT_EMPTY_ANNOTATION:
-                createNotEmptyValidationCodeBlock(constructorBuilder, validationField);
-                break;
-            case EMAIL_ANNOTATION:
-                createEmailValidationCodeBlock(constructorBuilder, validationField);
-                break;
-            case PATTERN_ANNOTATION:
-                createPatternValidationCodeBlock(constructorBuilder, validationField);
-                break;
-            case LENGTH_ANNOTATION:
-                createLengthValidationCodeBlock(constructorBuilder, validationField);
-                break;
-            case ONLY_NUMBER_ANNOTATION:
-                createOnlyNumberValidationCodeBlock(constructorBuilder, validationField);
-                break;
-            case PASSWORD_ANNOTATION:
-                createPasswordValidationCodeBlock(constructorBuilder, validationField);
-                break;
-            case CONFIRM_PASSWORD_ANNOTATION:
-                createConfirmPasswordValidationCodeBlock(constructorBuilder, validationField);
-                break;
-        }
+                    switch (annotationClass) {
+                        case Constants.NOT_EMPTY_ANNOTATION:
+                            createNotEmptyValidationCodeBlock(constructorBuilder, validationField);
+                            break;
+                        case Constants.EMAIL_ANNOTATION:
+                            createEmailValidationCodeBlock(constructorBuilder, validationField);
+                            break;
+                        case Constants.PATTERN_ANNOTATION:
+                            createPatternValidationCodeBlock(constructorBuilder, validationField);
+                            break;
+                        case Constants.LENGTH_ANNOTATION:
+                            createLengthValidationCodeBlock(constructorBuilder, validationField);
+                            break;
+                        case Constants.ONLY_NUMBER_ANNOTATION:
+                            createOnlyNumberValidationCodeBlock(constructorBuilder, validationField);
+                            break;
+                        case Constants.PASSWORD_ANNOTATION:
+                            createPasswordValidationCodeBlock(constructorBuilder, validationField);
+                            break;
+                        case Constants.CONFIRM_PASSWORD_ANNOTATION:
+                            ValidationField passwordValidationField = validationClass.getFields()
+                                    .stream()
+                                    .filter(field -> field.getAnnotationClass().equals(Constants.PASSWORD_ANNOTATION))
+                                    .collect(Collectors.toList())
+                                    .get(0);
+
+                            createConfirmPasswordValidationCodeBlock(constructorBuilder, passwordValidationField, validationField);
+                            break;
+                    }
+                });
     }
 
     private static void createNotEmptyValidationCodeBlock(MethodSpec.Builder constructorBuilder, ValidationField validationField) {
@@ -114,7 +97,7 @@ class JavaFiler {
                 .addStatement(
                         "this.$N.addValidator(new $T($N, $N))",
                         "validationSet",
-                        NOT_EMPTY_VALIDATOR,
+                        Constants.NOT_EMPTY_VALIDATOR,
                         validationField.getName(),
                         "errorMessage"
                 )
@@ -137,7 +120,7 @@ class JavaFiler {
                 .addStatement(
                         "this.$N.addValidator(new $T($N, $N))",
                         "validationSet",
-                        EMAIL_VALIDATOR,
+                        Constants.EMAIL_VALIDATOR,
                         validationField.getName(),
                         "errorMessage"
                 )
@@ -164,7 +147,7 @@ class JavaFiler {
                 .addStatement(
                         "this.$N.addValidator(new $T($N, $N, $N))",
                         "validationSet",
-                        PATTERN_VALIDATOR,
+                        Constants.PATTERN_VALIDATOR,
                         validationField.getName(),
                         "errorMessage",
                         "pattern"
@@ -192,7 +175,7 @@ class JavaFiler {
                 .addStatement(
                         "this.$N.addValidator(new $T($N, $N, $N, $N))",
                         "validationSet",
-                        LENGTH_VALIDATOR,
+                        Constants.LENGTH_VALIDATOR,
                         validationField.getName(),
                         "minLength",
                         "maxLength",
@@ -217,7 +200,7 @@ class JavaFiler {
                 .addStatement(
                         "this.$N.addValidator(new $T($N, $N))",
                         "validationSet",
-                        ONLY_NUMBER_VALIDATOR,
+                        Constants.ONLY_NUMBER_VALIDATOR,
                         validationField.getName(),
                         "errorMessage"
                 )
@@ -234,24 +217,18 @@ class JavaFiler {
         String passwordPattern = validationField.getElement().getAnnotation(PasswordValidation.class).pattern();
         CodeBlock passwordValidationCodeBlock = CodeBlock.builder()
                 .add("\n")
-                .addStatement(
-                        "$T passwordField = $N.$N",
-                        validationField.getTypeName(),
-                        "target",
-                        validationField.getName()
-                )
-                .add("\n")
                 .add("{")
                 .add("\n")
                 .indent()
+                .add(createElementDeclarationCode(validationField))
                 .addStatement("int min = $L", minPasswordLength)
                 .addStatement("String pattern = $S", passwordPattern)
                 .add(createErrorMessageDeclarationCode(validationField.getId()))
                 .addStatement(
                         "this.$N.addValidator(new $T($N, $N, $N, $N))",
                         "validationSet",
-                        PASSWORD_VALIDATOR,
-                        "passwordField",
+                        Constants.PASSWORD_VALIDATOR,
+                        validationField.getName(),
                         "min",
                         "pattern",
                         "errorMessage"
@@ -264,20 +241,25 @@ class JavaFiler {
         constructorBuilder.addCode(passwordValidationCodeBlock);
     }
 
-    private static void createConfirmPasswordValidationCodeBlock(MethodSpec.Builder constructorBuilder, ValidationField validationField) {
+    private static void createConfirmPasswordValidationCodeBlock(
+            MethodSpec.Builder constructorBuilder,
+            ValidationField passwordField,
+            ValidationField confirmPasswordField) {
+
         CodeBlock confirmPasswordValidationCodeBlock = CodeBlock.builder()
                 .add("\n")
                 .add("{")
                 .add("\n")
                 .indent()
-                .add(createElementDeclarationCode(validationField))
-                .add(createErrorMessageDeclarationCode(validationField.getId()))
+                .add(createElementDeclarationCode(passwordField))
+                .add(createElementDeclarationCode(confirmPasswordField))
+                .add(createErrorMessageDeclarationCode(confirmPasswordField.getId()))
                 .addStatement(
                         "this.$N.addValidator(new $T($N, $N, $N))",
                         "validationSet",
-                        CONFIRM_PASSWORD_VALIDATOR,
-                        "passwordField",
-                        validationField.getName(),
+                        Constants.CONFIRM_PASSWORD_VALIDATOR,
+                        passwordField.getName(),
+                        confirmPasswordField.getName(),
                         "errorMessage"
                 )
                 .unindent()
@@ -312,8 +294,8 @@ class JavaFiler {
 
     private static MethodSpec createValidateMethod() {
         return MethodSpec.methodBuilder("validateFields")
-                .addAnnotation(UI_THREAD)
-                .addAnnotation(OVERRIDE)
+                .addAnnotation(Constants.UI_THREAD)
+                .addAnnotation(Constants.OVERRIDE)
                 .addModifiers(Modifier.PUBLIC)
                 .addStatement("return this.$N.$N()", "validationSet", "isValid")
                 .returns(TypeName.BOOLEAN)
@@ -322,8 +304,8 @@ class JavaFiler {
 
     private static MethodSpec createClearValidationMethod() {
         return MethodSpec.methodBuilder("clearValidations")
-                .addAnnotation(UI_THREAD)
-                .addAnnotation(OVERRIDE)
+                .addAnnotation(Constants.UI_THREAD)
+                .addAnnotation(Constants.OVERRIDE)
                 .addModifiers(Modifier.PUBLIC)
                 .addStatement("this.$N.$N()", "validationSet", "clearValidators")
                 .build();

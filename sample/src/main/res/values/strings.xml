@@ -12,7 +12,7 @@
     <string name="field_required">Field required</string>
     <string name="invalid_email">Invalid email</string>
     <string name="invalid_phone">Invalid phone</string>
-    <string name="invalid_password">The password must have letters, numbers and special characters</string>
+    <string name="invalid_password">The password must have letters and numbers</string>
     <string name="min_3_characters">Enter at least 3 characters</string>
     <string name="only_numbers">Only numbers are allowed</string>
     <string name="passwords_not_match">The passwords does not match</string>
