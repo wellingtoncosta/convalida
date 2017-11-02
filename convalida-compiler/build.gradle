@@ -23,6 +23,4 @@ dependencies {
     implementation deps.autoService
     implementation deps.javapoet
     compileOnly files(Jvm.current().getToolsJar())
-
-    testImplementation deps.junit
 }
