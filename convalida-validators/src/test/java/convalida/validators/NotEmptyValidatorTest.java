@@ -10,13 +10,13 @@ import static org.junit.Assert.*;
 public class NotEmptyValidatorTest {
 
     @Test
-    public void isEmptyValue() throws Exception {
+    public void emptyValue() throws Exception {
         NotEmptyValidator validator = new NotEmptyValidator();
         assertEquals(validator.isNotValid(""), true);
     }
 
     @Test
-    public void isValidValue() throws Exception {
+    public void validValue() throws Exception {
         NotEmptyValidator validator = new NotEmptyValidator();
         assertEquals(validator.isNotValid("test"), false);
     }
