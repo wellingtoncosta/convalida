@@ -1,9 +1,11 @@
-package convalida.library.validation;
+package convalida.library;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import convalida.validators.Validator;
 
 /**
  * @author Wellington Costa on 21/06/2017.

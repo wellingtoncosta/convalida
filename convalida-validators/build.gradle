@@ -12,10 +12,6 @@ android {
 }
 
 dependencies {
-    compile project(':convalida-annotations')
-    compile project(':convalida-validators')
-
-    implementation deps.support.annotations
-    implementation deps.support.compat
     implementation deps.support.design
+    testImplementation deps.junit
 }

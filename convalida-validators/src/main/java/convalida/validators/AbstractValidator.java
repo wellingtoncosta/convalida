@@ -1,11 +1,9 @@
-package convalida.library.validation.validator;
+package convalida.validators;
 
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
-
-import convalida.library.validation.Validator;
 
 /**
  * @author Wellington Costa on 21/06/2017.
@@ -16,6 +14,8 @@ abstract class AbstractValidator implements Validator {
     private EditText editText;
     private String errorMessage;
     private boolean hasError;
+
+    AbstractValidator() { }
 
     AbstractValidator(TextInputLayout layout, String errorMessage) {
         this.layout = layout;

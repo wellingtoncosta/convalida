@@ -17,7 +17,7 @@ import convalida.annotations.PasswordValidation;
 import convalida.library.Convalida;
 import convalida.library.ConvalidaValidator;
 
-import static convalida.library.validation.Patterns.LOWER_UPPER_CASE_NUMERIC;
+import static convalida.library.Patterns.LOWER_UPPER_CASE_NUMERIC;
 
 /**
  * @author Wellington Costa on 05/06/17.

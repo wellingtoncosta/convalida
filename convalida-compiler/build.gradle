@@ -18,11 +18,11 @@ for (File file : sdkHandler.sdkLoader.repositories) {
 }
 
 dependencies {
-    compile project(':convalida-annotations')
+    implementation project(':convalida-annotations')
 
-    compile deps.autoService
-    compile deps.javapoet
+    implementation deps.autoService
+    implementation deps.javapoet
     compileOnly files(Jvm.current().getToolsJar())
 
-    testCompile deps.junit
+    testImplementation deps.junit
 }

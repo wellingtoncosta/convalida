@@ -1,4 +1,4 @@
-package convalida.library.validation;
+package convalida.library;
 
 /**
  * @author Wellington Costa on 27/06/2017.

@@ -1,13 +1,19 @@
-package convalida.library.validation.validator;
+package convalida.validators;
 
 import android.support.design.widget.TextInputLayout;
-import android.util.Patterns;
 import android.widget.EditText;
+
+import java.util.regex.Pattern;
 
 /**
  * @author Wellington Costa on 21/06/2017.
  */
 public class EmailValidator extends AbstractValidator {
+
+    private static final String EMAIL_REGEX = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
+    private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX, Pattern.CASE_INSENSITIVE);
+
+    EmailValidator() { }
 
     public EmailValidator(TextInputLayout layout, String errorMessage) {
         super(layout, errorMessage);
@@ -19,7 +25,7 @@ public class EmailValidator extends AbstractValidator {
 
     @Override
     boolean isNotValid(String value) {
-        return !Patterns.EMAIL_ADDRESS.matcher(value).matches();
+        return value == null || !EMAIL_PATTERN.matcher(value).matches();
     }
 
 }

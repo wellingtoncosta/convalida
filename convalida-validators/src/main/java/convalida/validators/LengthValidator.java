@@ -1,4 +1,4 @@
-package convalida.library.validation.validator;
+package convalida.validators;
 
 import android.support.design.widget.TextInputLayout;
 import android.widget.EditText;
@@ -10,6 +10,11 @@ public class LengthValidator extends AbstractValidator {
 
     private int min;
     private int max;
+
+    LengthValidator(int min, int max) {
+        this.min = min;
+        this.max = max;
+    }
 
     public LengthValidator(TextInputLayout layout, int min, int max, String errorMessage) {
         super(layout, errorMessage);
@@ -25,6 +30,10 @@ public class LengthValidator extends AbstractValidator {
 
     @Override
     boolean isNotValid(String value) {
+        if (value == null) {
+            return true;
+        }
+
         boolean hasError = value.length() < min;
 
         if (max > 0) {

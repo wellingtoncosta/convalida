@@ -1,4 +1,4 @@
-package convalida.library.validation.validator;
+package convalida.validators;
 
 import android.support.design.widget.TextInputLayout;
 import android.widget.EditText;
@@ -10,6 +10,8 @@ import java.util.regex.Pattern;
  */
 public class OnlyNumberValidator extends AbstractValidator {
 
+    OnlyNumberValidator() { }
+
     public OnlyNumberValidator(TextInputLayout layout, String errorMessage) {
         super(layout, errorMessage);
     }
@@ -20,6 +22,7 @@ public class OnlyNumberValidator extends AbstractValidator {
 
     @Override
     boolean isNotValid(String value) {
-        return !Pattern.compile("^\\d+$").matcher(value).matches();
+        return value == null || !Pattern.compile("^\\d+$").matcher(value).matches();
     }
+
 }

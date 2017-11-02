@@ -1,4 +1,4 @@
-package convalida.library.validation.validator;
+package convalida.validators;
 
 import android.support.design.widget.TextInputLayout;
 import android.widget.EditText;
@@ -12,6 +12,10 @@ public class PatternValidator extends AbstractValidator {
 
     private String pattern;
 
+    PatternValidator(String pattern) {
+        this.pattern = pattern;
+    }
+
     public PatternValidator(TextInputLayout layout, String errorMessage, String pattern) {
         super(layout, errorMessage);
         this.pattern = pattern;
@@ -24,7 +28,7 @@ public class PatternValidator extends AbstractValidator {
 
     @Override
     boolean isNotValid(String value) {
-        return !Pattern.matches(pattern, value);
+        return value == null || !Pattern.matches(pattern, value);
     }
 
 }

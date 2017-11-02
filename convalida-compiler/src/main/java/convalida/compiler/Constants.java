@@ -11,7 +11,7 @@ class Constants {
     static final ClassName OVERRIDE                     = ClassName.get("java.lang", "Override");
 
     static final ClassName VALIDATOR                    = ClassName.get("convalida.library", "ConvalidaValidator");
-    static final ClassName VALIDATION_SET               = ClassName.get("convalida.library.validation", "ValidationSet");
+    static final ClassName VALIDATION_SET               = ClassName.get("convalida.library", "ValidationSet");
 
     static final String NOT_EMPTY_ANNOTATION            = "convalida.annotations.NotEmptyValidation";
     static final String EMAIL_ANNOTATION                = "convalida.annotations.EmailValidation";
@@ -21,7 +21,7 @@ class Constants {
     static final String PASSWORD_ANNOTATION             = "convalida.annotations.PasswordValidation";
     static final String CONFIRM_PASSWORD_ANNOTATION     = "convalida.annotations.ConfirmPasswordValidation";
 
-    private static final String VALIDATORS_PACKAGE      = "convalida.library.validation.validator";
+    private static final String VALIDATORS_PACKAGE      = "convalida.validators";
 
     static final ClassName NOT_EMPTY_VALIDATOR          = ClassName.get(VALIDATORS_PACKAGE, "NotEmptyValidator");
     static final ClassName EMAIL_VALIDATOR              = ClassName.get(VALIDATORS_PACKAGE, "EmailValidator");
