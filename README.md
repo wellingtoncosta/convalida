@@ -2,6 +2,8 @@
 
 ![Logo](logo.png)
 
+__Convalida__ - (Italian for "validation")
+
 Convalida is a simple, lightweight and powerful field validation library for Android.
 
 ## Why Convalida?
