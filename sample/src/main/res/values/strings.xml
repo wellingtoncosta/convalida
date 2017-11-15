@@ -3,6 +3,7 @@
     <string name="app_name">Convalida</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="email">Email</string>
+    <string name="nickname">Nick Name</string>
     <string name="name">Name</string>
     <string name="phone">Phone</string>
     <string name="password">Password</string>

@@ -8,6 +8,7 @@ import android.widget.EditText;
  */
 public class ConfirmPasswordValidator extends AbstractValidator {
 
+    private EditText passwordEditText;
     private String password;
 
     ConfirmPasswordValidator(String password) {
@@ -18,7 +19,7 @@ public class ConfirmPasswordValidator extends AbstractValidator {
         super(confirmPasswordLayout, errorMessage);
 
         if (passwordLayout.getEditText() != null) {
-            this.password = passwordLayout.getEditText().getText().toString();
+            this.passwordEditText = passwordLayout.getEditText();
         }
     }
 
@@ -26,13 +27,20 @@ public class ConfirmPasswordValidator extends AbstractValidator {
         super(confirmPasswordEditText, errorMessage);
 
         if (passwordEditText != null) {
-            this.password = passwordEditText.getText().toString();
+            this.passwordEditText = passwordEditText;
         }
     }
 
     @Override
     boolean isNotValid(String value) {
-        return value == null || !password.equals(value);
+        if (passwordEditText != null) {
+            password = passwordEditText.getText().toString();
+        }
+
+        System.out.println("Password: " + password);
+        System.out.println("Value: " + value);
+
+        return !password.equals(value);
     }
 
 }

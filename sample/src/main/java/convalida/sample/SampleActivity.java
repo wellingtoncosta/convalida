@@ -11,7 +11,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import convalida.annotations.ConfirmPasswordValidation;
 import convalida.annotations.EmailValidation;
-import convalida.annotations.LengthValidation;
 import convalida.annotations.NotEmptyValidation;
 import convalida.annotations.PasswordValidation;
 import convalida.library.Convalida;
@@ -29,7 +28,6 @@ public class SampleActivity extends AppCompatActivity {
 
     @BindView(R.id.name_layout)
     @NotEmptyValidation(R.string.field_required)
-    @LengthValidation(min = 3, errorMessage = R.string.min_3_characters)
     TextInputLayout nameLayout;
 
     @BindView(R.id.email_layout)

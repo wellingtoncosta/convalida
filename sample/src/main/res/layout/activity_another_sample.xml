@@ -34,6 +34,21 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/nickname_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/nickname_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/nickname"
+                android:inputType="text"
+                android:maxLines="1" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
             android:id="@+id/age_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -44,21 +59,6 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/age"
                 android:inputType="text"
-                android:maxLines="1" />
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/email_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.design.widget.TextInputEditText
-                android:id="@+id/email_field"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/email"
-                android:inputType="textEmailAddress"
                 android:maxLines="1" />
 
         </android.support.design.widget.TextInputLayout>

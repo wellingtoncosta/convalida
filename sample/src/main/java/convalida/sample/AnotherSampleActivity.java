@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import convalida.annotations.EmailValidation;
 import convalida.annotations.LengthValidation;
 import convalida.annotations.NotEmptyValidation;
 import convalida.annotations.OnlyNumberValidation;
@@ -19,23 +18,22 @@ import convalida.library.ConvalidaValidator;
 
 public class AnotherSampleActivity extends AppCompatActivity {
 
-    private static final String PHONE_PATTERN = "^[1-9]{2}?([0-9]{9})$";
+    private static final String PHONE_PATTERN = "[\\+]\\d{2}[\\(]\\d{2}[\\)]\\d{4}[\\-]\\d{4}";
 
     @BindView(R.id.linear_layout)
     LinearLayout linearLayout;
 
     @BindView(R.id.name_layout)
     @NotEmptyValidation(R.string.field_required)
-    @LengthValidation(min = 3, errorMessage = R.string.min_3_characters)
     TextInputLayout nameLayout;
+
+    @BindView(R.id.nickname_layout)
+    @LengthValidation(min = 3, errorMessage = R.string.min_3_characters)
+    TextInputLayout nickNameLayout;
 
     @BindView(R.id.age_layout)
     @OnlyNumberValidation(R.string.only_numbers)
     TextInputLayout ageLayout;
-
-    @BindView(R.id.email_layout)
-    @EmailValidation(R.string.invalid_email)
-    TextInputLayout emailLayout;
 
     @BindView(R.id.phone_layout)
     @PatternValidation(pattern = PHONE_PATTERN, errorMessage = R.string.invalid_phone)
