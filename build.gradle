@@ -36,6 +36,7 @@ buildscript {
     dependencies {
         classpath deps.android.gradlePlugin
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.15.0'
+        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.2'
     }
 }
 

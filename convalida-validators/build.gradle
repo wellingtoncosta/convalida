@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'jacoco-android'
 apply plugin: 'com.github.dcendents.android-maven'
 group = 'com.github.WellingtonCosta'
 
@@ -14,4 +15,12 @@ android {
 dependencies {
     implementation deps.support.design
     testImplementation deps.junit
+}
+
+jacocoAndroidUnitTestReport {
+    excludes += ['**/AbstractValidator.*']
+
+    csv.enabled false
+    html.enabled true
+    xml.enabled true
 }
