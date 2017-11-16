@@ -18,11 +18,11 @@ Convalida is a simple, lightweight and powerful field validation library for And
 __Step 1__ - Annotate your fields with [Convalida Annotations][3]:
 
 ```java
-private static final String PHONE_PATTERN = "^\\([1-9]{2}\\)?([0-9]{9})$";
-
 @NotEmptyValidation(R.string.field_required)
-@LengthValidation(min = 3, errorMessage = R.string.min_3_characters)
 TextInputLayout nameLayout;
+
+@LengthValidation(min = 3, errorMessage = R.string.min_3_characters)
+TextInputLayout nickNameLayout;
 
 @OnlyNumberValidation(R.string.only_numbers)
 TextInputLayout ageLayout;
