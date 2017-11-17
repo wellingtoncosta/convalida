@@ -11,7 +11,13 @@ import static org.mockito.Mockito.when;
 public class EmailValidatorTest extends BaseTest {
 
     @Test
-    public void invalidEmail() throws Exception {
+    public void emailIsNull() {
+        EmailValidator validator = new EmailValidator();
+        assertEquals(validator.isNotValid(null), true);
+    }
+    
+    @Test
+    public void invalidEmail() {
         String value = "test@email";
 
         EmailValidator validator = new EmailValidator();
@@ -26,7 +32,7 @@ public class EmailValidatorTest extends BaseTest {
     }
 
     @Test
-    public void validEmail() throws Exception {
+    public void validEmail() {
         String value = "test@email.com";
 
         EmailValidator validator = new EmailValidator();
