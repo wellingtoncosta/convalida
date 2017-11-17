@@ -17,18 +17,12 @@ public class ConfirmPasswordValidator extends AbstractValidator {
 
     public ConfirmPasswordValidator(TextInputLayout passwordLayout, TextInputLayout confirmPasswordLayout, String errorMessage) {
         super(confirmPasswordLayout, errorMessage);
-
-        if (passwordLayout.getEditText() != null) {
-            this.passwordEditText = passwordLayout.getEditText();
-        }
+        this.passwordEditText = passwordLayout.getEditText();
     }
 
     public ConfirmPasswordValidator(EditText passwordEditText, EditText confirmPasswordEditText, String errorMessage) {
         super(confirmPasswordEditText, errorMessage);
-
-        if (passwordEditText != null) {
-            this.passwordEditText = passwordEditText;
-        }
+        this.passwordEditText = passwordEditText;
     }
 
     @Override
