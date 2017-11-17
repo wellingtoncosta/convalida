@@ -37,9 +37,6 @@ public class ConfirmPasswordValidator extends AbstractValidator {
             password = passwordEditText.getText().toString();
         }
 
-        System.out.println("Password: " + password);
-        System.out.println("Value: " + value);
-
         return !password.equals(value);
     }
 
