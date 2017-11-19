@@ -1,3 +1,5 @@
+version = '1.0.7'
+
 apply plugin: 'com.github.ben-manes.versions'
 
 buildscript {
@@ -22,7 +24,7 @@ buildscript {
         ],
         javapoet: 'com.squareup:javapoet:1.9.0',
         autoService: 'com.google.auto.service:auto-service:1.0-rc3',
-        'junit': 'junit:junit:4.12'
+        junit: 'junit:junit:4.12'
     ]
 
     repositories {
@@ -41,6 +43,8 @@ buildscript {
 }
 
 subprojects { project ->
+    project.version = rootProject.version
+
     repositories {
         mavenCentral()
         google()
