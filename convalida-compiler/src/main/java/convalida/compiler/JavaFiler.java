@@ -26,7 +26,7 @@ class JavaFiler {
         TypeSpec classValidator = TypeSpec.classBuilder(validationClass.getClassName())
                 .addSuperinterface(Constants.VALIDATOR)
                 .addModifiers(Modifier.PUBLIC)
-                .addField(Constants.VALIDATION_SET, "validationSet", Modifier.PRIVATE)
+                .addField(Constants.VALIDATOR_SET, "validationSet", Modifier.PRIVATE)
                 .addMethod(createConstructor(validationClass))
                 .addMethod(createValidateMethod())
                 .addMethod(createClearValidationMethod())
@@ -42,7 +42,7 @@ class JavaFiler {
                 .addAnnotation(Constants.UI_THREAD)
                 .addModifiers(Modifier.PUBLIC)
                 .addParameter(validationClass.getTypeName(), "target")
-                .addStatement("this.$N = new $T()", "validationSet", Constants.VALIDATION_SET);
+                .addStatement("this.$N = new $T()", "validationSet", Constants.VALIDATOR_SET);
 
         chooseValidationStrategy(constructorBuilder, validationClass);
 

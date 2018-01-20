@@ -7,6 +7,8 @@ import android.util.Log;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
+import convalida.validators.ConvalidaValidator;
+
 /**
  * @author  Wellington Costa on 18/06/2017.
  */

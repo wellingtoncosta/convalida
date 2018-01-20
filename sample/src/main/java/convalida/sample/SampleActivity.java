@@ -14,9 +14,9 @@ import convalida.annotations.EmailValidation;
 import convalida.annotations.NotEmptyValidation;
 import convalida.annotations.PasswordValidation;
 import convalida.library.Convalida;
-import convalida.library.ConvalidaValidator;
+import convalida.validators.ConvalidaValidator;
 
-import static convalida.library.Patterns.LOWER_UPPER_CASE_NUMERIC;
+import static convalida.library.util.Patterns.LOWER_UPPER_CASE_NUMERIC;
 
 /**
  * @author Wellington Costa on 05/06/17.

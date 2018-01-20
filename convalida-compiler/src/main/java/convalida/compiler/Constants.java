@@ -10,8 +10,8 @@ class Constants {
     static final ClassName UI_THREAD                    = ClassName.get("android.support.annotation", "UiThread");
     static final ClassName OVERRIDE                     = ClassName.get("java.lang", "Override");
 
-    static final ClassName VALIDATOR                    = ClassName.get("convalida.library", "ConvalidaValidator");
-    static final ClassName VALIDATION_SET               = ClassName.get("convalida.library", "ValidationSet");
+    static final ClassName VALIDATOR                    = ClassName.get("convalida.validators", "ConvalidaValidator");
+    static final ClassName VALIDATOR_SET               = ClassName.get("convalida.validators", "ValidatorSet");
 
     static final String NOT_EMPTY_ANNOTATION            = "convalida.annotations.NotEmptyValidation";
     static final String EMAIL_ANNOTATION                = "convalida.annotations.EmailValidation";

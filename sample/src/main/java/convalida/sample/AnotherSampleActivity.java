@@ -14,7 +14,7 @@ import convalida.annotations.NotEmptyValidation;
 import convalida.annotations.OnlyNumberValidation;
 import convalida.annotations.PatternValidation;
 import convalida.library.Convalida;
-import convalida.library.ConvalidaValidator;
+import convalida.validators.ConvalidaValidator;
 
 public class AnotherSampleActivity extends AppCompatActivity {
 

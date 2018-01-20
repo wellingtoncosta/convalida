@@ -1,4 +1,4 @@
-package convalida.library;
+package convalida.library.util;
 
 /**
  * @author Wellington Costa on 27/06/2017.

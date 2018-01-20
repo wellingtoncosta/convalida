@@ -1,4 +1,4 @@
-package convalida.library;
+package convalida.validators;
 
 import android.support.annotation.UiThread;
 
