@@ -4,17 +4,20 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
+import convalida.annotations.ClearValidationsOnClick;
 import convalida.annotations.LengthValidation;
 import convalida.annotations.NotEmptyValidation;
+import convalida.annotations.OnValidationError;
+import convalida.annotations.OnValidationSuccess;
 import convalida.annotations.OnlyNumberValidation;
 import convalida.annotations.PatternValidation;
+import convalida.annotations.ValidateOnClick;
 import convalida.library.Convalida;
-import convalida.validators.ConvalidaValidator;
 
 public class AnotherSampleActivity extends AppCompatActivity {
 
@@ -39,25 +42,30 @@ public class AnotherSampleActivity extends AppCompatActivity {
     @PatternValidation(pattern = PHONE_PATTERN, errorMessage = R.string.invalid_phone)
     TextInputLayout phoneLayout;
 
-    private ConvalidaValidator validator;
+    @ValidateOnClick
+    @BindView(R.id.validate_button)
+    Button validateButton;
+
+    @ClearValidationsOnClick
+    @BindView(R.id.clear_button)
+    Button clearValidatinonsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_another_sample);
         ButterKnife.bind(this);
-        validator = Convalida.init(this);
+        Convalida.init(this);
     }
 
-    @OnClick(R.id.validate_button)
-    public void validateFields() {
-        boolean isValid = validator.validateFields();
-        String message = isValid ? "Yay!" : "Something is wrong :(";
-        Snackbar.make(linearLayout, message, Snackbar.LENGTH_LONG).show();
+    @OnValidationSuccess
+    public void onValidationSuccess() {
+        Snackbar.make(linearLayout, "Yay!", Snackbar.LENGTH_LONG).show();
     }
 
-    @OnClick(R.id.clear_button)
-    public void clearFields() {
-        validator.clearValidations();
+    @OnValidationError
+    public void onValidationError() {
+        Snackbar.make(linearLayout, "Something is wrong :(", Snackbar.LENGTH_LONG).show();
     }
+
 }

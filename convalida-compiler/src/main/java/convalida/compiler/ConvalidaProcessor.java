@@ -18,6 +18,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
@@ -25,9 +26,12 @@ import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
+import javax.annotation.processing.SupportedAnnotationTypes;
+import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
@@ -36,13 +40,17 @@ import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic.Kind;
 
+import convalida.annotations.ClearValidationsOnClick;
 import convalida.annotations.ConfirmPasswordValidation;
 import convalida.annotations.EmailValidation;
 import convalida.annotations.LengthValidation;
 import convalida.annotations.NotEmptyValidation;
+import convalida.annotations.OnValidationError;
+import convalida.annotations.OnValidationSuccess;
 import convalida.annotations.OnlyNumberValidation;
 import convalida.annotations.PasswordValidation;
 import convalida.annotations.PatternValidation;
+import convalida.annotations.ValidateOnClick;
 import convalida.compiler.internal.Id;
 import convalida.compiler.internal.QualifiedId;
 import convalida.compiler.internal.ValidationClass;
@@ -59,6 +67,16 @@ import static javax.lang.model.element.Modifier.STATIC;
  * @author Wellington Costa on 13/06/2017.
  */
 @AutoService(Processor.class)
+@SupportedSourceVersion(SourceVersion.RELEASE_8)
+@SupportedAnnotationTypes({
+        "convalida.annotations.NotEmptyValidation",
+        "convalida.annotations.EmailValidation",
+        "convalida.annotations.PatternValidation",
+        "convalida.annotations.LengthValidation",
+        "convalida.annotations.OnlyNumberValidation",
+        "convalida.annotations.PasswordValidation",
+        "convalida.annotations.ConfirmPasswordValidation"
+})
 public class ConvalidaProcessor extends AbstractProcessor {
 
     private static final String TEXT_INPUT_LAYOUT_TYPE = "android.support.design.widget.TextInputLayout";
@@ -84,26 +102,6 @@ public class ConvalidaProcessor extends AbstractProcessor {
         try {
             trees = Trees.instance(processingEnv);
         } catch (IllegalArgumentException ignored) { }
-    }
-
-    @Override
-    public SourceVersion getSupportedSourceVersion() {
-        return SourceVersion.RELEASE_7;
-    }
-
-    @Override
-    public Set<String> getSupportedAnnotationTypes() {
-        HashSet<String> supportedAnnotations = new HashSet<>();
-
-        supportedAnnotations.add(NotEmptyValidation.class.getCanonicalName());
-        supportedAnnotations.add(EmailValidation.class.getCanonicalName());
-        supportedAnnotations.add(PatternValidation.class.getCanonicalName());
-        supportedAnnotations.add(LengthValidation.class.getCanonicalName());
-        supportedAnnotations.add(OnlyNumberValidation.class.getCanonicalName());
-        supportedAnnotations.add(PasswordValidation.class.getCanonicalName());
-        supportedAnnotations.add(ConfirmPasswordValidation.class.getCanonicalName());
-
-        return supportedAnnotations;
     }
 
     private Set<Class<? extends Annotation>> getSupportedAnnotations() {
@@ -226,10 +224,126 @@ public class ConvalidaProcessor extends AbstractProcessor {
                 }
             }
 
+            parseValidateOnClick(parent, validationClass);
+            parseClearValidationsOnClick(parent, validationClass);
+
             validationClasses.add(validationClass);
         }
 
         return validationClasses;
+    }
+
+    private void parseValidateOnClick(Element parent, ValidationClass validationClass) {
+        List<Element> elements = parent.getEnclosedElements()
+                .stream()
+                .filter(element -> element.getAnnotation(ValidateOnClick.class) != null)
+                .collect(Collectors.toList());
+
+        if (elements.size() > 1) {
+            error(
+                    parent,
+                    "The class %s must have only one element annotated with @ValidateOnClick annotation.",
+                    parent.getSimpleName()
+            );
+            return;
+        }
+
+        if (elements.size() == 1) {
+            boolean isInaccessible = isInaccessible(ValidateOnClick.class, elements.get(0));
+            if (isInaccessible) return;
+
+            validationClass.setValidateButton(elements.get(0));
+            parseOnValidationSuccess(parent, validationClass);
+            parseOnValidationError(parent, validationClass);
+        }
+    }
+
+    private boolean validationMethodHasNoParams(Class<? extends Annotation> annotationClass, ExecutableElement method) {
+        boolean hasNoParams = true;
+
+        if (method.getParameters().size() > 0) {
+            hasNoParams = false;
+            error(method, "Method annotated with @%s can not have parameters.",annotationClass.getSimpleName());
+        }
+
+        return hasNoParams;
+    }
+
+    private void parseOnValidationSuccess(Element parent, ValidationClass validationClass) {
+        List<Element> elements = parent.getEnclosedElements()
+                .stream()
+                .filter(element -> element.getAnnotation(OnValidationSuccess.class) != null)
+                .collect(Collectors.toList());
+
+        if (elements.size() == 0) {
+            error(
+                    parent,
+                    "The class %s have an element annotated with @ValidateOnClick annotation and it requires a method annotated with @OnValidationSuccess annotation.",
+                    parent.getSimpleName()
+            );
+            return;
+        }
+
+        if (elements.size() > 1) {
+            error(
+                    parent,
+                    "The class %s must have only one element annotated with @OnValidationSuccess annotation.",
+                    parent.getSimpleName()
+            );
+            return;
+        }
+
+        if (elements.size() == 1) {
+            boolean isInaccessible = isInaccessible(OnValidationSuccess.class, elements.get(0));
+            boolean validationMethodHasNoParams = validationMethodHasNoParams(OnValidationSuccess.class, ((ExecutableElement) elements.get(0)));
+            if (isInaccessible && !validationMethodHasNoParams) return;
+
+            validationClass.setOnValidationSuccessMethod(elements.get(0));
+        }
+    }
+
+    private void parseOnValidationError(Element parent, ValidationClass validationClass) {
+        List<Element> elements = parent.getEnclosedElements()
+                .stream()
+                .filter(element -> element.getAnnotation(OnValidationError.class) != null)
+                .collect(Collectors.toList());
+
+        if (elements.size() > 1) {
+            error(
+                    parent,
+                    "The class %s must have only one element annotated with @OnValidationError annotation.",
+                    parent.getSimpleName()
+            );
+            return;
+        }
+
+        if (elements.size() == 1) {
+            boolean isInaccessible = isInaccessible(OnValidationError.class, elements.get(0));
+            boolean validationMethodHasNoParams = validationMethodHasNoParams(OnValidationError.class, ((ExecutableElement) elements.get(0)));
+            if (isInaccessible && !validationMethodHasNoParams) return;
+
+            validationClass.setOnValidationErrorMethod(elements.get(0));
+        }
+    }
+
+    private void parseClearValidationsOnClick(Element parent, ValidationClass validationClass) {
+        List<Element> elements = parent.getEnclosedElements()
+                .stream()
+                .filter(element -> element.getAnnotation(ClearValidationsOnClick.class) != null)
+                .collect(Collectors.toList());
+
+        if (elements.size() > 1) {
+            error(
+                    parent,
+                    "The class %s must have only one element annotated with @ClearValidationsOnClick annotation.",
+                    parent.getSimpleName()
+            );
+            return;
+        }
+
+        if (elements.size() == 1) {
+            validationClass.setClearValidationsButton(elements.get(0));
+        }
     }
 
     private void parseNotEmptyValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
@@ -559,7 +673,6 @@ public class ConvalidaProcessor extends AbstractProcessor {
             }
         }
     }
-
 
     private void logParsingError(Element element, Class<? extends Annotation> annotation, Exception e) {
         StringWriter stackTrace = new StringWriter();

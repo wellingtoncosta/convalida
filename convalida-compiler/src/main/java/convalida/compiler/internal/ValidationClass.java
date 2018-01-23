@@ -19,6 +19,10 @@ public class ValidationClass {
     private TypeName typeName;
     private TypeElement typeElement;
     private List<ValidationField> fields;
+    private Element validateButton;
+    private Element onValidationSuccessMethod;
+    private Element onValidationErrorMethod;
+    private Element clearValidationsButton;
 
     public ValidationClass(Element element, Elements elements) {
         this.packageName = elements.getPackageOf(element).toString();
@@ -46,6 +50,38 @@ public class ValidationClass {
 
     public TypeElement getTypeElement() {
         return typeElement;
+    }
+
+    public Element getValidateButton() {
+        return validateButton;
+    }
+
+    public void setValidateButton(Element validateButton) {
+        this.validateButton = validateButton;
+    }
+
+    public Element getOnValidationSuccessMethod() {
+        return onValidationSuccessMethod;
+    }
+
+    public void setOnValidationSuccessMethod(Element onValidationSuccessMethod) {
+        this.onValidationSuccessMethod = onValidationSuccessMethod;
+    }
+
+    public Element getOnValidationErrorMethod() {
+        return onValidationErrorMethod;
+    }
+
+    public void setOnValidationErrorMethod(Element onValidationErrorMethod) {
+        this.onValidationErrorMethod = onValidationErrorMethod;
+    }
+
+    public Element getClearValidationsButton() {
+        return clearValidationsButton;
+    }
+
+    public void setClearValidationsButton(Element clearValidationsButton) {
+        this.clearValidationsButton = clearValidationsButton;
     }
 
     public List<ValidationField> getFields() {

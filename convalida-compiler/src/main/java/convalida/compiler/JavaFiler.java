@@ -3,11 +3,13 @@ package convalida.compiler;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 
 import java.util.stream.Collectors;
 
+import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 
 import convalida.annotations.LengthValidation;
@@ -23,21 +25,21 @@ import convalida.compiler.internal.ValidationField;
 class JavaFiler {
 
     static JavaFile cookJava(ValidationClass validationClass) {
-        TypeSpec classValidator = TypeSpec.classBuilder(validationClass.getClassName())
+        TypeSpec.Builder validationClassBuilder = TypeSpec.classBuilder(validationClass.getClassName())
                 .addSuperinterface(Constants.VALIDATOR)
                 .addModifiers(Modifier.PUBLIC)
-                .addField(Constants.VALIDATOR_SET, "validationSet", Modifier.PRIVATE)
-                .addMethod(createConstructor(validationClass))
-                .addMethod(createValidateMethod())
-                .addMethod(createClearValidationMethod())
-                .build();
+                .addField(Constants.VALIDATOR_SET, "validationSet", Modifier.PRIVATE);
 
-        return JavaFile.builder(validationClass.getPackageName(), classValidator)
+        validationClassBuilder.addMethod(createConstructor(validationClass, validationClassBuilder));
+        validationClassBuilder.addMethod(createValidateMethod());
+        validationClassBuilder.addMethod(createClearValidationMethod());
+
+        return JavaFile.builder(validationClass.getPackageName(), validationClassBuilder.build())
                 .addFileComment("Generated code from Convalida. Do not modify!")
                 .build();
     }
 
-    private static MethodSpec createConstructor(ValidationClass validationClass) {
+    private static MethodSpec createConstructor(ValidationClass validationClass, TypeSpec.Builder validationClassBuilder) {
         MethodSpec.Builder constructorBuilder = MethodSpec.constructorBuilder()
                 .addAnnotation(Constants.UI_THREAD)
                 .addModifiers(Modifier.PUBLIC)
@@ -45,6 +47,9 @@ class JavaFiler {
                 .addStatement("this.$N = new $T()", "validationSet", Constants.VALIDATOR_SET);
 
         chooseValidationStrategy(constructorBuilder, validationClass);
+
+        createValidateOnClickCodeBlock(validationClass, constructorBuilder, validationClassBuilder);
+        createClearValidationsOnClickCodeBlock(validationClass, constructorBuilder, validationClassBuilder);
 
         return constructorBuilder.build();
     }
@@ -309,6 +314,132 @@ class JavaFiler {
                 .addModifiers(Modifier.PUBLIC)
                 .addStatement("this.$N.$N()", "validationSet", "clearValidators")
                 .build();
+    }
+
+    private static void createValidateOnClickCodeBlock(
+            ValidationClass validationClass,
+            MethodSpec.Builder methodSpecBuilder,
+            TypeSpec.Builder validationClassBuilder) {
+        Element element = validationClass.getValidateButton();
+
+        if (element != null) {
+            createValidateOnClickMethod(validationClass, validationClassBuilder);
+
+            methodSpecBuilder.addCode(CodeBlock.builder()
+                    .add("\n")
+                    .addStatement(
+                            "$N.$N.setOnClickListener(validateOnClickListener($N))",
+                            "target",
+                            element.getSimpleName().toString(),
+                            "target"
+                    )
+                    .build());
+        }
+    }
+
+    private static void createValidateOnClickMethod(ValidationClass validationClass, TypeSpec.Builder validationClassBuilder) {
+        validationClassBuilder.addMethod(MethodSpec.methodBuilder("validateOnClickListener")
+                .addAnnotation(Constants.UI_THREAD)
+                .addModifiers(Modifier.PRIVATE)
+                .addParameter(ParameterSpec.builder(
+                        validationClass.getTypeName(),
+                        "target",
+                        Modifier.FINAL
+                        ).build()
+                )
+                .addCode(
+                        "return new $T() {",
+                        Constants.VIEW_ONCLICK_LISTENER
+                )
+                .addCode("\n")
+                .addCode(CodeBlock.builder().indent().build())
+                .addCode(
+                        "@$T public void onClick($T view) {",
+                        Constants.OVERRIDE,
+                        Constants.VIEW
+                )
+                .addCode("\n")
+                .addCode(CodeBlock.builder().indent().build())
+                .addCode("if(validateFields()) {")
+                .addCode("\n")
+                .addCode(CodeBlock.builder().indent().build())
+                .addCode(
+                        "target.$N();",
+                        validationClass.getOnValidationSuccessMethod().getSimpleName()
+                )
+                .addCode("\n")
+                .addCode(CodeBlock.builder().unindent().build())
+                .addCode("} else {")
+                .addCode("\n")
+                .addCode(CodeBlock.builder().indent().build())
+                .addCode(
+                        "target.$N();",
+                        validationClass.getOnValidationErrorMethod().getSimpleName()
+                )
+                .addCode("\n")
+                .addCode(CodeBlock.builder().unindent().build())
+                .addCode("}")
+                .addCode("\n")
+                .addCode(CodeBlock.builder().unindent().build())
+                .addCode("}")
+                .addCode("\n")
+                .addCode(CodeBlock.builder().unindent().build())
+                .addCode("};")
+                .addCode("\n")
+                .returns(Constants.VIEW_ONCLICK_LISTENER).build());
+    }
+
+    private static void createClearValidationsOnClickCodeBlock(
+            ValidationClass validationClass,
+            MethodSpec.Builder methodSpecBuilder,
+            TypeSpec.Builder validationClassBuilder) {
+        Element element = validationClass.getClearValidationsButton();
+
+        if (element != null) {
+            createClearValidationsOnClickMethod(validationClass, validationClassBuilder);
+
+            methodSpecBuilder.addCode(CodeBlock.builder()
+                    .addStatement(
+                            "$N.$N.setOnClickListener(clearValidationsOnClickListener(target))",
+                            "target",
+                            element.getSimpleName().toString()
+                    )
+                    .build());
+        }
+    }
+
+    private static void createClearValidationsOnClickMethod(ValidationClass validationClass, TypeSpec.Builder validationClassBuilder) {
+        validationClassBuilder.addMethod(MethodSpec.methodBuilder("clearValidationsOnClickListener")
+                .addAnnotation(Constants.UI_THREAD)
+                .addModifiers(Modifier.PRIVATE)
+                .addParameter(ParameterSpec.builder(
+                        validationClass.getTypeName(),
+                        "target",
+                        Modifier.FINAL
+                        ).build()
+                )
+                .addCode(
+                        "return new $T() {",
+                        Constants.VIEW_ONCLICK_LISTENER
+                )
+                .addCode("\n")
+                .addCode(CodeBlock.builder().indent().build())
+                .addCode(
+                        "@$T public void onClick($T view) {",
+                        Constants.OVERRIDE,
+                        Constants.VIEW
+                )
+                .addCode("\n")
+                .addCode(CodeBlock.builder().indent().build())
+                .addCode("clearValidations();")
+                .addCode("\n")
+                .addCode(CodeBlock.builder().unindent().build())
+                .addCode("}")
+                .addCode("\n")
+                .addCode(CodeBlock.builder().unindent().build())
+                .addCode("};")
+                .addCode("\n")
+                .returns(Constants.VIEW_ONCLICK_LISTENER).build());
     }
 
 }
