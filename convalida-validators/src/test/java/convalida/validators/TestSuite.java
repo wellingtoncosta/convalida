@@ -15,7 +15,9 @@ import org.junit.runners.Suite.SuiteClasses;
         OnlyNumberValidatorTest.class,
         PatternValidatorTest.class,
         PasswordValidatorTest.class,
-        ConfirmPasswordValidatorTest.class
+        ConfirmPasswordValidatorTest.class,
+        ValidatorSetTest.class,
+        ConvalidaValidatorTest.class
 })
 public class TestSuite {
 
