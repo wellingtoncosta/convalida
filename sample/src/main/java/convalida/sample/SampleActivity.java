@@ -51,7 +51,7 @@ public class SampleActivity extends AppCompatActivity {
 
     @ClearValidationsOnClick
     @BindView(R.id.clear_button)
-    Button clearValidatinonsButton;
+    Button clearValidationsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

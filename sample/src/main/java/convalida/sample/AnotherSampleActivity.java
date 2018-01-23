@@ -19,6 +19,9 @@ import convalida.annotations.PatternValidation;
 import convalida.annotations.ValidateOnClick;
 import convalida.library.Convalida;
 
+/**
+ * @author Wellington Costa on 05/06/17.
+ */
 public class AnotherSampleActivity extends AppCompatActivity {
 
     private static final String PHONE_PATTERN = "[\\+]\\d{2}[\\(]\\d{2}[\\)]\\d{4}[\\-]\\d{4}";
@@ -48,7 +51,7 @@ public class AnotherSampleActivity extends AppCompatActivity {
 
     @ClearValidationsOnClick
     @BindView(R.id.clear_button)
-    Button clearValidatinonsButton;
+    Button clearValidationsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

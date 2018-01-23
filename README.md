@@ -39,37 +39,44 @@ TextInputLayout passwordLayout;
 
 @ConfirmPasswordValidation(R.string.passwords_not_match)
 TextInputLayout confirmPasswordLayout;
+
+@ValidateOnClick
+Button validateButton;
 ```
 
 __Step 2__ - Initialize Convalida:
 
 ```java
-private ConvalidaValidator validator;
 
 @Override
 protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_sample);
-    validator = Convalida.init(this);
+    Convalida.init(this);
 }
 ```
 
-__Step 3__ - Run the validations and get the result:
+__Step 3__ - Run the validations by clicking in the button mapped with ```@ValidateOnClick``` and handle success or error:
 
 ```java
-public void validateFields() {
-    boolean isValid = validator.validateFields();
-    String message = isValid ? "Yay!" : "Something is wrong :(";
-    Snackbar.make(linearLayout, message, Snackbar.LENGTH_LONG).show();
+@OnValidationSuccess
+public void onValidationSuccess() {
+    Toast.makeText("Yay!", Toast.LENGTH_LONG).show();
+}
+
+@OnValidationError
+public void onValidationError() {
+    Toast.makeText("Something is wrong :(", Toast.LENGTH_LONG).show();
 }
 ```
+
+*Note: Only the method annotated with ```@OnValidationSuccess``` is required.*
 
 __Step 4__ - If you want to clear the validations:
 
 ```java
-public void clearFields() {
-    validator.clearValidations();
-}
+@ClearValidationsOnClick
+Button clearValidationsButton;
 ```
 
 __Remember: You must initialize the views (e.g [ButterKnife][1]) before apply the validations.__
@@ -91,8 +98,8 @@ __Step 2__ - Add the dependencies:
 
 ```groovy
 dependencies {
-  compile 'com.github.WellingtonCosta.convalida:convalida:1.0.7'
-  annotationProcessor 'com.github.WellingtonCosta.convalida:convalida-compiler:1.0.7'
+  compile 'com.github.WellingtonCosta.convalida:convalida:1.1.0'
+  annotationProcessor 'com.github.WellingtonCosta.convalida:convalida-compiler:1.1.0'
 }
 ```
 
