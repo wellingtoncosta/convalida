@@ -10,11 +10,11 @@ import javax.lang.model.element.Element;
 
 public class ValidationField {
 
-    private Element element;
-    private String name;
-    private TypeName typeName;
-    private String annotationClass;
-    private Id id;
+    public final Element element;
+    public final String name;
+    public final TypeName typeName;
+    public final String annotationClass;
+    public final Id id;
 
     public ValidationField(Element element, String annotationClass, Id id) {
         this.element = element;
@@ -24,23 +24,4 @@ public class ValidationField {
         this.id = id;
     }
 
-    public Element getElement() {
-        return element;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public TypeName getTypeName() {
-        return typeName;
-    }
-
-    public String getAnnotationClass() {
-        return annotationClass;
-    }
-
-    public Id getId() {
-        return id;
-    }
 }

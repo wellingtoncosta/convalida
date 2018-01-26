@@ -10,6 +10,7 @@ class Constants {
     static final ClassName OVERRIDE                     = ClassName.get("java.lang", "Override");
 
     static final ClassName UI_THREAD                    = ClassName.get("android.support.annotation", "UiThread");
+    static final ClassName NON_NULL                     = ClassName.get("android.support.annotation", "NonNull");
     static final ClassName VIEW                         = ClassName.get("android.view", "View");
     static final ClassName VIEW_ONCLICK_LISTENER        = ClassName.get("android.view", "View.OnClickListener");
 

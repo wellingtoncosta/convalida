@@ -128,7 +128,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
                 JavaFile javaFile = JavaFiler.cookJava(validationClass);
                 javaFile.writeTo(this.filer);
             } catch (IOException e) {
-                error(validationClass.getTypeElement(), "Unable to write validation for type %s: %s", validationClass.getTypeElement(), e.getMessage());
+                error(validationClass.typeElement, "Unable to write validation for type %s: %s", validationClass.typeElement, e.getMessage());
             }
         }
 
@@ -218,7 +218,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
             ValidationClass validationClass = new ValidationClass(parent, this.elementUtils);
 
             for (ValidationField validationField : validationFields) {
-                Element element = validationField.getElement();
+                Element element = validationField.element;
                 if (element.getEnclosingElement().equals(parent)) {
                     validationClass.addField(validationField);
                 }

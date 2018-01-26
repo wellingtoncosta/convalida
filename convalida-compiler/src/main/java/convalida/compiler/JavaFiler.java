@@ -1,23 +1,46 @@
 package convalida.compiler;
 
+import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterSpec;
-import com.squareup.javapoet.TypeName;
 import com.squareup.javapoet.TypeSpec;
 
 import java.util.stream.Collectors;
 
 import javax.lang.model.element.Element;
-import javax.lang.model.element.Modifier;
 
 import convalida.annotations.LengthValidation;
 import convalida.annotations.PasswordValidation;
 import convalida.annotations.PatternValidation;
-import convalida.compiler.internal.Id;
 import convalida.compiler.internal.ValidationClass;
 import convalida.compiler.internal.ValidationField;
+
+import static convalida.compiler.Constants.CONFIRM_PASSWORD_ANNOTATION;
+import static convalida.compiler.Constants.CONFIRM_PASSWORD_VALIDATOR;
+import static convalida.compiler.Constants.EMAIL_ANNOTATION;
+import static convalida.compiler.Constants.EMAIL_VALIDATOR;
+import static convalida.compiler.Constants.LENGTH_ANNOTATION;
+import static convalida.compiler.Constants.LENGTH_VALIDATOR;
+import static convalida.compiler.Constants.NON_NULL;
+import static convalida.compiler.Constants.NOT_EMPTY_ANNOTATION;
+import static convalida.compiler.Constants.NOT_EMPTY_VALIDATOR;
+import static convalida.compiler.Constants.ONLY_NUMBER_ANNOTATION;
+import static convalida.compiler.Constants.ONLY_NUMBER_VALIDATOR;
+import static convalida.compiler.Constants.OVERRIDE;
+import static convalida.compiler.Constants.PASSWORD_ANNOTATION;
+import static convalida.compiler.Constants.PASSWORD_VALIDATOR;
+import static convalida.compiler.Constants.PATTERN_ANNOTATION;
+import static convalida.compiler.Constants.PATTERN_VALIDATOR;
+import static convalida.compiler.Constants.UI_THREAD;
+import static convalida.compiler.Constants.VALIDATOR_SET;
+import static convalida.compiler.Constants.VIEW;
+import static convalida.compiler.Constants.VIEW_ONCLICK_LISTENER;
+import static javax.lang.model.element.Modifier.FINAL;
+import static javax.lang.model.element.Modifier.PRIVATE;
+import static javax.lang.model.element.Modifier.PUBLIC;
+import static javax.lang.model.element.Modifier.STATIC;
 
 /**
  * @author Wellington Costa on 19/06/2017.
@@ -25,342 +48,192 @@ import convalida.compiler.internal.ValidationField;
 class JavaFiler {
 
     static JavaFile cookJava(ValidationClass validationClass) {
-        TypeSpec.Builder validationClassBuilder = TypeSpec.classBuilder(validationClass.getClassName())
-                .addSuperinterface(Constants.VALIDATOR)
-                .addModifiers(Modifier.PUBLIC)
-                .addField(Constants.VALIDATOR_SET, "validationSet", Modifier.PRIVATE);
+        TypeSpec.Builder validationClassBuilder = TypeSpec.classBuilder(validationClass.className)
+                .addModifiers(PUBLIC)
+                .addField(VALIDATOR_SET, "validatorSet", PRIVATE)
+                .addMethod(createConstructor(validationClass))
+                .addMethod(createValidateOnClickMethod(validationClass))
+                .addMethod(createClearValidationsOnClickMethod(validationClass))
+                .addMethod(createInitMethod(validationClass));
 
-        validationClassBuilder.addMethod(createConstructor(validationClass, validationClassBuilder));
-        validationClassBuilder.addMethod(createValidateMethod());
-        validationClassBuilder.addMethod(createClearValidationMethod());
-
-        return JavaFile.builder(validationClass.getPackageName(), validationClassBuilder.build())
+        return JavaFile.builder(validationClass.packageName, validationClassBuilder.build())
                 .addFileComment("Generated code from Convalida. Do not modify!")
                 .build();
     }
 
-    private static MethodSpec createConstructor(ValidationClass validationClass, TypeSpec.Builder validationClassBuilder) {
-        MethodSpec.Builder constructorBuilder = MethodSpec.constructorBuilder()
-                .addAnnotation(Constants.UI_THREAD)
-                .addModifiers(Modifier.PUBLIC)
-                .addParameter(validationClass.getTypeName(), "target")
-                .addStatement("this.$N = new $T()", "validationSet", Constants.VALIDATOR_SET);
-
-        chooseValidationStrategy(constructorBuilder, validationClass);
-
-        createValidateOnClickCodeBlock(validationClass, constructorBuilder, validationClassBuilder);
-        createClearValidationsOnClickCodeBlock(validationClass, constructorBuilder, validationClassBuilder);
-
-        return constructorBuilder.build();
-    }
-
-    private static void chooseValidationStrategy(MethodSpec.Builder constructorBuilder, ValidationClass validationClass) {
-        validationClass.getFields()
-                .forEach(validationField -> {
-                    String annotationClass = validationField.getAnnotationClass();
-
-                    switch (annotationClass) {
-                        case Constants.NOT_EMPTY_ANNOTATION:
-                            createNotEmptyValidationCodeBlock(constructorBuilder, validationField);
-                            break;
-                        case Constants.EMAIL_ANNOTATION:
-                            createEmailValidationCodeBlock(constructorBuilder, validationField);
-                            break;
-                        case Constants.PATTERN_ANNOTATION:
-                            createPatternValidationCodeBlock(constructorBuilder, validationField);
-                            break;
-                        case Constants.LENGTH_ANNOTATION:
-                            createLengthValidationCodeBlock(constructorBuilder, validationField);
-                            break;
-                        case Constants.ONLY_NUMBER_ANNOTATION:
-                            createOnlyNumberValidationCodeBlock(constructorBuilder, validationField);
-                            break;
-                        case Constants.PASSWORD_ANNOTATION:
-                            createPasswordValidationCodeBlock(constructorBuilder, validationField);
-                            break;
-                        case Constants.CONFIRM_PASSWORD_ANNOTATION:
-                            ValidationField passwordValidationField = validationClass.getFields()
-                                    .stream()
-                                    .filter(field -> field.getAnnotationClass().equals(Constants.PASSWORD_ANNOTATION))
-                                    .collect(Collectors.toList())
-                                    .get(0);
-
-                            createConfirmPasswordValidationCodeBlock(constructorBuilder, passwordValidationField, validationField);
-                            break;
-                    }
-                });
-    }
-
-    private static void createNotEmptyValidationCodeBlock(MethodSpec.Builder constructorBuilder, ValidationField validationField) {
-        CodeBlock notEmptyValidationCodeBlock = CodeBlock.builder()
-                .add("\n")
-                .add("{")
-                .add("\n")
-                .indent()
-                .add(createElementDeclarationCode(validationField))
-                .add(createErrorMessageDeclarationCode(validationField.getId()))
-                .addStatement(
-                        "this.$N.addValidator(new $T($N, $N))",
-                        "validationSet",
-                        Constants.NOT_EMPTY_VALIDATOR,
-                        validationField.getName(),
-                        "errorMessage"
+    private static MethodSpec createConstructor(ValidationClass validationClass) {
+        return MethodSpec.constructorBuilder()
+                .addModifiers(PRIVATE)
+                .addAnnotation(UI_THREAD)
+                .addParameter(ParameterSpec
+                        .builder(validationClass.typeName, "target")
+                        .addAnnotation(NON_NULL)
+                        .build()
                 )
-                .unindent()
-                .add("}")
-                .add("\n")
+                .addStatement("validatorSet = new $T()", VALIDATOR_SET)
+                .addCode("\n")
+                .addCode(createValidationsCodeBlock(validationClass))
                 .build();
-
-        constructorBuilder.addCode(notEmptyValidationCodeBlock);
     }
 
-    private static void createEmailValidationCodeBlock(MethodSpec.Builder constructorBuilder, ValidationField validationField) {
-        CodeBlock emailValidationCodeBlock = CodeBlock.builder()
-                .add("\n")
-                .add("{")
-                .add("\n")
-                .indent()
-                .add(createElementDeclarationCode(validationField))
-                .add(createErrorMessageDeclarationCode(validationField.getId()))
+    private static CodeBlock createValidationsCodeBlock(ValidationClass validationClass) {
+        CodeBlock.Builder builder = CodeBlock.builder();
+
+        validationClass.fields.forEach(field -> {
+            switch (field.annotationClass) {
+                case NOT_EMPTY_ANNOTATION:
+                    builder.add(createNotEmptyValidationCodeBlock(field));
+                    break;
+                case EMAIL_ANNOTATION:
+                    builder.add(createEmailValidationCodeBlock(field));
+                    break;
+                case PATTERN_ANNOTATION:
+                    builder.add(createPatternValidationCodeBlock(field));
+                    break;
+                case LENGTH_ANNOTATION:
+                    builder.add(createLengthValidationCodeBlock(field));
+                    break;
+                case ONLY_NUMBER_ANNOTATION:
+                    builder.add(createOnlyNumberValidationCodeBlock(field));
+                    break;
+                case PASSWORD_ANNOTATION:
+                    builder.add(createPasswordValidationCodeBlock(field));
+                    break;
+                case CONFIRM_PASSWORD_ANNOTATION:
+                    ValidationField passwordField = validationClass.fields.stream()
+                            .filter(streamField -> streamField.annotationClass.equals(PASSWORD_ANNOTATION))
+                            .collect(Collectors.toList()).get(0);
+
+                    builder.add(createConfirmPasswordValidationCodeBlock(passwordField, field));
+                    break;
+            }
+        });
+
+        builder.add(createValidateOnClickCodeBlock(validationClass));
+        builder.add(createClearValidationsOnClickCodeBlock(validationClass));
+        return builder.build();
+    }
+
+    private static CodeBlock createNotEmptyValidationCodeBlock(ValidationField field) {
+        return CodeBlock.builder()
                 .addStatement(
-                        "this.$N.addValidator(new $T($N, $N))",
-                        "validationSet",
-                        Constants.EMAIL_VALIDATOR,
-                        validationField.getName(),
-                        "errorMessage"
+                        "validatorSet.addValidator(new $T(target.$N, target.getString($L)))",
+                        NOT_EMPTY_VALIDATOR,
+                        field.name,
+                        field.id.code
                 )
-                .unindent()
-                .add("}")
-                .add("\n")
                 .build();
-
-        constructorBuilder.addCode(emailValidationCodeBlock);
     }
 
-    private static void createPatternValidationCodeBlock(MethodSpec.Builder constructorBuilder, ValidationField validationField) {
-        CodeBlock patternValidationCodeBlock = CodeBlock.builder()
-                .add("\n")
-                .add("{")
-                .add("\n")
-                .indent()
-                .add(createElementDeclarationCode(validationField))
-                .add(createErrorMessageDeclarationCode(validationField.getId()))
+    private static CodeBlock createEmailValidationCodeBlock(ValidationField field) {
+        return CodeBlock.builder()
                 .addStatement(
-                        "String pattern = $S",
-                        validationField.getElement().getAnnotation(PatternValidation.class).pattern()
+                        "validatorSet.addValidator(new $T(target.$N, target.getString($L)))",
+                        EMAIL_VALIDATOR,
+                        field.name,
+                        field.id.code
                 )
-                .addStatement(
-                        "this.$N.addValidator(new $T($N, $N, $N))",
-                        "validationSet",
-                        Constants.PATTERN_VALIDATOR,
-                        validationField.getName(),
-                        "errorMessage",
-                        "pattern"
-                )
-                .unindent()
-                .add("}")
-                .add("\n")
                 .build();
-
-        constructorBuilder.addCode(patternValidationCodeBlock);
     }
 
-    private static void createLengthValidationCodeBlock(MethodSpec.Builder constructorBuilder, ValidationField validationField) {
-        int minLength = validationField.getElement().getAnnotation(LengthValidation.class).min();
-        int maxLength = validationField.getElement().getAnnotation(LengthValidation.class).max();
-        CodeBlock lengthValidationCodeBlock = CodeBlock.builder()
-                .add("\n")
-                .add("{")
-                .add("\n")
-                .indent()
-                .add(createElementDeclarationCode(validationField))
-                .addStatement("int minLength = $L", minLength)
-                .addStatement("int maxLength = $L", maxLength)
-                .add(createErrorMessageDeclarationCode(validationField.getId()))
+    private static CodeBlock createPatternValidationCodeBlock(ValidationField field) {
+        return CodeBlock.builder()
                 .addStatement(
-                        "this.$N.addValidator(new $T($N, $N, $N, $N))",
-                        "validationSet",
-                        Constants.LENGTH_VALIDATOR,
-                        validationField.getName(),
-                        "minLength",
-                        "maxLength",
-                        "errorMessage"
+                        "validatorSet.addValidator(new $T(target.$N, target.getString($L), $S))",
+                        PATTERN_VALIDATOR,
+                        field.name,
+                        field.id.code,
+                        field.element.getAnnotation(PatternValidation.class).pattern()
                 )
-                .unindent()
-                .add("}")
-                .add("\n")
                 .build();
-
-        constructorBuilder.addCode(lengthValidationCodeBlock);
     }
 
-    private static void createOnlyNumberValidationCodeBlock(MethodSpec.Builder constructorBuilder, ValidationField validationField) {
-        CodeBlock numericOnlyValidationCodeBlock = CodeBlock.builder()
-                .add("\n")
-                .add("{")
-                .add("\n")
-                .indent()
-                .add(createElementDeclarationCode(validationField))
-                .add(createErrorMessageDeclarationCode(validationField.getId()))
+    private static CodeBlock createLengthValidationCodeBlock(ValidationField field) {
+        return CodeBlock.builder()
                 .addStatement(
-                        "this.$N.addValidator(new $T($N, $N))",
-                        "validationSet",
-                        Constants.ONLY_NUMBER_VALIDATOR,
-                        validationField.getName(),
-                        "errorMessage"
+                        "validatorSet.addValidator(new $T(target.$N, $L, $L, target.getString($L)))",
+                        LENGTH_VALIDATOR,
+                        field.name,
+                        field.element.getAnnotation(LengthValidation.class).min(),
+                        field.element.getAnnotation(LengthValidation.class).max(),
+                        field.id.code
                 )
-                .unindent()
-                .add("}")
-                .add("\n")
                 .build();
-
-        constructorBuilder.addCode(numericOnlyValidationCodeBlock);
     }
 
-    private static void createPasswordValidationCodeBlock(MethodSpec.Builder constructorBuilder, ValidationField validationField) {
-        int minPasswordLength = validationField.getElement().getAnnotation(PasswordValidation.class).min();
-        String passwordPattern = validationField.getElement().getAnnotation(PasswordValidation.class).pattern();
-        CodeBlock passwordValidationCodeBlock = CodeBlock.builder()
-                .add("\n")
-                .add("{")
-                .add("\n")
-                .indent()
-                .add(createElementDeclarationCode(validationField))
-                .addStatement("int min = $L", minPasswordLength)
-                .addStatement("String pattern = $S", passwordPattern)
-                .add(createErrorMessageDeclarationCode(validationField.getId()))
+    private static CodeBlock createOnlyNumberValidationCodeBlock(ValidationField field) {
+        return CodeBlock.builder()
                 .addStatement(
-                        "this.$N.addValidator(new $T($N, $N, $N, $N))",
-                        "validationSet",
-                        Constants.PASSWORD_VALIDATOR,
-                        validationField.getName(),
-                        "min",
-                        "pattern",
-                        "errorMessage"
+                        "validatorSet.addValidator(new $T(target.$N, target.getString($L)))",
+                        ONLY_NUMBER_VALIDATOR,
+                        field.name,
+                        field.id.code
                 )
-                .unindent()
-                .add("}")
-                .add("\n")
                 .build();
-
-        constructorBuilder.addCode(passwordValidationCodeBlock);
     }
 
-    private static void createConfirmPasswordValidationCodeBlock(
-            MethodSpec.Builder constructorBuilder,
+    private static CodeBlock createPasswordValidationCodeBlock(ValidationField field) {
+        return CodeBlock.builder()
+                .addStatement(
+                        "validatorSet.addValidator(new $T(target.$N, $L, $S, target.getString($L)))",
+                        PASSWORD_VALIDATOR,
+                        field.name,
+                        field.element.getAnnotation(PasswordValidation.class).min(),
+                        field.element.getAnnotation(PasswordValidation.class).pattern(),
+                        field.id.code
+                )
+                .build();
+    }
+
+    private static CodeBlock createConfirmPasswordValidationCodeBlock(
             ValidationField passwordField,
             ValidationField confirmPasswordField) {
-
-        CodeBlock confirmPasswordValidationCodeBlock = CodeBlock.builder()
-                .add("\n")
-                .add("{")
-                .add("\n")
-                .indent()
-                .add(createElementDeclarationCode(passwordField))
-                .add(createElementDeclarationCode(confirmPasswordField))
-                .add(createErrorMessageDeclarationCode(confirmPasswordField.getId()))
-                .addStatement(
-                        "this.$N.addValidator(new $T($N, $N, $N))",
-                        "validationSet",
-                        Constants.CONFIRM_PASSWORD_VALIDATOR,
-                        passwordField.getName(),
-                        confirmPasswordField.getName(),
-                        "errorMessage"
-                )
-                .unindent()
-                .add("}")
-                .add("\n")
-                .build();
-
-        constructorBuilder.addCode(confirmPasswordValidationCodeBlock);
-    }
-
-    private static CodeBlock createElementDeclarationCode(ValidationField validationField) {
         return CodeBlock.builder()
                 .addStatement(
-                        "$T $N = $N.$N",
-                        validationField.getTypeName(),
-                        validationField.getName(),
-                        "target",
-                        validationField.getName()
+                        "validatorSet.addValidator(new $T(target.$N, target.$N, target.getString($L)))",
+                        CONFIRM_PASSWORD_VALIDATOR,
+                        passwordField.name,
+                        confirmPasswordField.name,
+                        confirmPasswordField.id.code
                 )
                 .build();
     }
 
-    private static CodeBlock createErrorMessageDeclarationCode(Id id) {
+    private static CodeBlock createValidateOnClickCodeBlock(ValidationClass validationClass) {
+        Element button = validationClass.getValidateButton();
         return CodeBlock.builder()
+                .add("\n")
                 .addStatement(
-                        "String errorMessage = $N.getString($L)",
-                        "target",
-                        id.getCode()
+                        "target.$N.setOnClickListener(validateOnClickListener(target))",
+                        button.getSimpleName().toString()
                 )
                 .build();
     }
 
-    private static MethodSpec createValidateMethod() {
-        return MethodSpec.methodBuilder("validateFields")
-                .addAnnotation(Constants.UI_THREAD)
-                .addAnnotation(Constants.OVERRIDE)
-                .addModifiers(Modifier.PUBLIC)
-                .addStatement("return this.$N.$N()", "validationSet", "isValid")
-                .returns(TypeName.BOOLEAN)
-                .build();
-    }
-
-    private static MethodSpec createClearValidationMethod() {
-        return MethodSpec.methodBuilder("clearValidations")
-                .addAnnotation(Constants.UI_THREAD)
-                .addAnnotation(Constants.OVERRIDE)
-                .addModifiers(Modifier.PUBLIC)
-                .addStatement("this.$N.$N()", "validationSet", "clearValidators")
-                .build();
-    }
-
-    private static void createValidateOnClickCodeBlock(
-            ValidationClass validationClass,
-            MethodSpec.Builder methodSpecBuilder,
-            TypeSpec.Builder validationClassBuilder) {
-        Element element = validationClass.getValidateButton();
-
-        if (element != null) {
-            createValidateOnClickMethod(validationClass, validationClassBuilder);
-
-            methodSpecBuilder.addCode(CodeBlock.builder()
-                    .add("\n")
-                    .addStatement(
-                            "$N.$N.setOnClickListener(validateOnClickListener($N))",
-                            "target",
-                            element.getSimpleName().toString(),
-                            "target"
-                    )
-                    .build());
-        }
-    }
-
-    private static void createValidateOnClickMethod(ValidationClass validationClass, TypeSpec.Builder validationClassBuilder) {
-        validationClassBuilder.addMethod(MethodSpec.methodBuilder("validateOnClickListener")
-                .addAnnotation(Constants.UI_THREAD)
-                .addModifiers(Modifier.PRIVATE)
+    private static MethodSpec createValidateOnClickMethod(ValidationClass validationClass) {
+        return MethodSpec.methodBuilder("validateOnClickListener")
+                .addAnnotation(UI_THREAD)
+                .addModifiers(PRIVATE)
                 .addParameter(ParameterSpec.builder(
-                        validationClass.getTypeName(),
+                        validationClass.typeName,
                         "target",
-                        Modifier.FINAL
-                        ).build()
+                        FINAL
+                    ).build()
                 )
                 .addCode(
                         "return new $T() {",
-                        Constants.VIEW_ONCLICK_LISTENER
+                        VIEW_ONCLICK_LISTENER
                 )
                 .addCode("\n")
                 .addCode(CodeBlock.builder().indent().build())
                 .addCode(
                         "@$T public void onClick($T view) {",
-                        Constants.OVERRIDE,
-                        Constants.VIEW
+                        OVERRIDE,
+                        VIEW
                 )
                 .addCode("\n")
                 .addCode(CodeBlock.builder().indent().build())
-                .addCode("if(validateFields()) {")
+                .addCode("if(validatorSet.isValid()) {")
                 .addCode("\n")
                 .addCode(CodeBlock.builder().indent().build())
                 .addCode(
@@ -386,52 +259,46 @@ class JavaFiler {
                 .addCode(CodeBlock.builder().unindent().build())
                 .addCode("};")
                 .addCode("\n")
-                .returns(Constants.VIEW_ONCLICK_LISTENER).build());
+                .returns(VIEW_ONCLICK_LISTENER)
+                .build();
     }
 
-    private static void createClearValidationsOnClickCodeBlock(
-            ValidationClass validationClass,
-            MethodSpec.Builder methodSpecBuilder,
-            TypeSpec.Builder validationClassBuilder) {
-        Element element = validationClass.getClearValidationsButton();
+    private static CodeBlock createClearValidationsOnClickCodeBlock(ValidationClass validationClass) {
+        Element clearValidationsButton = validationClass.getClearValidationsButton();
 
-        if (element != null) {
-            createClearValidationsOnClickMethod(validationClass, validationClassBuilder);
-
-            methodSpecBuilder.addCode(CodeBlock.builder()
+        if (clearValidationsButton != null) {
+            return CodeBlock.builder()
                     .addStatement(
-                            "$N.$N.setOnClickListener(clearValidationsOnClickListener(target))",
-                            "target",
-                            element.getSimpleName().toString()
+                            "target.$N.setOnClickListener(clearValidationsOnClickListener(target))",
+                            clearValidationsButton.getSimpleName().toString()
                     )
-                    .build());
+                    .build();
         }
+
+        return CodeBlock.of("");
     }
 
-    private static void createClearValidationsOnClickMethod(ValidationClass validationClass, TypeSpec.Builder validationClassBuilder) {
-        validationClassBuilder.addMethod(MethodSpec.methodBuilder("clearValidationsOnClickListener")
-                .addAnnotation(Constants.UI_THREAD)
-                .addModifiers(Modifier.PRIVATE)
+    private static MethodSpec createClearValidationsOnClickMethod(ValidationClass validationClass) {
+        return MethodSpec.methodBuilder("clearValidationsOnClickListener")
+                .addAnnotation(UI_THREAD)
+                .addModifiers(PRIVATE)
                 .addParameter(ParameterSpec.builder(
-                        validationClass.getTypeName(),
+                        validationClass.typeName,
                         "target",
-                        Modifier.FINAL
-                        ).build()
+                        FINAL
+                    ).build()
                 )
-                .addCode(
-                        "return new $T() {",
-                        Constants.VIEW_ONCLICK_LISTENER
-                )
+                .addCode("return new $T() {", VIEW_ONCLICK_LISTENER)
                 .addCode("\n")
                 .addCode(CodeBlock.builder().indent().build())
                 .addCode(
                         "@$T public void onClick($T view) {",
-                        Constants.OVERRIDE,
-                        Constants.VIEW
+                        OVERRIDE,
+                        VIEW
                 )
                 .addCode("\n")
                 .addCode(CodeBlock.builder().indent().build())
-                .addCode("clearValidations();")
+                .addCode("validatorSet.clearValidators();")
                 .addCode("\n")
                 .addCode(CodeBlock.builder().unindent().build())
                 .addCode("}")
@@ -439,7 +306,22 @@ class JavaFiler {
                 .addCode(CodeBlock.builder().unindent().build())
                 .addCode("};")
                 .addCode("\n")
-                .returns(Constants.VIEW_ONCLICK_LISTENER).build());
+                .returns(VIEW_ONCLICK_LISTENER)
+                .build();
+    }
+
+    private static MethodSpec createInitMethod(ValidationClass validationClass) {
+        ClassName className = ClassName.get(validationClass.packageName, validationClass.className);
+        return MethodSpec.methodBuilder("init")
+                .addModifiers(PUBLIC, STATIC)
+                .addAnnotation(UI_THREAD)
+                .addParameter(ParameterSpec
+                        .builder(validationClass.typeName, "target")
+                        .addAnnotation(NON_NULL)
+                        .build()
+                )
+                .addStatement("new $T(target)", className)
+                .build();
     }
 
 }

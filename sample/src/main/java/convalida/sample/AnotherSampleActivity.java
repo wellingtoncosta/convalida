@@ -17,7 +17,6 @@ import convalida.annotations.OnValidationSuccess;
 import convalida.annotations.OnlyNumberValidation;
 import convalida.annotations.PatternValidation;
 import convalida.annotations.ValidateOnClick;
-import convalida.library.Convalida;
 
 /**
  * @author Wellington Costa on 05/06/17.
@@ -58,7 +57,7 @@ public class AnotherSampleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_another_sample);
         ButterKnife.bind(this);
-        Convalida.init(this);
+        AnotherSampleActivityFieldsValidation.init(this);
     }
 
     @OnValidationSuccess

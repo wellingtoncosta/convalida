@@ -17,7 +17,6 @@ import convalida.annotations.OnValidationError;
 import convalida.annotations.OnValidationSuccess;
 import convalida.annotations.PasswordValidation;
 import convalida.annotations.ValidateOnClick;
-import convalida.library.Convalida;
 
 import static convalida.library.util.Patterns.LOWER_UPPER_CASE_NUMERIC;
 
@@ -58,7 +57,7 @@ public class SampleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sample);
         ButterKnife.bind(this);
-        Convalida.init(this);
+        SampleActivityFieldsValidation.init(this);
     }
 
     @OnValidationSuccess

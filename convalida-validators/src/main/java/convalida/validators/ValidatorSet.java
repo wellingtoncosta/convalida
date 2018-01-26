@@ -48,7 +48,7 @@ public class ValidatorSet {
         }
     }
 
-    public int getValidatorsSize() {
+    int getValidatorsSize() {
         return validators.size();
     }
 

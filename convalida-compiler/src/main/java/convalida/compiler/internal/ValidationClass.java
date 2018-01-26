@@ -14,11 +14,12 @@ import javax.lang.model.util.Elements;
  */
 public class ValidationClass {
 
-    private String className;
-    private String packageName;
-    private TypeName typeName;
-    private TypeElement typeElement;
-    private List<ValidationField> fields;
+    public final String className;
+    public final String packageName;
+    public final TypeName typeName;
+    public final TypeElement typeElement;
+    public final List<ValidationField> fields;
+
     private Element validateButton;
     private Element onValidationSuccessMethod;
     private Element onValidationErrorMethod;
@@ -26,7 +27,7 @@ public class ValidationClass {
 
     public ValidationClass(Element element, Elements elements) {
         this.packageName = elements.getPackageOf(element).toString();
-        this.className = element.getSimpleName().toString() + "_Validation";
+        this.className = element.getSimpleName().toString() + "FieldsValidation";
         this.typeName = TypeName.get(element.asType());
         this.typeElement = (TypeElement) element;
         this.fields = new ArrayList<>();
@@ -34,22 +35,6 @@ public class ValidationClass {
 
     public void addField(ValidationField field) {
         fields.add(field);
-    }
-
-    public String getClassName() {
-        return className;
-    }
-
-    public String getPackageName() {
-        return packageName;
-    }
-
-    public TypeName getTypeName() {
-        return typeName;
-    }
-
-    public TypeElement getTypeElement() {
-        return typeElement;
     }
 
     public Element getValidateButton() {
@@ -84,7 +69,4 @@ public class ValidationClass {
         this.clearValidationsButton = clearValidationsButton;
     }
 
-    public List<ValidationField> getFields() {
-        return fields;
-    }
 }

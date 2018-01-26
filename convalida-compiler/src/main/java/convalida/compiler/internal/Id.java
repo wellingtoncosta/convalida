@@ -10,7 +10,7 @@ public final class Id {
     private static final ClassName ANDROID_R = ClassName.get("android", "R");
 
     private final int value;
-    private final CodeBlock code;
+    public final CodeBlock code;
 
     public Id(int value) {
         this.value = value;
@@ -22,10 +22,6 @@ public final class Id {
         this.code = className.topLevelClassName().equals(ANDROID_R)
                 ? CodeBlock.of("$L.$N", className, resourceName)
                 : CodeBlock.of("$T.$N", className, resourceName);
-    }
-
-    public CodeBlock getCode() {
-        return code;
     }
 
     @Override
