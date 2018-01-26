@@ -52,7 +52,7 @@ __Step 2__ - Initialize Convalida:
 protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_sample);
-    Convalida.init(this);
+    SampleActivityFieldsValidation.init(this);
 }
 ```
 
@@ -98,8 +98,8 @@ __Step 2__ - Add the dependencies:
 
 ```groovy
 dependencies {
-  compile 'com.github.WellingtonCosta.convalida:convalida:1.1.0'
-  annotationProcessor 'com.github.WellingtonCosta.convalida:convalida-compiler:1.1.0'
+  compile 'com.github.WellingtonCosta.convalida:convalida:1.2.0'
+  annotationProcessor 'com.github.WellingtonCosta.convalida:convalida-compiler:1.2.0'
 }
 ```
 
