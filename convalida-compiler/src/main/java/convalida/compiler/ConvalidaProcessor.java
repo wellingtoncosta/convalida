@@ -41,6 +41,7 @@ import javax.lang.model.util.Types;
 import javax.tools.Diagnostic.Kind;
 
 import convalida.annotations.ClearValidationsOnClick;
+import convalida.annotations.ConfirmEmailValidation;
 import convalida.annotations.ConfirmPasswordValidation;
 import convalida.annotations.EmailValidation;
 import convalida.annotations.LengthValidation;
@@ -58,6 +59,14 @@ import convalida.compiler.internal.ValidationField;
 import convalida.compiler.internal.scanners.IdScanner;
 import convalida.compiler.internal.scanners.RClassScanner;
 
+import static convalida.compiler.Constants.CONFIRM_EMAIL_VALIDATION;
+import static convalida.compiler.Constants.CONFIRM_PASSWORD_ANNOTATION;
+import static convalida.compiler.Constants.EMAIL_ANNOTATION;
+import static convalida.compiler.Constants.LENGTH_ANNOTATION;
+import static convalida.compiler.Constants.NOT_EMPTY_ANNOTATION;
+import static convalida.compiler.Constants.ONLY_NUMBER_ANNOTATION;
+import static convalida.compiler.Constants.PASSWORD_ANNOTATION;
+import static convalida.compiler.Constants.PATTERN_ANNOTATION;
 import static javax.lang.model.element.ElementKind.CLASS;
 import static javax.lang.model.element.ElementKind.FIELD;
 import static javax.lang.model.element.Modifier.PRIVATE;
@@ -69,13 +78,14 @@ import static javax.lang.model.element.Modifier.STATIC;
 @AutoService(Processor.class)
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedAnnotationTypes({
-        "convalida.annotations.NotEmptyValidation",
-        "convalida.annotations.EmailValidation",
-        "convalida.annotations.PatternValidation",
-        "convalida.annotations.LengthValidation",
-        "convalida.annotations.OnlyNumberValidation",
-        "convalida.annotations.PasswordValidation",
-        "convalida.annotations.ConfirmPasswordValidation"
+        NOT_EMPTY_ANNOTATION,
+        EMAIL_ANNOTATION,
+        CONFIRM_EMAIL_VALIDATION,
+        PATTERN_ANNOTATION,
+        LENGTH_ANNOTATION,
+        ONLY_NUMBER_ANNOTATION,
+        PASSWORD_ANNOTATION,
+        CONFIRM_PASSWORD_ANNOTATION
 })
 public class ConvalidaProcessor extends AbstractProcessor {
 
@@ -109,6 +119,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
 
         annotations.add(NotEmptyValidation.class);
         annotations.add(EmailValidation.class);
+        annotations.add(ConfirmEmailValidation.class);
         annotations.add(PatternValidation.class);
         annotations.add(LengthValidation.class);
         annotations.add(OnlyNumberValidation.class);
@@ -159,6 +170,16 @@ public class ConvalidaProcessor extends AbstractProcessor {
                 parseEmailValidation(element, parents, validationFields);
             } catch (Exception e) {
                 logParsingError(element, EmailValidation.class, e);
+            }
+        }
+
+        // Process each @ConfirmEmailValidation element
+        for (Element element : env.getElementsAnnotatedWith(ConfirmEmailValidation.class)) {
+            if (!SuperficialValidation.validateElement(element)) continue;
+            try {
+                parseConfirmEmailValidation(element, parents, validationFields);
+            } catch (Exception e) {
+                logParsingError(element, ConfirmEmailValidation.class, e);
             }
         }
 
@@ -374,6 +395,20 @@ public class ConvalidaProcessor extends AbstractProcessor {
         validationFields.add(new ValidationField(element, EmailValidation.class.getCanonicalName(), getId(qualifiedId)));
     }
 
+    private void parseConfirmEmailValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
+        boolean hasError = isInvalid(ConfirmEmailValidation.class, element) ||
+                isInaccessible(ConfirmEmailValidation.class, element) ||
+                !validateConfirmValidationElements(EmailValidation.class, ConfirmEmailValidation.class, element);
+
+        if (hasError) return;
+
+        int errorMessageResourceId = element.getAnnotation(ConfirmEmailValidation.class).value();
+        QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
+
+        parents.add(element.getEnclosingElement());
+        validationFields.add(new ValidationField(element, ConfirmEmailValidation.class.getCanonicalName(), getId(qualifiedId)));
+    }
+
     private void parsePatternValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
         boolean hasError = isInvalid(PatternValidation.class, element) || isInaccessible(PatternValidation.class, element);
 
@@ -464,50 +499,65 @@ public class ConvalidaProcessor extends AbstractProcessor {
     }
 
     private void parseConfirmPasswordValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
-        boolean hasError = isInvalid(ConfirmPasswordValidation.class, element) || isInaccessible(ConfirmPasswordValidation.class, element);
+        boolean hasError = isInvalid(ConfirmPasswordValidation.class, element) ||
+                isInaccessible(ConfirmPasswordValidation.class, element) ||
+                !validateConfirmValidationElements(PasswordValidation.class, ConfirmPasswordValidation.class, element);
 
-        if (hasError) {
-            return;
-        }
-
-        int elementsAnnotatedWithPasswordValidation = 0;
-        int elementsAnnotatedWithConfirmPasswordValidation = 0;
-
-        List<? extends Element> elementsOfParent = element.getEnclosingElement().getEnclosedElements();
-
-        for (Element elementOfParent : elementsOfParent) {
-            if (elementOfParent.getAnnotation(PasswordValidation.class) != null) {
-                elementsAnnotatedWithPasswordValidation++;
-            }
-
-            if (elementOfParent.getAnnotation(ConfirmPasswordValidation.class) != null) {
-                elementsAnnotatedWithConfirmPasswordValidation++;
-            }
-        }
-
-        if (elementsAnnotatedWithPasswordValidation == 0 && elementsAnnotatedWithConfirmPasswordValidation > 0) {
-            TypeElement enclosingElement = (TypeElement) element.getEnclosingElement();
-            error(
-                    element.getEnclosingElement(),
-                    "%s must have at least one element annotated with @PasswordValidation.",
-                    enclosingElement.getSimpleName()
-            );
-        }
-
-        if (elementsAnnotatedWithConfirmPasswordValidation > 1) {
-            TypeElement enclosingElement = (TypeElement) element.getEnclosingElement();
-            error(
-                    element.getEnclosingElement(),
-                    "%s must have only one element annotated with @ConfirmPasswordValidation.",
-                    enclosingElement.getSimpleName()
-            );
-        }
+        if (hasError) return;
 
         int errorMessageResourceId = element.getAnnotation(ConfirmPasswordValidation.class).value();
         QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
         parents.add(element.getEnclosingElement());
         validationFields.add(new ValidationField(element, ConfirmPasswordValidation.class.getCanonicalName(), getId(qualifiedId)));
+    }
+
+    private boolean validateConfirmValidationElements(
+            Class<? extends Annotation> primaryAnnotation,
+            Class<? extends Annotation> confirmAnnotation,
+            Element element
+    ) {
+        boolean isValid = true;
+
+        String primaryAnnotationClassName = primaryAnnotation.getSimpleName();
+        String confirmAnnotationClassName = confirmAnnotation.getSimpleName();
+
+        int elementsAnnotatedWithPrimaryValidation;
+        int elementsAnnotatedWithConfirmValidation;
+
+        List<? extends Element> elementsOfParent = element.getEnclosingElement().getEnclosedElements();
+
+        elementsAnnotatedWithPrimaryValidation = (int) elementsOfParent.stream()
+                .filter(elementOfParent -> elementOfParent.getAnnotation(primaryAnnotation) != null)
+                .count();
+
+        elementsAnnotatedWithConfirmValidation = (int) elementsOfParent.stream()
+                .filter(elementOfParent -> elementOfParent.getAnnotation(confirmAnnotation) != null)
+                .count();
+
+        if (elementsAnnotatedWithPrimaryValidation == 0 && elementsAnnotatedWithConfirmValidation > 0) {
+            isValid = false;
+            TypeElement enclosingElement = (TypeElement) element.getEnclosingElement();
+            error(
+                    element.getEnclosingElement(),
+                    "%s must have at least one element annotated with @%s.",
+                    enclosingElement.getSimpleName(),
+                    primaryAnnotationClassName
+            );
+        }
+
+        if (elementsAnnotatedWithConfirmValidation > 1) {
+            isValid = false;
+            TypeElement enclosingElement = (TypeElement) element.getEnclosingElement();
+            error(
+                    element.getEnclosingElement(),
+                    "%s must have only one element annotated with @%s.",
+                    enclosingElement.getSimpleName(),
+                    confirmAnnotationClassName
+            );
+        }
+
+        return isValid;
     }
 
     private boolean isInvalid(Class<? extends Annotation> annotationClass, Element element) {

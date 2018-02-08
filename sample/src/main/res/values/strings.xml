@@ -1,6 +1,7 @@
 <resources>
     <string name="age">Age</string>
     <string name="app_name">Convalida</string>
+    <string name="confirm_email">Confirm Email</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="email">Email</string>
     <string name="nickname">Nick Name</string>
@@ -16,7 +17,8 @@
     <string name="invalid_password">The password must have letters and numbers</string>
     <string name="min_3_characters">Enter at least 3 characters</string>
     <string name="only_numbers">Only numbers are allowed</string>
-    <string name="passwords_not_match">The passwords does not match</string>
+    <string name="passwords_not_match">Passwords does not match</string>
+    <string name="emails_not_match">Emails does not match</string>
 
     <string name="sample_1">Sample 1</string>
     <string name="sample_2">Sample 2</string>

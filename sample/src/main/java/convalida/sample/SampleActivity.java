@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import convalida.annotations.ClearValidationsOnClick;
+import convalida.annotations.ConfirmEmailValidation;
 import convalida.annotations.ConfirmPasswordValidation;
 import convalida.annotations.EmailValidation;
 import convalida.annotations.NotEmptyValidation;
@@ -35,6 +36,10 @@ public class SampleActivity extends AppCompatActivity {
     @BindView(R.id.email_layout)
     @EmailValidation(R.string.invalid_email)
     TextInputLayout emailLayout;
+
+    @BindView(R.id.confirm_email_layout)
+    @ConfirmEmailValidation(R.string.emails_not_match)
+    TextInputLayout confirmEmailLayout;
 
     @BindView(R.id.password_layout)
     @PasswordValidation(min = 3, pattern = LOWER_UPPER_CASE_NUMERIC, errorMessage = R.string.invalid_password)

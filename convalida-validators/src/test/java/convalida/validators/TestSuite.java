@@ -11,6 +11,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
         NotEmptyValidatorTest.class,
         EmailValidatorTest.class,
+        ConfirmEmailValidatorTest.class,
         LengthValidatorTest.class,
         OnlyNumberValidatorTest.class,
         PatternValidatorTest.class,

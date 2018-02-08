@@ -14,11 +14,11 @@ class Constants {
     static final ClassName VIEW                         = ClassName.get("android.view", "View");
     static final ClassName VIEW_ONCLICK_LISTENER        = ClassName.get("android.view", "View.OnClickListener");
 
-    static final ClassName VALIDATOR                    = ClassName.get("convalida.validators", "ConvalidaValidator");
     static final ClassName VALIDATOR_SET                = ClassName.get("convalida.validators", "ValidatorSet");
 
     static final String NOT_EMPTY_ANNOTATION            = "convalida.annotations.NotEmptyValidation";
     static final String EMAIL_ANNOTATION                = "convalida.annotations.EmailValidation";
+    static final String CONFIRM_EMAIL_VALIDATION        = "convalida.annotations.ConfirmEmailValidation";
     static final String PATTERN_ANNOTATION              = "convalida.annotations.PatternValidation";
     static final String LENGTH_ANNOTATION               = "convalida.annotations.LengthValidation";
     static final String ONLY_NUMBER_ANNOTATION          = "convalida.annotations.OnlyNumberValidation";
@@ -29,6 +29,7 @@ class Constants {
 
     static final ClassName NOT_EMPTY_VALIDATOR          = ClassName.get(VALIDATORS_PACKAGE, "NotEmptyValidator");
     static final ClassName EMAIL_VALIDATOR              = ClassName.get(VALIDATORS_PACKAGE, "EmailValidator");
+    static final ClassName CONFIRM_EMAIL_VALIDATOR      = ClassName.get(VALIDATORS_PACKAGE, "ConfirmEmailValidator");
     static final ClassName PATTERN_VALIDATOR            = ClassName.get(VALIDATORS_PACKAGE, "PatternValidator");
     static final ClassName LENGTH_VALIDATOR             = ClassName.get(VALIDATORS_PACKAGE, "LengthValidator");
     static final ClassName ONLY_NUMBER_VALIDATOR        = ClassName.get(VALIDATORS_PACKAGE, "OnlyNumberValidator");

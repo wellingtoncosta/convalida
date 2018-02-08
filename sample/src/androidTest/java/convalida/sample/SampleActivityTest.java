@@ -59,6 +59,9 @@ public class SampleActivityTest {
         onView(withText(R.string.invalid_email))
                 .check(doesNotExist());
 
+        onView(withText(R.string.emails_not_match))
+                .check(doesNotExist());
+
         onView(withText(R.string.invalid_password))
                 .check(doesNotExist());
 
@@ -80,6 +83,15 @@ public class SampleActivityTest {
         TestUtils.testFieldWithAnInvalidValue(R.id.email_field, R.string.invalid_email, "well@email");
 
         TestUtils.testFieldWithAValidValue(R.id.email_field, R.string.invalid_email, "well@email.com");
+    }
+
+    @Test
+    public void testConfirmEmailField() {
+        TestUtils.testFieldWithAValidValue(R.id.email_field, R.string.invalid_email, "wellington@email.com");
+
+        TestUtils.testFieldWithAnInvalidValue(R.id.confirm_email_field, R.string.emails_not_match, "wellington@email.co");
+
+        TestUtils.testFieldWithAValidValue(R.id.confirm_email_field, R.string.emails_not_match, "wellington@email.com");
     }
 
     @Test

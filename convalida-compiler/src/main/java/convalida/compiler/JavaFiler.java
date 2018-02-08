@@ -17,6 +17,8 @@ import convalida.annotations.PatternValidation;
 import convalida.compiler.internal.ValidationClass;
 import convalida.compiler.internal.ValidationField;
 
+import static convalida.compiler.Constants.CONFIRM_EMAIL_VALIDATION;
+import static convalida.compiler.Constants.CONFIRM_EMAIL_VALIDATOR;
 import static convalida.compiler.Constants.CONFIRM_PASSWORD_ANNOTATION;
 import static convalida.compiler.Constants.CONFIRM_PASSWORD_VALIDATOR;
 import static convalida.compiler.Constants.EMAIL_ANNOTATION;
@@ -87,6 +89,13 @@ class JavaFiler {
                 case EMAIL_ANNOTATION:
                     builder.add(createEmailValidationCodeBlock(field));
                     break;
+                case CONFIRM_EMAIL_VALIDATION:
+                    ValidationField emailField = validationClass.fields.stream()
+                            .filter(streamField -> streamField.annotationClass.equals(EMAIL_ANNOTATION))
+                            .collect(Collectors.toList()).get(0);
+
+                    builder.add(createConfirmEmailValidationCodeBlock(emailField, field));
+                    break;
                 case PATTERN_ANNOTATION:
                     builder.add(createPatternValidationCodeBlock(field));
                     break;
@@ -132,6 +141,20 @@ class JavaFiler {
                         EMAIL_VALIDATOR,
                         field.name,
                         field.id.code
+                )
+                .build();
+    }
+
+    private static CodeBlock createConfirmEmailValidationCodeBlock(
+            ValidationField emailField,
+            ValidationField confirmEmailField) {
+        return CodeBlock.builder()
+                .addStatement(
+                        "validatorSet.addValidator(new $T(target.$N, target.$N, target.getString($L)))",
+                        CONFIRM_EMAIL_VALIDATOR,
+                        emailField.name,
+                        confirmEmailField.name,
+                        confirmEmailField.id.code
                 )
                 .build();
     }
