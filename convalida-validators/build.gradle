@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
 apply plugin: 'jacoco-android'
 apply plugin: 'com.github.dcendents.android-maven'
 group = 'com.github.WellingtonCosta'
@@ -28,16 +27,28 @@ dependencies {
     testImplementation deps.junit
     testImplementation 'org.mockito:mockito-core:2.13.0'
     testImplementation 'org.powermock:powermock-api-mockito2:2.0.0-beta.5'
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 
-jacocoAndroidUnitTestReport {
-    excludes += ['**/AbstractValidator.*']
+task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest'], overwrite: true) {
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
 
-    csv.enabled false
-    html.enabled true
-    xml.enabled true
+    def fileFilter = ['**/AbstractValidator.*', 'convalida/validators/util/**', '**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*', '**/*Test*.*', 'android/**/*.*']
+    def debugTree = fileTree(dir: "${buildDir}/intermediates/classes/debug", excludes: fileFilter)
+    def kotlinDebugTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/debug", excludes: fileFilter)
+    def mainSrc = "${project.projectDir}/src/androidTest/java"
+
+    sourceDirectories = files([mainSrc])
+    classDirectories = files([debugTree], [kotlinDebugTree])
+    executionData = fileTree(dir: "$buildDir", includes: [
+            "jacoco/testDebugUnitTest.exec",
+            "outputs/code-coverage/connected/*coverage.ec"
+    ])
 }
+
 repositories {
     mavenCentral()
 }

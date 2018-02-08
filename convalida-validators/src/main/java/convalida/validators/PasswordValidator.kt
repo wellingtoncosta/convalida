@@ -6,9 +6,7 @@ import java.util.regex.Pattern
 /**
  * @author  Wellington Costa on 21/06/2017.
  */
-class PasswordValidator(editText: EditText, private var min: Int, pattern: String, errorMessage: String) : AbstractValidator(editText, errorMessage) {
-
-    private var pattern: String? = pattern
+class PasswordValidator(editText: EditText, private var min: Int, private val pattern: String, errorMessage: String) : AbstractValidator(editText, errorMessage) {
 
     override fun isNotValid(value: String): Boolean {
         var hasError = value.isEmpty()
@@ -17,8 +15,8 @@ class PasswordValidator(editText: EditText, private var min: Int, pattern: Strin
             hasError = hasError or (value.length < min)
         }
 
-        if (pattern != null && !pattern!!.isEmpty()) {
-            hasError = hasError or !Pattern.matches(pattern!!, value)
+        if (!pattern.isEmpty()) {
+            hasError = hasError or !Pattern.matches(pattern, value)
         }
 
         return hasError
