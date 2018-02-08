@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'jacoco-android'
 apply plugin: 'com.github.dcendents.android-maven'
 group = 'com.github.WellingtonCosta'
@@ -26,6 +28,7 @@ dependencies {
     testImplementation deps.junit
     testImplementation 'org.mockito:mockito-core:2.13.0'
     testImplementation 'org.powermock:powermock-api-mockito2:2.0.0-beta.5'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
 jacocoAndroidUnitTestReport {
@@ -34,4 +37,7 @@ jacocoAndroidUnitTestReport {
     csv.enabled false
     html.enabled true
     xml.enabled true
+}
+repositories {
+    mavenCentral()
 }
