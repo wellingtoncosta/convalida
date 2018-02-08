@@ -20,42 +20,42 @@ class ValidatorSetTest : BaseTest() {
 
     @Test
     fun addOneValidator() {
-        validatorSet.addValidator(NotEmptyValidator(mockEditText, errorMessage))
+        validatorSet.addValidator(NotEmptyValidator(mockEditText, errorMessage, true))
         assertEquals(validatorSet.validatorsSize, 1)
     }
 
     @Test
     fun addTwoValidators() {
-        validatorSet.addValidator(NotEmptyValidator(mockEditText, errorMessage))
-        validatorSet.addValidator(EmailValidator(mockEditText, errorMessage))
+        validatorSet.addValidator(NotEmptyValidator(mockEditText, errorMessage, true))
+        validatorSet.addValidator(EmailValidator(mockEditText, errorMessage, true))
         assertEquals(validatorSet.validatorsSize, 2)
     }
 
     @Test
     fun addThreeValidators() {
-        validatorSet.addValidator(NotEmptyValidator(mockEditText, errorMessage))
-        validatorSet.addValidator(EmailValidator(mockEditText, errorMessage))
-        validatorSet.addValidator(LengthValidator(mockEditText,0, 5, errorMessage))
+        validatorSet.addValidator(NotEmptyValidator(mockEditText, errorMessage, true))
+        validatorSet.addValidator(EmailValidator(mockEditText, errorMessage, true))
+        validatorSet.addValidator(LengthValidator(mockEditText,0, 5, errorMessage, true))
         assertEquals(validatorSet.validatorsSize, 3)
     }
 
     @Test
     fun executeValidationsWithSuccess() {
-        validatorSet.addValidator(NotEmptyValidator(mockEditText, errorMessage))
+        validatorSet.addValidator(NotEmptyValidator(mockEditText, errorMessage, true))
         `when`(mockEditText.text.toString()).thenReturn("test")
         assertEquals(validatorSet.isValid(), true)
     }
 
     @Test
     fun executeValidationsWithError() {
-        validatorSet.addValidator(NotEmptyValidator(mockEditText, errorMessage))
+        validatorSet.addValidator(NotEmptyValidator(mockEditText, errorMessage, true))
         `when`(mockEditText.text.toString()).thenReturn("")
         assertEquals(validatorSet.isValid(), false)
     }
 
     @Test
     fun clearValidations() {
-        validatorSet.addValidator(NotEmptyValidator(mockEditText, errorMessage))
+        validatorSet.addValidator(NotEmptyValidator(mockEditText, errorMessage, true))
         validatorSet.clearValidators()
         assertEquals(mockEditText.error, null)
     }
