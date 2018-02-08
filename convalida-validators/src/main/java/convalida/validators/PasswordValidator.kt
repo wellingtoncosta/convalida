@@ -6,7 +6,7 @@ import java.util.regex.Pattern
 /**
  * @author  Wellington Costa on 21/06/2017.
  */
-class PasswordValidator(editText: EditText, private var min: Int, private val pattern: String, errorMessage: String) : AbstractValidator(editText, errorMessage) {
+class PasswordValidator(editText: EditText, private var min: Int, private val pattern: String, errorMessage: String, autoDismiss: Boolean) : AbstractValidator(editText, errorMessage, autoDismiss) {
 
     override fun isNotValid(value: String): Boolean {
         var hasError = value.isEmpty()

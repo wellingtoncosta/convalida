@@ -5,7 +5,7 @@ import android.widget.EditText
 /**
  * @author Wellington Costa on 27/06/2017.
  */
-class LengthValidator(editText: EditText, private var min: Int, private var max: Int, errorMessage: String) : AbstractValidator(editText, errorMessage) {
+class LengthValidator(editText: EditText, private var min: Int, private var max: Int, errorMessage: String, autoDismiss: Boolean) : AbstractValidator(editText, errorMessage, autoDismiss) {
 
     override fun isNotValid(value: String): Boolean {
         var hasError = value.length < min

@@ -12,14 +12,14 @@ class EmailValidatorTest : BaseTest() {
 
     @Test
     fun invalidEmail() {
-        val validatorWithEditText = EmailValidator(mockEditText, errorMessage)
+        val validatorWithEditText = EmailValidator(mockEditText, errorMessage, true)
         `when`(mockEditText.text.toString()).thenReturn("test@email")
         assertEquals(validatorWithEditText.validate(), false)
     }
 
     @Test
     fun validEmail() {
-        val validatorWithEditText = EmailValidator(mockEditText, errorMessage)
+        val validatorWithEditText = EmailValidator(mockEditText, errorMessage, true)
         `when`(mockEditText.text.toString()).thenReturn("test@email.com")
         assertEquals(validatorWithEditText.validate(), true)
     }

@@ -12,14 +12,14 @@ class PatternValidatorTest : BaseTest() {
 
     @Test
     fun valueNotContainsLettersAndNumbers() {
-        val validatorWithEditText = PatternValidator(mockEditText, errorMessage, LETTERS_AND_NUMBERS_CASE_INSENSITIVE_REGEX)
+        val validatorWithEditText = PatternValidator(mockEditText, errorMessage, LETTERS_AND_NUMBERS_CASE_INSENSITIVE_REGEX, true)
         `when`(mockEditText.text.toString()).thenReturn("qweQWE")
         assertEquals(validatorWithEditText.validate(), false)
     }
 
     @Test
     fun valueContainsLettersAndNumbers() {
-        val validatorWithEditText = PatternValidator(mockEditText, errorMessage, LETTERS_AND_NUMBERS_CASE_INSENSITIVE_REGEX)
+        val validatorWithEditText = PatternValidator(mockEditText, errorMessage, LETTERS_AND_NUMBERS_CASE_INSENSITIVE_REGEX, true)
         `when`(mockEditText.text.toString()).thenReturn("qweQWE123")
         assertEquals(validatorWithEditText.validate(), true)
     }

@@ -30,15 +30,15 @@ public class SampleActivity extends AppCompatActivity {
     LinearLayout linearLayout;
 
     @BindView(R.id.name_field)
-    @NotEmptyValidation(R.string.field_required)
+    @NotEmptyValidation(errorMessage = R.string.field_required)
     EditText nameField;
 
     @BindView(R.id.email_field)
-    @EmailValidation(R.string.invalid_email)
+    @EmailValidation(errorMessage = R.string.invalid_email)
     EditText emailField;
 
     @BindView(R.id.confirm_email_field)
-    @ConfirmEmailValidation(R.string.emails_not_match)
+    @ConfirmEmailValidation(errorMessage = R.string.emails_not_match)
     EditText confirmEmailField;
 
     @BindView(R.id.password_field)
@@ -46,7 +46,7 @@ public class SampleActivity extends AppCompatActivity {
     EditText passwordField;
 
     @BindView(R.id.confirm_password_field)
-    @ConfirmPasswordValidation(R.string.passwords_not_match)
+    @ConfirmPasswordValidation(errorMessage = R.string.passwords_not_match)
     EditText confirmPasswordField;
 
     @ValidateOnClick

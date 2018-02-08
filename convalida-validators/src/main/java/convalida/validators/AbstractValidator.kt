@@ -6,7 +6,7 @@ import convalida.validators.util.EditTextUtils
 /**
  * @author Wellington Costa on 21/06/2017.
  */
-abstract class AbstractValidator(private val editText: EditText, private val errorMessage: String) : Validator {
+abstract class AbstractValidator(private val editText: EditText, private val errorMessage: String, private val autoDismiss: Boolean) : Validator {
 
     private var hasError: Boolean = false
 
@@ -33,7 +33,9 @@ abstract class AbstractValidator(private val editText: EditText, private val err
 
     init {
         this.hasError = false
-        EditTextUtils.addOnTextChangedListener(editText, ::executeValidation)
+        if(autoDismiss) {
+            EditTextUtils.addOnTextChangedListener(editText, ::executeValidation)
+        }
     }
 
 }

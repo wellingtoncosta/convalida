@@ -12,14 +12,14 @@ class OnlyNumberValidatorTest : BaseTest() {
 
     @Test
     fun valueIsNotNumber() {
-        val validatorWithEditText = OnlyNumberValidator(mockEditText, errorMessage)
+        val validatorWithEditText = OnlyNumberValidator(mockEditText, errorMessage, true)
         `when`(mockEditText.text.toString()).thenReturn("test")
         assertEquals(validatorWithEditText.validate(), false)
     }
 
     @Test
     fun valueIsNumber() {
-        val validatorWithEditText = OnlyNumberValidator(mockEditText, errorMessage)
+        val validatorWithEditText = OnlyNumberValidator(mockEditText, errorMessage, true)
         `when`(mockEditText.getText().toString()).thenReturn("1234")
         assertEquals(validatorWithEditText.validate(), true)
     }

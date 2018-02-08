@@ -12,14 +12,14 @@ class NotEmptyValidatorTest : BaseTest() {
 
     @Test
     fun emptyValue() {
-        val validatorWithEditText = NotEmptyValidator(mockEditText, errorMessage)
+        val validatorWithEditText = NotEmptyValidator(mockEditText, errorMessage, true)
         `when`(mockEditText.text.toString()).thenReturn("")
         assertEquals(validatorWithEditText.validate(), false)
     }
 
     @Test
     fun validValue() {
-        val validatorWithEditText = NotEmptyValidator(mockEditText, errorMessage)
+        val validatorWithEditText = NotEmptyValidator(mockEditText, errorMessage, true)
         `when`(mockEditText.text.toString()).thenReturn("test")
         assertEquals(validatorWithEditText.validate(), true)
     }

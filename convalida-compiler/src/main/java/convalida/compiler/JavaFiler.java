@@ -82,7 +82,7 @@ class JavaFiler {
         CodeBlock.Builder builder = CodeBlock.builder();
 
         validationClass.fields.forEach(field -> {
-            switch (field.annotationClass) {
+            switch (field.annotationClassName) {
                 case NOT_EMPTY_ANNOTATION:
                     builder.add(createNotEmptyValidationCodeBlock(field));
                     break;
@@ -91,7 +91,7 @@ class JavaFiler {
                     break;
                 case CONFIRM_EMAIL_VALIDATION:
                     ValidationField emailField = validationClass.fields.stream()
-                            .filter(streamField -> streamField.annotationClass.equals(EMAIL_ANNOTATION))
+                            .filter(streamField -> streamField.annotationClassName.equals(EMAIL_ANNOTATION))
                             .collect(Collectors.toList()).get(0);
 
                     builder.add(createConfirmEmailValidationCodeBlock(emailField, field));
@@ -110,7 +110,7 @@ class JavaFiler {
                     break;
                 case CONFIRM_PASSWORD_ANNOTATION:
                     ValidationField passwordField = validationClass.fields.stream()
-                            .filter(streamField -> streamField.annotationClass.equals(PASSWORD_ANNOTATION))
+                            .filter(streamField -> streamField.annotationClassName.equals(PASSWORD_ANNOTATION))
                             .collect(Collectors.toList()).get(0);
 
                     builder.add(createConfirmPasswordValidationCodeBlock(passwordField, field));
@@ -126,10 +126,11 @@ class JavaFiler {
     private static CodeBlock createNotEmptyValidationCodeBlock(ValidationField field) {
         return CodeBlock.builder()
                 .addStatement(
-                        "validatorSet.addValidator(new $T(target.$N, target.getString($L)))",
+                        "validatorSet.addValidator(new $T(target.$N, target.getString($L), $L))",
                         NOT_EMPTY_VALIDATOR,
                         field.name,
-                        field.id.code
+                        field.id.code,
+                        field.autoDismiss
                 )
                 .build();
     }
@@ -137,10 +138,11 @@ class JavaFiler {
     private static CodeBlock createEmailValidationCodeBlock(ValidationField field) {
         return CodeBlock.builder()
                 .addStatement(
-                        "validatorSet.addValidator(new $T(target.$N, target.getString($L)))",
+                        "validatorSet.addValidator(new $T(target.$N, target.getString($L), $L))",
                         EMAIL_VALIDATOR,
                         field.name,
-                        field.id.code
+                        field.id.code,
+                        field.autoDismiss
                 )
                 .build();
     }
@@ -150,11 +152,12 @@ class JavaFiler {
             ValidationField confirmEmailField) {
         return CodeBlock.builder()
                 .addStatement(
-                        "validatorSet.addValidator(new $T(target.$N, target.$N, target.getString($L)))",
+                        "validatorSet.addValidator(new $T(target.$N, target.$N, target.getString($L), $L))",
                         CONFIRM_EMAIL_VALIDATOR,
                         emailField.name,
                         confirmEmailField.name,
-                        confirmEmailField.id.code
+                        confirmEmailField.id.code,
+                        confirmEmailField.autoDismiss
                 )
                 .build();
     }
@@ -162,11 +165,12 @@ class JavaFiler {
     private static CodeBlock createPatternValidationCodeBlock(ValidationField field) {
         return CodeBlock.builder()
                 .addStatement(
-                        "validatorSet.addValidator(new $T(target.$N, target.getString($L), $S))",
+                        "validatorSet.addValidator(new $T(target.$N, target.getString($L), $S, $L))",
                         PATTERN_VALIDATOR,
                         field.name,
                         field.id.code,
-                        field.element.getAnnotation(PatternValidation.class).pattern()
+                        field.element.getAnnotation(PatternValidation.class).pattern(),
+                        field.autoDismiss
                 )
                 .build();
     }
@@ -174,12 +178,13 @@ class JavaFiler {
     private static CodeBlock createLengthValidationCodeBlock(ValidationField field) {
         return CodeBlock.builder()
                 .addStatement(
-                        "validatorSet.addValidator(new $T(target.$N, $L, $L, target.getString($L)))",
+                        "validatorSet.addValidator(new $T(target.$N, $L, $L, target.getString($L), $L))",
                         LENGTH_VALIDATOR,
                         field.name,
                         field.element.getAnnotation(LengthValidation.class).min(),
                         field.element.getAnnotation(LengthValidation.class).max(),
-                        field.id.code
+                        field.id.code,
+                        field.autoDismiss
                 )
                 .build();
     }
@@ -187,10 +192,11 @@ class JavaFiler {
     private static CodeBlock createOnlyNumberValidationCodeBlock(ValidationField field) {
         return CodeBlock.builder()
                 .addStatement(
-                        "validatorSet.addValidator(new $T(target.$N, target.getString($L)))",
+                        "validatorSet.addValidator(new $T(target.$N, target.getString($L), $L))",
                         ONLY_NUMBER_VALIDATOR,
                         field.name,
-                        field.id.code
+                        field.id.code,
+                        field.autoDismiss
                 )
                 .build();
     }
@@ -198,12 +204,13 @@ class JavaFiler {
     private static CodeBlock createPasswordValidationCodeBlock(ValidationField field) {
         return CodeBlock.builder()
                 .addStatement(
-                        "validatorSet.addValidator(new $T(target.$N, $L, $S, target.getString($L)))",
+                        "validatorSet.addValidator(new $T(target.$N, $L, $S, target.getString($L), $L))",
                         PASSWORD_VALIDATOR,
                         field.name,
                         field.element.getAnnotation(PasswordValidation.class).min(),
                         field.element.getAnnotation(PasswordValidation.class).pattern(),
-                        field.id.code
+                        field.id.code,
+                        field.autoDismiss
                 )
                 .build();
     }
@@ -213,11 +220,12 @@ class JavaFiler {
             ValidationField confirmPasswordField) {
         return CodeBlock.builder()
                 .addStatement(
-                        "validatorSet.addValidator(new $T(target.$N, target.$N, target.getString($L)))",
+                        "validatorSet.addValidator(new $T(target.$N, target.$N, target.getString($L), $L))",
                         CONFIRM_PASSWORD_VALIDATOR,
                         passwordField.name,
                         confirmPasswordField.name,
-                        confirmPasswordField.id.code
+                        confirmPasswordField.id.code,
+                        confirmPasswordField.autoDismiss
                 )
                 .build();
     }

@@ -5,10 +5,11 @@ import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.CLASS;
+import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 /**
  * @author Wellington Costa on 19/01/2018.
  */
 @Target(METHOD)
-@Retention(CLASS)
+@Retention(SOURCE)
 public @interface OnValidationSuccess { }

@@ -373,11 +373,17 @@ public class ConvalidaProcessor extends AbstractProcessor {
             return;
         }
 
-        int errorMessageResourceId = element.getAnnotation(NotEmptyValidation.class).value();
+        int errorMessageResourceId = element.getAnnotation(NotEmptyValidation.class).errorMessage();
+        boolean autoDismiss = element.getAnnotation(NotEmptyValidation.class).autoDismiss();
         QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
         parents.add(element.getEnclosingElement());
-        validationFields.add(new ValidationField(element, NotEmptyValidation.class.getCanonicalName(), getId(qualifiedId)));
+        validationFields.add(new ValidationField(
+                element,
+                NotEmptyValidation.class,
+                getId(qualifiedId),
+                autoDismiss
+        ));
     }
 
     private void parseEmailValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
@@ -387,11 +393,17 @@ public class ConvalidaProcessor extends AbstractProcessor {
             return;
         }
 
-        int errorMessageResourceId = element.getAnnotation(EmailValidation.class).value();
+        int errorMessageResourceId = element.getAnnotation(EmailValidation.class).errorMessage();
+        boolean autoDismiss = element.getAnnotation(EmailValidation.class).autoDismiss();
         QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
         parents.add(element.getEnclosingElement());
-        validationFields.add(new ValidationField(element, EmailValidation.class.getCanonicalName(), getId(qualifiedId)));
+        validationFields.add(new ValidationField(
+                element,
+                EmailValidation.class,
+                getId(qualifiedId),
+                autoDismiss
+        ));
     }
 
     private void parseConfirmEmailValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
@@ -401,11 +413,17 @@ public class ConvalidaProcessor extends AbstractProcessor {
 
         if (hasError) return;
 
-        int errorMessageResourceId = element.getAnnotation(ConfirmEmailValidation.class).value();
+        int errorMessageResourceId = element.getAnnotation(ConfirmEmailValidation.class).errorMessage();
+        boolean autoDismiss = element.getAnnotation(ConfirmEmailValidation.class).autoDismiss();
         QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
         parents.add(element.getEnclosingElement());
-        validationFields.add(new ValidationField(element, ConfirmEmailValidation.class.getCanonicalName(), getId(qualifiedId)));
+        validationFields.add(new ValidationField(
+                element,
+                ConfirmEmailValidation.class,
+                getId(qualifiedId),
+                autoDismiss
+        ));
     }
 
     private void parsePatternValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
@@ -416,10 +434,16 @@ public class ConvalidaProcessor extends AbstractProcessor {
         }
 
         int errorMessageResourceId = element.getAnnotation(PatternValidation.class).errorMessage();
+        boolean autoDismiss = element.getAnnotation(PatternValidation.class).autoDismiss();
         QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
         parents.add(element.getEnclosingElement());
-        validationFields.add(new ValidationField(element, PatternValidation.class.getCanonicalName(), getId(qualifiedId)));
+        validationFields.add(new ValidationField(
+                element,
+                PatternValidation.class,
+                getId(qualifiedId),
+                autoDismiss
+        ));
     }
 
     private void parseLengthValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
@@ -442,10 +466,16 @@ public class ConvalidaProcessor extends AbstractProcessor {
             }
 
             int errorMessageResourceId = element.getAnnotation(LengthValidation.class).errorMessage();
+            boolean autoDismiss = element.getAnnotation(LengthValidation.class).autoDismiss();
             QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
             parents.add(element.getEnclosingElement());
-            validationFields.add(new ValidationField(element, LengthValidation.class.getCanonicalName(), getId(qualifiedId)));
+            validationFields.add(new ValidationField(
+                    element,
+                    LengthValidation.class,
+                    getId(qualifiedId),
+                    autoDismiss
+            ));
         } catch (Exception e) {
             logParsingError(element, LengthValidation.class, e);
         }
@@ -458,11 +488,17 @@ public class ConvalidaProcessor extends AbstractProcessor {
             return;
         }
 
-        int errorMessageResourceId = element.getAnnotation(OnlyNumberValidation.class).value();
+        int errorMessageResourceId = element.getAnnotation(OnlyNumberValidation.class).errorMessage();
+        boolean autoDismiss = element.getAnnotation(OnlyNumberValidation.class).autoDismiss();
         QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
         parents.add(element.getEnclosingElement());
-        validationFields.add(new ValidationField(element, OnlyNumberValidation.class.getCanonicalName(), getId(qualifiedId)));
+        validationFields.add(new ValidationField(
+                element,
+                OnlyNumberValidation.class,
+                getId(qualifiedId),
+                autoDismiss
+        ));
     }
 
     private void parsePasswordValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
@@ -491,10 +527,16 @@ public class ConvalidaProcessor extends AbstractProcessor {
         }
 
         int errorMessageResourceId = element.getAnnotation(PasswordValidation.class).errorMessage();
+        boolean autoDismiss = element.getAnnotation(PasswordValidation.class).autoDismiss();
         QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
         parents.add(element.getEnclosingElement());
-        validationFields.add(new ValidationField(element, PasswordValidation.class.getCanonicalName(), getId(qualifiedId)));
+        validationFields.add(new ValidationField(
+                element,
+                PasswordValidation.class,
+                getId(qualifiedId),
+                autoDismiss
+        ));
     }
 
     private void parseConfirmPasswordValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
@@ -504,11 +546,17 @@ public class ConvalidaProcessor extends AbstractProcessor {
 
         if (hasError) return;
 
-        int errorMessageResourceId = element.getAnnotation(ConfirmPasswordValidation.class).value();
+        int errorMessageResourceId = element.getAnnotation(ConfirmPasswordValidation.class).errorMessage();
+        boolean autoDismiss = element.getAnnotation(ConfirmPasswordValidation.class).autoDismiss();
         QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
         parents.add(element.getEnclosingElement());
-        validationFields.add(new ValidationField(element, ConfirmPasswordValidation.class.getCanonicalName(), getId(qualifiedId)));
+        validationFields.add(new ValidationField(
+                element,
+                ConfirmPasswordValidation.class,
+                getId(qualifiedId),
+                autoDismiss
+        ));
     }
 
     private boolean validateConfirmValidationElements(

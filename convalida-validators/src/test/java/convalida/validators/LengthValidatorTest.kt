@@ -12,28 +12,28 @@ class LengthValidatorTest : BaseTest() {
 
     @Test
     fun textLengthLessThan5() {
-        val validatorWithEditText = LengthValidator(mockEditText, 5, 0, errorMessage)
+        val validatorWithEditText = LengthValidator(mockEditText, 5, 0, errorMessage, true)
         `when`(mockEditText.text.toString()).thenReturn("test")
         assertEquals(validatorWithEditText.validate(), false)
     }
 
     @Test
     fun textLengthGreaterThan5() {
-        val validatorWithEditText = LengthValidator(mockEditText, 5, 0, errorMessage)
+        val validatorWithEditText = LengthValidator(mockEditText, 5, 0, errorMessage, true)
         `when`(mockEditText.text.toString()).thenReturn("test@test")
         assertEquals(validatorWithEditText.validate(), true)
     }
 
     @Test
     fun textLengthLessThan8() {
-        val validatorWithEditText = LengthValidator(mockEditText, 0, 8, errorMessage)
+        val validatorWithEditText = LengthValidator(mockEditText, 0, 8, errorMessage, true)
         `when`(mockEditText.text.toString()).thenReturn("test@test")
         assertEquals(validatorWithEditText.validate(), false)
     }
 
     @Test
     fun textLengthGreaterThan8() {
-        val validatorWithEditText = LengthValidator(mockEditText, 0, 9, errorMessage)
+        val validatorWithEditText = LengthValidator(mockEditText, 0, 9, errorMessage, true)
         `when`(mockEditText.text.toString()).thenReturn("test@test")
         assertEquals(validatorWithEditText.validate(), true)
     }
