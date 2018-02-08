@@ -31,6 +31,9 @@ TextInputLayout ageLayout;
 @EmailValidation(R.string.invalid_email)
 TextInputLayout emailLayout;
 
+@ConfirmEmailValidation(R.string.emails_not_match)
+TextInputLayout confirmEmailLayout;
+
 @PatternValidation(errorMessage = R.string.invalid_phone, pattern = PHONE_PATTERN)
 TextInputLayout phoneLayout;
 
@@ -98,8 +101,8 @@ __Step 2__ - Add the dependencies:
 
 ```groovy
 dependencies {
-  compile 'com.github.WellingtonCosta.convalida:convalida:1.2.0'
-  annotationProcessor 'com.github.WellingtonCosta.convalida:convalida-compiler:1.2.0'
+  compile 'com.github.WellingtonCosta.convalida:convalida:1.2.1'
+  annotationProcessor 'com.github.WellingtonCosta.convalida:convalida-compiler:1.2.1'
 }
 ```
 
