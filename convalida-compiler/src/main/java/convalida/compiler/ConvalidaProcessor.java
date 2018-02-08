@@ -89,7 +89,6 @@ import static javax.lang.model.element.Modifier.STATIC;
 })
 public class ConvalidaProcessor extends AbstractProcessor {
 
-    private static final String TEXT_INPUT_LAYOUT_TYPE = "android.support.design.widget.TextInputLayout";
     private static final String EDIT_TEXT_TYPE = "android.widget.EditText";
 
     private Elements elementUtils;
@@ -579,7 +578,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
         }
 
         // Verify element type
-        if (!TEXT_INPUT_LAYOUT_TYPE.equals(elementType) && !EDIT_TEXT_TYPE.equals(elementType)) {
+        if (!EDIT_TEXT_TYPE.equals(elementType)) { // improve this check
             error(
                     element,
                     "@%s must only be applied in fields of the type TextInputLaytout or EditText. (%s.%s)",
