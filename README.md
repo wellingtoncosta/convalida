@@ -20,28 +20,28 @@ __Step 1__ - Annotate your fields with [Convalida Annotations][3]:
 
 ```java
 @NotEmptyValidation(R.string.field_required)
-TextInputLayout nameLayout;
+EditText nameField;
 
 @LengthValidation(min = 3, errorMessage = R.string.min_3_characters)
-TextInputLayout nickNameLayout;
+EditText nickNameField;
 
 @OnlyNumberValidation(R.string.only_numbers)
-TextInputLayout ageLayout;
+EditText ageField;
 
 @EmailValidation(R.string.invalid_email)
-TextInputLayout emailLayout;
+EditText emailField;
 
 @ConfirmEmailValidation(R.string.emails_not_match)
-TextInputLayout confirmEmailLayout;
+EditText confirmEmailField;
 
 @PatternValidation(errorMessage = R.string.invalid_phone, pattern = PHONE_PATTERN)
-TextInputLayout phoneLayout;
+EditText phoneField;
 
 @PasswordValidation(min = 3, errorMessage = R.string.invalid_password)
-TextInputLayout passwordLayout;
+EditText passwordField;
 
 @ConfirmPasswordValidation(R.string.passwords_not_match)
-TextInputLayout confirmPasswordLayout;
+EditText confirmPasswordField;
 
 @ValidateOnClick
 Button validateButton;
@@ -101,8 +101,8 @@ __Step 2__ - Add the dependencies:
 
 ```groovy
 dependencies {
-  compile 'com.github.WellingtonCosta.convalida:convalida:1.2.2'
-  annotationProcessor 'com.github.WellingtonCosta.convalida:convalida-compiler:1.2.2'
+  compile 'com.github.WellingtonCosta.convalida:convalida:1.3.0'
+  annotationProcessor 'com.github.WellingtonCosta.convalida:convalida-compiler:1.3.0'
 }
 ```
 
