@@ -2,9 +2,9 @@ package convalida.sample;
 
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import butterknife.BindView;
@@ -28,21 +28,21 @@ public class AnotherSampleActivity extends AppCompatActivity {
     @BindView(R.id.linear_layout)
     LinearLayout linearLayout;
 
-    @BindView(R.id.name_layout)
+    @BindView(R.id.name_field)
     @NotEmptyValidation(R.string.field_required)
-    TextInputLayout nameLayout;
+    EditText nameField;
 
-    @BindView(R.id.nickname_layout)
+    @BindView(R.id.nickname_field)
     @LengthValidation(min = 3, errorMessage = R.string.min_3_characters)
-    TextInputLayout nickNameLayout;
+    EditText nickNameField;
 
-    @BindView(R.id.age_layout)
+    @BindView(R.id.age_field)
     @OnlyNumberValidation(R.string.only_numbers)
-    TextInputLayout ageLayout;
+    EditText ageField;
 
-    @BindView(R.id.phone_layout)
+    @BindView(R.id.phone_field)
     @PatternValidation(pattern = PHONE_PATTERN, errorMessage = R.string.invalid_phone)
-    TextInputLayout phoneLayout;
+    EditText phoneField;
 
     @ValidateOnClick
     @BindView(R.id.validate_button)

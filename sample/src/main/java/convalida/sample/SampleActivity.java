@@ -2,9 +2,9 @@ package convalida.sample;
 
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import butterknife.BindView;
@@ -29,25 +29,25 @@ public class SampleActivity extends AppCompatActivity {
     @BindView(R.id.linear_layout)
     LinearLayout linearLayout;
 
-    @BindView(R.id.name_layout)
+    @BindView(R.id.name_field)
     @NotEmptyValidation(R.string.field_required)
-    TextInputLayout nameLayout;
+    EditText nameField;
 
-    @BindView(R.id.email_layout)
+    @BindView(R.id.email_field)
     @EmailValidation(R.string.invalid_email)
-    TextInputLayout emailLayout;
+    EditText emailField;
 
-    @BindView(R.id.confirm_email_layout)
+    @BindView(R.id.confirm_email_field)
     @ConfirmEmailValidation(R.string.emails_not_match)
-    TextInputLayout confirmEmailLayout;
+    EditText confirmEmailField;
 
-    @BindView(R.id.password_layout)
+    @BindView(R.id.password_field)
     @PasswordValidation(min = 3, pattern = LOWER_UPPER_CASE_NUMERIC, errorMessage = R.string.invalid_password)
-    TextInputLayout passwordLayout;
+    EditText passwordField;
 
-    @BindView(R.id.confirm_password_layout)
+    @BindView(R.id.confirm_password_field)
     @ConfirmPasswordValidation(R.string.passwords_not_match)
-    TextInputLayout confirmPasswordLayout;
+    EditText confirmPasswordField;
 
     @ValidateOnClick
     @BindView(R.id.validate_button)
