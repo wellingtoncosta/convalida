@@ -29,11 +29,7 @@ class ValidatorSet {
     }
 
     private fun executeValidators() {
-        val validationResults = ArrayList<Boolean>()
-
-        for (validator in validators) {
-            validationResults.add(validator.validate())
-        }
+        val validationResults = validators.map { it.validate() }
 
         for (validationResult in validationResults) {
             isValid = validationResult
