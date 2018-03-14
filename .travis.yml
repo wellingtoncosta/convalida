@@ -10,13 +10,16 @@ android:
   components:
     - tools
     - platform-tools
-    - build-tools-26.0.2
-    - android-26
+    - build-tools-27.0.2
+    - android-27
     - sys-img-${ANDROID_ABI}-${ANDROID_TARGET}
 
 before_cache:
     - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
     - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+before_install:
+    - yes | sdkmanager "platforms;android-27"
 
 script:
     - ./gradlew build test jacocoTestReport
