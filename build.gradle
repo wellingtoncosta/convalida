@@ -1,9 +1,4 @@
-version = '1.3.4'
-
-apply plugin: 'com.github.ben-manes.versions'
-
 buildscript {
-    ext.kotlin_version = '1.2.21'
     ext.versions = [
         'minSdk': 14,
         'compileSdk': 27,
@@ -38,15 +33,11 @@ buildscript {
 
     dependencies {
         classpath deps.android.gradlePlugin
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
         classpath 'com.dicedmelon.gradle:jacoco-android:0.1.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
 subprojects { project ->
-    project.version = rootProject.version
-
     repositories {
         mavenCentral()
         google()
