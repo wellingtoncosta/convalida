@@ -35,6 +35,9 @@ dependencies {
     implementation 'com.github.WellingtonCosta.convalida:convalida:6109be35ab'
     annotationProcessor 'com.github.WellingtonCosta.convalida:convalida-compiler:6109be35ab'
 
+    //implementation project(':convalida')
+    //annotationProcessor project(':convalida-compiler')
+
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
