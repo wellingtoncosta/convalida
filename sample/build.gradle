@@ -32,11 +32,11 @@ android {
 dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
-    implementation 'com.github.WellingtonCosta.convalida:convalida:release-SNAPSHOT'
-    annotationProcessor 'com.github.WellingtonCosta.convalida:convalida-compiler:release-SNAPSHOT'
+    //implementation 'com.github.WellingtonCosta.convalida:convalida:release-SNAPSHOT'
+    //annotationProcessor 'com.github.WellingtonCosta.convalida:convalida-compiler:release-SNAPSHOT'
 
-    //implementation project(':convalida')
-    //annotationProcessor project(':convalida-compiler')
+    implementation project(':convalida')
+    annotationProcessor project(':convalida-compiler')
 
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
