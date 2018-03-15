@@ -4,7 +4,7 @@ import org.gradle.internal.jvm.Jvm
 
 apply plugin: 'java'
 apply plugin: 'maven'
-group = 'com.github.wellingtoncosta'
+group = 'com.github.WellingtonCosta'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
