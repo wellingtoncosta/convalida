@@ -18,7 +18,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
@@ -27,7 +26,6 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
@@ -76,7 +74,6 @@ import static javax.lang.model.element.Modifier.STATIC;
  * @author Wellington Costa on 13/06/2017.
  */
 @AutoService(Processor.class)
-@SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedAnnotationTypes({
         NOT_EMPTY_ANNOTATION,
         EMAIL_ANNOTATION,
@@ -126,6 +123,11 @@ public class ConvalidaProcessor extends AbstractProcessor {
         annotations.add(ConfirmPasswordValidation.class);
 
         return annotations;
+    }
+
+    @Override
+    public SourceVersion getSupportedSourceVersion() {
+        return SourceVersion.latestSupported();
     }
 
     @Override
@@ -254,10 +256,13 @@ public class ConvalidaProcessor extends AbstractProcessor {
     }
 
     private void parseValidateOnClick(Element parent, ValidationClass validationClass) {
-        List<Element> elements = parent.getEnclosedElements()
-                .stream()
-                .filter(element -> element.getAnnotation(ValidateOnClick.class) != null)
-                .collect(Collectors.toList());
+        List<Element> elements = new ArrayList<>();
+
+        for(Element element : parent.getEnclosedElements()) {
+            if((element.getAnnotation(ValidateOnClick.class) != null)) {
+                elements.add(element);
+            }
+        }
 
         if (elements.size() > 1) {
             error(
@@ -290,10 +295,13 @@ public class ConvalidaProcessor extends AbstractProcessor {
     }
 
     private void parseOnValidationSuccess(Element parent, ValidationClass validationClass) {
-        List<Element> elements = parent.getEnclosedElements()
-                .stream()
-                .filter(element -> element.getAnnotation(OnValidationSuccess.class) != null)
-                .collect(Collectors.toList());
+        List<Element> elements = new ArrayList<>();
+
+        for(Element element : parent.getEnclosedElements()) {
+            if(element.getAnnotation(OnValidationSuccess.class) != null) {
+                elements.add(element);
+            }
+        }
 
         if (elements.size() == 0) {
             error(
@@ -323,10 +331,13 @@ public class ConvalidaProcessor extends AbstractProcessor {
     }
 
     private void parseOnValidationError(Element parent, ValidationClass validationClass) {
-        List<Element> elements = parent.getEnclosedElements()
-                .stream()
-                .filter(element -> element.getAnnotation(OnValidationError.class) != null)
-                .collect(Collectors.toList());
+        List<Element> elements = new ArrayList<>();
+
+        for(Element element : parent.getEnclosedElements()) {
+            if(element.getAnnotation(OnValidationError.class) != null) {
+                elements.add(element);
+            }
+        }
 
         if (elements.size() > 1) {
             error(
@@ -347,10 +358,13 @@ public class ConvalidaProcessor extends AbstractProcessor {
     }
 
     private void parseClearValidationsOnClick(Element parent, ValidationClass validationClass) {
-        List<Element> elements = parent.getEnclosedElements()
-                .stream()
-                .filter(element -> element.getAnnotation(ClearValidationsOnClick.class) != null)
-                .collect(Collectors.toList());
+        List<Element> elements = new ArrayList<>();
+
+        for(Element element : parent.getEnclosedElements()) {
+            if(element.getAnnotation(ClearValidationsOnClick.class) != null) {
+                elements.add(element);
+            }
+        }
 
         if (elements.size() > 1) {
             error(
@@ -569,18 +583,20 @@ public class ConvalidaProcessor extends AbstractProcessor {
         String primaryAnnotationClassName = primaryAnnotation.getSimpleName();
         String confirmAnnotationClassName = confirmAnnotation.getSimpleName();
 
-        int elementsAnnotatedWithPrimaryValidation;
-        int elementsAnnotatedWithConfirmValidation;
+        int elementsAnnotatedWithPrimaryValidation = 0;
+        int elementsAnnotatedWithConfirmValidation = 0;
 
         List<? extends Element> elementsOfParent = element.getEnclosingElement().getEnclosedElements();
 
-        elementsAnnotatedWithPrimaryValidation = (int) elementsOfParent.stream()
-                .filter(elementOfParent -> elementOfParent.getAnnotation(primaryAnnotation) != null)
-                .count();
+        for(int i = 0; i < elementsOfParent.size(); i++) {
+            if(elementsOfParent.get(i).getAnnotation(primaryAnnotation) != null) {
+                elementsAnnotatedWithPrimaryValidation ++;
+            }
 
-        elementsAnnotatedWithConfirmValidation = (int) elementsOfParent.stream()
-                .filter(elementOfParent -> elementOfParent.getAnnotation(confirmAnnotation) != null)
-                .count();
+            if(elementsOfParent.get(i).getAnnotation(confirmAnnotation) != null) {
+                elementsAnnotatedWithConfirmValidation ++;
+            }
+        }
 
         if (elementsAnnotatedWithPrimaryValidation == 0 && elementsAnnotatedWithConfirmValidation > 0) {
             isValid = false;
@@ -702,7 +718,9 @@ public class ConvalidaProcessor extends AbstractProcessor {
     }
 
     private Id getId(QualifiedId qualifiedId) {
-        symbols.computeIfAbsent(qualifiedId, i -> new Id(i.id));
+        if (symbols.get(qualifiedId) == null) {
+            symbols.put(qualifiedId, new Id(qualifiedId.id));
+        }
         return symbols.get(qualifiedId);
     }
 
