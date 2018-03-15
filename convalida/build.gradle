@@ -26,8 +26,8 @@ artifacts {
 }
 
 dependencies {
-    api project(':convalida-annotations')
-    api project(':convalida-validators')
+    compile project(':convalida-annotations')
+    compile project(':convalida-validators')
 
     implementation deps.support.annotations
     implementation deps.support.compat
