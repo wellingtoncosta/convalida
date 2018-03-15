@@ -29,19 +29,19 @@ public class AnotherSampleActivity extends AppCompatActivity {
     LinearLayout linearLayout;
 
     @BindView(R.id.name_field)
-    @NotEmptyValidation(errorMessage = R.string.field_required, autoDismiss = false)
+    @NotEmptyValidation(errorMessage = R.string.field_required)
     EditText nameField;
 
     @BindView(R.id.nickname_field)
-    @LengthValidation(min = 3, errorMessage = R.string.min_3_characters, autoDismiss = false)
+    @LengthValidation(min = 3, errorMessage = R.string.min_3_characters)
     EditText nickNameField;
 
     @BindView(R.id.age_field)
-    @OnlyNumberValidation(errorMessage = R.string.only_numbers, autoDismiss = false)
+    @OnlyNumberValidation(errorMessage = R.string.only_numbers)
     EditText ageField;
 
     @BindView(R.id.phone_field)
-    @PatternValidation(pattern = PHONE_PATTERN, errorMessage = R.string.invalid_phone, autoDismiss = false)
+    @PatternValidation(pattern = PHONE_PATTERN, errorMessage = R.string.invalid_phone)
     EditText phoneField;
 
     @ValidateOnClick
