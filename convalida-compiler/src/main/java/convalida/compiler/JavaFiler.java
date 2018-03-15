@@ -7,8 +7,6 @@ import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterSpec;
 import com.squareup.javapoet.TypeSpec;
 
-import java.util.stream.Collectors;
-
 import javax.lang.model.element.Element;
 
 import convalida.annotations.LengthValidation;
@@ -78,10 +76,10 @@ class JavaFiler {
                 .build();
     }
 
-    private static CodeBlock createValidationsCodeBlock(ValidationClass validationClass) {
+    private static CodeBlock createValidationsCodeBlock(final ValidationClass validationClass) {
         CodeBlock.Builder builder = CodeBlock.builder();
 
-        validationClass.fields.forEach(field -> {
+        for(ValidationField field : validationClass.fields) {
             switch (field.annotationClassName) {
                 case NOT_EMPTY_ANNOTATION:
                     builder.add(createNotEmptyValidationCodeBlock(field));
@@ -90,11 +88,12 @@ class JavaFiler {
                     builder.add(createEmailValidationCodeBlock(field));
                     break;
                 case CONFIRM_EMAIL_VALIDATION:
-                    ValidationField emailField = validationClass.fields.stream()
-                            .filter(streamField -> streamField.annotationClassName.equals(EMAIL_ANNOTATION))
-                            .collect(Collectors.toList()).get(0);
-
-                    builder.add(createConfirmEmailValidationCodeBlock(emailField, field));
+                    for(ValidationField validationField : validationClass.fields) {
+                        if(validationField.annotationClassName.equals(EMAIL_ANNOTATION)) {
+                            builder.add(createConfirmEmailValidationCodeBlock(validationField, field));
+                            break;
+                        }
+                    }
                     break;
                 case PATTERN_ANNOTATION:
                     builder.add(createPatternValidationCodeBlock(field));
@@ -109,14 +108,15 @@ class JavaFiler {
                     builder.add(createPasswordValidationCodeBlock(field));
                     break;
                 case CONFIRM_PASSWORD_ANNOTATION:
-                    ValidationField passwordField = validationClass.fields.stream()
-                            .filter(streamField -> streamField.annotationClassName.equals(PASSWORD_ANNOTATION))
-                            .collect(Collectors.toList()).get(0);
-
-                    builder.add(createConfirmPasswordValidationCodeBlock(passwordField, field));
+                    for(ValidationField validationField : validationClass.fields) {
+                        if(validationField.annotationClassName.equals(PASSWORD_ANNOTATION)) {
+                            builder.add(createConfirmPasswordValidationCodeBlock(validationField, field));
+                            break;
+                        }
+                    }
                     break;
             }
-        });
+        }
 
         builder.add(createValidateOnClickCodeBlock(validationClass));
         builder.add(createClearValidationsOnClickCodeBlock(validationClass));
