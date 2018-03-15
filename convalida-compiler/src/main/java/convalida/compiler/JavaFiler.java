@@ -242,7 +242,7 @@ class JavaFiler {
     }
 
     private static MethodSpec createValidateOnClickMethod(ValidationClass validationClass) {
-        return MethodSpec.methodBuilder("validateOnClickListener")
+        MethodSpec.Builder validateOnClickMethod = MethodSpec.methodBuilder("validateOnClickListener")
                 .addAnnotation(UI_THREAD)
                 .addModifiers(PRIVATE)
                 .addParameter(ParameterSpec.builder(
@@ -273,25 +273,32 @@ class JavaFiler {
                 )
                 .addCode("\n")
                 .addCode(CodeBlock.builder().unindent().build())
-                .addCode("} else {")
-                .addCode("\n")
-                .addCode(CodeBlock.builder().indent().build())
-                .addCode(
-                        "target.$N();",
-                        validationClass.getOnValidationErrorMethod().getSimpleName()
-                )
-                .addCode("\n")
-                .addCode(CodeBlock.builder().unindent().build())
-                .addCode("}")
-                .addCode("\n")
+                .addCode("}");
+
+        if(validationClass.getOnValidationErrorMethod() != null) {
+            validateOnClickMethod
+                    .addCode(" else {")
+                    .addCode("\n")
+                    .addCode(CodeBlock.builder().indent().build())
+                    .addCode(
+                            "target.$N();",
+                            validationClass.getOnValidationErrorMethod().getSimpleName()
+                    )
+                    .addCode("\n")
+                    .addCode(CodeBlock.builder().unindent().build())
+                    .addCode("}");
+        }
+
+        validateOnClickMethod.addCode("\n")
                 .addCode(CodeBlock.builder().unindent().build())
                 .addCode("}")
                 .addCode("\n")
                 .addCode(CodeBlock.builder().unindent().build())
                 .addCode("};")
                 .addCode("\n")
-                .returns(VIEW_ONCLICK_LISTENER)
-                .build();
+                .returns(VIEW_ONCLICK_LISTENER);
+
+        return validateOnClickMethod.build();
     }
 
     private static CodeBlock createClearValidationsOnClickCodeBlock(ValidationClass validationClass) {

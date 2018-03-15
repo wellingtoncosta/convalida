@@ -31,7 +31,9 @@ android {
 
 dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    //implementation 'com.github.WellingtonCosta.convalida:convalida:release-SNAPSHOT'
+    //annotationProcessor 'com.github.WellingtonCosta.convalida:convalida-compiler:release-SNAPSHOT'
 
     implementation project(':convalida')
     annotationProcessor project(':convalida-compiler')
