@@ -2,6 +2,8 @@ import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.SdkHandler
 
 apply plugin: 'java'
+apply plugin: 'maven'
+group = 'com.github.WellingtonCosta'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
