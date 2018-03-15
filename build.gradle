@@ -1,6 +1,6 @@
-version = '1.3.6'
-
 apply plugin: 'com.github.ben-manes.versions'
+
+version = '1.3.6'
 
 buildscript {
     ext.versions = [
@@ -8,8 +8,7 @@ buildscript {
         'compileSdk': 27,
         'buildTools': '27.0.2',
         'supportLibrary': '27.1.0',
-        'androidPlugin': '3.0.1',
-        'release': '1.3.3'
+        'androidPlugin': '3.0.1'
     ]
 
     ext.deps = [
@@ -25,11 +24,7 @@ buildscript {
         ],
         javapoet: 'com.squareup:javapoet:1.10.0',
         autoService: 'com.google.auto.service:auto-service:1.0-rc4',
-        junit: 'junit:junit:4.12',
-        release: [
-            'runtime': "com.com.github.WellingtonCosta.convalida:convalida:$versions.release",
-            'compiler': "com.github.WellingtonCosta.convalida:convalida-compiler:$versions.release"
-        ]
+        junit: 'junit:junit:4.12'
     ]
 
     repositories {
