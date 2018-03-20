@@ -6,8 +6,8 @@ android {
     buildToolsVersion versions.buildTools
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
 
     defaultConfig {
@@ -32,8 +32,8 @@ android {
 dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
-    //implementation 'com.github.WellingtonCosta.convalida:convalida:release-SNAPSHOT'
-    //annotationProcessor 'com.github.WellingtonCosta.convalida:convalida-compiler:release-SNAPSHOT'
+    //implementation 'com.github.WellingtonCosta.convalida:convalida:development-SNAPSHOT'
+    //annotationProcessor 'com.github.WellingtonCosta.convalida:convalida-compiler:development-SNAPSHOT'
 
     implementation project(':convalida')
     annotationProcessor project(':convalida-compiler')
