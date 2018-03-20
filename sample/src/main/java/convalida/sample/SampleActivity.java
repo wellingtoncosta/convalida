@@ -19,7 +19,8 @@ import convalida.annotations.OnValidationSuccess;
 import convalida.annotations.PasswordValidation;
 import convalida.annotations.ValidateOnClick;
 
-import static convalida.library.util.Patterns.LOWER_UPPER_CASE_NUMERIC;
+import static convalida.library.util.Patterns.MIXED_CASE_NUMERIC;
+
 
 /**
  * @author Wellington Costa on 05/06/17.
@@ -42,7 +43,7 @@ public class SampleActivity extends AppCompatActivity {
     EditText confirmEmailField;
 
     @BindView(R.id.password_field)
-    @PasswordValidation(min = 3, pattern = LOWER_UPPER_CASE_NUMERIC, errorMessage = R.string.invalid_password)
+    @PasswordValidation(min = 3, pattern = MIXED_CASE_NUMERIC, errorMessage = R.string.invalid_password)
     EditText passwordField;
 
     @BindView(R.id.confirm_password_field)
