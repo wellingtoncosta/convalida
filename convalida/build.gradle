@@ -11,7 +11,7 @@ android {
 
         javaCompileOptions {
             annotationProcessorOptions {
-                includeCompileClasspath = true
+                includeCompileClasspath true
             }
         }
     }
