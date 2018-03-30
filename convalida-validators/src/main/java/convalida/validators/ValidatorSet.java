@@ -10,7 +10,7 @@ import java.util.Set;
  */
 public final class ValidatorSet {
 
-    private Set<Validator> validators;
+    private Set<AbstractValidator> validators;
     private boolean isValid;
 
     public ValidatorSet() {
@@ -18,7 +18,7 @@ public final class ValidatorSet {
         this.isValid = true;
     }
 
-    public void addValidator(Validator validator) {
+    public void addValidator(AbstractValidator validator) {
         this.validators.add(validator);
     }
 
@@ -30,7 +30,7 @@ public final class ValidatorSet {
     private void executeValidators() {
         List<Boolean> validationResults = new ArrayList<>();
 
-        for(Validator validator : validators) {
+        for(AbstractValidator validator : validators) {
             validationResults.add(validator.validate());
         }
 
@@ -43,7 +43,7 @@ public final class ValidatorSet {
     }
 
     public void clearValidators() {
-        for (Validator validator : validators) {
+        for (AbstractValidator validator : validators) {
             validator.clear();
         }
     }
