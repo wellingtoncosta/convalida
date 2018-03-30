@@ -16,7 +16,7 @@ class Constants {
 
     static final ClassName VALIDATOR_SET                = ClassName.get("convalida.validators", "ValidatorSet");
 
-    static final String NOT_EMPTY_ANNOTATION            = "convalida.annotations.NotEmptyValidation";
+    static final String REQUIRED_ANNOTATION             = "convalida.annotations.RequiredValidation";
     static final String EMAIL_ANNOTATION                = "convalida.annotations.EmailValidation";
     static final String CONFIRM_EMAIL_VALIDATION        = "convalida.annotations.ConfirmEmailValidation";
     static final String PATTERN_ANNOTATION              = "convalida.annotations.PatternValidation";
@@ -27,7 +27,7 @@ class Constants {
 
     private static final String VALIDATORS_PACKAGE      = "convalida.validators";
 
-    static final ClassName NOT_EMPTY_VALIDATOR          = ClassName.get(VALIDATORS_PACKAGE, "NotEmptyValidator");
+    static final ClassName REQUIRED_VALIDATOR           = ClassName.get(VALIDATORS_PACKAGE, "RequiredValidator");
     static final ClassName EMAIL_VALIDATOR              = ClassName.get(VALIDATORS_PACKAGE, "EmailValidator");
     static final ClassName CONFIRM_EMAIL_VALIDATOR      = ClassName.get(VALIDATORS_PACKAGE, "ConfirmEmailValidator");
     static final ClassName PATTERN_VALIDATOR            = ClassName.get(VALIDATORS_PACKAGE, "PatternValidator");

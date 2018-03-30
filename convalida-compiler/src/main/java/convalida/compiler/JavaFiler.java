@@ -24,8 +24,8 @@ import static convalida.compiler.Constants.EMAIL_VALIDATOR;
 import static convalida.compiler.Constants.LENGTH_ANNOTATION;
 import static convalida.compiler.Constants.LENGTH_VALIDATOR;
 import static convalida.compiler.Constants.NON_NULL;
-import static convalida.compiler.Constants.NOT_EMPTY_ANNOTATION;
-import static convalida.compiler.Constants.NOT_EMPTY_VALIDATOR;
+import static convalida.compiler.Constants.REQUIRED_ANNOTATION;
+import static convalida.compiler.Constants.REQUIRED_VALIDATOR;
 import static convalida.compiler.Constants.ONLY_NUMBER_ANNOTATION;
 import static convalida.compiler.Constants.ONLY_NUMBER_VALIDATOR;
 import static convalida.compiler.Constants.OVERRIDE;
@@ -81,8 +81,8 @@ class JavaFiler {
 
         for(ValidationField field : validationClass.fields) {
             switch (field.annotationClassName) {
-                case NOT_EMPTY_ANNOTATION:
-                    builder.add(createNotEmptyValidationCodeBlock(field));
+                case REQUIRED_ANNOTATION:
+                    builder.add(createRequiredValidationCodeBlock(field));
                     break;
                 case EMAIL_ANNOTATION:
                     builder.add(createEmailValidationCodeBlock(field));
@@ -123,11 +123,11 @@ class JavaFiler {
         return builder.build();
     }
 
-    private static CodeBlock createNotEmptyValidationCodeBlock(ValidationField field) {
+    private static CodeBlock createRequiredValidationCodeBlock(ValidationField field) {
         return CodeBlock.builder()
                 .addStatement(
                         "validatorSet.addValidator(new $T(target.$N, target.getString($L), $L))",
-                        NOT_EMPTY_VALIDATOR,
+                        REQUIRED_VALIDATOR,
                         field.name,
                         field.id.code,
                         field.autoDismiss

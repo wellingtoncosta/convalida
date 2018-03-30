@@ -8,16 +8,16 @@ import static org.mockito.Mockito.when;
 /**
  * @author Wellington Costa on 01/11/2017.
  */
-public class NotEmptyValidatorTest extends BaseTest {
+public class RequiredValidatorTest extends BaseTest {
 
     @Test public void emptyValue() {
-        NotEmptyValidator validator = new NotEmptyValidator(mockEditText, errorMessage, true);
+        RequiredValidator validator = new RequiredValidator(mockEditText, errorMessage, true);
         when(mockEditText.getText().toString()).thenReturn("");
         assertEquals(validator.validate(), false);
     }
 
     @Test public void validValue() {
-        NotEmptyValidator validator = new NotEmptyValidator(mockEditText, errorMessage, true);
+        RequiredValidator validator = new RequiredValidator(mockEditText, errorMessage, true);
         when(mockEditText.getText().toString()).thenReturn("test");
         assertEquals(validator.validate(), true);
     }

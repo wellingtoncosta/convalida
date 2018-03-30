@@ -43,7 +43,7 @@ import convalida.annotations.ConfirmEmailValidation;
 import convalida.annotations.ConfirmPasswordValidation;
 import convalida.annotations.EmailValidation;
 import convalida.annotations.LengthValidation;
-import convalida.annotations.NotEmptyValidation;
+import convalida.annotations.RequiredValidation;
 import convalida.annotations.OnValidationError;
 import convalida.annotations.OnValidationSuccess;
 import convalida.annotations.OnlyNumberValidation;
@@ -61,7 +61,7 @@ import static convalida.compiler.Constants.CONFIRM_EMAIL_VALIDATION;
 import static convalida.compiler.Constants.CONFIRM_PASSWORD_ANNOTATION;
 import static convalida.compiler.Constants.EMAIL_ANNOTATION;
 import static convalida.compiler.Constants.LENGTH_ANNOTATION;
-import static convalida.compiler.Constants.NOT_EMPTY_ANNOTATION;
+import static convalida.compiler.Constants.REQUIRED_ANNOTATION;
 import static convalida.compiler.Constants.ONLY_NUMBER_ANNOTATION;
 import static convalida.compiler.Constants.PASSWORD_ANNOTATION;
 import static convalida.compiler.Constants.PATTERN_ANNOTATION;
@@ -75,7 +75,7 @@ import static javax.lang.model.element.Modifier.STATIC;
  */
 @AutoService(Processor.class)
 @SupportedAnnotationTypes({
-        NOT_EMPTY_ANNOTATION,
+        REQUIRED_ANNOTATION,
         EMAIL_ANNOTATION,
         CONFIRM_EMAIL_VALIDATION,
         PATTERN_ANNOTATION,
@@ -113,7 +113,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
     private Set<Class<? extends Annotation>> getSupportedAnnotations() {
         Set<Class<? extends Annotation>> annotations = new LinkedHashSet<>();
 
-        annotations.add(NotEmptyValidation.class);
+        annotations.add(RequiredValidation.class);
         annotations.add(EmailValidation.class);
         annotations.add(ConfirmEmailValidation.class);
         annotations.add(PatternValidation.class);
@@ -154,13 +154,13 @@ public class ConvalidaProcessor extends AbstractProcessor {
 
         scanForRClasses(env);
 
-        // Process each @NotEmptyValidation element
-        for (Element element : env.getElementsAnnotatedWith(NotEmptyValidation.class)) {
+        // Process each @RequiredValidation element
+        for (Element element : env.getElementsAnnotatedWith(RequiredValidation.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
             try {
-                parseNotEmptyValidation(element, parents, validationFields);
+                parseRequiredValidation(element, parents, validationFields);
             } catch (Exception e) {
-                logParsingError(element, NotEmptyValidation.class, e);
+                logParsingError(element, RequiredValidation.class, e);
             }
         }
 
@@ -380,21 +380,21 @@ public class ConvalidaProcessor extends AbstractProcessor {
         }
     }
 
-    private void parseNotEmptyValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
-        boolean hasError = isInvalid(NotEmptyValidation.class, element) || isInaccessible(NotEmptyValidation.class, element);
+    private void parseRequiredValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
+        boolean hasError = isInvalid(RequiredValidation.class, element) || isInaccessible(RequiredValidation.class, element);
 
         if (hasError) {
             return;
         }
 
-        int errorMessageResourceId = element.getAnnotation(NotEmptyValidation.class).errorMessage();
-        boolean autoDismiss = element.getAnnotation(NotEmptyValidation.class).autoDismiss();
+        int errorMessageResourceId = element.getAnnotation(RequiredValidation.class).errorMessage();
+        boolean autoDismiss = element.getAnnotation(RequiredValidation.class).autoDismiss();
         QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
         parents.add(element.getEnclosingElement());
         validationFields.add(new ValidationField(
                 element,
-                NotEmptyValidation.class,
+                RequiredValidation.class,
                 getId(qualifiedId),
                 autoDismiss
         ));
