@@ -6,6 +6,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import convalida.annotations.OnValidationError;
+import convalida.annotations.OnValidationSuccess;
 import convalida.databinding.ValidationUtils;
 import convalida.sample.databinding.ActivityDatabindingSampleBinding;
 
@@ -45,6 +47,16 @@ public class DatabindingSampleActivity extends AppCompatActivity {
                 ValidationUtils.clearValidations(binding.getRoot());
             }
         });
+    }
+
+    @OnValidationSuccess
+    public void onValidationSuccess() {
+        Snackbar.make(binding.getRoot(), "Yay!", Snackbar.LENGTH_LONG).show();
+    }
+
+    @OnValidationError
+    public void onValidationError() {
+        Snackbar.make(binding.getRoot(), "Something is wrong :(", Snackbar.LENGTH_LONG).show();
     }
 
 }

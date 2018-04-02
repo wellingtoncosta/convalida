@@ -67,7 +67,7 @@ public void onValidationSuccess() {
 }
 
 @OnValidationError
-public void onValidationError() {
+public void error() {
     Toast.makeText("Something is wrong :(", Toast.LENGTH_LONG).show();
 }
 ```

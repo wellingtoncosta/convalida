@@ -35,7 +35,8 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/name"
                     android:inputType="text"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    app:requiredValidationErrorMessage="@{@string/field_required}" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -57,7 +58,9 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/nickname"
                     android:inputType="text"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    app:lengthValidationMin="@{3}"
+                    app:lengthValidationErrorMessage="@{@string/min_3_characters}" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -79,7 +82,8 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/age"
                     android:inputType="text"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    app:onlyNumberValidationErrorMessage="@{@string/only_numbers}" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -101,7 +105,9 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/phone"
                     android:inputType="text"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    app:patternValidationPattern="@{Constants.PHONE_PATTERN}"
+                    app:patternValidationErrorMessage="@{@string/invalid_phone}" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -123,7 +129,8 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/email"
                     android:inputType="textEmailAddress"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    app:emailValidationErrorMessage="@{@string/invalid_email}" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -145,7 +152,9 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/confirm_email"
                     android:inputType="textEmailAddress"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    app:confirmEmailValidationEmailField="@{emailField}"
+                    app:confirmEmailValidationErrorMessage="@{@string/emails_not_match}" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -168,7 +177,10 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/password"
                     android:inputType="textPassword"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    app:passwordValidationMinLength="@{3}"
+                    app:passwordValidationPattern="@{Patterns.MIXED_CASE_NUMERIC}"
+                    app:passwordValidationErrorMessage="@{@string/invalid_password}" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -191,7 +203,9 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/confirm_password"
                     android:inputType="textPassword"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    app:confirmPasswordValidationPasswordField="@{passwordField}"
+                    app:confirmPasswordValidationErrorMessage="@{@string/passwords_not_match}" />
 
             </android.support.design.widget.TextInputLayout>
 

@@ -19,7 +19,7 @@ public class ValidationBindings {
 
     @BindingAdapter(value = {
             "requiredValidationErrorMessage",
-            "requiredAutoDismiss"
+            "requiredValidationAutoDismiss"
     }, requireAll = false)
     public static void requiredValidationBindings(
             EditText field,
@@ -35,7 +35,7 @@ public class ValidationBindings {
 
     @BindingAdapter(value = {
             "emailValidationErrorMessage",
-            "emailAutoDismiss"
+            "emailValidationAutoDismiss"
     }, requireAll = false)
     public static void emailValidationBindings(
             EditText field,
