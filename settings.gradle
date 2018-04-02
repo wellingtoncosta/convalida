@@ -1,4 +1,4 @@
-include ':convalida-annotations'
+include ':convalida-annotations', ':convalida-databinding'
 include ':convalida-validators'
 include ':convalida-compiler'
 include ':convalida'

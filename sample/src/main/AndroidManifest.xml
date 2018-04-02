@@ -15,8 +15,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SampleActivity" />
-        <activity android:name=".AnotherSampleActivity" />
+        <activity android:name=".AnnotataionSampleActivity" />
+        <activity android:name=".DatabindingSampleActivity" />
     </application>
 
 </manifest>

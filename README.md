@@ -19,7 +19,7 @@ Convalida is a simple, lightweight and powerful field validation library for And
 **Step 1** - Annotate your fields with [Convalida Annotations][3]:
 
 ```java
-@NotEmptyValidation(R.string.field_required)
+@RequiredValidation(R.string.field_required)
 EditText nameField;
 
 @LengthValidation(min = 3, errorMessage = R.string.min_3_characters)

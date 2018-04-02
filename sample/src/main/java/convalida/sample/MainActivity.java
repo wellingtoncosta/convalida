@@ -18,11 +18,11 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.sample_1)
     public void showSample1() {
-        startActivity(new Intent(this, SampleActivity.class));
+        startActivity(new Intent(this, AnnotataionSampleActivity.class));
     }
 
     @OnClick(R.id.sample_2)
     public void showSample2() {
-        startActivity(new Intent(this, AnotherSampleActivity.class));
+        startActivity(new Intent(this, DatabindingSampleActivity.class));
     }
 }

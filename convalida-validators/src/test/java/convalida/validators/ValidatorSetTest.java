@@ -19,20 +19,20 @@ public class ValidatorSetTest extends BaseTest {
 
     @Test public void addOneValidator() {
         validatorSet.addValidator(new RequiredValidator(mockEditText, errorMessage, true));
-        assertEquals(validatorSet.getValidatorsSize(), 1);
+        assertEquals(validatorSet.getValidatorsCount(), 1);
     }
 
     @Test public void addTwoValidators() {
         validatorSet.addValidator(new RequiredValidator(mockEditText, errorMessage, true));
         validatorSet.addValidator(new EmailValidator(mockEditText, errorMessage, true));
-        assertEquals(validatorSet.getValidatorsSize(), 2);
+        assertEquals(validatorSet.getValidatorsCount(), 2);
     }
 
     @Test public void addThreeValidators() {
         validatorSet.addValidator(new RequiredValidator(mockEditText, errorMessage, true));
         validatorSet.addValidator(new EmailValidator(mockEditText, errorMessage, true));
         validatorSet.addValidator(new LengthValidator(mockEditText,0, 5, errorMessage, true));
-        assertEquals(validatorSet.getValidatorsSize(), 3);
+        assertEquals(validatorSet.getValidatorsCount(), 3);
     }
 
     @Test public void executeValidationsWithSuccess() {
