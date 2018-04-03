@@ -20,7 +20,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static convalida.sample.TestUtils.testFieldWithAValidValue;
 import static convalida.sample.TestUtils.testFieldWithAnInvalidValue;
 import static convalida.sample.TestUtils.testFieldWithEmptyValue;
-import static org.hamcrest.CoreMatchers.not;
 
 /**
  * @author Wellington Costa on 12/11/2017.
@@ -74,31 +73,31 @@ public class AnnotataionSampleActivityTest {
                 .perform(scrollTo(), click());
 
         onView(withText(R.string.field_required))
-                .check(matches(not(isDisplayed())));
+                .check(doesNotExist());
 
         onView(withText(R.string.min_3_characters))
-                .check(matches(not(isDisplayed())));
+                .check(doesNotExist());
 
         onView(withText(R.string.only_numbers))
-                .check(matches(not(isDisplayed())));
+                .check(doesNotExist());
 
         onView(withText(R.string.invalid_phone))
-                .check(matches(not(isDisplayed())));
+                .check(doesNotExist());
 
         onView(withText(R.string.invalid_email))
-                .check(matches(not(isDisplayed())));
+                .check(doesNotExist());
 
         onView(withText(R.string.emails_not_match))
-                .check(matches(not(isDisplayed())));
+                .check(doesNotExist());
 
         onView(withText(R.string.invalid_password))
-                .check(matches(not(isDisplayed())));
+                .check(doesNotExist());
 
         onView(withText(R.string.passwords_not_match))
-                .check(matches(not(isDisplayed())));
+                .check(doesNotExist());
     }
 
-    /*@Test
+    @Test
     public void testNameField() {
         testFieldWithEmptyValue(R.id.validate_button, R.string.field_required);
         testFieldWithAValidValue(R.id.name_field, R.string.field_required, "Wellington");
@@ -151,6 +150,6 @@ public class AnnotataionSampleActivityTest {
         testFieldWithAValidValue(R.id.password_field, R.string.invalid_password, "asdASD123");
         testFieldWithAnInvalidValue(R.id.confirm_password_field, R.string.passwords_not_match, "asdASD");
         testFieldWithAValidValue(R.id.confirm_password_field, R.string.passwords_not_match, "asdASD123");
-    }*/
+    }
 
 }

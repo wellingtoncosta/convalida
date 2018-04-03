@@ -90,7 +90,7 @@ class Preconditions {
             Class<? extends Annotation> primaryAnnotation,
             Class<? extends Annotation> confirmAnnotation,
             Element element) {
-        boolean isValid = true;
+        boolean hasError = false;
 
         String primaryAnnotationClassName = primaryAnnotation.getSimpleName();
         String confirmAnnotationClassName = confirmAnnotation.getSimpleName();
@@ -111,7 +111,7 @@ class Preconditions {
         }
 
         if (elementsAnnotatedWithPrimaryValidation == 0 && elementsAnnotatedWithConfirmValidation > 0) {
-            isValid = false;
+            hasError = true;
             TypeElement enclosingElement = (TypeElement) element.getEnclosingElement();
             error(
                     element.getEnclosingElement(),
@@ -122,7 +122,7 @@ class Preconditions {
         }
 
         if (elementsAnnotatedWithConfirmValidation > 1) {
-            isValid = false;
+            hasError = true;
             TypeElement enclosingElement = (TypeElement) element.getEnclosingElement();
             error(
                     element.getEnclosingElement(),
@@ -132,7 +132,7 @@ class Preconditions {
             );
         }
 
-        return isValid;
+        return hasError;
     }
 
     static boolean isInvalid(Class<? extends Annotation> annotationClass, Element element) {
