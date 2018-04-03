@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_annotatin_sample"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".AnnotataionSampleActivity">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraint_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/name_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginBottom="@dimen/spacing_large"
+            android:layout_marginLeft="@dimen/spacing_large"
+            android:layout_marginRight="@dimen/spacing_large"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/name_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/name"
+                android:inputType="text"
+                android:maxLines="1" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/nickname_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginBottom="@dimen/spacing_large"
+            android:layout_marginLeft="@dimen/spacing_large"
+            android:layout_marginRight="@dimen/spacing_large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/name_layout">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/nickname_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/nickname"
+                android:inputType="text"
+                android:maxLines="1" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/age_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginBottom="@dimen/spacing_large"
+            android:layout_marginLeft="@dimen/spacing_large"
+            android:layout_marginRight="@dimen/spacing_large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nickname_layout">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/age_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/age"
+                android:inputType="text"
+                android:maxLines="1" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/phone_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginBottom="@dimen/spacing_large"
+            android:layout_marginLeft="@dimen/spacing_large"
+            android:layout_marginRight="@dimen/spacing_large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/age_layout">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/phone_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/phone"
+                android:inputType="text"
+                android:maxLines="1" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/email_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginBottom="@dimen/spacing_large"
+            android:layout_marginLeft="@dimen/spacing_large"
+            android:layout_marginRight="@dimen/spacing_large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/phone_layout">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/email_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:maxLines="1" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/confirm_email_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginBottom="@dimen/spacing_large"
+            android:layout_marginLeft="@dimen/spacing_large"
+            android:layout_marginRight="@dimen/spacing_large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/email_layout">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/confirm_email_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/confirm_email"
+                android:inputType="textEmailAddress"
+                android:maxLines="1" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/password_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:passwordToggleEnabled="true"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginBottom="@dimen/spacing_large"
+            android:layout_marginLeft="@dimen/spacing_large"
+            android:layout_marginRight="@dimen/spacing_large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/confirm_email_layout">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/password_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:maxLines="1" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/confirm_password_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:passwordToggleEnabled="true"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginBottom="@dimen/spacing_large"
+            android:layout_marginLeft="@dimen/spacing_large"
+            android:layout_marginRight="@dimen/spacing_large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/password_layout">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/confirm_password_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/confirm_password"
+                android:inputType="textPassword"
+                android:maxLines="1" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/validate_button"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="@string/validateFields"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginBottom="@dimen/spacing_large"
+            android:layout_marginLeft="@dimen/spacing_large"
+            android:layout_marginRight="@dimen/spacing_large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/confirm_password_layout" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/clear_button"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="@string/clearValidations"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginBottom="@dimen/spacing_large"
+            android:layout_marginLeft="@dimen/spacing_large"
+            android:layout_marginRight="@dimen/spacing_large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/validate_button" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</ScrollView>

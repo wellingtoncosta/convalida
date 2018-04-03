@@ -9,7 +9,7 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-        NotEmptyValidatorTest.class,
+        RequiredValidatorTest.class,
         EmailValidatorTest.class,
         ConfirmEmailValidatorTest.class,
         LengthValidatorTest.class,
