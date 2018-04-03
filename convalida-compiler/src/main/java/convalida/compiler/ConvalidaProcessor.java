@@ -68,7 +68,8 @@ import static convalida.compiler.Constants.VALIDATE_ON_CLICK_ANNOTATION;
 import static convalida.compiler.Messager.error;
 import static convalida.compiler.Messager.logParsingError;
 import static convalida.compiler.Preconditions.confirmValidationElementsHasError;
-import static convalida.compiler.Preconditions.hasMoreThanOneElementsAnnotatedWith;
+import static convalida.compiler.Preconditions.hasMoreThanOneMethodsAnnotatedWith;
+import static convalida.compiler.Preconditions.hasNoMethodAnnotatedWith;
 import static convalida.compiler.Preconditions.isInaccessible;
 import static convalida.compiler.Preconditions.isInvalid;
 import static convalida.compiler.Preconditions.methodHasParams;
@@ -350,7 +351,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
         Element parent = element.getEnclosingElement();
         boolean hasError =
                 isInaccessible(ValidateOnClick.class, element) ||
-                hasMoreThanOneElementsAnnotatedWith(parent, ValidateOnClick.class);
+                hasMoreThanOneMethodsAnnotatedWith(parent, ValidateOnClick.class);
 
         if(hasError) return;
 
@@ -362,7 +363,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
         Element parent = element.getEnclosingElement();
         boolean hasError =
                 isInaccessible(ClearValidationsOnClick.class, element) ||
-                hasMoreThanOneElementsAnnotatedWith(parent, ClearValidationsOnClick.class);
+                hasMoreThanOneMethodsAnnotatedWith(parent, ClearValidationsOnClick.class);
 
         if(hasError) return;
 
@@ -376,7 +377,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
         boolean hasError =
                 isInaccessible(OnValidationSuccess.class, element) ||
                 methodHasParams(executableElement, OnValidationSuccess.class) ||
-                hasMoreThanOneElementsAnnotatedWith(parent, OnValidationSuccess.class);
+                hasMoreThanOneMethodsAnnotatedWith(parent, OnValidationSuccess.class);
 
         if(hasError) return;
 
@@ -390,7 +391,8 @@ public class ConvalidaProcessor extends AbstractProcessor {
         boolean hasError =
                 isInaccessible(OnValidationError.class, element) ||
                 methodHasParams(executableElement, OnValidationError.class) ||
-                hasMoreThanOneElementsAnnotatedWith(parent, OnValidationError.class);
+                hasMoreThanOneMethodsAnnotatedWith(parent, OnValidationError.class) ||
+                hasNoMethodAnnotatedWith(parent, OnValidationSuccess.class);
 
         if(hasError) return;
 

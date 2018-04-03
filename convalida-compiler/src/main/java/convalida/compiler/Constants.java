@@ -7,15 +7,20 @@ import com.squareup.javapoet.ClassName;
  */
 class Constants {
 
+    static final ClassName LIST                         = ClassName.get("java.util", "List");
     static final ClassName OVERRIDE                     = ClassName.get("java.lang", "Override");
 
     static final ClassName UI_THREAD                    = ClassName.get("android.support.annotation", "UiThread");
     static final ClassName NON_NULL                     = ClassName.get("android.support.annotation", "NonNull");
     static final ClassName VIEW                         = ClassName.get("android.view", "View");
+    static final ClassName VIEWGROUP                    = ClassName.get("android.view", "ViewGroup");
     static final ClassName BUTTON                       = ClassName.get("android.widget", "Button");
     static final ClassName VIEW_ONCLICK_LISTENER        = ClassName.get("android.view", "View.OnClickListener");
     static final ClassName VIEW_DATA_BINDING            = ClassName.get("android.databinding", "ViewDataBinding");
 
+    static final ClassName VIEW_TAG_UTILS               = ClassName.get("convalida.databinding", "ViewTagUtils");
+    static final ClassName CONVALIDA_DATABINDING_R      = ClassName.get("convalida.databinding", "R");
+    static final ClassName ABSTRACT_VALIDATOR           = ClassName.get("convalida.validators", "AbstractValidator");
     static final ClassName VALIDATOR_SET                = ClassName.get("convalida.validators", "ValidatorSet");
 
     static final String EDIT_TEXT_TYPE                  = "android.widget.EditText";

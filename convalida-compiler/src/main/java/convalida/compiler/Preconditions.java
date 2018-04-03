@@ -36,7 +36,7 @@ class Preconditions {
         return hasParams;
     }
 
-    static boolean hasMoreThanOneElementsAnnotatedWith(
+    static boolean hasMoreThanOneMethodsAnnotatedWith(
             Element parent,
             Class<? extends Annotation> annotationClass) {
         boolean hasMoreThanOneElement = false;
@@ -61,10 +61,10 @@ class Preconditions {
         return hasMoreThanOneElement;
     }
 
-    static boolean hasZeroElementsAnnotatedWith(
+    static boolean hasNoMethodAnnotatedWith(
             Element parent,
             Class<? extends Annotation> annotationClass) {
-        boolean hasZeroElements = false;
+        boolean hasNoElements = false;
         List<Element> elements = new ArrayList<>();
 
         for(Element e : parent.getEnclosedElements()) {
@@ -74,16 +74,16 @@ class Preconditions {
         }
 
         if (elements.size() == 0) {
-            hasZeroElements = true;
+            hasNoElements = true;
             error(
                     parent,
-                    "The class %s must have only one method annotated with @%s.",
+                    "The class %s must have one method annotated with @%s.",
                     parent.getSimpleName(),
                     annotationClass.getSimpleName()
             );
         }
 
-        return hasZeroElements;
+        return hasNoElements;
     }
 
     static boolean confirmValidationElementsHasError(

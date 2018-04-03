@@ -9,9 +9,9 @@ import java.util.List;
 /**
  * @author WellingtonCosta on 29/03/18.
  */
-class ViewTagUtils {
+public class ViewTagUtils {
 
-    static List<View> getViewsByTag(ViewGroup root, int tagId) {
+    public static List<View> getViewsByTag(ViewGroup root, int tagId) {
         List<View> views = new ArrayList<>();
         int childCount = root.getChildCount();
         for(int i = 0; i < childCount; i++) {

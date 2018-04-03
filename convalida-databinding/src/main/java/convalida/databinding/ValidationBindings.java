@@ -1,6 +1,7 @@
  package convalida.databinding;
 
  import android.databinding.BindingAdapter;
+ import android.widget.Button;
  import android.widget.EditText;
 
  import convalida.validators.ConfirmEmailValidator;
@@ -164,6 +165,11 @@ public class ValidationBindings {
                 errorMessage,
                 autoDismiss != null ? autoDismiss : true
         ));
+    }
+
+    @BindingAdapter(value = "validationAction")
+    public static void validationActionBindings(Button button, Integer action) {
+        button.setTag(R.id.validation_action, action);
     }
 
 }

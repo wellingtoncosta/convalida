@@ -15,15 +15,18 @@ import convalida.annotations.PatternValidation;
 import convalida.compiler.internal.ValidationClass;
 import convalida.compiler.internal.ValidationField;
 
+import static convalida.compiler.Constants.ABSTRACT_VALIDATOR;
 import static convalida.compiler.Constants.BUTTON;
 import static convalida.compiler.Constants.CONFIRM_EMAIL_VALIDATION;
 import static convalida.compiler.Constants.CONFIRM_EMAIL_VALIDATOR;
 import static convalida.compiler.Constants.CONFIRM_PASSWORD_ANNOTATION;
 import static convalida.compiler.Constants.CONFIRM_PASSWORD_VALIDATOR;
+import static convalida.compiler.Constants.CONVALIDA_DATABINDING_R;
 import static convalida.compiler.Constants.EMAIL_ANNOTATION;
 import static convalida.compiler.Constants.EMAIL_VALIDATOR;
 import static convalida.compiler.Constants.LENGTH_ANNOTATION;
 import static convalida.compiler.Constants.LENGTH_VALIDATOR;
+import static convalida.compiler.Constants.LIST;
 import static convalida.compiler.Constants.NON_NULL;
 import static convalida.compiler.Constants.ONLY_NUMBER_ANNOTATION;
 import static convalida.compiler.Constants.ONLY_NUMBER_VALIDATOR;
@@ -37,8 +40,10 @@ import static convalida.compiler.Constants.REQUIRED_VALIDATOR;
 import static convalida.compiler.Constants.UI_THREAD;
 import static convalida.compiler.Constants.VALIDATOR_SET;
 import static convalida.compiler.Constants.VIEW;
+import static convalida.compiler.Constants.VIEWGROUP;
 import static convalida.compiler.Constants.VIEW_DATA_BINDING;
 import static convalida.compiler.Constants.VIEW_ONCLICK_LISTENER;
+import static convalida.compiler.Constants.VIEW_TAG_UTILS;
 import static javax.lang.model.element.Modifier.FINAL;
 import static javax.lang.model.element.Modifier.PRIVATE;
 import static javax.lang.model.element.Modifier.PUBLIC;
@@ -98,7 +103,110 @@ class JavaFiler {
                         .addAnnotation(NON_NULL)
                         .build()
                 )
+                .addCode("if (binding.hasPendingBindings()) {")
+                .addCode("\n")
+                .addCode(CodeBlock.builder().indent().build())
+                .addCode("binding.executePendingBindings();")
+                .addCode("\n")
+                .addCode(CodeBlock.builder().unindent().build())
+                .addCode("}")
+                .addCode("\n")
+                .addCode("\n")
                 .addStatement("validatorSet = new $T()", VALIDATOR_SET)
+                .addCode(
+                        "$T<$T> views = $T.getViewsByTag(($T) binding.getRoot(), $T.id.validation_type);",
+                        LIST,
+                        VIEW,
+                        VIEW_TAG_UTILS,
+                        VIEWGROUP,
+                        CONVALIDA_DATABINDING_R
+                )
+                .addCode("\n")
+                .addCode(
+                        "$T<$T> buttons = $T.getViewsByTag(($T) binding.getRoot(), $T.id.validation_action);",
+                        LIST,
+                        VIEW,
+                        VIEW_TAG_UTILS,
+                        VIEWGROUP,
+                        CONVALIDA_DATABINDING_R
+                )
+                .addCode("\n")
+                .addCode("$T validateButton = null;", BUTTON)
+                .addCode("\n")
+                .addCode("$T clearValidationsButton = null;", BUTTON)
+                .addCode("\n")
+                .addCode("\n")
+                .addCode("for (View view : views) {")
+                .addCode("\n")
+                .addCode(CodeBlock.builder().indent().build())
+                .addCode(
+                        "validatorSet.addValidator(($T) view.getTag($T.id.validation_type));",
+                        ABSTRACT_VALIDATOR,
+                        CONVALIDA_DATABINDING_R
+                )
+                .addCode(CodeBlock.builder().unindent().build())
+                .addCode("\n")
+                .addCode("}")
+                .addCode("\n")
+                .addCode("\n")
+                .addCode("for (View button : buttons) {")
+                .addCode("\n")
+                .addCode(CodeBlock.builder().indent().build())
+                .addCode(
+                        "if (button.getTag($T.id.validation_action).equals($T.id.validate) && validateButton == null) {",
+                        CONVALIDA_DATABINDING_R,
+                        CONVALIDA_DATABINDING_R
+                )
+                .addCode("\n")
+                .addCode(CodeBlock.builder().indent().build())
+                .addCode("validateButton = ($T) button;", BUTTON)
+                .addCode(CodeBlock.builder().unindent().build())
+                .addCode("\n")
+                .addCode("}")
+                .addCode("\n")
+                .addCode("\n")
+                .addCode(
+                        "if (button.getTag($T.id.validation_action).equals($T.id.clear) && clearValidationsButton == null) {",
+                        CONVALIDA_DATABINDING_R,
+                        CONVALIDA_DATABINDING_R
+                )
+                .addCode("\n")
+                .addCode(CodeBlock.builder().indent().build())
+                .addCode("clearValidationsButton = ($T) button;", BUTTON)
+                .addCode(CodeBlock.builder().unindent().build())
+                .addCode("\n")
+                .addCode("}")
+                .addCode("\n")
+                .addCode("\n")
+                .addCode("if (validateButton != null && clearValidationsButton != null) {")
+                .addCode("\n")
+                .addCode(CodeBlock.builder().indent().build())
+                .addCode("break;")
+                .addCode(CodeBlock.builder().unindent().build())
+                .addCode("\n")
+                .addCode("}")
+                .addCode("\n")
+                .addCode(CodeBlock.builder().unindent().build())
+                .addCode("}")
+                .addCode("\n")
+                .addCode("\n")
+                .addCode("if (validateButton != null) {")
+                .addCode("\n")
+                .addCode(CodeBlock.builder().indent().build())
+                .addCode("validateOnClickListener(validateButton, target);")
+                .addCode(CodeBlock.builder().unindent().build())
+                .addCode("\n")
+                .addCode("}")
+                .addCode("\n")
+                .addCode("\n")
+                .addCode("if (clearValidationsButton != null) {")
+                .addCode("\n")
+                .addCode(CodeBlock.builder().indent().build())
+                .addCode("clearValidationsOnClickListener(clearValidationsButton, target);")
+                .addCode(CodeBlock.builder().unindent().build())
+                .addCode("\n")
+                .addCode("}")
+                .addCode("\n")
                 .build();
     }
 

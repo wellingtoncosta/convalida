@@ -9,7 +9,7 @@
     </data>
 
     <ScrollView
-        android:id="@+id/activity_annotatin_sample"
+        android:id="@+id/activity_databinding_sample"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:context=".DatabindingSampleActivity">
@@ -222,7 +222,8 @@
                 android:layout_marginRight="@dimen/spacing_large"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/confirm_password_layout" />
+                app:layout_constraintTop_toBottomOf="@+id/confirm_password_layout"
+                app:validationAction="@{@id/validate}" />
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/clear_button"
@@ -237,7 +238,8 @@
                 android:layout_marginRight="@dimen/spacing_large"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/validate_button" />
+                app:layout_constraintTop_toBottomOf="@+id/validate_button"
+                app:validationAction="@{@id/clear}" />
 
         </android.support.constraint.ConstraintLayout>
 
