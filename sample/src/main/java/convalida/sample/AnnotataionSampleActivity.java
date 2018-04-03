@@ -1,11 +1,11 @@
 package convalida.sample;
 
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -13,25 +13,42 @@ import convalida.annotations.ClearValidationsOnClick;
 import convalida.annotations.ConfirmEmailValidation;
 import convalida.annotations.ConfirmPasswordValidation;
 import convalida.annotations.EmailValidation;
-import convalida.annotations.NotEmptyValidation;
+import convalida.annotations.LengthValidation;
 import convalida.annotations.OnValidationError;
 import convalida.annotations.OnValidationSuccess;
+import convalida.annotations.OnlyNumberValidation;
 import convalida.annotations.PasswordValidation;
+import convalida.annotations.PatternValidation;
+import convalida.annotations.RequiredValidation;
 import convalida.annotations.ValidateOnClick;
 
-import static convalida.library.util.Patterns.LOWER_UPPER_CASE_NUMERIC;
+import static convalida.library.util.Patterns.MIXED_CASE_NUMERIC;
+import static convalida.sample.Constants.PHONE_PATTERN;
+
 
 /**
  * @author Wellington Costa on 05/06/17.
  */
-public class SampleActivity extends AppCompatActivity {
+public class AnnotataionSampleActivity extends AppCompatActivity {
 
-    @BindView(R.id.linear_layout)
-    LinearLayout linearLayout;
+    @BindView(R.id.constraint_layout)
+    ConstraintLayout constraintLayout;
 
     @BindView(R.id.name_field)
-    @NotEmptyValidation(errorMessage = R.string.field_required)
+    @RequiredValidation(errorMessage = R.string.field_required)
     EditText nameField;
+
+    @BindView(R.id.nickname_field)
+    @LengthValidation(min = 3, errorMessage = R.string.min_3_characters)
+    EditText nickNameField;
+
+    @BindView(R.id.age_field)
+    @OnlyNumberValidation(errorMessage = R.string.only_numbers)
+    EditText ageField;
+
+    @BindView(R.id.phone_field)
+    @PatternValidation(pattern = PHONE_PATTERN, errorMessage = R.string.invalid_phone)
+    EditText phoneField;
 
     @BindView(R.id.email_field)
     @EmailValidation(errorMessage = R.string.invalid_email)
@@ -42,7 +59,7 @@ public class SampleActivity extends AppCompatActivity {
     EditText confirmEmailField;
 
     @BindView(R.id.password_field)
-    @PasswordValidation(min = 3, pattern = LOWER_UPPER_CASE_NUMERIC, errorMessage = R.string.invalid_password)
+    @PasswordValidation(min = 3, pattern = MIXED_CASE_NUMERIC, errorMessage = R.string.invalid_password)
     EditText passwordField;
 
     @BindView(R.id.confirm_password_field)
@@ -60,19 +77,19 @@ public class SampleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sample);
+        setContentView(R.layout.activity_annotation_sample);
         ButterKnife.bind(this);
-        SampleActivityFieldsValidation.init(this);
+        AnnotataionSampleActivityFieldsValidation.init(this);
     }
 
     @OnValidationSuccess
     public void onValidationSuccess() {
-        Snackbar.make(linearLayout, "Yay!", Snackbar.LENGTH_LONG).show();
+        Snackbar.make(constraintLayout, "Yay!", Snackbar.LENGTH_LONG).show();
     }
 
     @OnValidationError
     public void onValidationError() {
-        Snackbar.make(linearLayout, "Something is wrong :(", Snackbar.LENGTH_LONG).show();
+        Snackbar.make(constraintLayout, "Something is wrong :(", Snackbar.LENGTH_LONG).show();
     }
 
 }

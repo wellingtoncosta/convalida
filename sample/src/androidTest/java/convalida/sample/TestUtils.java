@@ -4,6 +4,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -17,10 +18,10 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 class TestUtils {
 
-    static void testFieldWithEmptyValue(int fieldResId, int errorMessageResId) {
-        onView(withId(fieldResId))
+    static void testFieldWithEmptyValue(int validateButtonResId, int errorMessageResId) {
+        onView(withId(validateButtonResId))
+                .perform(scrollTo(), closeSoftKeyboard())
                 .check(matches(isDisplayed()))
-                .perform(closeSoftKeyboard())
                 .perform(click());
 
         onView(withText(errorMessageResId))
@@ -29,7 +30,7 @@ class TestUtils {
 
     static void testFieldWithAValidValue(int fieldResId, int errorMessageResId, String value) {
         onView(withId(fieldResId))
-                .perform(clearText(), typeText(value))
+                .perform(scrollTo(), clearText(), typeText(value))
                 .perform(closeSoftKeyboard())
                 .check(matches(withText(value)));
 
@@ -39,7 +40,7 @@ class TestUtils {
 
     static void testFieldWithAnInvalidValue(int fieldResId, int errorMessageResId, String value) {
         onView(withId(fieldResId))
-                .perform(clearText(), typeText(value))
+                .perform(scrollTo(), clearText(), typeText(value))
                 .perform(closeSoftKeyboard())
                 .check(matches(withText(value)));
 

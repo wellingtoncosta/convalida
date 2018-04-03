@@ -20,6 +20,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_7
         targetCompatibility = JavaVersion.VERSION_1_7
     }
+
+    dataBinding {
+        enabled true
+    }
 }
 
 task sourcesJar(type: Jar) {
@@ -32,11 +36,7 @@ artifacts {
 }
 
 dependencies {
-    compile project(':convalida-annotations')
     compile project(':convalida-validators')
-    compile project(':convalida-databinding')
 
-    implementation deps.support.annotations
-    implementation deps.support.compat
     implementation deps.support.design
 }

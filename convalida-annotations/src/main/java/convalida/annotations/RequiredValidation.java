@@ -14,7 +14,7 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
  */
 @Target(FIELD)
 @Retention(SOURCE)
-public @interface NotEmptyValidation {
+public @interface RequiredValidation {
 
     @StringRes int errorMessage();
 

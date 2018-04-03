@@ -1,24 +1,23 @@
 package convalida.validators;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author Wellington Costa on 21/06/2017.
  */
 public final class ValidatorSet {
 
-    private Set<Validator> validators;
+    private List<AbstractValidator> validators;
     private boolean isValid;
 
     public ValidatorSet() {
-        this.validators = new HashSet<>();
+        this.validators = new LinkedList<>();
         this.isValid = true;
     }
 
-    public void addValidator(Validator validator) {
+    public void addValidator(AbstractValidator validator) {
         this.validators.add(validator);
     }
 
@@ -30,7 +29,7 @@ public final class ValidatorSet {
     private void executeValidators() {
         List<Boolean> validationResults = new ArrayList<>();
 
-        for(Validator validator : validators) {
+        for(AbstractValidator validator : validators) {
             validationResults.add(validator.validate());
         }
 
@@ -43,12 +42,16 @@ public final class ValidatorSet {
     }
 
     public void clearValidators() {
-        for (Validator validator : validators) {
+        for (AbstractValidator validator : validators) {
             validator.clear();
         }
     }
 
-    public int getValidatorsSize() {
+    public List<AbstractValidator> getValidators() {
+        return validators;
+    }
+
+    public int getValidatorsCount() {
         return validators.size();
     }
 

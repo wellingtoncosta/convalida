@@ -8,7 +8,7 @@ import convalida.validators.util.ExecuteValidationListener;
 /**
  * @author Wellington Costa on 21/06/2017.
  */
-public abstract class AbstractValidator implements Validator {
+public abstract class AbstractValidator {
 
     private EditText editText;
     private String errorMessage;
@@ -45,13 +45,11 @@ public abstract class AbstractValidator implements Validator {
                 editText.getVisibility() == View.INVISIBLE);
     }
 
-    @Override
     public boolean validate() {
         executeValidation(editText.getText().toString());
         return !hasError;
     }
 
-    @Override
     public void clear() {
         EditTextUtils.setError(editText, null);
     }

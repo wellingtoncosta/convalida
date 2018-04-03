@@ -5,9 +5,9 @@ import android.widget.EditText;
 /**
  * @author Wellington Costa on 21/06/2017.
  */
-public class NotEmptyValidator extends AbstractValidator {
+public class RequiredValidator extends AbstractValidator {
 
-    public NotEmptyValidator(
+    public RequiredValidator(
             EditText editText,
             String errorMessage,
             boolean autoDismiss) {

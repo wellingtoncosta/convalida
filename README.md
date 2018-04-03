@@ -2,107 +2,40 @@
 
 ![Logo](logo.png)
 
-__Convalida__ - (Italian for "validation")
+**Convalida** - (Italian for "validation")
 
 Convalida is a simple, lightweight and powerful field validation library for Android.
 
 ## Why Convalida?
 
-- Annotation-based;
-- Compile-time;
-- Compatible with other annotation-based libraries and frameworks such as [ButterKnife][1], [AndroidAnnotations][2], etc;
-- Works with __Stock Android Widgets__;
-- Based on [Material Design Error Patterns][4];
+-   You can use with annotations or with data binding;
+-   Compile-time;
+-   Compatible with other popular libraries such as [ButterKnife][1], [Android Data Binding][2], [Dagger 2][3], etc;
+-   Works with **Stock Android Widgets**;
+-   Based on [Material Design Error Patterns][4];
 
-## Quick Start
+## Documentation
 
-__Step 1__ - Annotate your fields with [Convalida Annotations][3]:
-
-```java
-@NotEmptyValidation(R.string.field_required)
-EditText nameField;
-
-@LengthValidation(min = 3, errorMessage = R.string.min_3_characters)
-EditText nickNameField;
-
-@OnlyNumberValidation(R.string.only_numbers)
-EditText ageField;
-
-@EmailValidation(R.string.invalid_email)
-EditText emailField;
-
-@ConfirmEmailValidation(R.string.emails_not_match)
-EditText confirmEmailField;
-
-@PatternValidation(errorMessage = R.string.invalid_phone, pattern = PHONE_PATTERN)
-EditText phoneField;
-
-@PasswordValidation(min = 3, errorMessage = R.string.invalid_password)
-EditText passwordField;
-
-@ConfirmPasswordValidation(R.string.passwords_not_match)
-EditText confirmPasswordField;
-
-@ValidateOnClick
-Button validateButton;
-```
-
-__Step 2__ - Initialize Convalida:
-
-```java
-
-@Override
-protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_sample);
-    SampleActivityFieldsValidation.init(this);
-}
-```
-
-__Step 3__ - Run the validations by clicking in the button mapped with ```@ValidateOnClick``` and handle success or error:
-
-```java
-@OnValidationSuccess
-public void onValidationSuccess() {
-    Toast.makeText("Yay!", Toast.LENGTH_LONG).show();
-}
-
-@OnValidationError
-public void onValidationError() {
-    Toast.makeText("Something is wrong :(", Toast.LENGTH_LONG).show();
-}
-```
-
-*Note: Only the method annotated with ```@OnValidationSuccess``` is required.*
-
-__Step 4__ - If you want to clear the validations:
-
-```java
-@ClearValidationsOnClick
-Button clearValidationsButton;
-```
-
-__Remember: You must initialize the views (e.g [ButterKnife][1]) before apply the validations.__
+See the [wiki][5] for more information.
 
 ## Download
 
-__Step 1__ - Add the JitPack repository to your root build.gradle file:
+**Step 1** - Add the JitPack repository to your root build.gradle file:
 
 ```groovy
 allprojects {
   repositories {
-    ...
     maven { url 'https://jitpack.io' }
   }
 }
 ```
 
-__Step 2__ - Add the dependencies:
+**Step 2** - Add the dependencies:
 
 ```groovy
 dependencies {
-  compile 'com.github.WellingtonCosta.convalida:convalida:1.3.7'
-  annotationProcessor 'com.github.WellingtonCosta.convalida:convalida-compiler:1.3.7'
+  implementation 'com.github.WellingtonCosta.convalida:convalida:2.0.0'
+  annotationProcessor 'com.github.WellingtonCosta.convalida:convalida-compiler:2.0.0'
 }
 ```
 
@@ -122,8 +55,12 @@ dependencies {
     See the License for the specific language governing permissions and
     limitations under the License.
 
-
 [1]: https://github.com/JakeWharton/butterknife
-[2]: https://github.com/androidannotations/androidannotations
-[3]: https://github.com/WellingtonCosta/convalida/tree/master/convalida-annotations/src/main/java/convalida/annotations
+
+[2]: https://developer.android.com/topic/libraries/data-binding/index.html
+
+[3]: https://github.com/google/dagger
+
 [4]: https://material.io/guidelines/patterns/errors.html
+
+[5]: https://github.com/WellingtonCosta/convalida/wiki

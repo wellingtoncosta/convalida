@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="validation_type" />
+    <item type="id" name="validation_action" />
+    <item type="id" name="validate" />
+    <item type="id" name="clear" />
+</resources>
