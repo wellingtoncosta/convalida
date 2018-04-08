@@ -33,20 +33,18 @@ class Constants {
     static final String ONLY_NUMBER_ANNOTATION                      = "convalida.annotations.OnlyNumberValidation";
     static final String PASSWORD_ANNOTATION                         = "convalida.annotations.PasswordValidation";
     static final String CONFIRM_PASSWORD_ANNOTATION                 = "convalida.annotations.ConfirmPasswordValidation";
-    static final String VALIDATE_ON_CLICK_ANNOTATION                = "convalida.annotations.ConfirmPasswordValidation";
-    static final String CLEAR_VALIDATIONS_ON_CLICK_ANNOTATION       = "convalida.annotations.ConfirmPasswordValidation";
-    static final String ON_VALIDATION_SUCCESS_ANNOTATION            = "convalida.annotations.ConfirmPasswordValidation";
-    static final String ON_VALIDATION_ERROR_ANNOTATION              = "convalida.annotations.ConfirmPasswordValidation";
+    static final String VALIDATE_ON_CLICK_ANNOTATION                = "convalida.annotations.ValidateOnClick";
+    static final String CLEAR_VALIDATIONS_ON_CLICK_ANNOTATION       = "convalida.annotations.ClearValidationsOnClick";
+    static final String ON_VALIDATION_SUCCESS_ANNOTATION            = "convalida.annotations.OnValidationSuccess";
+    static final String ON_VALIDATION_ERROR_ANNOTATION              = "convalida.annotations.OnValidationError";
 
-    private static final String VALIDATORS_PACKAGE      = "convalida.validators";
-
-    static final ClassName REQUIRED_VALIDATOR           = ClassName.get(VALIDATORS_PACKAGE, "RequiredValidator");
-    static final ClassName EMAIL_VALIDATOR              = ClassName.get(VALIDATORS_PACKAGE, "EmailValidator");
-    static final ClassName CONFIRM_EMAIL_VALIDATOR      = ClassName.get(VALIDATORS_PACKAGE, "ConfirmEmailValidator");
-    static final ClassName PATTERN_VALIDATOR            = ClassName.get(VALIDATORS_PACKAGE, "PatternValidator");
-    static final ClassName LENGTH_VALIDATOR             = ClassName.get(VALIDATORS_PACKAGE, "LengthValidator");
-    static final ClassName ONLY_NUMBER_VALIDATOR        = ClassName.get(VALIDATORS_PACKAGE, "OnlyNumberValidator");
-    static final ClassName PASSWORD_VALIDATOR           = ClassName.get(VALIDATORS_PACKAGE, "PasswordValidator");
-    static final ClassName CONFIRM_PASSWORD_VALIDATOR   = ClassName.get(VALIDATORS_PACKAGE, "ConfirmPasswordValidator");
+    static final ClassName REQUIRED_VALIDATOR           = ClassName.get("convalida.validators", "RequiredValidator");
+    static final ClassName EMAIL_VALIDATOR              = ClassName.get("convalida.validators", "EmailValidator");
+    static final ClassName CONFIRM_EMAIL_VALIDATOR      = ClassName.get("convalida.validators", "ConfirmEmailValidator");
+    static final ClassName PATTERN_VALIDATOR            = ClassName.get("convalida.validators", "PatternValidator");
+    static final ClassName LENGTH_VALIDATOR             = ClassName.get("convalida.validators", "LengthValidator");
+    static final ClassName ONLY_NUMBER_VALIDATOR        = ClassName.get("convalida.validators", "OnlyNumberValidator");
+    static final ClassName PASSWORD_VALIDATOR           = ClassName.get("convalida.validators", "PasswordValidator");
+    static final ClassName CONFIRM_PASSWORD_VALIDATOR   = ClassName.get("convalida.validators", "ConfirmPasswordValidator");
 
 }
