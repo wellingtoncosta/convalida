@@ -35,7 +35,9 @@ buildscript {
 
     dependencies {
         classpath deps.android.gradlePlugin
-        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.2'
+        classpath('com.dicedmelon.gradle:jacoco-android:0.1.2') {
+            exclude group: 'org.codehaus.groovy', module: 'groovy-all'
+        }
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
     }
 }
