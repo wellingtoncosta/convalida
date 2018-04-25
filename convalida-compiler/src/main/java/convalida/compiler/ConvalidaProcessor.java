@@ -33,6 +33,7 @@ import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
+import convalida.annotations.BetweenValidation;
 import convalida.annotations.ClearValidationsOnClick;
 import convalida.annotations.ConfirmEmailValidation;
 import convalida.annotations.ConfirmPasswordValidation;
@@ -53,6 +54,8 @@ import convalida.compiler.internal.ValidationField;
 import convalida.compiler.internal.scanners.IdScanner;
 import convalida.compiler.internal.scanners.RClassScanner;
 
+import static convalida.compiler.Constants.BETWEEN_END_ANNOTATION;
+import static convalida.compiler.Constants.BETWEEN_START_ANNOTATION;
 import static convalida.compiler.Constants.CLEAR_VALIDATIONS_ON_CLICK_ANNOTATION;
 import static convalida.compiler.Constants.CONFIRM_EMAIL_VALIDATION;
 import static convalida.compiler.Constants.CONFIRM_PASSWORD_ANNOTATION;
@@ -89,6 +92,8 @@ import static convalida.compiler.Preconditions.methodHasParams;
         PASSWORD_ANNOTATION,
         CONFIRM_PASSWORD_ANNOTATION,
         CPF_ANNOTATION,
+        BETWEEN_START_ANNOTATION,
+        BETWEEN_END_ANNOTATION,
         VALIDATE_ON_CLICK_ANNOTATION,
         CLEAR_VALIDATIONS_ON_CLICK_ANNOTATION,
         ON_VALIDATION_SUCCESS_ANNOTATION,
@@ -129,6 +134,8 @@ public class ConvalidaProcessor extends AbstractProcessor {
         annotations.add(PasswordValidation.class);
         annotations.add(ConfirmPasswordValidation.class);
         annotations.add(CpfValidation.class);
+        annotations.add(BetweenValidation.Start.class);
+        annotations.add(BetweenValidation.End.class);
         annotations.add(ValidateOnClick.class);
         annotations.add(ClearValidationsOnClick.class);
         annotations.add(OnValidationSuccess.class);
@@ -255,6 +262,16 @@ public class ConvalidaProcessor extends AbstractProcessor {
                 parseCpfValidation(element, parents, validationFields);
             } catch (Exception e) {
                 logParsingError(element, CpfValidation.class, e);
+            }
+        }
+
+        // Process each @BetweenValidation element
+        for (Element element : env.getElementsAnnotatedWith(BetweenValidation.Start.class)) {
+            if (!SuperficialValidation.validateElement(element)) continue;
+            try {
+                parseBetweenValidation(element, parents, validationFields);
+            } catch (Exception e) {
+                logParsingError(element, BetweenValidation.Start.class, e);
             }
         }
 
@@ -636,6 +653,67 @@ public class ConvalidaProcessor extends AbstractProcessor {
         ));
     }
 
+
+    private void parseBetweenValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
+        boolean hasError = (
+                    isInvalid(BetweenValidation.Start.class, element) ||
+                    isInaccessible(BetweenValidation.Start.class, element)
+                ) || (
+                    isInvalid(BetweenValidation.End.class, element) ||
+                    isInaccessible(BetweenValidation.End.class, element)
+                );
+
+        if (hasError) {
+            return;
+        }
+
+        List<? extends Element> elementsOfParent = element.getEnclosingElement().getEnclosedElements();
+        int key = element.getAnnotation(BetweenValidation.Start.class).key();
+        Element endElement = null;
+
+        for (Element elementOfParent : elementsOfParent) {
+            if (elementOfParent.getAnnotation(BetweenValidation.End.class) != null
+                    && elementOfParent.getAnnotation(BetweenValidation.End.class).key() == key) {
+                endElement = elementOfParent;
+            }
+        }
+
+        if(endElement == null) {
+            error(
+                    element.getEnclosingElement(),
+                    "The class %s has one element annotated with @%s with key %s but it requires an element annotated with @%s and with same key.",
+                    element.getEnclosingElement().getSimpleName(),
+                    BetweenValidation.Start.class.getSimpleName(),
+                    key,
+                    BetweenValidation.End.class.getSimpleName()
+            );
+            return;
+        }
+
+        int startErrorMessage = element.getAnnotation(BetweenValidation.Start.class).errorMessage();
+        boolean startAutoDismiss = element.getAnnotation(BetweenValidation.Start.class).autoDismiss();
+        QualifiedId startQualifiedId = elementToQualifiedId(element, startErrorMessage);
+
+        parents.add(element.getEnclosingElement());
+        validationFields.add(new ValidationField(
+                element,
+                BetweenValidation.Start.class,
+                getId(startQualifiedId),
+                startAutoDismiss
+        ));
+
+        int endErrorMessage = endElement.getAnnotation(BetweenValidation.End.class).errorMessage();
+        boolean endAutoDismiss = endElement.getAnnotation(BetweenValidation.End.class).autoDismiss();
+        QualifiedId endQualifiedId = elementToQualifiedId(endElement, endErrorMessage);
+
+        parents.add(endElement.getEnclosingElement());
+        validationFields.add(new ValidationField(
+                endElement,
+                BetweenValidation.End.class,
+                getId(endQualifiedId),
+                endAutoDismiss
+        ));
+    }
 
 
     private static AnnotationMirror getMirror(Element element, Class<? extends Annotation> annotation) {

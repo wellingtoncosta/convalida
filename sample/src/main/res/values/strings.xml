@@ -5,6 +5,8 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="cpf">CPF</string>
     <string name="email">Email</string>
+    <string name="initial_period">Initial Period</string>
+    <string name="final_period">Final Period</string>
     <string name="nickname">Nick Name</string>
     <string name="name">Name</string>
     <string name="phone">Phone</string>
@@ -21,6 +23,8 @@
     <string name="passwords_not_match">Passwords does not match</string>
     <string name="emails_not_match">Emails does not match</string>
     <string name="cpf_not_valid">CPF is not valid</string>
+    <string name="initial_period_not_valid">Initial period is not valid</string>
+    <string name="final_period_not_valid">Final period cannot greater initial period</string>
 
     <string name="sample_1">Sample 1</string>
     <string name="sample_2">Sample 2</string>

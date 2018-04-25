@@ -16,6 +16,9 @@ import convalida.compiler.internal.ValidationClass;
 import convalida.compiler.internal.ValidationField;
 
 import static convalida.compiler.Constants.ABSTRACT_VALIDATOR;
+import static convalida.compiler.Constants.BETWEEN_ANNOTATION;
+import static convalida.compiler.Constants.BETWEEN_END_ANNOTATION;
+import static convalida.compiler.Constants.BETWEEN_VALIDATOR;
 import static convalida.compiler.Constants.BUTTON;
 import static convalida.compiler.Constants.CONFIRM_EMAIL_VALIDATION;
 import static convalida.compiler.Constants.CONFIRM_EMAIL_VALIDATOR;
@@ -254,6 +257,9 @@ class JavaFiler {
                 case CPF_ANNOTATION:
                     builder.add(createCpfValidationCodeBlock(field));
                     break;
+                case BETWEEN_ANNOTATION:
+                    builder.add(createBetweenValidationCodeBlock(validationClass, field));
+                    break;
             }
         }
         return builder.build();
@@ -376,6 +382,32 @@ class JavaFiler {
                         field.autoDismiss
                 )
                 .build();
+    }
+
+    private static CodeBlock createBetweenValidationCodeBlock(ValidationClass validationClass, ValidationField startField) {
+        ValidationField endField = null;
+
+        for(ValidationField field : validationClass.fields) {
+            if(field.annotationClassName.equals(BETWEEN_END_ANNOTATION)) {
+                endField = field;
+                break;
+            }
+        }
+
+        if(endField != null) {
+            return CodeBlock.builder()
+                    .addStatement(
+                            "validatorSet.addValidator(new $T(target.$N, target.$N, target.getString($L), target.getString($L), $L, $L))",
+                            BETWEEN_VALIDATOR,
+                            startField.name,
+                            endField.name,
+                            startField.id.code,
+                            endField.id.code,
+                            startField.autoDismiss,
+                            endField.autoDismiss
+                    )
+                    .build();
+        } else return CodeBlock.builder().build();
     }
 
     private static CodeBlock createValidateOnClickCodeBlock(ValidationClass validationClass) {

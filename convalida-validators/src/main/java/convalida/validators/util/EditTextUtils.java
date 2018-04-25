@@ -56,4 +56,9 @@ public final class EditTextUtils {
         });
     }
 
+    public static boolean isVisible(EditText editText) {
+        return (editText.getVisibility() == View.GONE ||
+                editText.getVisibility() == View.INVISIBLE);
+    }
+
 }

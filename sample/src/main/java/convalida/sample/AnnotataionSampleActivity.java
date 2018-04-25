@@ -9,6 +9,7 @@ import android.widget.EditText;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import convalida.annotations.BetweenValidation;
 import convalida.annotations.ClearValidationsOnClick;
 import convalida.annotations.ConfirmEmailValidation;
 import convalida.annotations.ConfirmPasswordValidation;
@@ -51,6 +52,18 @@ public class AnnotataionSampleActivity extends AppCompatActivity {
     @PatternValidation(pattern = PHONE_PATTERN, errorMessage = R.string.invalid_phone)
     EditText phoneField;
 
+    @BindView(R.id.cpf_field)
+    @CpfValidation(errorMessage = R.string.cpf_not_valid)
+    EditText cpfField;
+
+    @BindView(R.id.initial_period_field)
+    @BetweenValidation.Start(key = 1, errorMessage = R.string.initial_period_not_valid)
+    EditText initialPeriodField;
+
+    @BindView(R.id.final_period_field)
+    @BetweenValidation.End(key = 1, errorMessage = R.string.final_period_not_valid)
+    EditText finalPeriodField;
+
     @BindView(R.id.email_field)
     @EmailValidation(errorMessage = R.string.invalid_email)
     EditText emailField;
@@ -66,10 +79,6 @@ public class AnnotataionSampleActivity extends AppCompatActivity {
     @BindView(R.id.confirm_password_field)
     @ConfirmPasswordValidation(errorMessage = R.string.passwords_not_match)
     EditText confirmPasswordField;
-
-    @BindView(R.id.cpf_field)
-    @CpfValidation(errorMessage = R.string.cpf_not_valid)
-    EditText cpfField;
 
     @ValidateOnClick
     @BindView(R.id.validate_button)

@@ -4,6 +4,7 @@
  import android.widget.Button;
  import android.widget.EditText;
 
+ import convalida.validators.BetweenValidator;
  import convalida.validators.ConfirmEmailValidator;
  import convalida.validators.ConfirmPasswordValidator;
  import convalida.validators.CpfValidator;
@@ -181,6 +182,31 @@ public class ValidationBindings {
                 cpfField,
                 errorMessage,
                 autoDismiss != null ? autoDismiss : true
+        ));
+    }
+
+    @BindingAdapter(value = {
+            "betweenValidationStartErrorMessage",
+            "betweenValidationStartAutoDismiss",
+            "betweenValidationEndField",
+            "betweenValidationEndErrorMessage",
+            "betweenValidationEndAutoDismiss"
+    }, requireAll = false)
+    public static void betweenValidationBindings(
+            EditText startField,
+            String startErrorMessage,
+            Boolean startAutoDismiss,
+            EditText endField,
+            String endErrorMessage,
+            Boolean endAutoDismiss
+    ) {
+        startField.setTag(R.id.validation_type, new BetweenValidator(
+                startField,
+                endField,
+                startErrorMessage,
+                endErrorMessage,
+                startAutoDismiss != null ? startAutoDismiss : true,
+                endAutoDismiss != null ? endAutoDismiss : true
         ));
     }
 
