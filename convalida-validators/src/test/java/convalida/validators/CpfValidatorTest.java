@@ -18,6 +18,12 @@ public class CpfValidatorTest extends BaseTest {
         assertEquals(validator.validate(), true);
     }
 
+    @Test public void invalidCpfWithEmptyValue() {
+        CpfValidator validator = new CpfValidator(mockEditText, errorMessage, true);
+        when(mockEditText.getText().toString()).thenReturn("");
+        assertEquals(validator.validate(), false);
+    }
+
     @Test public void invalidCpfWithValueLessThan11() {
         CpfValidator validator = new CpfValidator(mockEditText, errorMessage, true);
         when(mockEditText.getText().toString()).thenReturn("123");
