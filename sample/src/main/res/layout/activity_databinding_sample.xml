@@ -130,7 +130,6 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/cpf"
                     android:inputType="text"
-                    android:maxLength="11"
                     android:maxLines="1"
                     app:cpfValidationErrorMessage="@{@string/cpf_not_valid}" />
 
