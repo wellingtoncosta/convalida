@@ -11,7 +11,7 @@ import convalida.validators.util.ExecuteValidationListener;
 public abstract class AbstractValidator {
 
     protected EditText editText;
-    private String errorMessage;
+    protected String errorMessage;
     private boolean hasError = false;
 
     public AbstractValidator(EditText editText, String errorMessage, boolean autoDismiss) {

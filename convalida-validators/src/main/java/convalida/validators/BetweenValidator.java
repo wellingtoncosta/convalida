@@ -13,6 +13,8 @@ import convalida.validators.util.ExecuteValidationListener;
 public class BetweenValidator extends AbstractValidator {
 
     private EditText endEditText;
+    private String endErrorMessage;
+    private boolean endFieldHasError = false;
 
     public BetweenValidator(
             final EditText startEditText,
@@ -24,19 +26,13 @@ public class BetweenValidator extends AbstractValidator {
     ) {
         super(startEditText, startErrorMessage, startAutoDismiss);
         this.endEditText = endEditText;
+        this.endErrorMessage = endErrorMessage;
 
         if(endAutoDismiss) {
             EditTextUtils.addOnTextChangedListener(endEditText, new ExecuteValidationListener() {
                 @Override
                 public void execute(String value) {
-                    boolean endFieldIsValid = endFieldIsValid();
-                    if(endFieldIsValid) {
-                        EditTextUtils.setError(startEditText, null);
-                        EditTextUtils.setError(endEditText, null);
-                    } else {
-                        EditTextUtils.setError(startEditText, startErrorMessage);
-                        EditTextUtils.setError(endEditText, endErrorMessage);
-                    }
+                    applyValidationToEndField();
                 }
             });
         }
@@ -54,12 +50,24 @@ public class BetweenValidator extends AbstractValidator {
         }
     }
 
+    private void applyValidationToEndField() {
+        endFieldHasError = !endFieldIsValid();
+        if(endFieldIsValid()) {
+            EditTextUtils.setError(editText, null);
+            EditTextUtils.setError(endEditText, null);
+        } else {
+            EditTextUtils.setError(editText, errorMessage);
+            EditTextUtils.setError(endEditText, endErrorMessage);
+        }
+    }
+
     @Override
     public boolean isNotValid(String value) {
+        applyValidationToEndField();
         String endFieldValue = endEditText.getText().toString();
         return value.isEmpty()
                 || !value.equals(endFieldValue)
                 && (endFieldValue.isEmpty()
-                || !endFieldIsValid());
+                || endFieldHasError);
     }
 }

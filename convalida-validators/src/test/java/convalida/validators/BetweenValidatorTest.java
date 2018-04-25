@@ -49,8 +49,8 @@ public class BetweenValidatorTest {
                 endEditText,
                 startErrorMessage,
                 endErrorMessage,
-                true,
-                true);
+                false,
+                false);
 
         when(startEditText.getText().toString()).thenReturn("2000");
         when(endEditText.getText().toString()).thenReturn("1000");
@@ -64,8 +64,8 @@ public class BetweenValidatorTest {
                 endEditText,
                 startErrorMessage,
                 endErrorMessage,
-                true,
-                true);
+                false,
+                false);
 
         when(startEditText.getText().toString()).thenReturn("zzzz");
         when(endEditText.getText().toString()).thenReturn("aaaa");
