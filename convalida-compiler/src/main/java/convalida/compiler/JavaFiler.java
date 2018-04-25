@@ -22,6 +22,8 @@ import static convalida.compiler.Constants.CONFIRM_EMAIL_VALIDATOR;
 import static convalida.compiler.Constants.CONFIRM_PASSWORD_ANNOTATION;
 import static convalida.compiler.Constants.CONFIRM_PASSWORD_VALIDATOR;
 import static convalida.compiler.Constants.CONVALIDA_DATABINDING_R;
+import static convalida.compiler.Constants.CPF_ANNOTATION;
+import static convalida.compiler.Constants.CPF_VALIDATOR;
 import static convalida.compiler.Constants.EMAIL_ANNOTATION;
 import static convalida.compiler.Constants.EMAIL_VALIDATOR;
 import static convalida.compiler.Constants.LENGTH_ANNOTATION;
@@ -249,6 +251,9 @@ class JavaFiler {
                         }
                     }
                     break;
+                case CPF_ANNOTATION:
+                    builder.add(createCpfValidationCodeBlock(field));
+                    break;
             }
         }
         return builder.build();
@@ -357,6 +362,18 @@ class JavaFiler {
                         confirmPasswordField.name,
                         confirmPasswordField.id.code,
                         confirmPasswordField.autoDismiss
+                )
+                .build();
+    }
+
+    private static CodeBlock createCpfValidationCodeBlock(ValidationField field) {
+        return CodeBlock.builder()
+                .addStatement(
+                        "validatorSet.addValidator(new $T(target.$N, target.getString($L), $L))",
+                        CPF_VALIDATOR,
+                        field.name,
+                        field.id.code,
+                        field.autoDismiss
                 )
                 .build();
     }

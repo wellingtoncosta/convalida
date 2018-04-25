@@ -32,9 +32,9 @@ artifacts {
 }
 
 dependencies {
-    compile project(':convalida-annotations')
-    compile project(':convalida-validators')
-    compile project(':convalida-databinding')
+    api project(':convalida-annotations')
+    api project(':convalida-validators')
+    api project(':convalida-databinding')
 
     implementation deps.support.annotations
     implementation deps.support.compat

@@ -36,7 +36,7 @@ artifacts {
 }
 
 dependencies {
-    compile project(':convalida-validators')
+    api project(':convalida-validators')
 
     implementation deps.support.design
 }

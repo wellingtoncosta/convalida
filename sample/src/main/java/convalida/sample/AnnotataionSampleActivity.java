@@ -12,6 +12,7 @@ import butterknife.ButterKnife;
 import convalida.annotations.ClearValidationsOnClick;
 import convalida.annotations.ConfirmEmailValidation;
 import convalida.annotations.ConfirmPasswordValidation;
+import convalida.annotations.CpfValidation;
 import convalida.annotations.EmailValidation;
 import convalida.annotations.LengthValidation;
 import convalida.annotations.OnValidationError;
@@ -66,6 +67,10 @@ public class AnnotataionSampleActivity extends AppCompatActivity {
     @ConfirmPasswordValidation(errorMessage = R.string.passwords_not_match)
     EditText confirmPasswordField;
 
+    @BindView(R.id.cpf_field)
+    @CpfValidation(errorMessage = R.string.cpf_not_valid)
+    EditText cpfField;
+
     @ValidateOnClick
     @BindView(R.id.validate_button)
     Button validateButton;
@@ -79,6 +84,7 @@ public class AnnotataionSampleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_annotation_sample);
         ButterKnife.bind(this);
+        if(getSupportActionBar() != null) getSupportActionBar().setTitle(R.string.with_annotations);
         AnnotataionSampleActivityFieldsValidation.init(this);
     }
 
