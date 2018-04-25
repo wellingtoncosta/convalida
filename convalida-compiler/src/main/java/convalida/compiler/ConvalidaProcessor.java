@@ -19,7 +19,6 @@ import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
-import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
@@ -37,6 +36,7 @@ import javax.lang.model.util.Types;
 import convalida.annotations.ClearValidationsOnClick;
 import convalida.annotations.ConfirmEmailValidation;
 import convalida.annotations.ConfirmPasswordValidation;
+import convalida.annotations.CpfValidation;
 import convalida.annotations.EmailValidation;
 import convalida.annotations.LengthValidation;
 import convalida.annotations.OnValidationError;
@@ -56,6 +56,7 @@ import convalida.compiler.internal.scanners.RClassScanner;
 import static convalida.compiler.Constants.CLEAR_VALIDATIONS_ON_CLICK_ANNOTATION;
 import static convalida.compiler.Constants.CONFIRM_EMAIL_VALIDATION;
 import static convalida.compiler.Constants.CONFIRM_PASSWORD_ANNOTATION;
+import static convalida.compiler.Constants.CPF_ANNOTATION;
 import static convalida.compiler.Constants.EMAIL_ANNOTATION;
 import static convalida.compiler.Constants.LENGTH_ANNOTATION;
 import static convalida.compiler.Constants.ONLY_NUMBER_ANNOTATION;
@@ -87,6 +88,7 @@ import static convalida.compiler.Preconditions.methodHasParams;
         ONLY_NUMBER_ANNOTATION,
         PASSWORD_ANNOTATION,
         CONFIRM_PASSWORD_ANNOTATION,
+        CPF_ANNOTATION,
         VALIDATE_ON_CLICK_ANNOTATION,
         CLEAR_VALIDATIONS_ON_CLICK_ANNOTATION,
         ON_VALIDATION_SUCCESS_ANNOTATION,
@@ -96,7 +98,6 @@ public class ConvalidaProcessor extends AbstractProcessor {
 
     private Elements elementUtils;
     private Types typeUtils;
-    private Messager messager;
     private Filer filer;
     private Trees trees;
 
@@ -108,8 +109,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
 
         this.elementUtils = processingEnvironment.getElementUtils();
         this.typeUtils = processingEnvironment.getTypeUtils();
-        this.messager = processingEnvironment.getMessager();
-        convalida.compiler.Messager.init(messager);
+        Messager.init(processingEnvironment.getMessager());
         this.filer = processingEnvironment.getFiler();
 
         try {
@@ -128,6 +128,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
         annotations.add(OnlyNumberValidation.class);
         annotations.add(PasswordValidation.class);
         annotations.add(ConfirmPasswordValidation.class);
+        annotations.add(CpfValidation.class);
         annotations.add(ValidateOnClick.class);
         annotations.add(ClearValidationsOnClick.class);
         annotations.add(OnValidationSuccess.class);
@@ -244,6 +245,16 @@ public class ConvalidaProcessor extends AbstractProcessor {
                 parseConfirmPasswordValidation(element, parents, validationFields);
             } catch (Exception e) {
                 logParsingError(element, ConfirmPasswordValidation.class, e);
+            }
+        }
+
+        // Process each @CpfValidation element
+        for (Element element : env.getElementsAnnotatedWith(CpfValidation.class)) {
+            if (!SuperficialValidation.validateElement(element)) continue;
+            try {
+                parseCpfValidation(element, parents, validationFields);
+            } catch (Exception e) {
+                logParsingError(element, CpfValidation.class, e);
             }
         }
 
@@ -598,6 +609,28 @@ public class ConvalidaProcessor extends AbstractProcessor {
         validationFields.add(new ValidationField(
                 element,
                 ConfirmPasswordValidation.class,
+                getId(qualifiedId),
+                autoDismiss
+        ));
+    }
+
+    private void parseCpfValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
+        boolean hasError =
+                isInvalid(CpfValidation.class, element) ||
+                        isInaccessible(CpfValidation.class, element);
+
+        if (hasError) {
+            return;
+        }
+
+        int errorMessageResourceId = element.getAnnotation(CpfValidation.class).errorMessage();
+        boolean autoDismiss = element.getAnnotation(CpfValidation.class).autoDismiss();
+        QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
+
+        parents.add(element.getEnclosingElement());
+        validationFields.add(new ValidationField(
+                element,
+                CpfValidation.class,
                 getId(qualifiedId),
                 autoDismiss
         ));

@@ -6,6 +6,7 @@
 
  import convalida.validators.ConfirmEmailValidator;
  import convalida.validators.ConfirmPasswordValidator;
+ import convalida.validators.CpfValidator;
  import convalida.validators.EmailValidator;
  import convalida.validators.LengthValidator;
  import convalida.validators.OnlyNumberValidator;
@@ -162,6 +163,22 @@ public class ValidationBindings {
         confirmPasswordField.setTag(R.id.validation_type, new ConfirmPasswordValidator(
                 passwordField,
                 confirmPasswordField,
+                errorMessage,
+                autoDismiss != null ? autoDismiss : true
+        ));
+    }
+
+    @BindingAdapter(value = {
+            "cpfValidationErrorMessage",
+            "cpfValidationAutoDismiss"
+    }, requireAll = false)
+    public static void cpfValidationBindings(
+            EditText cpfField,
+            String errorMessage,
+            Boolean autoDismiss
+    ) {
+        cpfField.setTag(R.id.validation_type, new CpfValidator(
+                cpfField,
                 errorMessage,
                 autoDismiss != null ? autoDismiss : true
         ));

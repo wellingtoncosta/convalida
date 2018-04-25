@@ -20,6 +20,7 @@ public class DatabindingSampleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_databinding_sample);
+        if(getSupportActionBar() != null) getSupportActionBar().setTitle(R.string.with_databinding);
         DatabindingSampleActivityFieldsValidation.init(this, binding);
     }
 
