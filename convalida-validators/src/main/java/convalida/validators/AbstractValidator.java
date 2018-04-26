@@ -1,7 +1,7 @@
 package convalida.validators;
 
-import android.view.View;
 import android.widget.EditText;
+
 import convalida.validators.util.EditTextUtils;
 import convalida.validators.util.ExecuteValidationListener;
 
@@ -10,8 +10,8 @@ import convalida.validators.util.ExecuteValidationListener;
  */
 public abstract class AbstractValidator {
 
-    private EditText editText;
-    private String errorMessage;
+    protected EditText editText;
+    protected String errorMessage;
     private boolean hasError = false;
 
     public AbstractValidator(EditText editText, String errorMessage, boolean autoDismiss) {
@@ -31,18 +31,13 @@ public abstract class AbstractValidator {
     public abstract boolean isNotValid(String value);
 
     private void executeValidation(String value) {
-        hasError = viewIsVisible() && isNotValid(value);
+        hasError = !EditTextUtils.isVisible(editText) && isNotValid(value);
 
         if (hasError) {
             EditTextUtils.setError(editText, errorMessage);
         } else {
             EditTextUtils.setError(editText, null);
         }
-    }
-
-    private Boolean viewIsVisible() {
-        return !(editText.getVisibility() == View.GONE ||
-                editText.getVisibility() == View.INVISIBLE);
     }
 
     public boolean validate() {

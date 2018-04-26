@@ -34,6 +34,9 @@ class Constants {
     static final String PASSWORD_ANNOTATION                         = "convalida.annotations.PasswordValidation";
     static final String CONFIRM_PASSWORD_ANNOTATION                 = "convalida.annotations.ConfirmPasswordValidation";
     static final String CPF_ANNOTATION                              = "convalida.annotations.CpfValidation";
+    static final String BETWEEN_ANNOTATION                          = "convalida.annotations.BetweenValidation.Start";
+    static final String BETWEEN_START_ANNOTATION                    = "convalida.annotations.BetweenValidation.Start";
+    static final String BETWEEN_END_ANNOTATION                      = "convalida.annotations.BetweenValidation.End";
     static final String VALIDATE_ON_CLICK_ANNOTATION                = "convalida.annotations.ValidateOnClick";
     static final String CLEAR_VALIDATIONS_ON_CLICK_ANNOTATION       = "convalida.annotations.ClearValidationsOnClick";
     static final String ON_VALIDATION_SUCCESS_ANNOTATION            = "convalida.annotations.OnValidationSuccess";
@@ -48,5 +51,6 @@ class Constants {
     static final ClassName PASSWORD_VALIDATOR           = ClassName.get("convalida.validators", "PasswordValidator");
     static final ClassName CONFIRM_PASSWORD_VALIDATOR   = ClassName.get("convalida.validators", "ConfirmPasswordValidator");
     static final ClassName CPF_VALIDATOR                = ClassName.get("convalida.validators", "CpfValidator");
+    static final ClassName BETWEEN_VALIDATOR            = ClassName.get("convalida.validators", "BetweenValidator");
 
 }

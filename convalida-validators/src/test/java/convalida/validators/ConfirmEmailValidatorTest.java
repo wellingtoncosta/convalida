@@ -22,6 +22,13 @@ public class ConfirmEmailValidatorTest extends BaseTest {
         when(emailEditText.getText()).thenReturn(mock(Editable.class));
     }
 
+    @Test public void emptyValues() {
+        ConfirmEmailValidator validator = new ConfirmEmailValidator(emailEditText, mockEditText, errorMessage, true);
+        when(emailEditText.getText().toString()).thenReturn("");
+        when(mockEditText.getText().toString()).thenReturn("");
+        assertEquals(validator.validate(), true);
+    }
+
     @Test public void emailsDoesNotMatch() {
         ConfirmEmailValidator validator = new ConfirmEmailValidator(emailEditText, mockEditText, errorMessage, true);
         when(emailEditText.getText().toString()).thenReturn("wellington@email.com");

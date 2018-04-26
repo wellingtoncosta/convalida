@@ -42,4 +42,10 @@ public class CpfValidatorTest extends BaseTest {
         assertEquals(validator.validate(), false);
     }
 
+    @Test public void invalidCpf_BlackList() {
+        CpfValidator validator = new CpfValidator(mockEditText, errorMessage, true);
+        when(mockEditText.getText().toString()).thenReturn("12345678909");
+        assertEquals(validator.validate(), false);
+    }
+
 }

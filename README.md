@@ -34,8 +34,8 @@ allprojects {
 
 ```groovy
 dependencies {
-  implementation 'com.github.WellingtonCosta.convalida:convalida:2.0.3'
-  annotationProcessor 'com.github.WellingtonCosta.convalida:convalida-compiler:2.0.3'
+  implementation 'com.github.WellingtonCosta.convalida:convalida:2.1.0'
+  annotationProcessor 'com.github.WellingtonCosta.convalida:convalida-compiler:2.1.0'
 }
 ```
 
