@@ -7,19 +7,19 @@ import android.widget.EditText;
  */
 public class ConfirmEmailValidator extends AbstractValidator {
 
-    private EditText emailField;
+    private EditText emailEditText;
 
     public ConfirmEmailValidator(
-            EditText emailField,
-            EditText confirmEmailField,
+            EditText emailEditText,
+            EditText confirmEmailEditText,
             String errorMessage,
             boolean autoDismiss) {
-        super(confirmEmailField, errorMessage, autoDismiss);
-        this.emailField = emailField;
+        super(confirmEmailEditText, errorMessage, autoDismiss);
+        this.emailEditText = emailEditText;
     }
 
     @Override public boolean isNotValid(String value) {
-        return !emailField.getText().toString().equals(value);
+        return !emailEditText.getText().toString().equals(value);
     }
 
 }

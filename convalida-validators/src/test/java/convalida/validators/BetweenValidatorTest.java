@@ -43,6 +43,21 @@ public class BetweenValidatorTest {
         assertEquals(validator.validate(), false);
     }
 
+    @Test public void startFieldWithValueAndEndFieldWithEmptyValue() {
+        BetweenValidator validator = new BetweenValidator(
+                startEditText,
+                endEditText,
+                startErrorMessage,
+                endErrorMessage,
+                true,
+                true);
+
+        when(startEditText.getText().toString()).thenReturn("123");
+        when(endEditText.getText().toString()).thenReturn("");
+
+        assertEquals(validator.validate(), false);
+    }
+
     @Test public void startValueGreaterThanEndValue_Numeric() {
         BetweenValidator validator = new BetweenValidator(
                 startEditText,

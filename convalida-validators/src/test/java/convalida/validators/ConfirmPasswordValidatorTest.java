@@ -22,6 +22,13 @@ public class ConfirmPasswordValidatorTest extends BaseTest {
         when(passwordEditText.getText()).thenReturn(mock(Editable.class));
     }
 
+    @Test public void emptyValues() {
+        ConfirmEmailValidator validator = new ConfirmEmailValidator(passwordEditText, mockEditText, errorMessage, true);
+        when(passwordEditText.getText().toString()).thenReturn("");
+        when(mockEditText.getText().toString()).thenReturn("");
+        assertEquals(validator.validate(), true);
+    }
+
     @Test public void passwordsDoesNotMatch() {
         ConfirmPasswordValidator validator = new ConfirmPasswordValidator(passwordEditText, mockEditText, errorMessage, true);
         when(passwordEditText.getText().toString()).thenReturn("test@123");

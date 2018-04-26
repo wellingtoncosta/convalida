@@ -47,10 +47,6 @@ public final class ValidatorSet {
         }
     }
 
-    public List<AbstractValidator> getValidators() {
-        return validators;
-    }
-
     public int getValidatorsCount() {
         return validators.size();
     }
