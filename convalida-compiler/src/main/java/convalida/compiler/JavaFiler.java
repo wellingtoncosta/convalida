@@ -12,6 +12,7 @@ import javax.lang.model.element.Element;
 import convalida.annotations.CpfValidation;
 import convalida.annotations.EmailValidation;
 import convalida.annotations.LengthValidation;
+import convalida.annotations.OnlyNumberValidation;
 import convalida.annotations.PasswordValidation;
 import convalida.annotations.PatternValidation;
 import convalida.compiler.internal.ValidationClass;
@@ -338,11 +339,12 @@ class JavaFiler {
     private static CodeBlock createOnlyNumberValidationCodeBlock(ValidationField field) {
         return CodeBlock.builder()
                 .addStatement(
-                        "validatorSet.addValidator(new $T(target.$N, target.getString($L), $L))",
+                        "validatorSet.addValidator(new $T(target.$N, target.getString($L), $L, $L))",
                         ONLY_NUMBER_VALIDATOR,
                         field.name,
                         field.id.code,
-                        field.autoDismiss
+                        field.autoDismiss,
+                        field.element.getAnnotation(OnlyNumberValidation.class).required()
                 )
                 .build();
     }

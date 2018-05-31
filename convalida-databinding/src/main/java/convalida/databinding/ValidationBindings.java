@@ -120,17 +120,20 @@ public class ValidationBindings {
 
     @BindingAdapter(value = {
             "onlyNumberValidationErrorMessage",
-            "onlyNumberValidationAutoDismiss"
+            "onlyNumberValidationAutoDismiss",
+            "onlyNumberValidationRequired"
     }, requireAll = false)
     public static void onlyNumberValidationBindings(
             EditText field,
             String errorMessage,
-            Boolean autoDismiss
+            Boolean autoDismiss,
+            Boolean required
     ) {
         field.setTag(R.id.validation_type, new OnlyNumberValidator(
                 field,
                 errorMessage,
-                autoDismiss != null ? autoDismiss : true
+                autoDismiss != null ? autoDismiss : true,
+                required != null ? required : true
         ));
     }
 
