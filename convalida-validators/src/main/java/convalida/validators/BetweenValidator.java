@@ -62,12 +62,12 @@ public class BetweenValidator extends AbstractValidator {
     }
 
     @Override
-    public boolean isNotValid(String value) {
+    public boolean isValid(String value) {
         applyValidationToEndField();
         String endFieldValue = endEditText.getText().toString();
-        return value.isEmpty()
+        return !(value.isEmpty()
                 || !value.equals(endFieldValue)
                 && (endFieldValue.isEmpty()
-                || endFieldHasError);
+                || endFieldHasError));
     }
 }

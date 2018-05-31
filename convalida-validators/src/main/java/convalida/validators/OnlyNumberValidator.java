@@ -15,8 +15,8 @@ public class OnlyNumberValidator extends AbstractValidator{
         super(editText, errorMessage, autoDismiss);
     }
 
-    @Override public boolean isNotValid(String value) {
-        return !Pattern.compile("^\\d+$").matcher(value).matches();
+    @Override public boolean isValid(String value) {
+        return Pattern.compile("^\\d+$").matcher(value).matches();
     }
 
 }

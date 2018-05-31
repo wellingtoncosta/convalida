@@ -18,8 +18,8 @@ public class ConfirmPasswordValidator extends AbstractValidator {
         this.passwordEditText = passwordEditText;
     }
 
-    @Override public boolean isNotValid(String value) {
-        return !passwordEditText.getText().toString().equals(value);
+    @Override public boolean isValid(String value) {
+        return passwordEditText.getText().toString().equals(value);
     }
 
 }

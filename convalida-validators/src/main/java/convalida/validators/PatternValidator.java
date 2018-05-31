@@ -19,8 +19,8 @@ public class PatternValidator extends AbstractValidator {
         this.pattern = pattern;
     }
 
-    @Override public boolean isNotValid(String value) {
-        return !Pattern.matches(pattern, value);
+    @Override public boolean isValid(String value) {
+        return Pattern.matches(pattern, value);
     }
 
 }

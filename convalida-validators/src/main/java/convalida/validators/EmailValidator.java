@@ -18,8 +18,8 @@ public class EmailValidator extends AbstractValidator {
         super(editText, errorMessage, autoDismiss);
     }
 
-     @Override public boolean isNotValid(String value) {
-        return !EMAIL_PATTERN.matcher(value).matches();
+     @Override public boolean isValid(String value) {
+        return EMAIL_PATTERN.matcher(value).matches();
     }
 
 }

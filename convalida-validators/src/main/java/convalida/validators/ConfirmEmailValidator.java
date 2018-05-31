@@ -18,8 +18,8 @@ public class ConfirmEmailValidator extends AbstractValidator {
         this.emailEditText = emailEditText;
     }
 
-    @Override public boolean isNotValid(String value) {
-        return !emailEditText.getText().toString().equals(value);
+    @Override public boolean isValid(String value) {
+        return emailEditText.getText().toString().equals(value);
     }
 
 }

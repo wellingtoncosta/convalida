@@ -21,14 +21,14 @@ public class LengthValidator extends AbstractValidator {
         this.max= max;
     }
 
-    @Override public boolean isNotValid(String value) {
+    @Override public boolean isValid(String value) {
         boolean hasError = value.length() < min;
 
         if (max > 0) {
             hasError |= value.length() > max;
         }
 
-        return hasError;
+        return !hasError;
     }
 
 }
