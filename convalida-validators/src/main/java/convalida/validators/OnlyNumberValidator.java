@@ -21,6 +21,7 @@ public class OnlyNumberValidator extends AbstractValidator{
     }
 
     @Override public boolean isValid(String value) {
+        value = value.replace(" ", "");
         return (!required || !value.isEmpty())
                 && (value.isEmpty() || Pattern.compile("^\\d+$").matcher(value).matches());
     }

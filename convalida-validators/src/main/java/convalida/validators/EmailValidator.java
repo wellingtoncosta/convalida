@@ -24,6 +24,7 @@ public class EmailValidator extends AbstractValidator {
     }
 
      @Override public boolean isValid(String value) {
+         value = value.replace(" ", "");
          return (!required || !value.isEmpty())
                  && (value.isEmpty() || EMAIL_PATTERN.matcher(value).matches());
      }

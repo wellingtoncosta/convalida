@@ -26,6 +26,7 @@ public class LengthValidator extends AbstractValidator {
     }
 
     @Override public boolean isValid(String value) {
+        value = value.replace(" ", "");
         if(required && value.isEmpty()) {
             return false;
         } else {
