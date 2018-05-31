@@ -311,12 +311,13 @@ class JavaFiler {
     private static CodeBlock createPatternValidationCodeBlock(ValidationField field) {
         return CodeBlock.builder()
                 .addStatement(
-                        "validatorSet.addValidator(new $T(target.$N, target.getString($L), $S, $L))",
+                        "validatorSet.addValidator(new $T(target.$N, target.getString($L), $S, $L, $L))",
                         PATTERN_VALIDATOR,
                         field.name,
                         field.id.code,
                         field.element.getAnnotation(PatternValidation.class).pattern(),
-                        field.autoDismiss
+                        field.autoDismiss,
+                        field.element.getAnnotation(PatternValidation.class).required()
                 )
                 .build();
     }

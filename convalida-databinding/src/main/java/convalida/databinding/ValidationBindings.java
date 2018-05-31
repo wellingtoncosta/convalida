@@ -77,19 +77,22 @@ public class ValidationBindings {
     @BindingAdapter(value = {
             "patternValidationErrorMessage",
             "patternValidationPattern",
-            "patternValidationAutoDismiss"
+            "patternValidationAutoDismiss",
+            "patternValidationRequired"
     }, requireAll = false)
     public static void patternValidationBindings(
             EditText field,
             String errorMessage,
             String pattern,
-            Boolean autoDismiss
+            Boolean autoDismiss,
+            Boolean required
     ) {
         field.setTag(R.id.validation_type, new PatternValidator(
                 field,
                 errorMessage,
                 pattern,
-                autoDismiss != null ? autoDismiss : true
+                autoDismiss != null ? autoDismiss : true,
+                required != null ? required : true
         ));
     }
 

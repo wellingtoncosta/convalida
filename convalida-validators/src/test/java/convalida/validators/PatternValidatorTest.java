@@ -12,16 +12,37 @@ public class PatternValidatorTest extends BaseTest {
 
     private static final String LETTERS_AND_NUMBERS_CASE_INSENSITIVE_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{1,}+$";
 
+    @Test public void required_emptyValue() {
+        PatternValidator validator = new PatternValidator(
+                mockEditText,
+                errorMessage,
+                LETTERS_AND_NUMBERS_CASE_INSENSITIVE_REGEX,
+                true,
+                true);
+        when(mockEditText.getText().toString()).thenReturn("");
+        assertEquals(validator.validate(), false);
+    }
+
     @Test public void valueNotContainsLettersAndNumbers() {
-        PatternValidator validatorWithEditText = new PatternValidator(mockEditText, errorMessage, LETTERS_AND_NUMBERS_CASE_INSENSITIVE_REGEX, true);
+        PatternValidator validator = new PatternValidator(
+                mockEditText,
+                errorMessage,
+                LETTERS_AND_NUMBERS_CASE_INSENSITIVE_REGEX,
+                true,
+                false);
         when(mockEditText.getText().toString()).thenReturn("qweQWE");
-        assertEquals(validatorWithEditText.validate(), false);
+        assertEquals(validator.validate(), false);
     }
 
     @Test public void valueContainsLettersAndNumbers() {
-        PatternValidator validatorWithEditText = new PatternValidator(mockEditText, errorMessage, LETTERS_AND_NUMBERS_CASE_INSENSITIVE_REGEX, true);
+        PatternValidator validator = new PatternValidator(
+                mockEditText,
+                errorMessage,
+                LETTERS_AND_NUMBERS_CASE_INSENSITIVE_REGEX,
+                true,
+                false);
         when(mockEditText.getText().toString()).thenReturn("qweQWE123");
-        assertEquals(validatorWithEditText.validate(), true);
+        assertEquals(validator.validate(), true);
     }
 
 }
