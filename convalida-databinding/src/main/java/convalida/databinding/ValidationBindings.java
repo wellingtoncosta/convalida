@@ -38,17 +38,20 @@ public class ValidationBindings {
 
     @BindingAdapter(value = {
             "emailValidationErrorMessage",
-            "emailValidationAutoDismiss"
+            "emailValidationAutoDismiss",
+            "emailValidationRequired"
     }, requireAll = false)
     public static void emailValidationBindings(
             EditText field,
             String errorMessage,
-            Boolean autoDismiss
+            Boolean autoDismiss,
+            Boolean required
     ) {
         field.setTag(R.id.validation_type, new EmailValidator(
                 field,
                 errorMessage,
-                autoDismiss != null ? autoDismiss : true
+                autoDismiss != null ? autoDismiss : true,
+                required != null ? required : true
         ));
     }
 

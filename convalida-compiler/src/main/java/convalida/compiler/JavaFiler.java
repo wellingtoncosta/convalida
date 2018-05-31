@@ -10,6 +10,7 @@ import com.squareup.javapoet.TypeSpec;
 import javax.lang.model.element.Element;
 
 import convalida.annotations.CpfValidation;
+import convalida.annotations.EmailValidation;
 import convalida.annotations.LengthValidation;
 import convalida.annotations.PasswordValidation;
 import convalida.annotations.PatternValidation;
@@ -281,11 +282,12 @@ class JavaFiler {
     private static CodeBlock createEmailValidationCodeBlock(ValidationField field) {
         return CodeBlock.builder()
                 .addStatement(
-                        "validatorSet.addValidator(new $T(target.$N, target.getString($L), $L))",
+                        "validatorSet.addValidator(new $T(target.$N, target.getString($L), $L, $L))",
                         EMAIL_VALIDATOR,
                         field.name,
                         field.id.code,
-                        field.autoDismiss
+                        field.autoDismiss,
+                        field.element.getAnnotation(EmailValidation.class).required()
                 )
                 .build();
     }
