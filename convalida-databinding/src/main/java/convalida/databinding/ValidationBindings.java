@@ -171,17 +171,20 @@ public class ValidationBindings {
 
     @BindingAdapter(value = {
             "cpfValidationErrorMessage",
-            "cpfValidationAutoDismiss"
+            "cpfValidationAutoDismiss",
+            "cpfValidationRequired"
     }, requireAll = false)
     public static void cpfValidationBindings(
             EditText cpfField,
             String errorMessage,
-            Boolean autoDismiss
+            Boolean autoDismiss,
+            Boolean required
     ) {
         cpfField.setTag(R.id.validation_type, new CpfValidator(
                 cpfField,
                 errorMessage,
-                autoDismiss != null ? autoDismiss : true
+                autoDismiss != null ? autoDismiss : true,
+                required != null ? required : true
         ));
     }
 
