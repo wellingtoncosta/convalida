@@ -22,7 +22,7 @@ public class OnlyNumberValidator extends AbstractValidator{
 
     @Override public boolean isValid(String value) {
         return (!required || !value.isEmpty())
-                && Pattern.compile("^\\d+$").matcher(value).matches();
+                && (value.isEmpty() || Pattern.compile("^\\d+$").matcher(value).matches());
     }
 
 }

@@ -33,7 +33,7 @@ public class LengthValidator extends AbstractValidator {
             if (max > 0) {
                 hasError |= value.length() > max;
             }
-            return !hasError;
+            return value.isEmpty() || !hasError;
         }
     }
 

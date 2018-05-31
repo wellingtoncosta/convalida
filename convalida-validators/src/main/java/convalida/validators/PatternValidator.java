@@ -24,7 +24,8 @@ public class PatternValidator extends AbstractValidator {
     }
 
     @Override public boolean isValid(String value) {
-        return (!required || !value.isEmpty()) && Pattern.matches(pattern, value);
+        return (!required || !value.isEmpty())
+                && (value.isEmpty() || Pattern.matches(pattern, value));
     }
 
 }
