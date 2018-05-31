@@ -97,21 +97,24 @@ public class ValidationBindings {
             "lengthValidationMin",
             "lengthValidationMax",
             "lengthValidationErrorMessage",
-            "lengthValidationAutoDismiss"
+            "lengthValidationAutoDismiss",
+            "lengthValidationRequired"
     }, requireAll = false)
     public static void lengthValidationBindings(
             EditText field,
             int min,
             int max,
             String errorMessage,
-            Boolean autoDismiss
+            Boolean autoDismiss,
+            Boolean required
     ) {
         field.setTag(R.id.validation_type, new LengthValidator(
                 field,
                 min,
                 max,
                 errorMessage,
-                autoDismiss != null ? autoDismiss : true
+                autoDismiss != null ? autoDismiss : true,
+                required != null ? required : true
         ));
     }
 

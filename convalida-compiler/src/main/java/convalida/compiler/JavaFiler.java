@@ -323,13 +323,14 @@ class JavaFiler {
     private static CodeBlock createLengthValidationCodeBlock(ValidationField field) {
         return CodeBlock.builder()
                 .addStatement(
-                        "validatorSet.addValidator(new $T(target.$N, $L, $L, target.getString($L), $L))",
+                        "validatorSet.addValidator(new $T(target.$N, $L, $L, target.getString($L), $L, $L))",
                         LENGTH_VALIDATOR,
                         field.name,
                         field.element.getAnnotation(LengthValidation.class).min(),
                         field.element.getAnnotation(LengthValidation.class).max(),
                         field.id.code,
-                        field.autoDismiss
+                        field.autoDismiss,
+                        field.element.getAnnotation(LengthValidation.class).required()
                 )
                 .build();
     }

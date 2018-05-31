@@ -31,7 +31,7 @@ public class ValidatorSetTest extends BaseTest {
     @Test public void addThreeValidators() {
         validatorSet.addValidator(new RequiredValidator(mockEditText, errorMessage, true));
         validatorSet.addValidator(new EmailValidator(mockEditText, errorMessage, true, true));
-        validatorSet.addValidator(new LengthValidator(mockEditText,0, 5, errorMessage, true));
+        validatorSet.addValidator(new LengthValidator(mockEditText,0, 5, errorMessage, true, true));
         assertEquals(validatorSet.getValidatorsCount(), 3);
     }
 
