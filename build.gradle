@@ -17,6 +17,9 @@ buildscript {
             'gradlePlugin': "com.android.tools.build:gradle:${versions.androidPlugin}",
             'mavenPlugin': 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         ],
+        apache: [
+            'validators': 'commons-validator:commons-validator:1.6'
+        ],
         support: [
             'annotations': "com.android.support:support-annotations:${versions.supportLibrary}",
             'compat': "com.android.support:support-compat:${versions.supportLibrary}",
