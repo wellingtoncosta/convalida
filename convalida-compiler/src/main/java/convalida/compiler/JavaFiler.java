@@ -10,6 +10,7 @@ import com.squareup.javapoet.TypeSpec;
 import javax.lang.model.element.Element;
 
 import convalida.annotations.CpfValidation;
+import convalida.annotations.CreditCardValidation;
 import convalida.annotations.EmailValidation;
 import convalida.annotations.LengthValidation;
 import convalida.annotations.OnlyNumberValidation;
@@ -30,6 +31,8 @@ import static convalida.compiler.Constants.CONFIRM_PASSWORD_VALIDATOR;
 import static convalida.compiler.Constants.CONVALIDA_DATABINDING_R;
 import static convalida.compiler.Constants.CPF_ANNOTATION;
 import static convalida.compiler.Constants.CPF_VALIDATOR;
+import static convalida.compiler.Constants.CREDIT_CARD_ANNOTATION;
+import static convalida.compiler.Constants.CREDIT_CARD_VALIDATOR;
 import static convalida.compiler.Constants.EMAIL_ANNOTATION;
 import static convalida.compiler.Constants.EMAIL_VALIDATOR;
 import static convalida.compiler.Constants.LENGTH_ANNOTATION;
@@ -263,6 +266,9 @@ class JavaFiler {
                 case BETWEEN_ANNOTATION:
                     builder.add(createBetweenValidationCodeBlock(validationClass, field));
                     break;
+                case CREDIT_CARD_ANNOTATION:
+                    builder.add(createCreditCardValidationCodeBlock(field));
+                    break;
             }
         }
         return builder.build();
@@ -416,6 +422,19 @@ class JavaFiler {
                     )
                     .build();
         } else return CodeBlock.builder().build();
+    }
+
+    private static CodeBlock createCreditCardValidationCodeBlock(ValidationField field) {
+        return CodeBlock.builder()
+                .addStatement(
+                        "validatorSet.addValidator(new $T(target.$N, target.getString($L), $L, $L))",
+                        CREDIT_CARD_VALIDATOR,
+                        field.name,
+                        field.id.code,
+                        field.autoDismiss,
+                        field.element.getAnnotation(CreditCardValidation.class).required()
+                )
+                .build();
     }
 
     private static CodeBlock createValidateOnClickCodeBlock(ValidationClass validationClass) {

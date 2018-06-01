@@ -38,6 +38,7 @@ import convalida.annotations.ClearValidationsOnClick;
 import convalida.annotations.ConfirmEmailValidation;
 import convalida.annotations.ConfirmPasswordValidation;
 import convalida.annotations.CpfValidation;
+import convalida.annotations.CreditCardValidation;
 import convalida.annotations.EmailValidation;
 import convalida.annotations.LengthValidation;
 import convalida.annotations.OnValidationError;
@@ -60,6 +61,7 @@ import static convalida.compiler.Constants.CLEAR_VALIDATIONS_ON_CLICK_ANNOTATION
 import static convalida.compiler.Constants.CONFIRM_EMAIL_VALIDATION;
 import static convalida.compiler.Constants.CONFIRM_PASSWORD_ANNOTATION;
 import static convalida.compiler.Constants.CPF_ANNOTATION;
+import static convalida.compiler.Constants.CREDIT_CARD_ANNOTATION;
 import static convalida.compiler.Constants.EMAIL_ANNOTATION;
 import static convalida.compiler.Constants.LENGTH_ANNOTATION;
 import static convalida.compiler.Constants.ONLY_NUMBER_ANNOTATION;
@@ -94,6 +96,7 @@ import static convalida.compiler.Preconditions.methodHasParams;
         CPF_ANNOTATION,
         BETWEEN_START_ANNOTATION,
         BETWEEN_END_ANNOTATION,
+        CREDIT_CARD_ANNOTATION,
         VALIDATE_ON_CLICK_ANNOTATION,
         CLEAR_VALIDATIONS_ON_CLICK_ANNOTATION,
         ON_VALIDATION_SUCCESS_ANNOTATION,
@@ -136,6 +139,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
         annotations.add(CpfValidation.class);
         annotations.add(BetweenValidation.Start.class);
         annotations.add(BetweenValidation.End.class);
+        annotations.add(CreditCardValidation.class);
         annotations.add(ValidateOnClick.class);
         annotations.add(ClearValidationsOnClick.class);
         annotations.add(OnValidationSuccess.class);
@@ -272,6 +276,16 @@ public class ConvalidaProcessor extends AbstractProcessor {
                 parseBetweenValidation(element, parents, validationFields);
             } catch (Exception e) {
                 logParsingError(element, BetweenValidation.Start.class, e);
+            }
+        }
+
+        // Process each @CreditCardValidation element
+        for (Element element : env.getElementsAnnotatedWith(CreditCardValidation.class)) {
+            if (!SuperficialValidation.validateElement(element)) continue;
+            try {
+                parseCreditCardValidation(element, parents, validationFields);
+            } catch (Exception e) {
+                logParsingError(element, CreditCardValidation.class, e);
             }
         }
 
@@ -712,6 +726,28 @@ public class ConvalidaProcessor extends AbstractProcessor {
                 BetweenValidation.End.class,
                 getId(endQualifiedId),
                 endAutoDismiss
+        ));
+    }
+
+    private void parseCreditCardValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
+        boolean hasError =
+                isInvalid(CreditCardValidation.class, element) ||
+                        isInaccessible(CreditCardValidation.class, element);
+
+        if (hasError) {
+            return;
+        }
+
+        int errorMessageResourceId = element.getAnnotation(CreditCardValidation.class).errorMessage();
+        boolean autoDismiss = element.getAnnotation(CreditCardValidation.class).autoDismiss();
+        QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
+
+        parents.add(element.getEnclosingElement());
+        validationFields.add(new ValidationField(
+                element,
+                CreditCardValidation.class,
+                getId(qualifiedId),
+                autoDismiss
         ));
     }
 

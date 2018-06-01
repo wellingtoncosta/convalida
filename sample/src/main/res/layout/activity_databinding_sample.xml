@@ -282,6 +282,29 @@
 
             </android.support.design.widget.TextInputLayout>
 
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/credit_card_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:passwordToggleEnabled="true"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:layout_marginLeft="@dimen/spacing_large"
+                android:layout_marginRight="@dimen/spacing_large"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/confirm_password_layout">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/credit_card_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/credit_card"
+                    android:maxLines="1"
+                    app:creditCardValidationErrorMessage="@{@string/invalid_credit_card}" />
+
+            </android.support.design.widget.TextInputLayout>
+
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/validate_button"
                 android:layout_gravity="center"
@@ -295,7 +318,7 @@
                 android:layout_marginRight="@dimen/spacing_large"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/confirm_password_layout"
+                app:layout_constraintTop_toBottomOf="@+id/credit_card_layout"
                 app:validationAction="@{@id/validate}" />
 
             <android.support.v7.widget.AppCompatButton
