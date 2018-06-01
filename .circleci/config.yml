@@ -26,8 +26,16 @@ jobs:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
 
       - run:
+          name: pre-dependencies
+          command: sudo pip install codecov
+
+      - run:
           name: Build and execute unit tests
           command: ./gradlew build test jacocoTestReport --stacktrace
+
+      - run:
+          name: post-test
+          command: codecov
 
 # post:
   # - bash <(curl -s https://codecov.io/bash)
