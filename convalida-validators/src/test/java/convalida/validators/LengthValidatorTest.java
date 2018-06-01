@@ -34,7 +34,19 @@ public class LengthValidatorTest extends BaseTest {
         assertEquals(validator.validate(), true);
     }
 
-    @Test public void textLengthLessThan5() {
+    @Test public void nonRequired_emptyValue() {
+        LengthValidator validator = new LengthValidator(
+                mockEditText,
+                5,
+                0,
+                errorMessage,
+                true,
+                false);
+        when(mockEditText.getText().toString()).thenReturn("");
+        assertEquals(validator.validate(), true);
+    }
+
+    @Test public void nonRequired_textLengthLessThan5() {
         LengthValidator validator = new LengthValidator(
                 mockEditText,
                 5,
@@ -46,7 +58,7 @@ public class LengthValidatorTest extends BaseTest {
         assertEquals(validator.validate(), false);
     }
 
-    @Test public void textLengthGreaterThan5() {
+    @Test public void nonRequired_textLengthGreaterThan5() {
         LengthValidator validator = new LengthValidator(
                 mockEditText,
                 5,
@@ -58,7 +70,7 @@ public class LengthValidatorTest extends BaseTest {
         assertEquals(validator.validate(), true);
     }
 
-    @Test public void textLengthLessThan8() {
+    @Test public void nonRequired_textLengthLessThan8() {
         LengthValidator validatorWithEditText = new LengthValidator(
                 mockEditText,
                 0,
@@ -70,7 +82,7 @@ public class LengthValidatorTest extends BaseTest {
         assertEquals(validatorWithEditText.validate(), false);
     }
 
-    @Test public void textLengthGreaterThan8() {
+    @Test public void nonRequired_textLengthGreaterThan8() {
         LengthValidator validatorWithEditText = new LengthValidator(
                 mockEditText,
                 0,

@@ -20,7 +20,27 @@ public class OnlyNumberValidatorTest extends BaseTest {
         assertEquals(validator.validate(), false);
     }
 
-    @Test public void valueIsNotNumber() {
+    @Test public void required_validValue() {
+        OnlyNumberValidator validator = new OnlyNumberValidator(
+                mockEditText,
+                errorMessage,
+                true,
+                true);
+        when(mockEditText.getText().toString()).thenReturn("123");
+        assertEquals(validator.validate(), true);
+    }
+
+    @Test public void nonRequired_emptyValue() {
+        OnlyNumberValidator validator = new OnlyNumberValidator(
+                mockEditText,
+                errorMessage,
+                true,
+                false);
+        when(mockEditText.getText().toString()).thenReturn("");
+        assertEquals(validator.validate(), true);
+    }
+
+    @Test public void nonRequired_invalidValue() {
         OnlyNumberValidator validator = new OnlyNumberValidator(
                 mockEditText,
                 errorMessage,
@@ -30,7 +50,7 @@ public class OnlyNumberValidatorTest extends BaseTest {
         assertEquals(validator.validate(), false);
     }
 
-    @Test public void valueIsNumber() {
+    @Test public void nonRequired_validValue() {
         OnlyNumberValidator validator = new OnlyNumberValidator(
                 mockEditText,
                 errorMessage,

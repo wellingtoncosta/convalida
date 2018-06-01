@@ -36,6 +36,3 @@ jobs:
       - run:
           name: post-test
           command: codecov
-
-# post:
-  # - bash <(curl -s https://codecov.io/bash)

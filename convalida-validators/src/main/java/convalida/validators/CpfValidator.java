@@ -26,12 +26,13 @@ public class CpfValidator extends AbstractValidator {
                 .replace("-", "")
                 .replace(" ", "");
 
-        boolean isEmpty = value.isEmpty();
-        boolean invalidLength = value.length() < 11;
+        boolean invalidLength = value.length() > 0 && value.length() < 11;
 
-        if((required && isEmpty)) {
+        if(required && value.isEmpty()) {
             return false;
         } else {
+            if(value.isEmpty()) return true;
+
             if(invalidLength) return false;
 
             boolean hasOnlyDigits = value.matches("\\d{11}");
