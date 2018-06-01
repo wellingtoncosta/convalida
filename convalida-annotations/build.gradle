@@ -27,5 +27,5 @@ for (File file : sdkHandler.sdkLoader.repositories) {
 
 dependencies {
     compileOnly deps.android.runtime
-    compile deps.support.annotations
+    implementation deps.support.annotations
 }
