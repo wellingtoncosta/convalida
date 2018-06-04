@@ -20,6 +20,7 @@ import org.junit.runners.Suite.SuiteClasses;
         CpfValidatorTest.class,
         BetweenValidatorTest.class,
         ValidatorSetTest.class,
-        CreditCardValidatorTest.class
+        CreditCardValidatorTest.class,
+        NumberLimitValidatorTest.class
 })
 public class TestSuite { }

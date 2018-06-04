@@ -38,6 +38,7 @@ class Constants {
     static final String BETWEEN_START_ANNOTATION                    = "convalida.annotations.BetweenValidation.Start";
     static final String BETWEEN_END_ANNOTATION                      = "convalida.annotations.BetweenValidation.End";
     static final String CREDIT_CARD_ANNOTATION                      = "convalida.annotations.CreditCardValidation";
+    static final String NUMBER_LIMIT_ANNOTATION                     = "convalida.annotations.NumberLimitValidation";
     static final String VALIDATE_ON_CLICK_ANNOTATION                = "convalida.annotations.ValidateOnClick";
     static final String CLEAR_VALIDATIONS_ON_CLICK_ANNOTATION       = "convalida.annotations.ClearValidationsOnClick";
     static final String ON_VALIDATION_SUCCESS_ANNOTATION            = "convalida.annotations.OnValidationSuccess";
@@ -54,5 +55,6 @@ class Constants {
     static final ClassName CPF_VALIDATOR                = ClassName.get("convalida.validators", "CpfValidator");
     static final ClassName BETWEEN_VALIDATOR            = ClassName.get("convalida.validators", "BetweenValidator");
     static final ClassName CREDIT_CARD_VALIDATOR        = ClassName.get("convalida.validators", "CreditCardValidator");
+    static final ClassName NUMBER_LIMIT_VALIDATOR       = ClassName.get("convalida.validators", "NumberLimitValidator");
 
 }

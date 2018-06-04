@@ -13,6 +13,7 @@ import convalida.annotations.CpfValidation;
 import convalida.annotations.CreditCardValidation;
 import convalida.annotations.EmailValidation;
 import convalida.annotations.LengthValidation;
+import convalida.annotations.NumberLimitValidation;
 import convalida.annotations.OnlyNumberValidation;
 import convalida.annotations.PasswordValidation;
 import convalida.annotations.PatternValidation;
@@ -39,6 +40,8 @@ import static convalida.compiler.Constants.LENGTH_ANNOTATION;
 import static convalida.compiler.Constants.LENGTH_VALIDATOR;
 import static convalida.compiler.Constants.LIST;
 import static convalida.compiler.Constants.NON_NULL;
+import static convalida.compiler.Constants.NUMBER_LIMIT_ANNOTATION;
+import static convalida.compiler.Constants.NUMBER_LIMIT_VALIDATOR;
 import static convalida.compiler.Constants.ONLY_NUMBER_ANNOTATION;
 import static convalida.compiler.Constants.ONLY_NUMBER_VALIDATOR;
 import static convalida.compiler.Constants.OVERRIDE;
@@ -269,6 +272,9 @@ class JavaFiler {
                 case CREDIT_CARD_ANNOTATION:
                     builder.add(createCreditCardValidationCodeBlock(field));
                     break;
+                case NUMBER_LIMIT_ANNOTATION:
+                    builder.add(createNumberLimitValidationCodeBlock(field));
+                    break;
             }
         }
         return builder.build();
@@ -433,6 +439,21 @@ class JavaFiler {
                         field.id.code,
                         field.autoDismiss,
                         field.element.getAnnotation(CreditCardValidation.class).required()
+                )
+                .build();
+    }
+
+    private static CodeBlock createNumberLimitValidationCodeBlock(ValidationField field) {
+        return CodeBlock.builder()
+                .addStatement(
+                        "validatorSet.addValidator(new $T(target.$N, target.getString($L), $L, $S, $S, $L))",
+                        NUMBER_LIMIT_VALIDATOR,
+                        field.name,
+                        field.id.code,
+                        field.autoDismiss,
+                        field.element.getAnnotation(NumberLimitValidation.class).min(),
+                        field.element.getAnnotation(NumberLimitValidation.class).max(),
+                        field.element.getAnnotation(NumberLimitValidation.class).required()
                 )
                 .build();
     }

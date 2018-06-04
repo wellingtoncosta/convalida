@@ -12,6 +12,7 @@
  import convalida.validators.CreditCardValidator;
  import convalida.validators.EmailValidator;
  import convalida.validators.LengthValidator;
+ import convalida.validators.NumberLimitValidator;
  import convalida.validators.OnlyNumberValidator;
  import convalida.validators.PasswordValidator;
  import convalida.validators.PatternValidator;
@@ -242,6 +243,31 @@ public class ValidationBindings {
                 field,
                 errorMessage,
                 autoDismiss != null ? autoDismiss : true,
+                required != null ? required : true
+        ));
+    }
+
+    @BindingAdapter(value = {
+            "numberLimitValidationErrorMessage",
+            "numberLimitValidationAutoDismiss",
+            "numberLimitValidationMin",
+            "numberLimitValidationMax",
+            "numberLimitValidationRequired"
+    }, requireAll = false)
+    public static void numberLimitValidationBindings(
+            @NonNull EditText field,
+            @NonNull String errorMessage,
+            Boolean autoDismiss,
+            @NonNull String min,
+            @NonNull String max,
+            Boolean required
+    ) {
+        field.setTag(R.id.validation_type, new NumberLimitValidator(
+                field,
+                errorMessage,
+                autoDismiss != null ? autoDismiss : true,
+                min,
+                max,
                 required != null ? required : true
         ));
     }
