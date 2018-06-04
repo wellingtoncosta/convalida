@@ -17,6 +17,7 @@ import convalida.annotations.CpfValidation;
 import convalida.annotations.CreditCardValidation;
 import convalida.annotations.EmailValidation;
 import convalida.annotations.LengthValidation;
+import convalida.annotations.NumberLimitValidation;
 import convalida.annotations.OnValidationError;
 import convalida.annotations.OnValidationSuccess;
 import convalida.annotations.OnlyNumberValidation;
@@ -83,6 +84,14 @@ public class AnnotataionSampleActivity extends AppCompatActivity {
     @BindView(R.id.credit_card_field)
     @CreditCardValidation(errorMessage = R.string.invalid_credit_card)
     EditText creditCardField;
+
+    @BindView(R.id.number_limit_field)
+    @NumberLimitValidation(
+            min = "0",
+            max = "100",
+            errorMessage = R.string.invalid_number_limit
+    )
+    EditText numberLimitField;
 
     @ValidateOnClick
     @BindView(R.id.validate_button)
