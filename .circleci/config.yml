@@ -1,30 +1,11 @@
-aliases:
-# Cache Management
-  - &restore-cache-gradle
-    keys:
-      - v1-gradle-{{ arch }}-{{ .Branch }}-{{ checksum "build.gradle" }}-{{ checksum "gradle.properties" }}
-      # Fallback in case checksum fails
-      - v1-gradle-{{ arch }}-{{ .Branch }}-{{ checksum "build.gradle" }}-
-      - v1-gradle-{{ arch }}-{{ .Branch }}-
-      # Fallback in case this is a first-time run on a fork
-      - v1-gradle-{{ arch }}-master-
-  - &save-cache-gradle
-    paths:
-      - ~/.gradle
-    key: v1-gradle-{{ arch }}-{{ .Branch }}-{{ checksum "build.gradle" }}-{{ checksum "gradle.properties" }}
-
 version: 2
-
 jobs:
-
   build:
+
     working_directory: ~/convalida
 
     docker:
       - image: circleci/android:api-27-alpha
-
-    environment:
-          JVM_OPTS: -Xmx3200m
 
     steps:
       - checkout
@@ -38,12 +19,33 @@ jobs:
           command: ./gradlew androidDependencies
 
       - run:
+          name: Build and execute unit tests
+          command: ./gradlew build test jacocoTestReport --stacktrace
+
+      - run:
+          name: Send test reports to Codecov
+          command: codecov
+
+  test_api_v25:
+
+    working_directory: ~/convalida
+
+    docker:
+        - image: circleci/android:api-26-alpha
+
+    environment:
+      JVM_OPTS: -Xmx3200m
+
+    steps:
+      - checkout
+
+      - run:
           name: Setup emulator
           command: sdkmanager "system-images;android-25;google_apis;armeabi-v7a" && echo "no" | avdmanager create avd -n test -k "system-images;android-25;google_apis;armeabi-v7a"
 
       - run:
           name: Launch emulator
-          command: export LD_LIBRARY_PATH=${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib && emulator64-arm -avd test -noaudio -no-boot-anim -no-window -accel on
+          command: export LD_LIBRARY_PATH=${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib && emulator64-arm -avd test -noaudio -no-boot-anim -no-window -no-accel -memory 2048 -verbose
           background: true
 
       - run:
@@ -59,10 +61,11 @@ jobs:
           name: Run Tests
           command: ./gradlew connectedAndroidTest
 
-      - run:
-          name: Build and execute unit tests
-          command: ./gradlew build test jacocoTestReport --stacktrace
-
-      - run:
-          name: Send test reports to Codecov
-          command: codecov
+workflows:
+  version: 2
+  build_test_and_deploy:
+    jobs:
+      - build
+      - test_api_v25:
+          requires:
+            - build
