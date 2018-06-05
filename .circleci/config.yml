@@ -34,17 +34,13 @@ jobs:
     working_directory: ~/convalida
 
     docker:
-      - image: circleci/android:api-27-alpha
+        - image: circleci/android:api-26-alpha
 
     environment:
       JVM_OPTS: -Xmx3200m
 
     steps:
       - checkout
-
-      - run:
-          name: Accept licenses
-          command: yes | sdkmanager --licenses || true
 
       - run:
           name: Setup emulator
@@ -65,7 +61,7 @@ jobs:
             adb shell input keyevent 82
 
       - run:
-          name: Run instrumented tests
+          name: Run Tests
           command: ./gradlew connectedAndroidTest --stacktrace
 
 workflows:
