@@ -9,26 +9,33 @@ public class LengthValidator extends AbstractValidator {
 
     private int min;
     private int max;
+    private boolean required;
 
     public LengthValidator(
             EditText editText,
             int min,
             int max,
             String errorMessage,
-            boolean autoDismiss) {
+            boolean autoDismiss,
+            boolean required
+    ) {
         super(editText, errorMessage, autoDismiss);
         this.min = min;
         this.max= max;
+        this.required = required;
     }
 
-    @Override public boolean isNotValid(String value) {
-        boolean hasError = value.length() < min;
-
-        if (max > 0) {
-            hasError |= value.length() > max;
+    @Override public boolean isValid(String value) {
+        value = value.replace(" ", "");
+        if(required && value.isEmpty()) {
+            return false;
+        } else {
+            boolean hasError = value.length() < min;
+            if (max > 0) {
+                hasError |= value.length() > max;
+            }
+            return value.isEmpty() || !hasError;
         }
-
-        return hasError;
     }
 
 }

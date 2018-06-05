@@ -9,7 +9,12 @@ import com.squareup.javapoet.TypeSpec;
 
 import javax.lang.model.element.Element;
 
+import convalida.annotations.CpfValidation;
+import convalida.annotations.CreditCardValidation;
+import convalida.annotations.EmailValidation;
 import convalida.annotations.LengthValidation;
+import convalida.annotations.NumberLimitValidation;
+import convalida.annotations.OnlyNumberValidation;
 import convalida.annotations.PasswordValidation;
 import convalida.annotations.PatternValidation;
 import convalida.compiler.internal.ValidationClass;
@@ -27,12 +32,16 @@ import static convalida.compiler.Constants.CONFIRM_PASSWORD_VALIDATOR;
 import static convalida.compiler.Constants.CONVALIDA_DATABINDING_R;
 import static convalida.compiler.Constants.CPF_ANNOTATION;
 import static convalida.compiler.Constants.CPF_VALIDATOR;
+import static convalida.compiler.Constants.CREDIT_CARD_ANNOTATION;
+import static convalida.compiler.Constants.CREDIT_CARD_VALIDATOR;
 import static convalida.compiler.Constants.EMAIL_ANNOTATION;
 import static convalida.compiler.Constants.EMAIL_VALIDATOR;
 import static convalida.compiler.Constants.LENGTH_ANNOTATION;
 import static convalida.compiler.Constants.LENGTH_VALIDATOR;
 import static convalida.compiler.Constants.LIST;
 import static convalida.compiler.Constants.NON_NULL;
+import static convalida.compiler.Constants.NUMBER_LIMIT_ANNOTATION;
+import static convalida.compiler.Constants.NUMBER_LIMIT_VALIDATOR;
 import static convalida.compiler.Constants.ONLY_NUMBER_ANNOTATION;
 import static convalida.compiler.Constants.ONLY_NUMBER_VALIDATOR;
 import static convalida.compiler.Constants.OVERRIDE;
@@ -260,6 +269,12 @@ class JavaFiler {
                 case BETWEEN_ANNOTATION:
                     builder.add(createBetweenValidationCodeBlock(validationClass, field));
                     break;
+                case CREDIT_CARD_ANNOTATION:
+                    builder.add(createCreditCardValidationCodeBlock(field));
+                    break;
+                case NUMBER_LIMIT_ANNOTATION:
+                    builder.add(createNumberLimitValidationCodeBlock(field));
+                    break;
             }
         }
         return builder.build();
@@ -280,11 +295,12 @@ class JavaFiler {
     private static CodeBlock createEmailValidationCodeBlock(ValidationField field) {
         return CodeBlock.builder()
                 .addStatement(
-                        "validatorSet.addValidator(new $T(target.$N, target.getString($L), $L))",
+                        "validatorSet.addValidator(new $T(target.$N, target.getString($L), $L, $L))",
                         EMAIL_VALIDATOR,
                         field.name,
                         field.id.code,
-                        field.autoDismiss
+                        field.autoDismiss,
+                        field.element.getAnnotation(EmailValidation.class).required()
                 )
                 .build();
     }
@@ -307,12 +323,13 @@ class JavaFiler {
     private static CodeBlock createPatternValidationCodeBlock(ValidationField field) {
         return CodeBlock.builder()
                 .addStatement(
-                        "validatorSet.addValidator(new $T(target.$N, target.getString($L), $S, $L))",
+                        "validatorSet.addValidator(new $T(target.$N, target.getString($L), $S, $L, $L))",
                         PATTERN_VALIDATOR,
                         field.name,
                         field.id.code,
                         field.element.getAnnotation(PatternValidation.class).pattern(),
-                        field.autoDismiss
+                        field.autoDismiss,
+                        field.element.getAnnotation(PatternValidation.class).required()
                 )
                 .build();
     }
@@ -320,13 +337,14 @@ class JavaFiler {
     private static CodeBlock createLengthValidationCodeBlock(ValidationField field) {
         return CodeBlock.builder()
                 .addStatement(
-                        "validatorSet.addValidator(new $T(target.$N, $L, $L, target.getString($L), $L))",
+                        "validatorSet.addValidator(new $T(target.$N, $L, $L, target.getString($L), $L, $L))",
                         LENGTH_VALIDATOR,
                         field.name,
                         field.element.getAnnotation(LengthValidation.class).min(),
                         field.element.getAnnotation(LengthValidation.class).max(),
                         field.id.code,
-                        field.autoDismiss
+                        field.autoDismiss,
+                        field.element.getAnnotation(LengthValidation.class).required()
                 )
                 .build();
     }
@@ -334,11 +352,12 @@ class JavaFiler {
     private static CodeBlock createOnlyNumberValidationCodeBlock(ValidationField field) {
         return CodeBlock.builder()
                 .addStatement(
-                        "validatorSet.addValidator(new $T(target.$N, target.getString($L), $L))",
+                        "validatorSet.addValidator(new $T(target.$N, target.getString($L), $L, $L))",
                         ONLY_NUMBER_VALIDATOR,
                         field.name,
                         field.id.code,
-                        field.autoDismiss
+                        field.autoDismiss,
+                        field.element.getAnnotation(OnlyNumberValidation.class).required()
                 )
                 .build();
     }
@@ -375,11 +394,12 @@ class JavaFiler {
     private static CodeBlock createCpfValidationCodeBlock(ValidationField field) {
         return CodeBlock.builder()
                 .addStatement(
-                        "validatorSet.addValidator(new $T(target.$N, target.getString($L), $L))",
+                        "validatorSet.addValidator(new $T(target.$N, target.getString($L), $L, $L))",
                         CPF_VALIDATOR,
                         field.name,
                         field.id.code,
-                        field.autoDismiss
+                        field.autoDismiss,
+                        field.element.getAnnotation(CpfValidation.class).required()
                 )
                 .build();
     }
@@ -408,6 +428,34 @@ class JavaFiler {
                     )
                     .build();
         } else return CodeBlock.builder().build();
+    }
+
+    private static CodeBlock createCreditCardValidationCodeBlock(ValidationField field) {
+        return CodeBlock.builder()
+                .addStatement(
+                        "validatorSet.addValidator(new $T(target.$N, target.getString($L), $L, $L))",
+                        CREDIT_CARD_VALIDATOR,
+                        field.name,
+                        field.id.code,
+                        field.autoDismiss,
+                        field.element.getAnnotation(CreditCardValidation.class).required()
+                )
+                .build();
+    }
+
+    private static CodeBlock createNumberLimitValidationCodeBlock(ValidationField field) {
+        return CodeBlock.builder()
+                .addStatement(
+                        "validatorSet.addValidator(new $T(target.$N, target.getString($L), $L, $S, $S, $L))",
+                        NUMBER_LIMIT_VALIDATOR,
+                        field.name,
+                        field.id.code,
+                        field.autoDismiss,
+                        field.element.getAnnotation(NumberLimitValidation.class).min(),
+                        field.element.getAnnotation(NumberLimitValidation.class).max(),
+                        field.element.getAnnotation(NumberLimitValidation.class).required()
+                )
+                .build();
     }
 
     private static CodeBlock createValidateOnClickCodeBlock(ValidationClass validationClass) {

@@ -9,18 +9,24 @@ import java.util.regex.Pattern;
 public class PatternValidator extends AbstractValidator {
 
     private String pattern;
+    private boolean required;
 
     public PatternValidator(
             EditText editText,
             String errorMessage,
             String pattern,
-            boolean autoDismiss) {
+            boolean autoDismiss,
+            boolean required
+    ) {
         super(editText, errorMessage, autoDismiss);
         this.pattern = pattern;
+        this.required = required;
     }
 
-    @Override public boolean isNotValid(String value) {
-        return !Pattern.matches(pattern, value);
+    @Override public boolean isValid(String value) {
+        value = value.replace(" ", "");
+        return (!required || !value.isEmpty())
+                && (value.isEmpty() || Pattern.matches(pattern, value));
     }
 
 }

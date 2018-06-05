@@ -9,13 +9,11 @@ import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 /**
- * @author  Wellington Costa on 18/06/2017.
+ * @author Wellington Costa on 31/05/18.
  */
 @Target(FIELD)
 @Retention(SOURCE)
-public @interface PatternValidation {
-
-    String pattern();
+public @interface CreditCardValidation {
 
     @StringRes int errorMessage();
 

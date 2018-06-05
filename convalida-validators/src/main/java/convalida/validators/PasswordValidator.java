@@ -22,7 +22,7 @@ public class PasswordValidator extends AbstractValidator {
         this.pattern = pattern;
     }
 
-    @Override public boolean isNotValid(String value) {
+    @Override public boolean isValid(String value) {
         boolean hasError = value.isEmpty();
 
         if (min > 0) {
@@ -33,7 +33,7 @@ public class PasswordValidator extends AbstractValidator {
             hasError |= !Pattern.matches(pattern, value);
         }
 
-        return hasError;
+        return !hasError;
     }
 
 }

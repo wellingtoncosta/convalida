@@ -14,8 +14,10 @@ import convalida.annotations.ClearValidationsOnClick;
 import convalida.annotations.ConfirmEmailValidation;
 import convalida.annotations.ConfirmPasswordValidation;
 import convalida.annotations.CpfValidation;
+import convalida.annotations.CreditCardValidation;
 import convalida.annotations.EmailValidation;
 import convalida.annotations.LengthValidation;
+import convalida.annotations.NumberLimitValidation;
 import convalida.annotations.OnValidationError;
 import convalida.annotations.OnValidationSuccess;
 import convalida.annotations.OnlyNumberValidation;
@@ -26,7 +28,6 @@ import convalida.annotations.ValidateOnClick;
 
 import static convalida.library.util.Patterns.MIXED_CASE_NUMERIC;
 import static convalida.sample.Constants.PHONE_PATTERN;
-
 
 /**
  * @author Wellington Costa on 05/06/17.
@@ -79,6 +80,18 @@ public class AnnotataionSampleActivity extends AppCompatActivity {
     @BindView(R.id.confirm_password_field)
     @ConfirmPasswordValidation(errorMessage = R.string.passwords_not_match)
     EditText confirmPasswordField;
+
+    @BindView(R.id.credit_card_field)
+    @CreditCardValidation(errorMessage = R.string.invalid_credit_card)
+    EditText creditCardField;
+
+    @BindView(R.id.number_limit_field)
+    @NumberLimitValidation(
+            min = "0",
+            max = "100",
+            errorMessage = R.string.invalid_number_limit
+    )
+    EditText numberLimitField;
 
     @ValidateOnClick
     @BindView(R.id.validate_button)

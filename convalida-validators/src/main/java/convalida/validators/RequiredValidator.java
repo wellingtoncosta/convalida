@@ -14,8 +14,8 @@ public class RequiredValidator extends AbstractValidator {
         super(editText, errorMessage, autoDismiss);
     }
 
-    @Override public boolean isNotValid(String value) {
-        return value.isEmpty();
+    @Override public boolean isValid(String value) {
+        return !value.isEmpty();
     }
 
 }

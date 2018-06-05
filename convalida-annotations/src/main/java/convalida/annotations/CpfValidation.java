@@ -19,4 +19,6 @@ public @interface CpfValidation {
 
     boolean autoDismiss() default true;
 
+    boolean required() default true;
+
 }

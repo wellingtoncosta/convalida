@@ -7,21 +7,42 @@ import android.widget.EditText;
  */
 public class CpfValidator extends AbstractValidator {
 
-    public CpfValidator(EditText editText, String errorMessage, boolean autoDismiss) {
+    private boolean required;
+
+    public CpfValidator(
+            EditText editText,
+            String errorMessage,
+            boolean autoDismiss,
+            boolean required
+    ) {
         super(editText, errorMessage, autoDismiss);
+        this.required = required;
     }
 
     @Override
-    public boolean isNotValid(String value) {
-        String cpfWithoutSpecialChars = value.replace(".", "").replace("-", "");
-        if(cpfWithoutSpecialChars.isEmpty() || cpfWithoutSpecialChars.length() < 11) return true;
-        boolean hasOnlyDigits = cpfWithoutSpecialChars.matches("\\d{11}");
-        boolean isNotInBlackList = !inBlackList(cpfWithoutSpecialChars);
-        int charAt9Position = Character.getNumericValue(cpfWithoutSpecialChars.charAt(9));
-        int charAt10Position = Character.getNumericValue(cpfWithoutSpecialChars.charAt(10));
-        boolean digit9IsValid = cpfDv(cpfWithoutSpecialChars, 1) == charAt9Position;
-        boolean digit10IsValid = cpfDv(cpfWithoutSpecialChars, 2) == charAt10Position;
-        return !(hasOnlyDigits && isNotInBlackList && digit9IsValid && digit10IsValid);
+    public boolean isValid(String value) {
+        value = value
+                .replace(".", "")
+                .replace("-", "")
+                .replace(" ", "");
+
+        boolean invalidLength = value.length() > 0 && value.length() < 11;
+
+        if(required && value.isEmpty()) {
+            return false;
+        } else {
+            if(value.isEmpty()) return true;
+
+            if(invalidLength) return false;
+
+            boolean hasOnlyDigits = value.matches("\\d{11}");
+            boolean isNotInBlackList = !inBlackList(value);
+            int charAt9Position = Character.getNumericValue(value.charAt(9));
+            int charAt10Position = Character.getNumericValue(value.charAt(10));
+            boolean digit9IsValid = cpfDv(value, 1) == charAt9Position;
+            boolean digit10IsValid = cpfDv(value, 2) == charAt10Position;
+            return (hasOnlyDigits && isNotInBlackList && digit9IsValid && digit10IsValid);
+        }
     }
 
     private static int cpfDv(final String cpf, final int step) {

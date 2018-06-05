@@ -28,10 +28,10 @@ public abstract class AbstractValidator {
         }
     }
 
-    public abstract boolean isNotValid(String value);
+    public abstract boolean isValid(String value);
 
     private void executeValidation(String value) {
-        hasError = !EditTextUtils.isVisible(editText) && isNotValid(value);
+        hasError = !EditTextUtils.isVisible(editText) && !isValid(value);
 
         if (hasError) {
             EditTextUtils.setError(editText, errorMessage);

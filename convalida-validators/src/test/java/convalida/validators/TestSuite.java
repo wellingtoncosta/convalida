@@ -19,6 +19,8 @@ import org.junit.runners.Suite.SuiteClasses;
         ConfirmPasswordValidatorTest.class,
         CpfValidatorTest.class,
         BetweenValidatorTest.class,
-        ValidatorSetTest.class
+        ValidatorSetTest.class,
+        CreditCardValidatorTest.class,
+        NumberLimitValidatorTest.class
 })
 public class TestSuite { }

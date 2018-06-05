@@ -154,7 +154,8 @@ class Preconditions {
         }
 
         // Verify element type
-        if (!EDIT_TEXT_TYPE.equals(elementType)) { // improve this check
+        // TODO improve this check to allow use subtypes of EditText
+        if (!EDIT_TEXT_TYPE.equals(elementType)) {
             error(
                     element,
                     "@%s must only be applied in fields of the type TextInputLaytout or EditText. (%s.%s)",

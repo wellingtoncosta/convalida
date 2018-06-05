@@ -8,15 +8,22 @@ import java.util.regex.Pattern;
  */
 public class OnlyNumberValidator extends AbstractValidator{
 
+    private boolean required;
+
     public OnlyNumberValidator(
             EditText editText,
             String errorMessage,
-            boolean autoDismiss) {
+            boolean autoDismiss,
+            boolean required
+    ) {
         super(editText, errorMessage, autoDismiss);
+        this.required = required;
     }
 
-    @Override public boolean isNotValid(String value) {
-        return !Pattern.compile("^\\d+$").matcher(value).matches();
+    @Override public boolean isValid(String value) {
+        value = value.replace(" ", "");
+        return (!required || !value.isEmpty())
+                && (value.isEmpty() || Pattern.compile("^\\d+$").matcher(value).matches());
     }
 
 }

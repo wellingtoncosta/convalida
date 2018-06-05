@@ -1,0 +1,30 @@
+version: 2
+jobs:
+  build:
+
+    working_directory: ~/convalida
+
+    docker:
+      - image: circleci/android:api-27-alpha
+
+    environment:
+      JVM_OPTS: -Xmx3200m
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install Codecov
+          command: sudo pip install codecov
+
+      - run:
+          name: Download dependencies
+          command: ./gradlew androidDependencies
+
+      - run:
+          name: Run unit tests
+          command: ./gradlew test jacocoTestReport --stacktrace
+
+      - run:
+          name: Send test reports to Codecov
+          command: codecov

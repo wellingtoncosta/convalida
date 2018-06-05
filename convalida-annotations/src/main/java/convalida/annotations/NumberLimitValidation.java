@@ -9,13 +9,15 @@ import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 /**
- * @author  Wellington Costa on 18/06/2017.
+ * @author wellingtoncosta on 01/06/18
  */
 @Target(FIELD)
 @Retention(SOURCE)
-public @interface PatternValidation {
+public @interface NumberLimitValidation {
 
-    String pattern();
+    String min();
+
+    String max();
 
     @StringRes int errorMessage();
 

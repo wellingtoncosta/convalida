@@ -4,18 +4,22 @@
     <string name="confirm_email">Confirm Email</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="cpf">CPF</string>
+    <string name="credit_card">Credit Card</string>
     <string name="email">Email</string>
     <string name="initial_period">Initial Period</string>
     <string name="final_period">Final Period</string>
     <string name="nickname">Nick Name</string>
     <string name="name">Name</string>
+    <string name="number_limit">Number Limit</string>
     <string name="phone">Phone</string>
     <string name="password">Password</string>
     <string name="validateFields">Validate</string>
     <string name="clearValidations">Clear</string>
 
     <string name="field_required">Field required</string>
+    <string name="invalid_credit_card">Invalid credit card number</string>
     <string name="invalid_email">Invalid email</string>
+    <string name="invalid_number_limit">The value must be between 0 and 100</string>
     <string name="invalid_phone">Invalid phone</string>
     <string name="invalid_password">The password must have letters and numbers</string>
     <string name="min_3_characters">Enter at least 3 characters</string>
