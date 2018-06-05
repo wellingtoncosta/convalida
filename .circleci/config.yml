@@ -28,42 +28,43 @@ jobs:
 
   test_api_v25:
 
-    working_directory: ~/convalida
+     working_directory: ~/convalida
+        docker:
+            - image: circleci/android:api-26-alpha
+        environment:
+          JVM_OPTS: -Xmx3200m
+        steps:
+          - checkout
 
-    docker:
-        - image: circleci/android:api-26-alpha
+          - run:
+              name: Accept licenses
+              command: yes | sdkmanager --licenses || true
 
-    environment:
-      JVM_OPTS: -Xmx3200m
+          - run:
+              name: Setup emulator
+              command: sdkmanager "system-images;android-25;google_apis;armeabi-v7a" && echo "no" | avdmanager create avd -n test -k "system-images;android-25;google_apis;armeabi-v7a"
 
-    steps:
-      - checkout
+          - run:
+              name: Launch emulator
+              command: export LD_LIBRARY_PATH=${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib && emulator64-arm -avd test -noaudio -no-boot-anim -no-window -accel on
+              background: true
 
-      - run:
-          name: Setup emulator
-          command: sdkmanager "system-images;android-25;google_apis;armeabi-v7a" && echo "no" | avdmanager create avd -n test -k "system-images;android-25;google_apis;armeabi-v7a"
+          - run:
+              name: Wait emulator
+              command: |
+                # wait for it to have booted
+                circle-android wait-for-boot
+                # unlock the emulator screen
+                sleep 30
+                adb shell input keyevent 82
 
-      - run:
-          name: Launch emulator
-          command: export LD_LIBRARY_PATH=${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib && emulator64-arm -avd test -noaudio -no-boot-anim -no-window -no-accel -memory 2048 -verbose
-          background: true
-
-      - run:
-          name: Wait emulator
-          command: |
-            # wait for it to have booted
-            circle-android wait-for-boot
-            # unlock the emulator screen
-            sleep 30
-            adb shell input keyevent 82
-
-      - run:
-          name: Run Tests
-          command: ./gradlew connectedAndroidTest
+          - run:
+              name: Run Tests
+              command: ./gradlew connectedAndroidTest
 
 workflows:
   version: 2
-  build_test_and_deploy:
+  build_test:
     jobs:
       - build
       - test_api_v25:
