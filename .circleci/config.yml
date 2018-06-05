@@ -7,6 +7,9 @@ jobs:
     docker:
       - image: circleci/android:api-27-alpha
 
+    environment:
+      JVM_OPTS: -Xmx3200m
+
     steps:
       - checkout
 
@@ -19,8 +22,8 @@ jobs:
           command: ./gradlew androidDependencies
 
       - run:
-          name: Build and execute unit tests
-          command: ./gradlew build test jacocoTestReport --stacktrace
+          name: Run unit tests
+          command: ./gradlew test jacocoTestReport --stacktrace
 
       - run:
           name: Send test reports to Codecov
@@ -28,39 +31,42 @@ jobs:
 
   test_api_v25:
 
-     working_directory: ~/convalida
-        docker:
-            - image: circleci/android:api-26-alpha
-        environment:
-          JVM_OPTS: -Xmx3200m
-        steps:
-          - checkout
+    working_directory: ~/convalida
 
-          - run:
-              name: Accept licenses
-              command: yes | sdkmanager --licenses || true
+    docker:
+      - image: circleci/android:api-27-alpha
 
-          - run:
-              name: Setup emulator
-              command: sdkmanager "system-images;android-25;google_apis;armeabi-v7a" && echo "no" | avdmanager create avd -n test -k "system-images;android-25;google_apis;armeabi-v7a"
+    environment:
+      JVM_OPTS: -Xmx3200m
 
-          - run:
-              name: Launch emulator
-              command: export LD_LIBRARY_PATH=${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib && emulator64-arm -avd test -noaudio -no-boot-anim -no-window -accel on
-              background: true
+    steps:
+      - checkout
 
-          - run:
-              name: Wait emulator
-              command: |
-                # wait for it to have booted
-                circle-android wait-for-boot
-                # unlock the emulator screen
-                sleep 30
-                adb shell input keyevent 82
+      - run:
+          name: Accept licenses
+          command: yes | sdkmanager --licenses || true
 
-          - run:
-              name: Run Tests
-              command: ./gradlew connectedAndroidTest
+      - run:
+          name: Setup emulator
+          command: sdkmanager "system-images;android-25;google_apis;armeabi-v7a" && echo "no" | avdmanager create avd -n test -k "system-images;android-25;google_apis;armeabi-v7a"
+
+      - run:
+          name: Launch emulator
+          command: export LD_LIBRARY_PATH=${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib && emulator64-arm -avd test -noaudio -no-boot-anim -no-window -accel on
+          background: true
+
+      - run:
+          name: Wait emulator
+          command: |
+            # wait for it to have booted
+            circle-android wait-for-boot
+            # unlock the emulator screen
+            sleep 30
+            adb shell input keyevent 82
+
+      - run:
+          name: Run instrumented tests
+          command: ./gradlew connectedAndroidTest --stacktrace
 
 workflows:
   version: 2
