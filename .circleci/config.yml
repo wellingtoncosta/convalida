@@ -29,7 +29,7 @@ jobs:
           name: Send test reports to Codecov
           command: codecov
 
-  test_api_v25:
+  instrumented_tests:
 
     working_directory: ~/convalida
 
@@ -44,7 +44,7 @@ jobs:
 
       - run:
           name: Setup emulator
-          command: sdkmanager "system-images;android-25;google_apis;armeabi-v7a" && echo "no" | avdmanager create avd -n test -k "system-images;android-25;google_apis;armeabi-v7a"
+          command: sdkmanager "system-images;android-16;default;armeabi-v7a" && echo "no" | avdmanager create avd -n test -k "system-images;android-16;default;armeabi-v7a"
 
       - run:
           name: Launch emulator
@@ -69,6 +69,6 @@ workflows:
   build_test:
     jobs:
       - build
-      - test_api_v25:
+      - instrumented_tests:
           requires:
             - build
