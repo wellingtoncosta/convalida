@@ -34,7 +34,7 @@ jobs:
     working_directory: ~/convalida
 
     docker:
-        - image: circleci/android:api-26-alpha
+        - image: bitriseio/docker-android:v2017_09_09-06_45-b744
 
     environment:
       JVM_OPTS: -Xmx3200m
@@ -43,26 +43,47 @@ jobs:
       - checkout
 
       - run:
-          name: Setup emulator
-          command: sdkmanager "system-images;android-16;default;armeabi-v7a" && echo "no" | avdmanager create avd -n test -k "system-images;android-16;default;armeabi-v7a"
+          name: Lists installed targets
+          command: android list target
+          environment:
+            TERM: dumb
 
       - run:
-          name: Launch emulator
-          command: export LD_LIBRARY_PATH=${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib && emulator64-arm -avd test -noaudio -no-boot-anim -no-window -accel on
+          name: List available targets and other sdk modules
+          command: sdkmanager --list --include_obsolete --verbose
+          environment:
+            TERM: dumb
+
+      - run:
+          name: Create avd
+          command: echo no | avdmanager create avd -n testEmulator -k "system-images;android-24;default;armeabi-v7a"
+          environment:
+            TERM: dumb
+
+      - run:
+          name: Start emulator
+          command: /opt/android-sdk-linux/emulator/emulator -avd testEmulator -no-audio -no-window
           background: true
+          environment:
+            TERM: dumb
 
       - run:
-          name: Wait emulator
-          command: |
-            # wait for it to have booted
-            circle-android wait-for-boot
-            # unlock the emulator screen
-            sleep 30
-            adb shell input keyevent 82
+          name: Wait for emulator
+          command: ./android-wait-for-boot.sh
+          environment:
+            TERM: dumb
 
       - run:
-          name: Run Tests
-          command: ./gradlew connectedAndroidTest --stacktrace
+          name: Remove lock screen
+          command: adb shell input keyevent 82
+          environment:
+            TERM: dumb
+
+      - run:
+          name: Instrumentation testing
+          command: ./gradlew connectedCheck
+          environment:
+            TERM: dumb
 
 workflows:
   version: 2
