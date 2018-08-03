@@ -1,7 +1,13 @@
 version: 2
+
+general:
+  branches:
+    only:
+      - master
+      - development
+
 jobs:
   build:
-
     working_directory: ~/convalida
 
     docker:
