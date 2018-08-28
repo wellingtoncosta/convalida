@@ -6,38 +6,9 @@
 
 Convalida is a simple, lightweight and powerful field validation library for Android.
 
-## Why Convalida?
-
--   You can use with annotations or with data binding;
--   Compile-time;
--   Compatible with other popular libraries such as [ButterKnife][1], [Android Data Binding][2], [Dagger 2][3], etc;
--   Works with **Stock Android Widgets**;
--   Based on [Material Design Error Patterns][4];
-
 ## Documentation
 
-See the [wiki][5] for more information.
-
-## Download
-
-**Step 1** - Add the JitPack repository to your root build.gradle file:
-
-```groovy
-allprojects {
-  repositories {
-    maven { url 'https://jitpack.io' }
-  }
-}
-```
-
-**Step 2** - Add the dependencies:
-
-```groovy
-dependencies {
-  implementation 'com.github.WellingtonCosta.convalida:convalida:2.1.0'
-  annotationProcessor 'com.github.WellingtonCosta.convalida:convalida-compiler:2.1.0'
-}
-```
+Go to the [website][1] for more information.
 
 ## License
 
@@ -55,12 +26,4 @@ dependencies {
     See the License for the specific language governing permissions and
     limitations under the License.
 
-[1]: https://github.com/JakeWharton/butterknife
-
-[2]: https://developer.android.com/topic/libraries/data-binding/index.html
-
-[3]: https://github.com/google/dagger
-
-[4]: https://material.io/guidelines/patterns/errors.html
-
-[5]: https://github.com/WellingtonCosta/convalida/wiki
+[1]: https://wellingtoncosta.github.io/convalida
