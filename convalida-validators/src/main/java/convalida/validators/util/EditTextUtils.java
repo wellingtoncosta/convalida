@@ -1,11 +1,11 @@
 package convalida.validators.util;
 
-import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewParent;
 import android.widget.EditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 /**
  * @author Wellington Costa on 08/02/18.
@@ -39,18 +39,15 @@ public final class EditTextUtils {
             final EditText editText,
             final ExecuteValidationListener listener) {
         editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
                 listener.execute(s.toString());
             }
 
-            @Override
-            public void afterTextChanged(Editable s) {
+            @Override public void afterTextChanged(Editable s) {
 
             }
         });

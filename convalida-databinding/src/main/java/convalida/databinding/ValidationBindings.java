@@ -1,22 +1,10 @@
  package convalida.databinding;
 
- import android.databinding.BindingAdapter;
- import android.support.annotation.NonNull;
  import android.widget.Button;
  import android.widget.EditText;
-
- import convalida.validators.BetweenValidator;
- import convalida.validators.ConfirmEmailValidator;
- import convalida.validators.ConfirmPasswordValidator;
- import convalida.validators.CpfValidator;
- import convalida.validators.CreditCardValidator;
- import convalida.validators.EmailValidator;
- import convalida.validators.LengthValidator;
- import convalida.validators.NumberLimitValidator;
- import convalida.validators.OnlyNumberValidator;
- import convalida.validators.PasswordValidator;
- import convalida.validators.PatternValidator;
- import convalida.validators.RequiredValidator;
+ import androidx.annotation.NonNull;
+ import androidx.databinding.BindingAdapter;
+ import convalida.validators.*;
 
 /**
  * @author WellingtonCosta on 29/03/18.

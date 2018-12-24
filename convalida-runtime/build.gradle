@@ -1,13 +1,13 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
+
 group = 'com.github.WellingtonCosta'
 
 android {
-    compileSdkVersion versions.compileSdk
-    buildToolsVersion versions.buildTools
+    compileSdkVersion versions.android.sdk.compile
 
     defaultConfig {
-        minSdkVersion versions.minSdk
+        minSdkVersion versions.android.sdk.min
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -17,8 +17,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_7
-        targetCompatibility = JavaVersion.VERSION_1_7
+        sourceCompatibility = versions.java
+        targetCompatibility = versions.java
     }
 }
 
@@ -35,8 +35,4 @@ dependencies {
     api project(':convalida-annotations')
     api project(':convalida-validators')
     api project(':convalida-databinding')
-
-    implementation deps.support.annotations
-    implementation deps.support.compat
-    implementation deps.support.design
 }

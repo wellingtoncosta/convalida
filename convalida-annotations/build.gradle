@@ -3,10 +3,11 @@ import com.android.build.gradle.internal.SdkHandler
 
 apply plugin: 'java'
 apply plugin: 'maven'
+
 group = 'com.github.WellingtonCosta'
 
-sourceCompatibility = JavaVersion.VERSION_1_7
-targetCompatibility = JavaVersion.VERSION_1_7
+sourceCompatibility = versions.java
+targetCompatibility = versions.java
 
 task sourcesJar(type: Jar) {
     from sourceSets.main.java.srcDirs
@@ -26,6 +27,5 @@ for (File file : sdkHandler.sdkLoader.repositories) {
 }
 
 dependencies {
-    compileOnly deps.android.runtime
-    implementation deps.support.annotations
+    implementation deps.androidx.annotations
 }

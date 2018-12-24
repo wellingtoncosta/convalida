@@ -2,18 +2,17 @@ apply plugin: 'com.android.application'
 apply plugin: 'jacoco-android'
 
 android {
-    compileSdkVersion versions.compileSdk
-    buildToolsVersion versions.buildTools
+    compileSdkVersion versions.android.sdk.compile
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility versions.java
+        targetCompatibility versions.java
     }
 
     defaultConfig {
         applicationId 'convalida.sample'
-        minSdkVersion versions.minSdk
-        targetSdkVersion versions.compileSdk
+        minSdkVersion versions.android.sdk.min
+        targetSdkVersion versions.android.sdk.compile
         versionCode 1
         versionName '1.0.0'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -34,29 +33,21 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
-
-    implementation project(':convalida')
+    implementation project(':convalida-runtime')
     annotationProcessor project(':convalida-compiler')
 
-    implementation 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation deps.androidx.appcompat
+    implementation deps.androidx.constraintlayout
+    implementation deps.androidx.core
 
-    implementation deps.support.compat
-    implementation deps.support.design
+    implementation deps.google.material
 
-    testImplementation deps.junit
+    testImplementation deps.test.junit
 
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    }
-    androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.1', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-        exclude group: 'com.android.support', module: 'support-v4'
-        exclude group: 'com.android.support', module: 'design'
-        exclude group: 'com.android.support', module: 'recyclerview-v7'
-    }
+    androidTestImplementation deps.androidx.test.espresso
+    androidTestImplementation deps.androidx.test.ext.junit
+    androidTestImplementation deps.androidx.test.rules
+    androidTestImplementation deps.androidx.test.runner
 }
 
 jacocoAndroidUnitTestReport {

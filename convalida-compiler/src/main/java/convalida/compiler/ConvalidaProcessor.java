@@ -114,8 +114,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
 
     private final Map<QualifiedId, Id> symbols = new LinkedHashMap<>();
 
-    @Override
-    public synchronized void init(ProcessingEnvironment processingEnvironment) {
+    @Override public synchronized void init(ProcessingEnvironment processingEnvironment) {
         super.init(processingEnvironment);
 
         this.elementUtils = processingEnvironment.getElementUtils();
@@ -153,13 +152,11 @@ public class ConvalidaProcessor extends AbstractProcessor {
         return annotations;
     }
 
-    @Override
-    public SourceVersion getSupportedSourceVersion() {
+    @Override public SourceVersion getSupportedSourceVersion() {
         return SourceVersion.latestSupported();
     }
 
-    @Override
-    public boolean process(Set<? extends TypeElement> typeElements, RoundEnvironment env) {
+    @Override public boolean process(Set<? extends TypeElement> typeElements, RoundEnvironment env) {
         List<ValidationClass> validationClasses = findAndParseValidations(env);
 
         // Generate validation classes source code
@@ -404,7 +401,11 @@ public class ConvalidaProcessor extends AbstractProcessor {
         }
     }
 
-    private void parseValidateOnClick(Element element, Set<Element> parents, List<Element> validationActions) {
+    private void parseValidateOnClick(
+            Element element,
+            Set<Element> parents,
+            List<Element> validationActions
+    ) {
         Element parent = element.getEnclosingElement();
         boolean hasError =
                 isInaccessible(ValidateOnClick.class, element) ||
@@ -416,7 +417,11 @@ public class ConvalidaProcessor extends AbstractProcessor {
         validationActions.add(element);
     }
 
-    private void parseClearValidationsOnClick(Element element, Set<Element> parents, List<Element> validationActions) {
+    private void parseClearValidationsOnClick(
+            Element element,
+            Set<Element> parents,
+            List<Element> validationActions
+    ) {
         Element parent = element.getEnclosingElement();
         boolean hasError =
                 isInaccessible(ClearValidationsOnClick.class, element) ||
@@ -428,7 +433,11 @@ public class ConvalidaProcessor extends AbstractProcessor {
         validationActions.add(element);
     }
 
-    private void parseOnValidationSuccess(Element element, Set<Element> parents, List<Element> validationActions) {
+    private void parseOnValidationSuccess(
+            Element element,
+            Set<Element> parents,
+            List<Element> validationActions
+    ) {
         Element parent = element.getEnclosingElement();
         ExecutableElement executableElement = (ExecutableElement)element;
         boolean hasError =
@@ -442,7 +451,11 @@ public class ConvalidaProcessor extends AbstractProcessor {
         validationActions.add(element);
     }
 
-    private void parseOnValidationError(Element element, Set<Element> parents, List<Element> validationActions) {
+    private void parseOnValidationError(
+            Element element,
+            Set<Element> parents,
+            List<Element> validationActions
+    ) {
         Element parent = element.getEnclosingElement();
         ExecutableElement executableElement = (ExecutableElement)element;
         boolean hasError =
@@ -457,7 +470,11 @@ public class ConvalidaProcessor extends AbstractProcessor {
         validationActions.add(element);
     }
 
-    private void parseRequiredValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
+    private void parseRequiredValidation(
+            Element element,
+            Set<Element> parents,
+            List<ValidationField> validationFields
+    ) {
         boolean hasError =
                 isInvalid(RequiredValidation.class, element) ||
                 isInaccessible(RequiredValidation.class, element);
@@ -479,7 +496,11 @@ public class ConvalidaProcessor extends AbstractProcessor {
         ));
     }
 
-    private void parseEmailValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
+    private void parseEmailValidation(
+            Element element,
+            Set<Element> parents,
+            List<ValidationField> validationFields
+    ) {
         boolean hasError =
                 isInvalid(EmailValidation.class, element) ||
                 isInaccessible(EmailValidation.class, element);
@@ -501,7 +522,11 @@ public class ConvalidaProcessor extends AbstractProcessor {
         ));
     }
 
-    private void parseConfirmEmailValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
+    private void parseConfirmEmailValidation(
+            Element element,
+            Set<Element> parents,
+            List<ValidationField> validationFields
+    ) {
         boolean hasError = isInvalid(ConfirmEmailValidation.class, element) ||
                 isInaccessible(ConfirmEmailValidation.class, element) ||
                 confirmValidationElementsHasError(EmailValidation.class, ConfirmEmailValidation.class, element);
@@ -521,7 +546,11 @@ public class ConvalidaProcessor extends AbstractProcessor {
         ));
     }
 
-    private void parsePatternValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
+    private void parsePatternValidation(
+            Element element,
+            Set<Element> parents,
+            List<ValidationField> validationFields
+    ) {
         boolean hasError =
                 isInvalid(PatternValidation.class, element) ||
                 isInaccessible(PatternValidation.class, element);
@@ -543,7 +572,11 @@ public class ConvalidaProcessor extends AbstractProcessor {
         ));
     }
 
-    private void parseLengthValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
+    private void parseLengthValidation(
+            Element element,
+            Set<Element> parents,
+            List<ValidationField> validationFields
+    ) {
         int minLength = element.getAnnotation(LengthValidation.class).min();
         int maxLength = element.getAnnotation(LengthValidation.class).max();
 
@@ -578,7 +611,11 @@ public class ConvalidaProcessor extends AbstractProcessor {
         }
     }
 
-    private void parseOnlyNumberValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
+    private void parseOnlyNumberValidation(
+            Element element,
+            Set<Element> parents,
+            List<ValidationField> validationFields
+    ) {
         boolean hasError =
                 isInvalid(OnlyNumberValidation.class, element) ||
                 isInaccessible(OnlyNumberValidation.class, element);
@@ -600,7 +637,11 @@ public class ConvalidaProcessor extends AbstractProcessor {
         ));
     }
 
-    private void parsePasswordValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
+    private void parsePasswordValidation(
+            Element element,
+            Set<Element> parents,
+            List<ValidationField> validationFields
+    ) {
         boolean hasError =
                 isInvalid(PasswordValidation.class, element) ||
                 isInaccessible(PasswordValidation.class, element);
@@ -640,7 +681,11 @@ public class ConvalidaProcessor extends AbstractProcessor {
         ));
     }
 
-    private void parseConfirmPasswordValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
+    private void parseConfirmPasswordValidation(
+            Element element,
+            Set<Element> parents,
+            List<ValidationField> validationFields
+    ) {
         boolean hasError = isInvalid(ConfirmPasswordValidation.class, element) ||
                 isInaccessible(ConfirmPasswordValidation.class, element) ||
                 confirmValidationElementsHasError(PasswordValidation.class, ConfirmPasswordValidation.class, element);
@@ -660,7 +705,11 @@ public class ConvalidaProcessor extends AbstractProcessor {
         ));
     }
 
-    private void parseCpfValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
+    private void parseCpfValidation(
+            Element element,
+            Set<Element> parents,
+            List<ValidationField> validationFields
+    ) {
         boolean hasError =
                 isInvalid(CpfValidation.class, element) ||
                         isInaccessible(CpfValidation.class, element);
@@ -683,7 +732,11 @@ public class ConvalidaProcessor extends AbstractProcessor {
     }
 
 
-    private void parseBetweenValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
+    private void parseBetweenValidation(
+            Element element,
+            Set<Element> parents,
+            List<ValidationField> validationFields
+    ) {
         boolean hasError = (
                     isInvalid(BetweenValidation.Start.class, element) ||
                     isInaccessible(BetweenValidation.Start.class, element)
@@ -744,7 +797,11 @@ public class ConvalidaProcessor extends AbstractProcessor {
         ));
     }
 
-    private void parseCreditCardValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
+    private void parseCreditCardValidation(
+            Element element,
+            Set<Element> parents,
+            List<ValidationField> validationFields
+    ) {
         boolean hasError =
                 isInvalid(CreditCardValidation.class, element) ||
                         isInaccessible(CreditCardValidation.class, element);
@@ -766,7 +823,11 @@ public class ConvalidaProcessor extends AbstractProcessor {
         ));
     }
 
-    private void parseNumberLimitValidation(Element element, Set<Element> parents, List<ValidationField> validationFields) {
+    private void parseNumberLimitValidation(
+            Element element,
+            Set<Element> parents,
+            List<ValidationField> validationFields
+    ) {
         boolean hasError =
                 isInvalid(NumberLimitValidation.class, element) ||
                         isInaccessible(NumberLimitValidation.class, element);
@@ -789,7 +850,10 @@ public class ConvalidaProcessor extends AbstractProcessor {
     }
 
 
-    private static AnnotationMirror getMirror(Element element, Class<? extends Annotation> annotation) {
+    private static AnnotationMirror getMirror(
+            Element element,
+            Class<? extends Annotation> annotation
+    ) {
         for (AnnotationMirror annotationMirror : element.getAnnotationMirrors()) {
             if (annotationMirror.getAnnotationType().toString().equals(annotation.getCanonicalName())) {
                 return annotationMirror;

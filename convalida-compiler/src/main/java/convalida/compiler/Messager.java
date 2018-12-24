@@ -10,14 +10,14 @@ import javax.tools.Diagnostic;
 /**
  * @author wellingtoncosta on 02/04/18
  */
-public class Messager {
+class Messager {
 
     // Can not be instantiated
     private Messager() { }
 
     private static javax.annotation.processing.Messager messager;
 
-    public static void init(javax.annotation.processing.Messager messager) {
+    static void init(javax.annotation.processing.Messager messager) {
         Messager.messager = messager;
     }
 
