@@ -129,4 +129,6 @@ subprojects { project ->
             classpath "com.github.dcendents:android-maven-gradle-plugin:$versions.android.plugin.maven"
         }
     }
+
+    task allDependenciesInsight(type: DependencyInsightReportTask) << {}
 }

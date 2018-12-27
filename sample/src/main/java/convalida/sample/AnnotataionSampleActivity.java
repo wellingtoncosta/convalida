@@ -18,43 +18,43 @@ public class AnnotataionSampleActivity extends AppCompatActivity {
 
     ConstraintLayout constraintLayout;
 
-    @RequiredValidation(errorMessage = R.string.field_required)
+    @Required(errorMessage = R.string.field_required)
     EditText nameField;
 
-    @LengthValidation(min = 3, errorMessage = R.string.min_3_characters)
+    @Length(min = 3, errorMessage = R.string.min_3_characters)
     EditText nickNameField;
 
-    @OnlyNumberValidation(errorMessage = R.string.only_numbers)
+    @OnlyNumber(errorMessage = R.string.only_numbers)
     EditText ageField;
 
-    @PatternValidation(pattern = PHONE_PATTERN, errorMessage = R.string.invalid_phone)
+    @Pattern(pattern = PHONE_PATTERN, errorMessage = R.string.invalid_phone)
     EditText phoneField;
 
-    @CpfValidation(errorMessage = R.string.cpf_not_valid)
+    @Cpf(errorMessage = R.string.cpf_not_valid)
     EditText cpfField;
 
-    @BetweenValidation.Start(key = 1, errorMessage = R.string.initial_period_not_valid)
+    @Between.Start(key = 1, errorMessage = R.string.initial_period_not_valid)
     EditText initialPeriodField;
 
-    @BetweenValidation.End(key = 1, errorMessage = R.string.final_period_not_valid)
+    @Between.End(key = 1, errorMessage = R.string.final_period_not_valid)
     EditText finalPeriodField;
 
-    @EmailValidation(errorMessage = R.string.invalid_email)
+    @Email(errorMessage = R.string.invalid_email)
     EditText emailField;
 
-    @ConfirmEmailValidation(errorMessage = R.string.emails_not_match)
+    @ConfirmEmail(errorMessage = R.string.emails_not_match)
     EditText confirmEmailField;
 
-    @PasswordValidation(min = 3, pattern = MIXED_CASE_NUMERIC, errorMessage = R.string.invalid_password)
+    @Password(min = 3, pattern = MIXED_CASE_NUMERIC, errorMessage = R.string.invalid_password)
     EditText passwordField;
 
-    @ConfirmPasswordValidation(errorMessage = R.string.passwords_not_match)
+    @ConfirmPassword(errorMessage = R.string.passwords_not_match)
     EditText confirmPasswordField;
 
-    @CreditCardValidation(errorMessage = R.string.invalid_credit_card)
+    @CreditCard(errorMessage = R.string.invalid_credit_card)
     EditText creditCardField;
 
-    @NumberLimitValidation(
+    @NumberLimit(
             min = "0",
             max = "100",
             errorMessage = R.string.invalid_number_limit
@@ -65,8 +65,7 @@ public class AnnotataionSampleActivity extends AppCompatActivity {
 
     @ClearValidationsOnClick Button clearValidationsButton;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_annotation_sample);
         bindViews();

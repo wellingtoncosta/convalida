@@ -36,7 +36,7 @@
                     android:hint="@string/name"
                     android:inputType="text"
                     android:maxLines="1"
-                    app:requiredValidationErrorMessage="@{@string/field_required}" />
+                    app:requiredErrorMessage="@{@string/field_required}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -59,8 +59,8 @@
                     android:hint="@string/nickname"
                     android:inputType="text"
                     android:maxLines="1"
-                    app:lengthValidationMin="@{3}"
-                    app:lengthValidationErrorMessage="@{@string/min_3_characters}" />
+                    app:lengthMin="@{3}"
+                    app:lengthErrorMessage="@{@string/min_3_characters}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -83,7 +83,7 @@
                     android:hint="@string/age"
                     android:inputType="text"
                     android:maxLines="1"
-                    app:onlyNumberValidationErrorMessage="@{@string/only_numbers}" />
+                    app:onlyNumberErrorMessage="@{@string/only_numbers}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -106,8 +106,8 @@
                     android:hint="@string/phone"
                     android:inputType="text"
                     android:maxLines="1"
-                    app:patternValidationPattern="@{Constants.PHONE_PATTERN}"
-                    app:patternValidationErrorMessage="@{@string/invalid_phone}" />
+                    app:patternPattern="@{Constants.PHONE_PATTERN}"
+                    app:patternErrorMessage="@{@string/invalid_phone}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -131,7 +131,7 @@
                     android:hint="@string/cpf"
                     android:inputType="text"
                     android:maxLines="1"
-                    app:cpfValidationErrorMessage="@{@string/cpf_not_valid}" />
+                    app:cpfErrorMessage="@{@string/cpf_not_valid}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -155,9 +155,9 @@
                     android:hint="@string/initial_period"
                     android:inputType="text"
                     android:maxLines="1"
-                    app:betweenValidationStartErrorMessage="@{@string/initial_period_not_valid}"
-                    app:betweenValidationEndField="@{finalPeriodField}"
-                    app:betweenValidationEndErrorMessage="@{@string/final_period_not_valid}" />
+                    app:betweenStartErrorMessage="@{@string/initial_period_not_valid}"
+                    app:betweenEndField="@{finalPeriodField}"
+                    app:betweenEndErrorMessage="@{@string/final_period_not_valid}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -203,7 +203,7 @@
                     android:hint="@string/email"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
-                    app:emailValidationErrorMessage="@{@string/invalid_email}" />
+                    app:emailErrorMessage="@{@string/invalid_email}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -226,8 +226,8 @@
                     android:hint="@string/confirm_email"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
-                    app:confirmEmailValidationEmailField="@{emailField}"
-                    app:confirmEmailValidationErrorMessage="@{@string/emails_not_match}" />
+                    app:confirmEmailEmailField="@{emailField}"
+                    app:confirmEmailErrorMessage="@{@string/emails_not_match}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -251,9 +251,9 @@
                     android:hint="@string/password"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    app:passwordValidationMinLength="@{3}"
-                    app:passwordValidationPattern="@{Patterns.MIXED_CASE_NUMERIC}"
-                    app:passwordValidationErrorMessage="@{@string/invalid_password}" />
+                    app:passwordMinLength="@{3}"
+                    app:passwordPattern="@{Patterns.MIXED_CASE_NUMERIC}"
+                    app:passwordErrorMessage="@{@string/invalid_password}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -277,8 +277,8 @@
                     android:hint="@string/confirm_password"
                     android:inputType="textPassword"
                     android:maxLines="1"
-                    app:confirmPasswordValidationPasswordField="@{passwordField}"
-                    app:confirmPasswordValidationErrorMessage="@{@string/passwords_not_match}" />
+                    app:confirmPasswordPasswordField="@{passwordField}"
+                    app:confirmPasswordErrorMessage="@{@string/passwords_not_match}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -301,7 +301,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/credit_card"
                     android:maxLines="1"
-                    app:creditCardValidationErrorMessage="@{@string/invalid_credit_card}" />
+                    app:creditCardErrorMessage="@{@string/invalid_credit_card}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -324,9 +324,9 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/number_limit"
                     android:maxLines="1"
-                    app:numberLimitValidationMin='@{"0"}'
-                    app:numberLimitValidationMax='@{"100"}'
-                    app:numberLimitValidationErrorMessage="@{@string/invalid_number_limit}" />
+                    app:numberLimitMin='@{"0"}'
+                    app:numberLimitMax='@{"100"}'
+                    app:numberLimitErrorMessage="@{@string/invalid_number_limit}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

@@ -2,13 +2,15 @@ package convalida.compiler;
 
 import com.squareup.javapoet.ClassName;
 
+import java.util.List;
+
 /**
  * @author Wellington Costa on 26/10/2017.
  */
 class Constants {
 
-    static final ClassName LIST                         = ClassName.get("java.util", "List");
-    static final ClassName OVERRIDE                     = ClassName.get("java.lang", "Override");
+    static final ClassName LIST                         = ClassName.get(List.class);
+    static final ClassName OVERRIDE                     = ClassName.get(Override.class);
 
     static final ClassName UI_THREAD                    = ClassName.get("androidx.annotation", "UiThread");
     static final ClassName NON_NULL                     = ClassName.get("androidx.annotation", "NonNull");
@@ -25,20 +27,20 @@ class Constants {
 
     static final String EDIT_TEXT_TYPE                  = "android.widget.EditText";
 
-    static final String REQUIRED_ANNOTATION                         = "convalida.annotations.RequiredValidation";
-    static final String EMAIL_ANNOTATION                            = "convalida.annotations.EmailValidation";
-    static final String CONFIRM_EMAIL_VALIDATION                    = "convalida.annotations.ConfirmEmailValidation";
-    static final String PATTERN_ANNOTATION                          = "convalida.annotations.PatternValidation";
-    static final String LENGTH_ANNOTATION                           = "convalida.annotations.LengthValidation";
-    static final String ONLY_NUMBER_ANNOTATION                      = "convalida.annotations.OnlyNumberValidation";
-    static final String PASSWORD_ANNOTATION                         = "convalida.annotations.PasswordValidation";
-    static final String CONFIRM_PASSWORD_ANNOTATION                 = "convalida.annotations.ConfirmPasswordValidation";
-    static final String CPF_ANNOTATION                              = "convalida.annotations.CpfValidation";
-    static final String BETWEEN_ANNOTATION                          = "convalida.annotations.BetweenValidation.Start";
-    static final String BETWEEN_START_ANNOTATION                    = "convalida.annotations.BetweenValidation.Start";
-    static final String BETWEEN_END_ANNOTATION                      = "convalida.annotations.BetweenValidation.End";
-    static final String CREDIT_CARD_ANNOTATION                      = "convalida.annotations.CreditCardValidation";
-    static final String NUMBER_LIMIT_ANNOTATION                     = "convalida.annotations.NumberLimitValidation";
+    static final String REQUIRED_ANNOTATION                         = "convalida.annotations.Required";
+    static final String EMAIL_ANNOTATION                            = "convalida.annotations.Email";
+    static final String CONFIRM_EMAIL_VALIDATION                    = "convalida.annotations.ConfirmEmail";
+    static final String PATTERN_ANNOTATION                          = "convalida.annotations.Pattern";
+    static final String LENGTH_ANNOTATION                           = "convalida.annotations.Length";
+    static final String ONLY_NUMBER_ANNOTATION                      = "convalida.annotations.OnlyNumber";
+    static final String PASSWORD_ANNOTATION                         = "convalida.annotations.Password";
+    static final String CONFIRM_PASSWORD_ANNOTATION                 = "convalida.annotations.ConfirmPassword";
+    static final String CPF_ANNOTATION                              = "convalida.annotations.Cpf";
+    static final String BETWEEN_ANNOTATION                          = "convalida.annotations.Between";
+    static final String BETWEEN_START_ANNOTATION                    = "convalida.annotations.Between.Start";
+    static final String BETWEEN_END_ANNOTATION                      = "convalida.annotations.Between.End";
+    static final String CREDIT_CARD_ANNOTATION                      = "convalida.annotations.CreditCard";
+    static final String NUMBER_LIMIT_ANNOTATION                     = "convalida.annotations.NumberLimit";
     static final String VALIDATE_ON_CLICK_ANNOTATION                = "convalida.annotations.ValidateOnClick";
     static final String CLEAR_VALIDATIONS_ON_CLICK_ANNOTATION       = "convalida.annotations.ClearValidationsOnClick";
     static final String ON_VALIDATION_SUCCESS_ANNOTATION            = "convalida.annotations.OnValidationSuccess";

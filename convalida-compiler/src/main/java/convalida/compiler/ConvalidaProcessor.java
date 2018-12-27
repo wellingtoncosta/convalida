@@ -33,22 +33,8 @@ import javax.lang.model.type.MirroredTypeException;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 
-import convalida.annotations.BetweenValidation;
-import convalida.annotations.ClearValidationsOnClick;
-import convalida.annotations.ConfirmEmailValidation;
-import convalida.annotations.ConfirmPasswordValidation;
-import convalida.annotations.CpfValidation;
-import convalida.annotations.CreditCardValidation;
-import convalida.annotations.EmailValidation;
-import convalida.annotations.LengthValidation;
-import convalida.annotations.NumberLimitValidation;
-import convalida.annotations.OnValidationError;
-import convalida.annotations.OnValidationSuccess;
-import convalida.annotations.OnlyNumberValidation;
-import convalida.annotations.PasswordValidation;
-import convalida.annotations.PatternValidation;
-import convalida.annotations.RequiredValidation;
-import convalida.annotations.ValidateOnClick;
+import convalida.annotations.*;
+import convalida.annotations.Between;
 import convalida.compiler.internal.Id;
 import convalida.compiler.internal.QualifiedId;
 import convalida.compiler.internal.ValidationClass;
@@ -131,19 +117,19 @@ public class ConvalidaProcessor extends AbstractProcessor {
     private Set<Class<? extends Annotation>> getSupportedAnnotations() {
         Set<Class<? extends Annotation>> annotations = new LinkedHashSet<>();
 
-        annotations.add(RequiredValidation.class);
-        annotations.add(EmailValidation.class);
-        annotations.add(ConfirmEmailValidation.class);
-        annotations.add(PatternValidation.class);
-        annotations.add(LengthValidation.class);
-        annotations.add(OnlyNumberValidation.class);
-        annotations.add(PasswordValidation.class);
-        annotations.add(ConfirmPasswordValidation.class);
-        annotations.add(CpfValidation.class);
-        annotations.add(BetweenValidation.Start.class);
-        annotations.add(BetweenValidation.End.class);
-        annotations.add(CreditCardValidation.class);
-        annotations.add(NumberLimitValidation.class);
+        annotations.add(Required.class);
+        annotations.add(Email.class);
+        annotations.add(ConfirmEmail.class);
+        annotations.add(Pattern.class);
+        annotations.add(Length.class);
+        annotations.add(OnlyNumber.class);
+        annotations.add(Password.class);
+        annotations.add(ConfirmPassword.class);
+        annotations.add(Cpf.class);
+        annotations.add(Between.Start.class);
+        annotations.add(Between.End.class);
+        annotations.add(CreditCard.class);
+        annotations.add(NumberLimit.class);
         annotations.add(ValidateOnClick.class);
         annotations.add(ClearValidationsOnClick.class);
         annotations.add(OnValidationSuccess.class);
@@ -181,123 +167,123 @@ public class ConvalidaProcessor extends AbstractProcessor {
 
         scanForRClasses(env);
 
-        // Process each @RequiredValidation element
-        for (Element element : env.getElementsAnnotatedWith(RequiredValidation.class)) {
+        // Process each @Required element
+        for (Element element : env.getElementsAnnotatedWith(Required.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
             try {
                 parseRequiredValidation(element, parents, validationFields);
             } catch (Exception e) {
-                logParsingError(element, RequiredValidation.class, e);
+                logParsingError(element, Required.class, e);
             }
         }
 
-        // Process each @EmailValidation element
-        for (Element element : env.getElementsAnnotatedWith(EmailValidation.class)) {
+        // Process each @Email element
+        for (Element element : env.getElementsAnnotatedWith(Email.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
             try {
                 parseEmailValidation(element, parents, validationFields);
             } catch (Exception e) {
-                logParsingError(element, EmailValidation.class, e);
+                logParsingError(element, Email.class, e);
             }
         }
 
-        // Process each @ConfirmEmailValidation element
-        for (Element element : env.getElementsAnnotatedWith(ConfirmEmailValidation.class)) {
+        // Process each @ConfirmEmail element
+        for (Element element : env.getElementsAnnotatedWith(ConfirmEmail.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
             try {
                 parseConfirmEmailValidation(element, parents, validationFields);
             } catch (Exception e) {
-                logParsingError(element, ConfirmEmailValidation.class, e);
+                logParsingError(element, ConfirmEmail.class, e);
             }
         }
 
-        // Process each @PatternValidation element.
-        for (Element element : env.getElementsAnnotatedWith(PatternValidation.class)) {
+        // Process each @Pattern element.
+        for (Element element : env.getElementsAnnotatedWith(Pattern.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
             try {
                 parsePatternValidation(element, parents, validationFields);
             } catch (Exception e) {
-                logParsingError(element, PatternValidation.class, e);
+                logParsingError(element, Pattern.class, e);
             }
         }
 
-        // Process each @LengthValidation element.
-        for (Element element : env.getElementsAnnotatedWith(LengthValidation.class)) {
+        // Process each @Length element.
+        for (Element element : env.getElementsAnnotatedWith(Length.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
             try {
                 parseLengthValidation(element, parents, validationFields);
             } catch (Exception e) {
-                logParsingError(element, LengthValidation.class, e);
+                logParsingError(element, Length.class, e);
             }
         }
 
-        // Process each @OnlyNumberValidation element.
-        for (Element element : env.getElementsAnnotatedWith(OnlyNumberValidation.class)) {
+        // Process each @OnlyNumber element.
+        for (Element element : env.getElementsAnnotatedWith(OnlyNumber.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
             try {
                 parseOnlyNumberValidation(element, parents, validationFields);
             } catch (Exception e) {
-                logParsingError(element, OnlyNumberValidation.class, e);
+                logParsingError(element, OnlyNumber.class, e);
             }
         }
 
-        // Process each @PasswordValidation element.
-        for (Element element : env.getElementsAnnotatedWith(PasswordValidation.class)) {
+        // Process each @Password element.
+        for (Element element : env.getElementsAnnotatedWith(Password.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
             try {
                 parsePasswordValidation(element, parents, validationFields);
             } catch (Exception e) {
-                logParsingError(element, PasswordValidation.class, e);
+                logParsingError(element, Password.class, e);
             }
         }
 
-        // Process each @ConfirmPasswordValidation element.
-        for (Element element : env.getElementsAnnotatedWith(ConfirmPasswordValidation.class)) {
+        // Process each @ConfirmPassword element.
+        for (Element element : env.getElementsAnnotatedWith(ConfirmPassword.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
             try {
                 parseConfirmPasswordValidation(element, parents, validationFields);
             } catch (Exception e) {
-                logParsingError(element, ConfirmPasswordValidation.class, e);
+                logParsingError(element, ConfirmPassword.class, e);
             }
         }
 
-        // Process each @CpfValidation element
-        for (Element element : env.getElementsAnnotatedWith(CpfValidation.class)) {
+        // Process each @Cpf element
+        for (Element element : env.getElementsAnnotatedWith(Cpf.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
             try {
                 parseCpfValidation(element, parents, validationFields);
             } catch (Exception e) {
-                logParsingError(element, CpfValidation.class, e);
+                logParsingError(element, Cpf.class, e);
             }
         }
 
-        // Process each @BetweenValidation element
-        for (Element element : env.getElementsAnnotatedWith(BetweenValidation.Start.class)) {
+        // Process each @Between element
+        for (Element element : env.getElementsAnnotatedWith(Between.Start.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
             try {
                 parseBetweenValidation(element, parents, validationFields);
             } catch (Exception e) {
-                logParsingError(element, BetweenValidation.Start.class, e);
+                logParsingError(element, Between.Start.class, e);
             }
         }
 
-        // Process each @CreditCardValidation element
-        for (Element element : env.getElementsAnnotatedWith(CreditCardValidation.class)) {
+        // Process each @CreditCard element
+        for (Element element : env.getElementsAnnotatedWith(CreditCard.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
             try {
                 parseCreditCardValidation(element, parents, validationFields);
             } catch (Exception e) {
-                logParsingError(element, CreditCardValidation.class, e);
+                logParsingError(element, CreditCard.class, e);
             }
         }
 
-        // Process each @NumberLimitValidation element
-        for (Element element : env.getElementsAnnotatedWith(NumberLimitValidation.class)) {
+        // Process each @NumberLimit element
+        for (Element element : env.getElementsAnnotatedWith(NumberLimit.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
             try {
                 parseNumberLimitValidation(element, parents, validationFields);
             } catch (Exception e) {
-                logParsingError(element, NumberLimitValidation.class, e);
+                logParsingError(element, NumberLimit.class, e);
             }
         }
 
@@ -476,21 +462,21 @@ public class ConvalidaProcessor extends AbstractProcessor {
             List<ValidationField> validationFields
     ) {
         boolean hasError =
-                isInvalid(RequiredValidation.class, element) ||
-                isInaccessible(RequiredValidation.class, element);
+                isInvalid(Required.class, element) ||
+                isInaccessible(Required.class, element);
 
         if (hasError) {
             return;
         }
 
-        int errorMessageResourceId = element.getAnnotation(RequiredValidation.class).errorMessage();
-        boolean autoDismiss = element.getAnnotation(RequiredValidation.class).autoDismiss();
+        int errorMessageResourceId = element.getAnnotation(Required.class).errorMessage();
+        boolean autoDismiss = element.getAnnotation(Required.class).autoDismiss();
         QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
         parents.add(element.getEnclosingElement());
         validationFields.add(new ValidationField(
                 element,
-                RequiredValidation.class,
+                Required.class,
                 getId(qualifiedId),
                 autoDismiss
         ));
@@ -502,21 +488,21 @@ public class ConvalidaProcessor extends AbstractProcessor {
             List<ValidationField> validationFields
     ) {
         boolean hasError =
-                isInvalid(EmailValidation.class, element) ||
-                isInaccessible(EmailValidation.class, element);
+                isInvalid(Email.class, element) ||
+                isInaccessible(Email.class, element);
 
         if (hasError) {
             return;
         }
 
-        int errorMessageResourceId = element.getAnnotation(EmailValidation.class).errorMessage();
-        boolean autoDismiss = element.getAnnotation(EmailValidation.class).autoDismiss();
+        int errorMessageResourceId = element.getAnnotation(Email.class).errorMessage();
+        boolean autoDismiss = element.getAnnotation(Email.class).autoDismiss();
         QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
         parents.add(element.getEnclosingElement());
         validationFields.add(new ValidationField(
                 element,
-                EmailValidation.class,
+                Email.class,
                 getId(qualifiedId),
                 autoDismiss
         ));
@@ -527,20 +513,20 @@ public class ConvalidaProcessor extends AbstractProcessor {
             Set<Element> parents,
             List<ValidationField> validationFields
     ) {
-        boolean hasError = isInvalid(ConfirmEmailValidation.class, element) ||
-                isInaccessible(ConfirmEmailValidation.class, element) ||
-                confirmValidationElementsHasError(EmailValidation.class, ConfirmEmailValidation.class, element);
+        boolean hasError = isInvalid(ConfirmEmail.class, element) ||
+                isInaccessible(ConfirmEmail.class, element) ||
+                confirmValidationElementsHasError(Email.class, ConfirmEmail.class, element);
 
         if (hasError) return;
 
-        int errorMessageResourceId = element.getAnnotation(ConfirmEmailValidation.class).errorMessage();
-        boolean autoDismiss = element.getAnnotation(ConfirmEmailValidation.class).autoDismiss();
+        int errorMessageResourceId = element.getAnnotation(ConfirmEmail.class).errorMessage();
+        boolean autoDismiss = element.getAnnotation(ConfirmEmail.class).autoDismiss();
         QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
         parents.add(element.getEnclosingElement());
         validationFields.add(new ValidationField(
                 element,
-                ConfirmEmailValidation.class,
+                ConfirmEmail.class,
                 getId(qualifiedId),
                 autoDismiss
         ));
@@ -552,21 +538,21 @@ public class ConvalidaProcessor extends AbstractProcessor {
             List<ValidationField> validationFields
     ) {
         boolean hasError =
-                isInvalid(PatternValidation.class, element) ||
-                isInaccessible(PatternValidation.class, element);
+                isInvalid(Pattern.class, element) ||
+                isInaccessible(Pattern.class, element);
 
         if (hasError) {
             return;
         }
 
-        int errorMessageResourceId = element.getAnnotation(PatternValidation.class).errorMessage();
-        boolean autoDismiss = element.getAnnotation(PatternValidation.class).autoDismiss();
+        int errorMessageResourceId = element.getAnnotation(Pattern.class).errorMessage();
+        boolean autoDismiss = element.getAnnotation(Pattern.class).autoDismiss();
         QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
         parents.add(element.getEnclosingElement());
         validationFields.add(new ValidationField(
                 element,
-                PatternValidation.class,
+                Pattern.class,
                 getId(qualifiedId),
                 autoDismiss
         ));
@@ -577,8 +563,8 @@ public class ConvalidaProcessor extends AbstractProcessor {
             Set<Element> parents,
             List<ValidationField> validationFields
     ) {
-        int minLength = element.getAnnotation(LengthValidation.class).min();
-        int maxLength = element.getAnnotation(LengthValidation.class).max();
+        int minLength = element.getAnnotation(Length.class).min();
+        int maxLength = element.getAnnotation(Length.class).max();
 
         if (minLength == 0 && maxLength == 0) {
             error(element, "The min length and max length must be greater than zero.");
@@ -589,25 +575,25 @@ public class ConvalidaProcessor extends AbstractProcessor {
         }
 
         try {
-            boolean hasError = isInvalid(LengthValidation.class, element) || isInaccessible(LengthValidation.class, element);
+            boolean hasError = isInvalid(Length.class, element) || isInaccessible(Length.class, element);
 
             if (hasError) {
                 return;
             }
 
-            int errorMessageResourceId = element.getAnnotation(LengthValidation.class).errorMessage();
-            boolean autoDismiss = element.getAnnotation(LengthValidation.class).autoDismiss();
+            int errorMessageResourceId = element.getAnnotation(Length.class).errorMessage();
+            boolean autoDismiss = element.getAnnotation(Length.class).autoDismiss();
             QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
             parents.add(element.getEnclosingElement());
             validationFields.add(new ValidationField(
                     element,
-                    LengthValidation.class,
+                    Length.class,
                     getId(qualifiedId),
                     autoDismiss
             ));
         } catch (Exception e) {
-            logParsingError(element, LengthValidation.class, e);
+            logParsingError(element, Length.class, e);
         }
     }
 
@@ -617,21 +603,21 @@ public class ConvalidaProcessor extends AbstractProcessor {
             List<ValidationField> validationFields
     ) {
         boolean hasError =
-                isInvalid(OnlyNumberValidation.class, element) ||
-                isInaccessible(OnlyNumberValidation.class, element);
+                isInvalid(OnlyNumber.class, element) ||
+                isInaccessible(OnlyNumber.class, element);
 
         if (hasError) {
             return;
         }
 
-        int errorMessageResourceId = element.getAnnotation(OnlyNumberValidation.class).errorMessage();
-        boolean autoDismiss = element.getAnnotation(OnlyNumberValidation.class).autoDismiss();
+        int errorMessageResourceId = element.getAnnotation(OnlyNumber.class).errorMessage();
+        boolean autoDismiss = element.getAnnotation(OnlyNumber.class).autoDismiss();
         QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
         parents.add(element.getEnclosingElement());
         validationFields.add(new ValidationField(
                 element,
-                OnlyNumberValidation.class,
+                OnlyNumber.class,
                 getId(qualifiedId),
                 autoDismiss
         ));
@@ -643,8 +629,8 @@ public class ConvalidaProcessor extends AbstractProcessor {
             List<ValidationField> validationFields
     ) {
         boolean hasError =
-                isInvalid(PasswordValidation.class, element) ||
-                isInaccessible(PasswordValidation.class, element);
+                isInvalid(Password.class, element) ||
+                isInaccessible(Password.class, element);
 
         if (hasError) {
             return;
@@ -654,7 +640,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
         int elementsAnnotatedWithPasswordValidation = 0;
 
         for (Element elementOfParent : elementsOfParent) {
-            if (elementOfParent.getAnnotation(PasswordValidation.class) != null) {
+            if (elementOfParent.getAnnotation(Password.class) != null) {
                 elementsAnnotatedWithPasswordValidation++;
             }
         }
@@ -663,19 +649,19 @@ public class ConvalidaProcessor extends AbstractProcessor {
             TypeElement enclosingElement = (TypeElement) element.getEnclosingElement();
             error(
                     element.getEnclosingElement(),
-                    "%s must have only one element annotated with @PasswordValidation.",
+                    "%s must have only one element annotated with @Password.",
                     enclosingElement.getQualifiedName()
             );
         }
 
-        int errorMessageResourceId = element.getAnnotation(PasswordValidation.class).errorMessage();
-        boolean autoDismiss = element.getAnnotation(PasswordValidation.class).autoDismiss();
+        int errorMessageResourceId = element.getAnnotation(Password.class).errorMessage();
+        boolean autoDismiss = element.getAnnotation(Password.class).autoDismiss();
         QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
         parents.add(element.getEnclosingElement());
         validationFields.add(new ValidationField(
                 element,
-                PasswordValidation.class,
+                Password.class,
                 getId(qualifiedId),
                 autoDismiss
         ));
@@ -686,20 +672,20 @@ public class ConvalidaProcessor extends AbstractProcessor {
             Set<Element> parents,
             List<ValidationField> validationFields
     ) {
-        boolean hasError = isInvalid(ConfirmPasswordValidation.class, element) ||
-                isInaccessible(ConfirmPasswordValidation.class, element) ||
-                confirmValidationElementsHasError(PasswordValidation.class, ConfirmPasswordValidation.class, element);
+        boolean hasError = isInvalid(ConfirmPassword.class, element) ||
+                isInaccessible(ConfirmPassword.class, element) ||
+                confirmValidationElementsHasError(Password.class, ConfirmPassword.class, element);
 
         if (hasError) return;
 
-        int errorMessageResourceId = element.getAnnotation(ConfirmPasswordValidation.class).errorMessage();
-        boolean autoDismiss = element.getAnnotation(ConfirmPasswordValidation.class).autoDismiss();
+        int errorMessageResourceId = element.getAnnotation(ConfirmPassword.class).errorMessage();
+        boolean autoDismiss = element.getAnnotation(ConfirmPassword.class).autoDismiss();
         QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
         parents.add(element.getEnclosingElement());
         validationFields.add(new ValidationField(
                 element,
-                ConfirmPasswordValidation.class,
+                ConfirmPassword.class,
                 getId(qualifiedId),
                 autoDismiss
         ));
@@ -711,21 +697,21 @@ public class ConvalidaProcessor extends AbstractProcessor {
             List<ValidationField> validationFields
     ) {
         boolean hasError =
-                isInvalid(CpfValidation.class, element) ||
-                        isInaccessible(CpfValidation.class, element);
+                isInvalid(Cpf.class, element) ||
+                        isInaccessible(Cpf.class, element);
 
         if (hasError) {
             return;
         }
 
-        int errorMessageResourceId = element.getAnnotation(CpfValidation.class).errorMessage();
-        boolean autoDismiss = element.getAnnotation(CpfValidation.class).autoDismiss();
+        int errorMessageResourceId = element.getAnnotation(Cpf.class).errorMessage();
+        boolean autoDismiss = element.getAnnotation(Cpf.class).autoDismiss();
         QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
         parents.add(element.getEnclosingElement());
         validationFields.add(new ValidationField(
                 element,
-                CpfValidation.class,
+                Cpf.class,
                 getId(qualifiedId),
                 autoDismiss
         ));
@@ -738,11 +724,11 @@ public class ConvalidaProcessor extends AbstractProcessor {
             List<ValidationField> validationFields
     ) {
         boolean hasError = (
-                    isInvalid(BetweenValidation.Start.class, element) ||
-                    isInaccessible(BetweenValidation.Start.class, element)
+                    isInvalid(Between.Start.class, element) ||
+                    isInaccessible(Between.Start.class, element)
                 ) || (
-                    isInvalid(BetweenValidation.End.class, element) ||
-                    isInaccessible(BetweenValidation.End.class, element)
+                    isInvalid(Between.End.class, element) ||
+                    isInaccessible(Between.End.class, element)
                 );
 
         if (hasError) {
@@ -750,12 +736,12 @@ public class ConvalidaProcessor extends AbstractProcessor {
         }
 
         List<? extends Element> elementsOfParent = element.getEnclosingElement().getEnclosedElements();
-        int key = element.getAnnotation(BetweenValidation.Start.class).key();
+        int key = element.getAnnotation(Between.Start.class).key();
         Element endElement = null;
 
         for (Element elementOfParent : elementsOfParent) {
-            if (elementOfParent.getAnnotation(BetweenValidation.End.class) != null
-                    && elementOfParent.getAnnotation(BetweenValidation.End.class).key() == key) {
+            if (elementOfParent.getAnnotation(Between.End.class) != null
+                    && elementOfParent.getAnnotation(Between.End.class).key() == key) {
                 endElement = elementOfParent;
             }
         }
@@ -765,33 +751,33 @@ public class ConvalidaProcessor extends AbstractProcessor {
                     element.getEnclosingElement(),
                     "The class %s has one element annotated with @%s with key %s but it requires an element annotated with @%s and with same key.",
                     element.getEnclosingElement().getSimpleName(),
-                    BetweenValidation.Start.class.getSimpleName(),
+                    Between.Start.class.getSimpleName(),
                     key,
-                    BetweenValidation.End.class.getSimpleName()
+                    Between.End.class.getSimpleName()
             );
             return;
         }
 
-        int startErrorMessage = element.getAnnotation(BetweenValidation.Start.class).errorMessage();
-        boolean startAutoDismiss = element.getAnnotation(BetweenValidation.Start.class).autoDismiss();
+        int startErrorMessage = element.getAnnotation(Between.Start.class).errorMessage();
+        boolean startAutoDismiss = element.getAnnotation(Between.Start.class).autoDismiss();
         QualifiedId startQualifiedId = elementToQualifiedId(element, startErrorMessage);
 
         parents.add(element.getEnclosingElement());
         validationFields.add(new ValidationField(
                 element,
-                BetweenValidation.Start.class,
+                Between.Start.class,
                 getId(startQualifiedId),
                 startAutoDismiss
         ));
 
-        int endErrorMessage = endElement.getAnnotation(BetweenValidation.End.class).errorMessage();
-        boolean endAutoDismiss = endElement.getAnnotation(BetweenValidation.End.class).autoDismiss();
+        int endErrorMessage = endElement.getAnnotation(Between.End.class).errorMessage();
+        boolean endAutoDismiss = endElement.getAnnotation(Between.End.class).autoDismiss();
         QualifiedId endQualifiedId = elementToQualifiedId(endElement, endErrorMessage);
 
         parents.add(endElement.getEnclosingElement());
         validationFields.add(new ValidationField(
                 endElement,
-                BetweenValidation.End.class,
+                Between.End.class,
                 getId(endQualifiedId),
                 endAutoDismiss
         ));
@@ -803,21 +789,21 @@ public class ConvalidaProcessor extends AbstractProcessor {
             List<ValidationField> validationFields
     ) {
         boolean hasError =
-                isInvalid(CreditCardValidation.class, element) ||
-                        isInaccessible(CreditCardValidation.class, element);
+                isInvalid(CreditCard.class, element) ||
+                        isInaccessible(CreditCard.class, element);
 
         if (hasError) {
             return;
         }
 
-        int errorMessageResourceId = element.getAnnotation(CreditCardValidation.class).errorMessage();
-        boolean autoDismiss = element.getAnnotation(CreditCardValidation.class).autoDismiss();
+        int errorMessageResourceId = element.getAnnotation(CreditCard.class).errorMessage();
+        boolean autoDismiss = element.getAnnotation(CreditCard.class).autoDismiss();
         QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
         parents.add(element.getEnclosingElement());
         validationFields.add(new ValidationField(
                 element,
-                CreditCardValidation.class,
+                CreditCard.class,
                 getId(qualifiedId),
                 autoDismiss
         ));
@@ -829,21 +815,21 @@ public class ConvalidaProcessor extends AbstractProcessor {
             List<ValidationField> validationFields
     ) {
         boolean hasError =
-                isInvalid(NumberLimitValidation.class, element) ||
-                        isInaccessible(NumberLimitValidation.class, element);
+                isInvalid(NumberLimit.class, element) ||
+                        isInaccessible(NumberLimit.class, element);
 
         if (hasError) {
             return;
         }
 
-        int errorMessageResourceId = element.getAnnotation(NumberLimitValidation.class).errorMessage();
-        boolean autoDismiss = element.getAnnotation(NumberLimitValidation.class).autoDismiss();
+        int errorMessageResourceId = element.getAnnotation(NumberLimit.class).errorMessage();
+        boolean autoDismiss = element.getAnnotation(NumberLimit.class).autoDismiss();
         QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
         parents.add(element.getEnclosingElement());
         validationFields.add(new ValidationField(
                 element,
-                NumberLimitValidation.class,
+                NumberLimit.class,
                 getId(qualifiedId),
                 autoDismiss
         ));

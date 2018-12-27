@@ -9,14 +9,8 @@ import com.squareup.javapoet.TypeSpec;
 
 import javax.lang.model.element.Element;
 
-import convalida.annotations.CpfValidation;
-import convalida.annotations.CreditCardValidation;
-import convalida.annotations.EmailValidation;
-import convalida.annotations.LengthValidation;
-import convalida.annotations.NumberLimitValidation;
-import convalida.annotations.OnlyNumberValidation;
-import convalida.annotations.PasswordValidation;
-import convalida.annotations.PatternValidation;
+import convalida.annotations.*;
+import convalida.annotations.CreditCard;
 import convalida.compiler.internal.ValidationClass;
 import convalida.compiler.internal.ValidationField;
 
@@ -300,7 +294,7 @@ class JavaFiler {
                         field.name,
                         field.id.code,
                         field.autoDismiss,
-                        field.element.getAnnotation(EmailValidation.class).required()
+                        field.element.getAnnotation(Email.class).required()
                 )
                 .build();
     }
@@ -327,9 +321,9 @@ class JavaFiler {
                         PATTERN_VALIDATOR,
                         field.name,
                         field.id.code,
-                        field.element.getAnnotation(PatternValidation.class).pattern(),
+                        field.element.getAnnotation(Pattern.class).pattern(),
                         field.autoDismiss,
-                        field.element.getAnnotation(PatternValidation.class).required()
+                        field.element.getAnnotation(Pattern.class).required()
                 )
                 .build();
     }
@@ -340,11 +334,11 @@ class JavaFiler {
                         "validatorSet.addValidator(new $T(target.$N, $L, $L, target.getString($L), $L, $L))",
                         LENGTH_VALIDATOR,
                         field.name,
-                        field.element.getAnnotation(LengthValidation.class).min(),
-                        field.element.getAnnotation(LengthValidation.class).max(),
+                        field.element.getAnnotation(Length.class).min(),
+                        field.element.getAnnotation(Length.class).max(),
                         field.id.code,
                         field.autoDismiss,
-                        field.element.getAnnotation(LengthValidation.class).required()
+                        field.element.getAnnotation(Length.class).required()
                 )
                 .build();
     }
@@ -357,7 +351,7 @@ class JavaFiler {
                         field.name,
                         field.id.code,
                         field.autoDismiss,
-                        field.element.getAnnotation(OnlyNumberValidation.class).required()
+                        field.element.getAnnotation(OnlyNumber.class).required()
                 )
                 .build();
     }
@@ -368,8 +362,8 @@ class JavaFiler {
                         "validatorSet.addValidator(new $T(target.$N, $L, $S, target.getString($L), $L))",
                         PASSWORD_VALIDATOR,
                         field.name,
-                        field.element.getAnnotation(PasswordValidation.class).min(),
-                        field.element.getAnnotation(PasswordValidation.class).pattern(),
+                        field.element.getAnnotation(Password.class).min(),
+                        field.element.getAnnotation(Password.class).pattern(),
                         field.id.code,
                         field.autoDismiss
                 )
@@ -399,7 +393,7 @@ class JavaFiler {
                         field.name,
                         field.id.code,
                         field.autoDismiss,
-                        field.element.getAnnotation(CpfValidation.class).required()
+                        field.element.getAnnotation(Cpf.class).required()
                 )
                 .build();
     }
@@ -438,7 +432,7 @@ class JavaFiler {
                         field.name,
                         field.id.code,
                         field.autoDismiss,
-                        field.element.getAnnotation(CreditCardValidation.class).required()
+                        field.element.getAnnotation(CreditCard.class).required()
                 )
                 .build();
     }
@@ -451,9 +445,9 @@ class JavaFiler {
                         field.name,
                         field.id.code,
                         field.autoDismiss,
-                        field.element.getAnnotation(NumberLimitValidation.class).min(),
-                        field.element.getAnnotation(NumberLimitValidation.class).max(),
-                        field.element.getAnnotation(NumberLimitValidation.class).required()
+                        field.element.getAnnotation(NumberLimit.class).min(),
+                        field.element.getAnnotation(NumberLimit.class).max(),
+                        field.element.getAnnotation(NumberLimit.class).required()
                 )
                 .build();
     }

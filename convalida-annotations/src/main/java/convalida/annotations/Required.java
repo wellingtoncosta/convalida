@@ -9,11 +9,11 @@ import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 /**
- * @author Wellington Costa on 07/02/18.
+ * @author Wellington Costa on 05/06/17.
  */
 @Target(FIELD)
 @Retention(SOURCE)
-public @interface ConfirmEmailValidation {
+public @interface Required {
 
     @StringRes int errorMessage();
 

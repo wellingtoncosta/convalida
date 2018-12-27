@@ -11,7 +11,7 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
 /**
  * @author Wellington Costa on 25/04/18.
  */
-public @interface BetweenValidation {
+public @interface Between {
 
     @Target(FIELD)
     @Retention(SOURCE)

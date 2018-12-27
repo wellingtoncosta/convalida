@@ -9,20 +9,18 @@ import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 /**
- * @author wellingtoncosta on 01/06/18
+ * @author Wellington Costa on 05/06/17.
  */
 @Target(FIELD)
 @Retention(SOURCE)
-public @interface NumberLimitValidation {
+public @interface Password {
 
-    String min();
+    int min() default 0;
 
-    String max();
+    String pattern() default "";
 
     @StringRes int errorMessage();
 
     boolean autoDismiss() default true;
-
-    boolean required() default true;
 
 }
