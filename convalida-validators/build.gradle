@@ -1,8 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'jacoco-android'
-apply plugin: 'com.github.dcendents.android-maven'
-
-group = 'com.github.WellingtonCosta'
 
 android {
     compileSdkVersion versions.android.sdk.compile
@@ -15,15 +12,6 @@ android {
     defaultConfig {
         minSdkVersion versions.android.sdk.min
     }
-}
-
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
-
-artifacts {
-    archives sourcesJar
 }
 
 dependencies {
@@ -46,3 +34,5 @@ jacocoAndroidUnitTestReport {
 repositories {
     mavenCentral()
 }
+
+apply from: rootProject.file('gradle/gradle-mvn-push.gradle')

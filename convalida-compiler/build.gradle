@@ -2,22 +2,10 @@ import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.SdkHandler
 import org.gradle.internal.jvm.Jvm
 
-apply plugin: 'java'
-apply plugin: 'maven'
-
-group = 'com.github.WellingtonCosta'
+apply plugin: 'java-library'
 
 sourceCompatibility = versions.java
 targetCompatibility = versions.java
-
-task sourcesJar(type: Jar) {
-    from sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
-
-artifacts {
-    archives sourcesJar
-}
 
 def logger = new LoggerWrapper(project.logger)
 def sdkHandler = new SdkHandler(project, logger)
@@ -35,3 +23,5 @@ dependencies {
 
     compileOnly files(Jvm.current().getToolsJar())
 }
+
+apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
