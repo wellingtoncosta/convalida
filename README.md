@@ -6,11 +6,24 @@
 
 Convalida is a simple, lightweight and powerful field validation library for Android.
 
-## Documentation
+### Documentation
 
 Go to the [website][1] for more information.
 
-## License
+### Download
+
+```groovy
+dependencies {
+  implementation 'io.github.wellingtoncosta:convalida-runtime:3.0.0'
+  annotationProcessor 'io.github.wellingtoncosta:convalida-compiler:3.0.0'
+}
+```
+
+If you are using Kotlin, replace `annotationProcessor` with `kapt`.
+
+Snapshots of the development version are available in [Sonatype's `snapshots` repository][2].
+
+### License
 
     Copyright 2017 Wellington Costa
 
@@ -27,3 +40,4 @@ Go to the [website][1] for more information.
     limitations under the License.
 
 [1]: https://wellingtoncosta.github.io/convalida
+[2]: https://oss.sonatype.org/content/repositories/snapshots/
