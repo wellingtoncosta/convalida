@@ -1,16 +1,12 @@
 package convalida.compiler;
 
+import javax.lang.model.element.*;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.Modifier;
-import javax.lang.model.element.TypeElement;
-
-import static convalida.compiler.Constants.EDIT_TEXT_TYPE;
+import static convalida.compiler.Constants.EDIT_TEXT;
 import static convalida.compiler.Messager.error;
 import static javax.lang.model.element.ElementKind.CLASS;
 import static javax.lang.model.element.ElementKind.FIELD;
@@ -25,7 +21,10 @@ class Preconditions {
     // Can not be instantiated
     private Preconditions() { }
 
-    static boolean methodHasParams(ExecutableElement method, Class<? extends Annotation> annotationClass) {
+    static boolean methodHasParams(
+            ExecutableElement method,
+            Class<? extends Annotation> annotationClass
+    ) {
         boolean hasParams = false;
 
         if (method.getParameters().size() > 0) {
@@ -34,6 +33,38 @@ class Preconditions {
         }
 
         return hasParams;
+    }
+
+    static boolean methodHasNoOneParameterOfType(
+            ExecutableElement method,
+            Class<? extends Annotation> annotationClass,
+            String type
+    ) {
+        boolean hasNoParams = method.getParameters().isEmpty();
+
+        if(hasNoParams) {
+            return false;
+        }
+
+        boolean hasMoreThanOneParam = method.getParameters().size() > 1;
+        boolean firstParamIsNotTypeOf = !isTypeOf(method.getParameters().get(0), type);
+
+        if(hasMoreThanOneParam || firstParamIsNotTypeOf) {
+            error(
+                    method,
+                    "Method annotated with @%s must have one parameter of type %s.",
+                    annotationClass.getSimpleName(),
+                    type
+            );
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private static boolean isTypeOf(VariableElement variable, String type) {
+        return variable.asType().toString().equals(type);
     }
 
     static boolean hasMoreThanOneMethodsAnnotatedWith(
@@ -155,7 +186,7 @@ class Preconditions {
 
         // Verify element type
         // TODO improve this check to allow use subtypes of EditText
-        if (!EDIT_TEXT_TYPE.equals(elementType)) {
+        if (!EDIT_TEXT.toString().equals(elementType)) {
             error(
                     element,
                     "@%s must only be applied in fields of the type TextInputLaytout or EditText. (%s.%s)",

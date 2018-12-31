@@ -6,35 +6,7 @@ import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
 import com.sun.source.util.Trees;
 import com.sun.tools.javac.tree.JCTree;
-
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.Filer;
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.annotation.processing.Processor;
-import javax.annotation.processing.RoundEnvironment;
-import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.lang.model.SourceVersion;
-import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.MirroredTypeException;
-import javax.lang.model.util.Elements;
-import javax.lang.model.util.Types;
-
 import convalida.annotations.*;
-import convalida.annotations.Between;
 import convalida.compiler.internal.Id;
 import convalida.compiler.internal.QualifiedId;
 import convalida.compiler.internal.ValidationClass;
@@ -42,31 +14,20 @@ import convalida.compiler.internal.ValidationField;
 import convalida.compiler.internal.scanners.IdScanner;
 import convalida.compiler.internal.scanners.RClassScanner;
 
-import static convalida.compiler.Constants.BETWEEN_END_ANNOTATION;
-import static convalida.compiler.Constants.BETWEEN_START_ANNOTATION;
-import static convalida.compiler.Constants.CLEAR_VALIDATIONS_ON_CLICK_ANNOTATION;
-import static convalida.compiler.Constants.CONFIRM_EMAIL_VALIDATION;
-import static convalida.compiler.Constants.CONFIRM_PASSWORD_ANNOTATION;
-import static convalida.compiler.Constants.CPF_ANNOTATION;
-import static convalida.compiler.Constants.CREDIT_CARD_ANNOTATION;
-import static convalida.compiler.Constants.EMAIL_ANNOTATION;
-import static convalida.compiler.Constants.LENGTH_ANNOTATION;
-import static convalida.compiler.Constants.NUMBER_LIMIT_ANNOTATION;
-import static convalida.compiler.Constants.ONLY_NUMBER_ANNOTATION;
-import static convalida.compiler.Constants.ON_VALIDATION_ERROR_ANNOTATION;
-import static convalida.compiler.Constants.ON_VALIDATION_SUCCESS_ANNOTATION;
-import static convalida.compiler.Constants.PASSWORD_ANNOTATION;
-import static convalida.compiler.Constants.PATTERN_ANNOTATION;
-import static convalida.compiler.Constants.REQUIRED_ANNOTATION;
-import static convalida.compiler.Constants.VALIDATE_ON_CLICK_ANNOTATION;
+import javax.annotation.processing.*;
+import javax.lang.model.SourceVersion;
+import javax.lang.model.element.*;
+import javax.lang.model.type.MirroredTypeException;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.util.*;
+
+import static convalida.compiler.Constants.*;
 import static convalida.compiler.Messager.error;
 import static convalida.compiler.Messager.logParsingError;
-import static convalida.compiler.Preconditions.confirmValidationElementsHasError;
-import static convalida.compiler.Preconditions.hasMoreThanOneMethodsAnnotatedWith;
-import static convalida.compiler.Preconditions.hasNoMethodAnnotatedWith;
-import static convalida.compiler.Preconditions.isInaccessible;
-import static convalida.compiler.Preconditions.isInvalid;
-import static convalida.compiler.Preconditions.methodHasParams;
+import static convalida.compiler.Preconditions.*;
 
 /**
  * @author Wellington Costa on 13/06/2017.
@@ -358,7 +319,8 @@ public class ConvalidaProcessor extends AbstractProcessor {
     private void processValidationActions(
             Element parent,
             ValidationClass validationClass,
-            List<Element> validationActions) {
+            List<Element> validationActions
+    ) {
         for(Element validationAction : validationActions) {
             if(validationAction.getEnclosingElement().equals(parent)) {
                 if(validationAction.getAnnotation(ValidateOnClick.class) != null) {
@@ -374,7 +336,8 @@ public class ConvalidaProcessor extends AbstractProcessor {
     private void processValidationResults(
             Element parent,
             ValidationClass validationClass,
-            List<Element> validationResults) {
+            List<Element> validationResults
+    ) {
         for(Element validationResult : validationResults) {
             if(validationResult.getEnclosingElement().equals(parent)) {
                 if(validationResult.getAnnotation(OnValidationSuccess.class) != null) {
@@ -382,6 +345,11 @@ public class ConvalidaProcessor extends AbstractProcessor {
                 }
                 if(validationResult.getAnnotation(OnValidationError.class) != null) {
                     validationClass.setOnValidationErrorMethod(validationResult);
+                }
+
+                if(validationClass.getOnValidationSuccessMethod() != null &&
+                        validationClass.getOnValidationErrorMethod() != null) {
+                    break;
                 }
             }
         }
@@ -443,12 +411,14 @@ public class ConvalidaProcessor extends AbstractProcessor {
             List<Element> validationActions
     ) {
         Element parent = element.getEnclosingElement();
-        ExecutableElement executableElement = (ExecutableElement)element;
+        ExecutableElement method = (ExecutableElement)element;
+        Class<OnValidationError> annotation = OnValidationError.class;
+        String validationErrorType = VALIDATION_ERROR.toString();
         boolean hasError =
-                isInaccessible(OnValidationError.class, element) ||
-                methodHasParams(executableElement, OnValidationError.class) ||
-                hasMoreThanOneMethodsAnnotatedWith(parent, OnValidationError.class) ||
-                hasNoMethodAnnotatedWith(parent, OnValidationSuccess.class);
+                isInaccessible(annotation, element) ||
+                methodHasNoOneParameterOfType(method, annotation, validationErrorType) ||
+                hasMoreThanOneMethodsAnnotatedWith(parent, annotation) ||
+                hasNoMethodAnnotatedWith(parent, annotation);
 
         if(hasError) return;
 

@@ -16,6 +16,7 @@ class Constants {
     static final ClassName NON_NULL                     = ClassName.get("androidx.annotation", "NonNull");
     static final ClassName VIEW                         = ClassName.get("android.view", "View");
     static final ClassName VIEWGROUP                    = ClassName.get("android.view", "ViewGroup");
+    static final ClassName EDIT_TEXT                    = ClassName.get("android.widget", "EditText");
     static final ClassName BUTTON                       = ClassName.get("android.widget", "Button");
     static final ClassName VIEW_ONCLICK_LISTENER        = ClassName.get("android.view", "View.OnClickListener");
     static final ClassName VIEW_DATA_BINDING            = ClassName.get("androidx.databinding", "ViewDataBinding");
@@ -24,8 +25,7 @@ class Constants {
     static final ClassName CONVALIDA_DATABINDING_R      = ClassName.get("convalida.databinding", "R");
     static final ClassName ABSTRACT_VALIDATOR           = ClassName.get("convalida.validators", "AbstractValidator");
     static final ClassName VALIDATOR_SET                = ClassName.get("convalida.validators", "ValidatorSet");
-
-    static final String EDIT_TEXT_TYPE                  = "android.widget.EditText";
+    static final ClassName VALIDATION_ERROR             = ClassName.get("convalida.validators.error", "ValidationErrorSet");
 
     static final String REQUIRED_ANNOTATION                         = "convalida.annotations.Required";
     static final String EMAIL_ANNOTATION                            = "convalida.annotations.Email";

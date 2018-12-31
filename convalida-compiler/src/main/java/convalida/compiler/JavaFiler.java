@@ -1,63 +1,15 @@
 package convalida.compiler;
 
-import com.squareup.javapoet.ClassName;
-import com.squareup.javapoet.CodeBlock;
-import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.ParameterSpec;
-import com.squareup.javapoet.TypeSpec;
-
-import javax.lang.model.element.Element;
-
+import com.squareup.javapoet.*;
 import convalida.annotations.*;
-import convalida.annotations.CreditCard;
 import convalida.compiler.internal.ValidationClass;
 import convalida.compiler.internal.ValidationField;
 
-import java.lang.annotation.Annotation;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
 
-import static convalida.compiler.Constants.ABSTRACT_VALIDATOR;
-import static convalida.compiler.Constants.BETWEEN_ANNOTATION;
-import static convalida.compiler.Constants.BETWEEN_END_ANNOTATION;
-import static convalida.compiler.Constants.BETWEEN_VALIDATOR;
-import static convalida.compiler.Constants.BUTTON;
-import static convalida.compiler.Constants.CONFIRM_EMAIL_VALIDATION;
-import static convalida.compiler.Constants.CONFIRM_EMAIL_VALIDATOR;
-import static convalida.compiler.Constants.CONFIRM_PASSWORD_ANNOTATION;
-import static convalida.compiler.Constants.CONFIRM_PASSWORD_VALIDATOR;
-import static convalida.compiler.Constants.CONVALIDA_DATABINDING_R;
-import static convalida.compiler.Constants.CPF_ANNOTATION;
-import static convalida.compiler.Constants.CPF_VALIDATOR;
-import static convalida.compiler.Constants.CREDIT_CARD_ANNOTATION;
-import static convalida.compiler.Constants.CREDIT_CARD_VALIDATOR;
-import static convalida.compiler.Constants.EMAIL_ANNOTATION;
-import static convalida.compiler.Constants.EMAIL_VALIDATOR;
-import static convalida.compiler.Constants.LENGTH_ANNOTATION;
-import static convalida.compiler.Constants.LENGTH_VALIDATOR;
-import static convalida.compiler.Constants.LIST;
-import static convalida.compiler.Constants.NON_NULL;
-import static convalida.compiler.Constants.NUMBER_LIMIT_ANNOTATION;
-import static convalida.compiler.Constants.NUMBER_LIMIT_VALIDATOR;
-import static convalida.compiler.Constants.ONLY_NUMBER_ANNOTATION;
-import static convalida.compiler.Constants.ONLY_NUMBER_VALIDATOR;
-import static convalida.compiler.Constants.OVERRIDE;
-import static convalida.compiler.Constants.PASSWORD_ANNOTATION;
-import static convalida.compiler.Constants.PASSWORD_VALIDATOR;
-import static convalida.compiler.Constants.PATTERN_ANNOTATION;
-import static convalida.compiler.Constants.PATTERN_VALIDATOR;
-import static convalida.compiler.Constants.REQUIRED_ANNOTATION;
-import static convalida.compiler.Constants.REQUIRED_VALIDATOR;
-import static convalida.compiler.Constants.UI_THREAD;
-import static convalida.compiler.Constants.VALIDATOR_SET;
-import static convalida.compiler.Constants.VIEW;
-import static convalida.compiler.Constants.VIEWGROUP;
-import static convalida.compiler.Constants.VIEW_DATA_BINDING;
-import static convalida.compiler.Constants.VIEW_ONCLICK_LISTENER;
-import static convalida.compiler.Constants.VIEW_TAG_UTILS;
-import static javax.lang.model.element.Modifier.FINAL;
-import static javax.lang.model.element.Modifier.PRIVATE;
-import static javax.lang.model.element.Modifier.PUBLIC;
-import static javax.lang.model.element.Modifier.STATIC;
+import static convalida.compiler.Constants.*;
+import static javax.lang.model.element.Modifier.*;
 
 /**
  * @author Wellington Costa on 19/06/2017.
@@ -635,11 +587,19 @@ class JavaFiler {
                 .addCode("}");
 
         if(onValidationErrorMethod != null) {
+            boolean hasOneParam = ((ExecutableElement) onValidationErrorMethod)
+                    .getParameters()
+                    .size() == 1;
+
+            String callMethodCodeBlock = hasOneParam ?
+                    "target.$N(validatorSet.errors);" :
+                    "target.$N();";
+
             method.addCode(" else {")
                     .addCode("\n")
                     .addCode(CodeBlock.builder().indent().build())
                     .addCode(
-                            "target.$N();",
+                            callMethodCodeBlock,
                             validationClass.getOnValidationErrorMethod().getSimpleName()
                     )
                     .addCode("\n")
