@@ -7,7 +7,7 @@ import android.widget.EditText;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -42,7 +42,7 @@ public class ValidatorSetTest extends BaseTest {
     @Test public void addThreeValidators() {
         validatorSet.addValidator(new RequiredValidator(mockEditText, errorMessage, true));
         validatorSet.addValidator(new EmailValidator(mockEditText_2, errorMessage, true, true));
-        validatorSet.addValidator(new LengthValidator(mockEditText_3,0, 5, errorMessage, true, true));
+        validatorSet.addValidator(new LengthValidator(mockEditText_3,errorMessage, 0, 5, true, true));
         assertEquals(validatorSet.getValidatorsCount(), 3);
     }
 
@@ -59,7 +59,7 @@ public class ValidatorSetTest extends BaseTest {
 
         when(mockEditText_3.getVisibility()).thenReturn(View.VISIBLE);
         when(mockEditText_3.getText().toString()).thenReturn("test");
-        assertEquals(validatorSet.isValid(), true);
+        assertTrue(validatorSet.isValid());
     }
 
     @Test public void executeValidationsWithError() {
@@ -76,13 +76,13 @@ public class ValidatorSetTest extends BaseTest {
         when(mockEditText_3.getVisibility()).thenReturn(View.VISIBLE);
         when(mockEditText_3.getText().toString()).thenReturn("");
 
-        assertEquals(validatorSet.isValid(), false);
+        assertFalse(validatorSet.isValid());
     }
 
     @Test public void clearValidations() {
         validatorSet.addValidator(new RequiredValidator(mockEditText, errorMessage, true));
         validatorSet.clearValidators();
-        assertEquals(mockEditText.getError(), null);
+        assertNull(mockEditText.getError());
     }
 
 }

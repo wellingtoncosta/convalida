@@ -2,6 +2,7 @@ package convalida.annotations;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+import java.math.BigInteger;
 
 import androidx.annotation.StringRes;
 
@@ -15,7 +16,9 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
 @Retention(SOURCE)
 public @interface Required {
 
-    @StringRes int errorMessage();
+    @StringRes int errorMessageResId() default -1;
+
+    String errorMessage() default "";
 
     boolean autoDismiss() default true;
 

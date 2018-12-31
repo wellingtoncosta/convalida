@@ -19,7 +19,9 @@ public @interface Between {
 
         int key();
 
-        @StringRes int errorMessage();
+        @StringRes int errorMessageResId() default -1;
+
+        String errorMessage() default "";
 
         boolean autoDismiss() default true;
 
@@ -31,7 +33,9 @@ public @interface Between {
 
         int key();
 
-        @StringRes int errorMessage();
+        @StringRes int errorMessageResId() default -1;
+
+        String errorMessage() default "";
 
         boolean autoDismiss() default true;
 

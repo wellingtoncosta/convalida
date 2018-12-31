@@ -14,6 +14,8 @@ import convalida.annotations.CreditCard;
 import convalida.compiler.internal.ValidationClass;
 import convalida.compiler.internal.ValidationField;
 
+import java.lang.annotation.Annotation;
+
 import static convalida.compiler.Constants.ABSTRACT_VALIDATOR;
 import static convalida.compiler.Constants.BETWEEN_ANNOTATION;
 import static convalida.compiler.Constants.BETWEEN_END_ANNOTATION;
@@ -274,97 +276,158 @@ class JavaFiler {
         return builder.build();
     }
 
+    private static String errorMessage(boolean hasErrorMessageResId) {
+        return (hasErrorMessageResId ? "target.getString($L)" : "$S");
+    }
+
     private static CodeBlock createRequiredValidationCodeBlock(ValidationField field) {
+        Element element = field.element;
+        Class<Required> annotation = Required.class;
+        boolean hasErrorMessageResId = element.getAnnotation(annotation).errorMessageResId() != -1;
+        String errorMessage = element.getAnnotation(annotation).errorMessage();
+        String block = "validatorSet.addValidator(new $T(target.$N, " +
+                errorMessage(hasErrorMessageResId) +
+                ", $L))";
+
         return CodeBlock.builder()
                 .addStatement(
-                        "validatorSet.addValidator(new $T(target.$N, target.getString($L), $L))",
+                        block,
                         REQUIRED_VALIDATOR,
                         field.name,
-                        field.id.code,
+                        hasErrorMessageResId ? field.id.code : errorMessage,
                         field.autoDismiss
                 )
                 .build();
     }
 
     private static CodeBlock createEmailValidationCodeBlock(ValidationField field) {
+        Element element = field.element;
+        Class<Email> annotation = Email.class;
+        boolean hasErrorMessageResId = element.getAnnotation(annotation).errorMessageResId() != -1;
+        String errorMessage = element.getAnnotation(annotation).errorMessage();
+        String block = "validatorSet.addValidator(new $T(target.$N, " +
+                errorMessage(hasErrorMessageResId) +
+                ", $L, $L))";
+
         return CodeBlock.builder()
                 .addStatement(
-                        "validatorSet.addValidator(new $T(target.$N, target.getString($L), $L, $L))",
+                        block,
                         EMAIL_VALIDATOR,
                         field.name,
-                        field.id.code,
+                        hasErrorMessageResId ? field.id.code : errorMessage,
                         field.autoDismiss,
-                        field.element.getAnnotation(Email.class).required()
+                        field.element.getAnnotation(annotation).required()
                 )
                 .build();
     }
 
     private static CodeBlock createConfirmEmailValidationCodeBlock(
             ValidationField emailField,
-            ValidationField confirmEmailField) {
+            ValidationField confirmEmailField
+    ) {
+        Element element = confirmEmailField.element;
+        Class<ConfirmEmail> annotation = ConfirmEmail.class;
+        boolean hasErrorMessageResId = element.getAnnotation(annotation).errorMessageResId() != -1;
+        String errorMessage = element.getAnnotation(annotation).errorMessage();
+        String block = "validatorSet.addValidator(new $T(target.$N, target.$N, " +
+                errorMessage(hasErrorMessageResId) +
+                ", $L))";
+
         return CodeBlock.builder()
                 .addStatement(
-                        "validatorSet.addValidator(new $T(target.$N, target.$N, target.getString($L), $L))",
+                        block,
                         CONFIRM_EMAIL_VALIDATOR,
                         emailField.name,
                         confirmEmailField.name,
-                        confirmEmailField.id.code,
+                        hasErrorMessageResId ? confirmEmailField.id.code : errorMessage,
                         confirmEmailField.autoDismiss
                 )
                 .build();
     }
 
     private static CodeBlock createPatternValidationCodeBlock(ValidationField field) {
+        Element element = field.element;
+        Class<Pattern> annotation = Pattern.class;
+        boolean hasErrorMessageResId = element.getAnnotation(annotation).errorMessageResId() != -1;
+        String errorMessage = element.getAnnotation(annotation).errorMessage();
+        String block = "validatorSet.addValidator(new $T(target.$N, " +
+                errorMessage(hasErrorMessageResId) +
+                ", $S, $L, $L))";
+
         return CodeBlock.builder()
                 .addStatement(
-                        "validatorSet.addValidator(new $T(target.$N, target.getString($L), $S, $L, $L))",
+                        block,
                         PATTERN_VALIDATOR,
                         field.name,
-                        field.id.code,
-                        field.element.getAnnotation(Pattern.class).pattern(),
+                        hasErrorMessageResId ? field.id.code : errorMessage,
+                        field.element.getAnnotation(annotation).pattern(),
                         field.autoDismiss,
-                        field.element.getAnnotation(Pattern.class).required()
+                        field.element.getAnnotation(annotation).required()
                 )
                 .build();
     }
 
     private static CodeBlock createLengthValidationCodeBlock(ValidationField field) {
+        Element element = field.element;
+        Class<Length> annotation = Length.class;
+        boolean hasErrorMessageResId = element.getAnnotation(annotation).errorMessageResId() != -1;
+        String errorMessage = element.getAnnotation(annotation).errorMessage();
+        String block = "validatorSet.addValidator(new $T(target.$N, " +
+                errorMessage(hasErrorMessageResId) +
+                ", $L, $L, $L, $L))";
+
         return CodeBlock.builder()
                 .addStatement(
-                        "validatorSet.addValidator(new $T(target.$N, $L, $L, target.getString($L), $L, $L))",
+                        block,
                         LENGTH_VALIDATOR,
                         field.name,
-                        field.element.getAnnotation(Length.class).min(),
-                        field.element.getAnnotation(Length.class).max(),
-                        field.id.code,
+                        hasErrorMessageResId ? field.id.code : errorMessage,
+                        field.element.getAnnotation(annotation).min(),
+                        field.element.getAnnotation(annotation).max(),
                         field.autoDismiss,
-                        field.element.getAnnotation(Length.class).required()
+                        field.element.getAnnotation(annotation).required()
                 )
                 .build();
     }
 
     private static CodeBlock createOnlyNumberValidationCodeBlock(ValidationField field) {
+        Element element = field.element;
+        Class<OnlyNumber> annotation = OnlyNumber.class;
+        boolean hasErrorMessageResId = element.getAnnotation(annotation).errorMessageResId() != -1;
+        String errorMessage = element.getAnnotation(annotation).errorMessage();
+        String block = "validatorSet.addValidator(new $T(target.$N, " +
+                errorMessage(hasErrorMessageResId) +
+                ", $L, $L))";
+
         return CodeBlock.builder()
                 .addStatement(
-                        "validatorSet.addValidator(new $T(target.$N, target.getString($L), $L, $L))",
+                        block,
                         ONLY_NUMBER_VALIDATOR,
                         field.name,
-                        field.id.code,
+                        hasErrorMessageResId ? field.id.code : errorMessage,
                         field.autoDismiss,
-                        field.element.getAnnotation(OnlyNumber.class).required()
+                        field.element.getAnnotation(annotation).required()
                 )
                 .build();
     }
 
     private static CodeBlock createPasswordValidationCodeBlock(ValidationField field) {
+        Element element = field.element;
+        Class<Password> annotation = Password.class;
+        boolean hasErrorMessageResId = element.getAnnotation(annotation).errorMessageResId() != -1;
+        String errorMessage = element.getAnnotation(annotation).errorMessage();
+        String block = "validatorSet.addValidator(new $T(target.$N, " +
+                errorMessage(hasErrorMessageResId) +
+                ", $L, $S, $L))";
+
         return CodeBlock.builder()
                 .addStatement(
-                        "validatorSet.addValidator(new $T(target.$N, $L, $S, target.getString($L), $L))",
+                        block,
                         PASSWORD_VALIDATOR,
                         field.name,
-                        field.element.getAnnotation(Password.class).min(),
-                        field.element.getAnnotation(Password.class).pattern(),
-                        field.id.code,
+                        hasErrorMessageResId ? field.id.code : errorMessage,
+                        field.element.getAnnotation(annotation).min(),
+                        field.element.getAnnotation(annotation).pattern(),
                         field.autoDismiss
                 )
                 .build();
@@ -372,28 +435,45 @@ class JavaFiler {
 
     private static CodeBlock createConfirmPasswordValidationCodeBlock(
             ValidationField passwordField,
-            ValidationField confirmPasswordField) {
+            ValidationField confirmPasswordField
+    ) {
+        Element element = confirmPasswordField.element;
+        Class<ConfirmPassword> annotation = ConfirmPassword.class;
+        boolean hasErrorMessageResId = element.getAnnotation(annotation).errorMessageResId() != -1;
+        String errorMessage = element.getAnnotation(annotation).errorMessage();
+        String block = "validatorSet.addValidator(new $T(target.$N, target.$N, " +
+                errorMessage(hasErrorMessageResId) +
+                ", $L))";
+
         return CodeBlock.builder()
                 .addStatement(
-                        "validatorSet.addValidator(new $T(target.$N, target.$N, target.getString($L), $L))",
+                        block,
                         CONFIRM_PASSWORD_VALIDATOR,
                         passwordField.name,
                         confirmPasswordField.name,
-                        confirmPasswordField.id.code,
+                        hasErrorMessageResId ? confirmPasswordField.id.code : errorMessage,
                         confirmPasswordField.autoDismiss
                 )
                 .build();
     }
 
     private static CodeBlock createCpfValidationCodeBlock(ValidationField field) {
+        Element element = field.element;
+        Class<Cpf> annotation = Cpf.class;
+        boolean hasErrorMessageResId = element.getAnnotation(annotation).errorMessageResId() != -1;
+        String errorMessage = element.getAnnotation(annotation).errorMessage();
+        String block = "validatorSet.addValidator(new $T(target.$N, " +
+                errorMessage(hasErrorMessageResId) +
+                ", $L, $L))";
+
         return CodeBlock.builder()
                 .addStatement(
-                        "validatorSet.addValidator(new $T(target.$N, target.getString($L), $L, $L))",
+                        block,
                         CPF_VALIDATOR,
                         field.name,
-                        field.id.code,
+                        hasErrorMessageResId ? field.id.code : errorMessage,
                         field.autoDismiss,
-                        field.element.getAnnotation(Cpf.class).required()
+                        field.element.getAnnotation(annotation).required()
                 )
                 .build();
     }
@@ -409,14 +489,30 @@ class JavaFiler {
         }
 
         if(endField != null) {
+            boolean hasStartErrorMessageResId =
+                    startField.element.getAnnotation(Between.Start.class).errorMessageResId() != -1;
+            String startErrorMessage =
+                    startField.element.getAnnotation(Between.Start.class).errorMessage();
+
+            boolean hasEndErrorMessageResId =
+                    endField.element.getAnnotation(Between.End.class).errorMessageResId() != -1;
+            String endErrorMessage =
+                    endField.element.getAnnotation(Between.End.class).errorMessage();
+
+            String block = "validatorSet.addValidator(new $T(target.$N, target.$N, " +
+                    errorMessage(hasStartErrorMessageResId) +
+                    ", " +
+                    errorMessage(hasEndErrorMessageResId) +
+                    ", $L, $L))";
+
             return CodeBlock.builder()
                     .addStatement(
-                            "validatorSet.addValidator(new $T(target.$N, target.$N, target.getString($L), target.getString($L), $L, $L))",
+                            block,
                             BETWEEN_VALIDATOR,
                             startField.name,
                             endField.name,
-                            startField.id.code,
-                            endField.id.code,
+                            hasStartErrorMessageResId ? startField.id.code : startErrorMessage,
+                            hasEndErrorMessageResId ? endField.id.code : endErrorMessage,
                             startField.autoDismiss,
                             endField.autoDismiss
                     )
@@ -425,29 +521,45 @@ class JavaFiler {
     }
 
     private static CodeBlock createCreditCardValidationCodeBlock(ValidationField field) {
+        Element element = field.element;
+        Class<CreditCard> annotation = CreditCard.class;
+        boolean hasErrorMessageResId = element.getAnnotation(annotation).errorMessageResId() != -1;
+        String errorMessage = element.getAnnotation(annotation).errorMessage();
+        String block = "validatorSet.addValidator(new $T(target.$N, " +
+                errorMessage(hasErrorMessageResId) +
+                ", $L, $L))";
+
         return CodeBlock.builder()
                 .addStatement(
-                        "validatorSet.addValidator(new $T(target.$N, target.getString($L), $L, $L))",
+                        block,
                         CREDIT_CARD_VALIDATOR,
                         field.name,
-                        field.id.code,
+                        hasErrorMessageResId ? field.id.code : errorMessage,
                         field.autoDismiss,
-                        field.element.getAnnotation(CreditCard.class).required()
+                        field.element.getAnnotation(annotation).required()
                 )
                 .build();
     }
 
     private static CodeBlock createNumberLimitValidationCodeBlock(ValidationField field) {
+        Element element = field.element;
+        Class<NumberLimit> annotation = NumberLimit.class;
+        boolean hasErrorMessageResId = element.getAnnotation(annotation).errorMessageResId() != -1;
+        String errorMessage = element.getAnnotation(annotation).errorMessage();
+        String block = "validatorSet.addValidator(new $T(target.$N, " +
+                errorMessage(hasErrorMessageResId) +
+                ", $L, $S, $S, $L))";
+
         return CodeBlock.builder()
                 .addStatement(
-                        "validatorSet.addValidator(new $T(target.$N, target.getString($L), $L, $S, $S, $L))",
+                        block,
                         NUMBER_LIMIT_VALIDATOR,
                         field.name,
-                        field.id.code,
+                        hasErrorMessageResId ? field.id.code : errorMessage,
                         field.autoDismiss,
-                        field.element.getAnnotation(NumberLimit.class).min(),
-                        field.element.getAnnotation(NumberLimit.class).max(),
-                        field.element.getAnnotation(NumberLimit.class).required()
+                        field.element.getAnnotation(annotation).min(),
+                        field.element.getAnnotation(annotation).max(),
+                        field.element.getAnnotation(annotation).required()
                 )
                 .build();
     }

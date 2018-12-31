@@ -469,7 +469,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
             return;
         }
 
-        int errorMessageResourceId = element.getAnnotation(Required.class).errorMessage();
+        int errorMessageResourceId = element.getAnnotation(Required.class).errorMessageResId();
         boolean autoDismiss = element.getAnnotation(Required.class).autoDismiss();
         QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
@@ -495,7 +495,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
             return;
         }
 
-        int errorMessageResourceId = element.getAnnotation(Email.class).errorMessage();
+        int errorMessageResourceId = element.getAnnotation(Email.class).errorMessageResId();
         boolean autoDismiss = element.getAnnotation(Email.class).autoDismiss();
         QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
@@ -519,7 +519,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
 
         if (hasError) return;
 
-        int errorMessageResourceId = element.getAnnotation(ConfirmEmail.class).errorMessage();
+        int errorMessageResourceId = element.getAnnotation(ConfirmEmail.class).errorMessageResId();
         boolean autoDismiss = element.getAnnotation(ConfirmEmail.class).autoDismiss();
         QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
@@ -545,7 +545,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
             return;
         }
 
-        int errorMessageResourceId = element.getAnnotation(Pattern.class).errorMessage();
+        int errorMessageResourceId = element.getAnnotation(Pattern.class).errorMessageResId();
         boolean autoDismiss = element.getAnnotation(Pattern.class).autoDismiss();
         QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
@@ -581,7 +581,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
                 return;
             }
 
-            int errorMessageResourceId = element.getAnnotation(Length.class).errorMessage();
+            int errorMessageResourceId = element.getAnnotation(Length.class).errorMessageResId();
             boolean autoDismiss = element.getAnnotation(Length.class).autoDismiss();
             QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
@@ -610,7 +610,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
             return;
         }
 
-        int errorMessageResourceId = element.getAnnotation(OnlyNumber.class).errorMessage();
+        int errorMessageResourceId = element.getAnnotation(OnlyNumber.class).errorMessageResId();
         boolean autoDismiss = element.getAnnotation(OnlyNumber.class).autoDismiss();
         QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
@@ -654,7 +654,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
             );
         }
 
-        int errorMessageResourceId = element.getAnnotation(Password.class).errorMessage();
+        int errorMessageResourceId = element.getAnnotation(Password.class).errorMessageResId();
         boolean autoDismiss = element.getAnnotation(Password.class).autoDismiss();
         QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
@@ -678,7 +678,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
 
         if (hasError) return;
 
-        int errorMessageResourceId = element.getAnnotation(ConfirmPassword.class).errorMessage();
+        int errorMessageResourceId = element.getAnnotation(ConfirmPassword.class).errorMessageResId();
         boolean autoDismiss = element.getAnnotation(ConfirmPassword.class).autoDismiss();
         QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
@@ -704,7 +704,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
             return;
         }
 
-        int errorMessageResourceId = element.getAnnotation(Cpf.class).errorMessage();
+        int errorMessageResourceId = element.getAnnotation(Cpf.class).errorMessageResId();
         boolean autoDismiss = element.getAnnotation(Cpf.class).autoDismiss();
         QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
@@ -758,7 +758,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
             return;
         }
 
-        int startErrorMessage = element.getAnnotation(Between.Start.class).errorMessage();
+        int startErrorMessage = element.getAnnotation(Between.Start.class).errorMessageResId();
         boolean startAutoDismiss = element.getAnnotation(Between.Start.class).autoDismiss();
         QualifiedId startQualifiedId = elementToQualifiedId(element, startErrorMessage);
 
@@ -770,7 +770,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
                 startAutoDismiss
         ));
 
-        int endErrorMessage = endElement.getAnnotation(Between.End.class).errorMessage();
+        int endErrorMessage = endElement.getAnnotation(Between.End.class).errorMessageResId();
         boolean endAutoDismiss = endElement.getAnnotation(Between.End.class).autoDismiss();
         QualifiedId endQualifiedId = elementToQualifiedId(endElement, endErrorMessage);
 
@@ -796,7 +796,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
             return;
         }
 
-        int errorMessageResourceId = element.getAnnotation(CreditCard.class).errorMessage();
+        int errorMessageResourceId = element.getAnnotation(CreditCard.class).errorMessageResId();
         boolean autoDismiss = element.getAnnotation(CreditCard.class).autoDismiss();
         QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
@@ -822,7 +822,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
             return;
         }
 
-        int errorMessageResourceId = element.getAnnotation(NumberLimit.class).errorMessage();
+        int errorMessageResourceId = element.getAnnotation(NumberLimit.class).errorMessageResId();
         boolean autoDismiss = element.getAnnotation(NumberLimit.class).autoDismiss();
         QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 

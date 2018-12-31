@@ -13,9 +13,9 @@ public class PasswordValidator extends AbstractValidator {
 
     public PasswordValidator(
             EditText editText,
+            String errorMessage,
             int min,
             String pattern,
-            String errorMessage,
             boolean autoDismiss) {
         super(editText, errorMessage, autoDismiss);
         this.min = min;

@@ -104,9 +104,9 @@ public class ValidationBindings {
     ) {
         field.setTag(R.id.validation_type, new LengthValidator(
                 field,
+                errorMessage,
                 min,
                 max,
-                errorMessage,
                 autoDismiss != null ? autoDismiss : true,
                 required != null ? required : true
         ));
@@ -146,9 +146,9 @@ public class ValidationBindings {
     ) {
         field.setTag(R.id.validation_type, new PasswordValidator(
                 field,
+                errorMessage,
                 minLength != null ? minLength : 0,
                 pattern != null ? pattern : "",
-                errorMessage,
                 autoDismiss != null ? autoDismiss : true
         ));
     }

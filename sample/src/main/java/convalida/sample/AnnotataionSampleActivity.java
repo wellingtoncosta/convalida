@@ -18,46 +18,46 @@ public class AnnotataionSampleActivity extends AppCompatActivity {
 
     ConstraintLayout constraintLayout;
 
-    @Required(errorMessage = R.string.field_required)
+    @Required(errorMessageResId = R.string.field_required)
     EditText nameField;
 
-    @Length(min = 3, errorMessage = R.string.min_3_characters)
+    @Length(min = 3, errorMessageResId = R.string.min_3_characters)
     EditText nickNameField;
 
-    @OnlyNumber(errorMessage = R.string.only_numbers)
+    @OnlyNumber(errorMessageResId = R.string.only_numbers)
     EditText ageField;
 
-    @Pattern(pattern = PHONE_PATTERN, errorMessage = R.string.invalid_phone)
+    @Pattern(pattern = PHONE_PATTERN, errorMessageResId = R.string.invalid_phone)
     EditText phoneField;
 
-    @Cpf(errorMessage = R.string.cpf_not_valid)
+    @Cpf(errorMessageResId = R.string.cpf_not_valid)
     EditText cpfField;
 
-    @Between.Start(key = 1, errorMessage = R.string.initial_period_not_valid)
+    @Between.Start(key = 1, errorMessageResId = R.string.initial_period_not_valid)
     EditText initialPeriodField;
 
-    @Between.End(key = 1, errorMessage = R.string.final_period_not_valid)
+    @Between.End(key = 1, errorMessageResId = R.string.final_period_not_valid)
     EditText finalPeriodField;
 
-    @Email(errorMessage = R.string.invalid_email)
+    @Email(errorMessageResId = R.string.invalid_email)
     EditText emailField;
 
-    @ConfirmEmail(errorMessage = R.string.emails_not_match)
+    @ConfirmEmail(errorMessageResId = R.string.emails_not_match)
     EditText confirmEmailField;
 
-    @Password(min = 3, pattern = MIXED_CASE_NUMERIC, errorMessage = R.string.invalid_password)
+    @Password(min = 3, pattern = MIXED_CASE_NUMERIC, errorMessageResId = R.string.invalid_password)
     EditText passwordField;
 
-    @ConfirmPassword(errorMessage = R.string.passwords_not_match)
+    @ConfirmPassword(errorMessageResId = R.string.passwords_not_match)
     EditText confirmPasswordField;
 
-    @CreditCard(errorMessage = R.string.invalid_credit_card)
+    @CreditCard(errorMessageResId = R.string.invalid_credit_card)
     EditText creditCardField;
 
     @NumberLimit(
             min = "0",
             max = "100",
-            errorMessage = R.string.invalid_number_limit
+            errorMessageResId = R.string.invalid_number_limit
     )
     EditText numberLimitField;
 

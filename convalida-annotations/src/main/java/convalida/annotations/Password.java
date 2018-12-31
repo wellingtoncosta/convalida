@@ -19,7 +19,9 @@ public @interface Password {
 
     String pattern() default "";
 
-    @StringRes int errorMessage();
+    @StringRes int errorMessageResId() default -1;
+
+    String errorMessage() default "";
 
     boolean autoDismiss() default true;
 

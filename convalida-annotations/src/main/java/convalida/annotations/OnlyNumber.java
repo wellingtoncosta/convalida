@@ -15,7 +15,9 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
 @Retention(SOURCE)
 public @interface OnlyNumber {
 
-    @StringRes int errorMessage();
+    @StringRes int errorMessageResId() default -1;
+
+    String errorMessage() default "";
 
     boolean autoDismiss() default true;
 

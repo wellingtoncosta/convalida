@@ -17,7 +17,9 @@ public @interface Pattern {
 
     String pattern();
 
-    @StringRes int errorMessage();
+    @StringRes int errorMessageResId() default -1;
+
+    String errorMessage() default "";
 
     boolean autoDismiss() default true;
 

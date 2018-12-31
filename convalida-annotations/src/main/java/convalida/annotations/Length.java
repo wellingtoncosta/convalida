@@ -19,7 +19,9 @@ public @interface Length {
 
     int max() default 0;
 
-    @StringRes int errorMessage();
+    @StringRes int errorMessageResId() default -1;
+
+    String errorMessage() default "";
 
     boolean autoDismiss() default true;
 
