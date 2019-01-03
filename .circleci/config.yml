@@ -18,6 +18,10 @@ jobs:
 
     steps:
       - checkout
+      
+      - run:
+         name: Chmod permissions
+         command: sudo chmod +x ./gradlew
 
       - run:
           name: Install Codecov
