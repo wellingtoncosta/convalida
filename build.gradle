@@ -44,7 +44,7 @@ buildscript {
             android: [
                     plugin: [
                             gradle: "com.android.tools.build:gradle:$versions.android.plugin.gradle",
-                            jacoco: "com.dicedmelon.gradle:jacoco-android:$versions.jacoco"
+                            jacoco: "com.dicedmelon.gradle:jacoco-android:$versions.android.plugin.jacoco"
                     ]
             ],
             androidx: [
@@ -88,7 +88,7 @@ buildscript {
 
     dependencies {
         classpath deps.android.plugin.gradle
-        classpath('com.dicedmelon.gradle:jacoco-android:0.1.2') {
+        classpath(deps.android.plugin.jacoco) {
             exclude group: 'org.codehaus.groovy', module: 'groovy-all'
         }
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
@@ -96,24 +96,13 @@ buildscript {
 }
 
 subprojects { project ->
-    project.version = rootProject.version
+    group = GROUP
+    version = VERSION_NAME
 
     repositories {
         google()
         jcenter()
         mavenCentral()
-    }
-
-    buildscript {
-        repositories {
-            google()
-            jcenter()
-            mavenCentral()
-        }
-
-        dependencies {
-            classpath "com.android.tools.build:gradle:$versions.android.plugin.gradle"
-        }
     }
 
 }

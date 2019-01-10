@@ -1,4 +1,5 @@
-# Convalida [![API](https://img.shields.io/badge/API-14%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=14) [![CircleCI Build Status](https://circleci.com/gh/circleci/circleci-docs.svg?style=shield)](https://circleci.com/gh/WellingtonCosta/convalida) [![codecov](https://codecov.io/gh/WellingtonCosta/convalida/branch/master/graph/badge.svg)](https://codecov.io/gh/WellingtonCosta/convalida) [![](https://jitpack.io/v/WellingtonCosta/convalida.svg)](https://jitpack.io/#WellingtonCosta/convalida) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Convalida-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/6289) [![Android Weekly](https://img.shields.io/badge/Android%20Weekly-%23305-brightgreen.svg)](https://androidweekly.net/issues/issue-305)
+# Convalida [![API](https://img.shields.io/badge/API-14%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=14) [![CircleCI Build Status](https://circleci.com/gh/circleci/circleci-docs.svg?style=shield)](https://circleci.com/gh/WellingtonCosta/convalida) [![codecov](https://codecov.io/gh/WellingtonCosta/convalida/branch/master/graph/badge.svg)](https://codecov.io/gh/WellingtonCosta/convalida) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.wellingtoncosta/convalida-runtime/badge.png)](https://maven-badges.herokuapp.com/maven-central/io.github.wellingtoncosta/convalida-runtime)
+ [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Convalida-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/6289) [![Android Weekly](https://img.shields.io/badge/Android%20Weekly-%23305-brightgreen.svg)](https://androidweekly.net/issues/issue-305)
 
 ![Logo](logo.png)
 
@@ -14,8 +15,8 @@ Go to the [website][1] for more information.
 
 ```groovy
 dependencies {
-  implementation 'io.github.wellingtoncosta:convalida-runtime:3.0.0'
-  annotationProcessor 'io.github.wellingtoncosta:convalida-compiler:3.0.0'
+  implementation 'io.github.wellingtoncosta:convalida-runtime:3.0.0-beta01'
+  annotationProcessor 'io.github.wellingtoncosta:convalida-compiler:3.0.0-beta01'
 }
 ```
 
