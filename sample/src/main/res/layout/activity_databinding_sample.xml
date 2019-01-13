@@ -131,7 +131,7 @@
                     android:hint="@string/cpf"
                     android:inputType="text"
                     android:maxLines="1"
-                    app:cpfErrorMessage="@{@string/cpf_not_valid}" />
+                    app:cpfErrorMessage="@{@string/invalid_cpf}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -336,7 +336,7 @@
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:text="@string/validateFields"
+                android:text="@string/clear_validations"
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:layout_marginBottom="@dimen/spacing_large"
                 android:layout_marginLeft="@dimen/spacing_large"
@@ -352,7 +352,7 @@
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:text="@string/clearValidations"
+                android:text="@string/clear_validations"
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:layout_marginBottom="@dimen/spacing_large"
                 android:layout_marginLeft="@dimen/spacing_large"

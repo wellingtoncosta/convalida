@@ -13,16 +13,26 @@ Go to the [website][1] for more information.
 
 ### Download
 
+To use Convalida with annotations or Data Binding support, and compile-time code generation:
+
 ```groovy
 dependencies {
-  implementation 'io.github.wellingtoncosta:convalida-runtime:3.0.0-beta01'
-  annotationProcessor 'io.github.wellingtoncosta:convalida-compiler:3.0.0-beta01'
+  implementation 'io.github.wellingtoncosta:convalida-runtime:3.0.0-beta02'
+  annotationProcessor 'io.github.wellingtoncosta:convalida-compiler:3.0.0-beta02'
 }
 ```
 
-If you are using Kotlin, replace `annotationProcessor` with `kapt`.
+*If you are using Kotlin, replace `annotationProcessor` with `kapt`.*
 
-Snapshots of the development version are available in [Sonatype's `snapshots` repository][2].
+Or if you want to use only the Convalida Kotlin Dsl:
+
+```groovy
+dependencies {
+  implementation 'io.github.wellingtoncosta:convalida-ktx:3.0.0-beta02'
+}
+```
+
+*Snapshots of the development version are available in [Sonatype's `snapshots` repository][2].*
 
 ### License
 

@@ -74,7 +74,7 @@ public class AnnotataionSampleActivityTest {
         onView(withText(R.string.invalid_phone))
                 .check(doesNotExist());
 
-        onView(withText(R.string.cpf_not_valid))
+        onView(withText(R.string.invalid_cpf))
                 .check(doesNotExist());
 
         onView(withText(R.string.initial_period_not_valid))

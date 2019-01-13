@@ -13,8 +13,8 @@
     <string name="number_limit">Number Limit</string>
     <string name="phone">Phone</string>
     <string name="password">Password</string>
-    <string name="validateFields">Validate</string>
-    <string name="clearValidations">Clear</string>
+    <string name="validate_fields">Validate</string>
+    <string name="clear_validations">Clear</string>
 
     <string name="field_required">Field required</string>
     <string name="invalid_credit_card">Invalid credit card number</string>
@@ -26,13 +26,15 @@
     <string name="only_numbers">Only numbers are allowed</string>
     <string name="passwords_not_match">Passwords does not match</string>
     <string name="emails_not_match">Emails does not match</string>
-    <string name="cpf_not_valid">CPF is not valid</string>
+    <string name="invalid_cpf">CPF is not valid</string>
     <string name="initial_period_not_valid">Initial period is not valid</string>
     <string name="final_period_not_valid">Final period cannot greater initial period</string>
 
-    <string name="sample_1">Sample 1</string>
-    <string name="sample_2">Sample 2</string>
+    <string name="annotations_sample">Annotations Sample</string>
+    <string name="databinding_sample">Data Binding Sample</string>
+    <string name="kotlin_dsl_sample">Kotlin Dsl Sample</string>
 
-    <string name="with_annotations">Validations With Annotations</string>
-    <string name="with_databinding">Validations With Databinding</string>
+    <string name="using_annotations">Validations Using Annotations</string>
+    <string name="using_databinding">Validations Using Data Binding</string>
+    <string name="using_kotlin_dsl">Validations Using Kotlin Dsl</string>
 </resources>
