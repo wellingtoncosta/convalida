@@ -35,36 +35,48 @@ fun validationSet(
     }
 }
 
-infix fun Button.validateOnClick(
-        callback: () -> Unit
-) = Actions(validateButton = this, onSuccess = callback)
+infix fun Actions.validateByClickingOn(
+        button: Button
+): Actions {
+    this.validateButton = button
+    return this
+}
 
-infix fun Actions.onError(
+infix fun Actions.whenOnSuccess(
+        callback: () -> Unit
+): Actions {
+    this.onSuccess = callback
+    return this
+}
+
+infix fun Actions.whenOnError(
         callback: () -> Unit
 ): Actions {
     this.onError = callback
     return this
 }
 
-infix fun Actions.onError(
+infix fun Actions.whenOnError(
         callback: (ValidationErrorSet) -> Unit
 ): Actions {
     this.onErrorWithInvalidFields = callback
     return this
 }
 
-infix fun Actions.clearOnClick(
+infix fun Actions.clearValidationsByClickingOn(
         button: Button
 ): Actions {
     this.clearValidationsButton = button
     return this
 }
 
-class Actions(
-        val validateButton: Button,
-        val onSuccess: () -> Unit
-) {
+val actions: Actions
+    get() = Actions()
 
+class Actions {
+
+    lateinit var validateButton: Button
+    lateinit var onSuccess: () -> Unit
     var clearValidationsButton: Button? = null
     var onError: (() -> Unit)? = null
     var onErrorWithInvalidFields: ((ValidationErrorSet) -> Unit)? = null
@@ -88,7 +100,7 @@ fun EditText.isConfirmEmail(
         autoDismiss: Boolean = true
 ) = ConfirmEmailValidator(emailField, this,  errorMessage, autoDismiss)
 
-fun EditText.withPaattern(
+fun EditText.withPattern(
         pattern: String,
         errorMessage: String,
         autoDismiss: Boolean = true,

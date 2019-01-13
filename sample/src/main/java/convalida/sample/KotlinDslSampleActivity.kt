@@ -29,7 +29,7 @@ class KotlinDslSampleActivity : AppCompatActivity() {
                         name_field.isRequired(errorMessage = fieldRequired),
                         nickname_field.withLength(min = 3, errorMessage = min3Characteres),
                         age_field.onlyNumber(errorMessage = onlyNumbers),
-                        phone_field.withPaattern(pattern = PHONE_PATTERN, errorMessage = invalidPhone),
+                        phone_field.withPattern(pattern = PHONE_PATTERN, errorMessage = invalidPhone),
                         cpf_field.isCpf(errorMessage = invalidCpf),
                         initial_period_field.isBetween
                                 .start(errorMessage = invalidInitialPeriod)
@@ -52,10 +52,11 @@ class KotlinDslSampleActivity : AppCompatActivity() {
                                 errorMessage = invalidNumericLimit
                         )
                 ),
-                actions = validate_button
-                        validateOnClick ::onValidationSuccess
-                        onError ::onValidationError
-                        clearOnClick clear_button
+                actions = actions
+                        validateByClickingOn validate_button
+                        clearValidationsByClickingOn clear_button
+                        whenOnSuccess ::onValidationSuccess
+                        whenOnError ::onValidationError
         )
     }
 
