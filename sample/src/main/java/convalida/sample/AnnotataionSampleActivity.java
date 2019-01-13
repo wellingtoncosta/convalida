@@ -30,7 +30,7 @@ public class AnnotataionSampleActivity extends AppCompatActivity {
     @Pattern(pattern = PHONE_PATTERN, errorMessageResId = R.string.invalid_phone)
     EditText phoneField;
 
-    @Cpf(errorMessageResId = R.string.cpf_not_valid)
+    @Cpf(errorMessageResId = R.string.invalid_cpf)
     EditText cpfField;
 
     @Between.Start(key = 1, errorMessageResId = R.string.initial_period_not_valid)
@@ -69,7 +69,7 @@ public class AnnotataionSampleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_annotation_sample);
         bindViews();
-        if(getSupportActionBar() != null) getSupportActionBar().setTitle(R.string.with_annotations);
+        if(getSupportActionBar() != null) getSupportActionBar().setTitle(R.string.using_annotations);
         AnnotataionSampleActivityFieldsValidation.init(this);
     }
 

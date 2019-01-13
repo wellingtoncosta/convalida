@@ -1,6 +1,7 @@
 include ':convalida-annotations'
 include ':convalida-compiler'
 include ':convalida-databinding'
+include ':convalida-ktx'
 include ':convalida-runtime'
 include ':convalida-validators'
 include ':sample'

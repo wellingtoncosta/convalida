@@ -14,15 +14,21 @@ public class MainActivity extends AppCompatActivity {
 
         final Context context = this;
 
-        findViewById(R.id.sample_1).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.annotations_sample).setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 startActivity(new Intent(context, AnnotataionSampleActivity.class));
             }
         });
 
-        findViewById(R.id.sample_2).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.databinding_sample).setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 startActivity(new Intent(context, DatabindingSampleActivity.class));
+            }
+        });
+
+        findViewById(R.id.kotlin_dsl_sample).setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                startActivity(new Intent(context, KotlinDslSampleActivity.class));
             }
         });
     }

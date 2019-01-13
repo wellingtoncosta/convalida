@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'jacoco-android'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion versions.android.sdk.compile
@@ -33,6 +35,7 @@ android {
 }
 
 dependencies {
+    implementation project(':convalida-ktx')
     implementation project(':convalida-runtime')
     annotationProcessor project(':convalida-compiler')
 
@@ -41,6 +44,8 @@ dependencies {
     implementation deps.androidx.core
 
     implementation deps.google.material
+
+    implementation deps.kotlin.stdlib
 
     testImplementation deps.test.junit
 

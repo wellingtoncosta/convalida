@@ -2,10 +2,10 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_annotatin_sample"
+    android:id="@+id/activity_kotlin_dsl_sample"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".AnnotataionSampleActivity">
+    tools:context=".KotlinDslSampleActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint_layout"

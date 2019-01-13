@@ -12,20 +12,28 @@
         android:layout_marginTop="40dp">
 
         <Button
-            android:id="@+id/sample_1"
+            android:id="@+id/annotations_sample"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:layout_width="160dp"
+            android:layout_width="196dp"
             android:layout_height="60dp"
-            android:text="@string/sample_1" />
+            android:text="@string/annotations_sample" />
 
         <Button
-            android:id="@+id/sample_2"
+            android:id="@+id/databinding_sample"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:layout_width="160dp"
+            android:layout_width="196dp"
             android:layout_height="60dp"
-            android:text="@string/sample_2" />
+            android:text="@string/databinding_sample" />
+
+        <Button
+            android:id="@+id/kotlin_dsl_sample"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:layout_width="196dp"
+            android:layout_height="60dp"
+            android:text="@string/kotlin_dsl_sample" />
 
     </LinearLayout>
 
