@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'jacoco-android'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 android {
@@ -37,11 +38,12 @@ android {
 dependencies {
     implementation project(':convalida-ktx')
     implementation project(':convalida-runtime')
-    annotationProcessor project(':convalida-compiler')
+    kapt project(':convalida-compiler')
 
     implementation deps.androidx.appcompat
     implementation deps.androidx.constraintlayout
     implementation deps.androidx.core
+    kapt deps.androidx.databinding.compiler
 
     implementation deps.google.material
 
