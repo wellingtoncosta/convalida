@@ -1,22 +1,27 @@
 package convalida.annotations;
 
-import android.support.annotation.StringRes;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import androidx.annotation.StringRes;
+
 import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.RetentionPolicy.CLASS;
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 /**
- * @author Wellington Costa on 27/06/2017.
+ * @author Wellington Costa on 05/06/17.
  */
 @Target(FIELD)
 @Retention(SOURCE)
-public @interface ConfirmPasswordValidation {
+public @interface Password {
 
-    @StringRes int errorMessage();
+    int min() default 0;
+
+    String pattern() default "";
+
+    @StringRes int errorMessageResId() default -1;
+
+    String errorMessage() default "";
 
     boolean autoDismiss() default true;
 

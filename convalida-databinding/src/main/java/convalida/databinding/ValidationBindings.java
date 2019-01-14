@@ -1,22 +1,10 @@
  package convalida.databinding;
 
- import android.databinding.BindingAdapter;
- import android.support.annotation.NonNull;
  import android.widget.Button;
  import android.widget.EditText;
-
- import convalida.validators.BetweenValidator;
- import convalida.validators.ConfirmEmailValidator;
- import convalida.validators.ConfirmPasswordValidator;
- import convalida.validators.CpfValidator;
- import convalida.validators.CreditCardValidator;
- import convalida.validators.EmailValidator;
- import convalida.validators.LengthValidator;
- import convalida.validators.NumberLimitValidator;
- import convalida.validators.OnlyNumberValidator;
- import convalida.validators.PasswordValidator;
- import convalida.validators.PatternValidator;
- import convalida.validators.RequiredValidator;
+ import androidx.annotation.NonNull;
+ import androidx.databinding.BindingAdapter;
+ import convalida.validators.*;
 
 /**
  * @author WellingtonCosta on 29/03/18.
@@ -24,8 +12,8 @@
 public class ValidationBindings {
 
     @BindingAdapter(value = {
-            "requiredValidationErrorMessage",
-            "requiredValidationAutoDismiss"
+            "requiredErrorMessage",
+            "requiredAutoDismiss"
     }, requireAll = false)
     public static void requiredValidationBindings(
             @NonNull EditText field,
@@ -40,9 +28,9 @@ public class ValidationBindings {
     }
 
     @BindingAdapter(value = {
-            "emailValidationErrorMessage",
-            "emailValidationAutoDismiss",
-            "emailValidationRequired"
+            "emailErrorMessage",
+            "emailAutoDismiss",
+            "emailRequired"
     }, requireAll = false)
     public static void emailValidationBindings(
             @NonNull EditText field,
@@ -59,9 +47,9 @@ public class ValidationBindings {
     }
 
     @BindingAdapter(value = {
-            "confirmEmailValidationEmailField",
-            "confirmEmailValidationErrorMessage",
-            "confirmEmailValidationAutoDismiss"
+            "confirmEmailEmailField",
+            "confirmEmailErrorMessage",
+            "confirmEmailAutoDismiss"
     }, requireAll = false)
     public static void confirmEmailValidationBindings(
             @NonNull EditText confirmEmailField,
@@ -78,10 +66,10 @@ public class ValidationBindings {
     }
 
     @BindingAdapter(value = {
-            "patternValidationErrorMessage",
-            "patternValidationPattern",
-            "patternValidationAutoDismiss",
-            "patternValidationRequired"
+            "patternErrorMessage",
+            "patternPattern",
+            "patternAutoDismiss",
+            "patternRequired"
     }, requireAll = false)
     public static void patternValidationBindings(
             @NonNull EditText field,
@@ -100,11 +88,11 @@ public class ValidationBindings {
     }
 
     @BindingAdapter(value = {
-            "lengthValidationMin",
-            "lengthValidationMax",
-            "lengthValidationErrorMessage",
-            "lengthValidationAutoDismiss",
-            "lengthValidationRequired"
+            "lengthMin",
+            "lengthMax",
+            "lengthErrorMessage",
+            "lengthAutoDismiss",
+            "lengthRequired"
     }, requireAll = false)
     public static void lengthValidationBindings(
             @NonNull EditText field,
@@ -116,18 +104,18 @@ public class ValidationBindings {
     ) {
         field.setTag(R.id.validation_type, new LengthValidator(
                 field,
+                errorMessage,
                 min,
                 max,
-                errorMessage,
                 autoDismiss != null ? autoDismiss : true,
                 required != null ? required : true
         ));
     }
 
     @BindingAdapter(value = {
-            "onlyNumberValidationErrorMessage",
-            "onlyNumberValidationAutoDismiss",
-            "onlyNumberValidationRequired"
+            "onlyNumberErrorMessage",
+            "onlyNumberAutoDismiss",
+            "onlyNumberRequired"
     }, requireAll = false)
     public static void onlyNumberValidationBindings(
             @NonNull EditText field,
@@ -144,10 +132,10 @@ public class ValidationBindings {
     }
 
     @BindingAdapter(value = {
-            "passwordValidationErrorMessage",
-            "passwordValidationMinLength",
-            "passwordValidationPattern",
-            "passwordValidationAutoDismiss"
+            "passwordErrorMessage",
+            "passwordMinLength",
+            "passwordPattern",
+            "passwordAutoDismiss"
     }, requireAll = false)
     public static void passwordValidationBindings(
             @NonNull EditText field,
@@ -158,17 +146,17 @@ public class ValidationBindings {
     ) {
         field.setTag(R.id.validation_type, new PasswordValidator(
                 field,
+                errorMessage,
                 minLength != null ? minLength : 0,
                 pattern != null ? pattern : "",
-                errorMessage,
                 autoDismiss != null ? autoDismiss : true
         ));
     }
 
     @BindingAdapter(value = {
-            "confirmPasswordValidationPasswordField",
-            "confirmPasswordValidationErrorMessage",
-            "confirmPasswordValidationAutoDismiss"
+            "confirmPasswordPasswordField",
+            "confirmPasswordErrorMessage",
+            "confirmPasswordAutoDismiss"
     }, requireAll = false)
     public static void confirmPasswordValidationBindings(
             @NonNull EditText confirmPasswordField,
@@ -185,9 +173,9 @@ public class ValidationBindings {
     }
 
     @BindingAdapter(value = {
-            "cpfValidationErrorMessage",
-            "cpfValidationAutoDismiss",
-            "cpfValidationRequired"
+            "cpfErrorMessage",
+            "cpfAutoDismiss",
+            "cpfRequired"
     }, requireAll = false)
     public static void cpfValidationBindings(
             @NonNull EditText cpfField,
@@ -204,11 +192,11 @@ public class ValidationBindings {
     }
 
     @BindingAdapter(value = {
-            "betweenValidationStartErrorMessage",
-            "betweenValidationStartAutoDismiss",
-            "betweenValidationEndField",
-            "betweenValidationEndErrorMessage",
-            "betweenValidationEndAutoDismiss"
+            "betweenStartErrorMessage",
+            "betweenStartAutoDismiss",
+            "betweenEndField",
+            "betweenEndErrorMessage",
+            "betweenEndAutoDismiss"
     }, requireAll = false)
     public static void betweenValidationBindings(
             @NonNull EditText startField,
@@ -229,9 +217,9 @@ public class ValidationBindings {
     }
 
     @BindingAdapter(value = {
-            "creditCardValidationErrorMessage",
-            "creditCardValidationAutoDismiss",
-            "creditCardValidationRequired"
+            "creditCardErrorMessage",
+            "creditCardAutoDismiss",
+            "creditCardRequired"
     }, requireAll = false)
     public static void creditCardValidationBindings(
             @NonNull EditText field,
@@ -248,11 +236,11 @@ public class ValidationBindings {
     }
 
     @BindingAdapter(value = {
-            "numberLimitValidationErrorMessage",
-            "numberLimitValidationAutoDismiss",
-            "numberLimitValidationMin",
-            "numberLimitValidationMax",
-            "numberLimitValidationRequired"
+            "numberLimitErrorMessage",
+            "numberLimitAutoDismiss",
+            "numberLimitMin",
+            "numberLimitMax",
+            "numberLimitRequired"
     }, requireAll = false)
     public static void numberLimitValidationBindings(
             @NonNull EditText field,

@@ -2,21 +2,10 @@ import com.android.build.gradle.internal.LoggerWrapper
 import com.android.build.gradle.internal.SdkHandler
 import org.gradle.internal.jvm.Jvm
 
-apply plugin: 'java'
-apply plugin: 'maven'
-group = 'com.github.WellingtonCosta'
+apply plugin: 'java-library'
 
-sourceCompatibility = JavaVersion.VERSION_1_7
-targetCompatibility = JavaVersion.VERSION_1_7
-
-task sourcesJar(type: Jar) {
-    from sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
-
-artifacts {
-    archives sourcesJar
-}
+sourceCompatibility = versions.java
+targetCompatibility = versions.java
 
 def logger = new LoggerWrapper(project.logger)
 def sdkHandler = new SdkHandler(project, logger)
@@ -29,7 +18,10 @@ for (File file : sdkHandler.sdkLoader.repositories) {
 dependencies {
     implementation project(':convalida-annotations')
 
-    implementation deps.autoService
+    implementation deps.google.autoservice
     implementation deps.javapoet
+
     compileOnly files(Jvm.current().getToolsJar())
 }
+
+apply plugin: 'com.vanniktech.maven.publish'

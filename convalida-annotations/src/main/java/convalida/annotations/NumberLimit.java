@@ -1,23 +1,30 @@
 package convalida.annotations;
 
-import android.support.annotation.StringRes;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import androidx.annotation.StringRes;
+
 import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.RetentionPolicy.CLASS;
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 /**
- * @author Wellington Costa on 07/02/18.
+ * @author wellingtoncosta on 01/06/18
  */
 @Target(FIELD)
 @Retention(SOURCE)
-public @interface ConfirmEmailValidation {
+public @interface NumberLimit {
 
-    @StringRes int errorMessage();
+    String min();
+
+    String max();
+
+    @StringRes int errorMessageResId() default -1;
+
+    String errorMessage() default "";
 
     boolean autoDismiss() default true;
+
+    boolean required() default true;
 
 }

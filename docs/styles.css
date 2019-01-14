@@ -1,0 +1,45 @@
+body {
+  margin: 0;
+}
+
+/* Disable ugly boxes around images in IE10 */
+a img{
+  border: 0px;
+}
+
+.convalida-logo {
+  padding-top: 72px;
+  background: center no-repeat;
+}
+
+.logo-font {
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  line-height: 1;
+  color: #767777;
+  font-weight: 500;
+}
+
+.convalida-slogan {
+  font-size: 60px;
+  padding-top: 72px;
+}
+
+.convalida-sub-slogan {
+  font-size: 21px;
+  padding-top: 24px;
+}
+
+/**** Mobile layout ****/
+@media (max-width: 900px) {
+  .convalida-slogan {
+    font-size: 26px;
+    margin: 0 16px;
+    padding-top: 24px;
+  }
+
+  .convalida-sub-slogan {
+    font-size: 16px;
+    margin: 0 16px;
+    padding-top: 8px;
+  }
+}

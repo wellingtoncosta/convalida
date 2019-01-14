@@ -1,0 +1,22 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion versions.android.sdk.compile
+
+    compileOptions {
+        sourceCompatibility versions.java
+        targetCompatibility versions.java
+    }
+
+    defaultConfig {
+        minSdkVersion versions.android.sdk.min
+    }
+}
+
+dependencies {
+    implementation project(':convalida-validators')
+    implementation deps.kotlin.stdlib
+}
+
+apply plugin: 'com.vanniktech.maven.publish'

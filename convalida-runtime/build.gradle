@@ -1,0 +1,28 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion versions.android.sdk.compile
+
+    defaultConfig {
+        minSdkVersion versions.android.sdk.min
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath true
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = versions.java
+        targetCompatibility = versions.java
+    }
+}
+
+dependencies {
+    api project(':convalida-annotations')
+    api project(':convalida-validators')
+    api project(':convalida-databinding')
+}
+
+apply plugin: 'com.vanniktech.maven.publish'

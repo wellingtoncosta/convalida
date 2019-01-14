@@ -13,9 +13,9 @@ public class LengthValidator extends AbstractValidator {
 
     public LengthValidator(
             EditText editText,
+            String errorMessage,
             int min,
             int max,
-            String errorMessage,
             boolean autoDismiss,
             boolean required
     ) {
