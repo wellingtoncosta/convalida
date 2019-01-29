@@ -19,6 +19,9 @@ jobs:
     steps:
       - checkout
       
+      - run: yes | sdkmanager --licenses
+      - run: yes | sdkmanager --update || exit 0
+      
       - run:
          name: Chmod permissions
          command: sudo chmod +x ./gradlew
