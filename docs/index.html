@@ -87,7 +87,7 @@
         <div class="page-content convalida-section-body">
           <div class="roboto-font convalida-section-body-text">
             To use Convalida in your project, you need to add the following dependencies in your <b>build.gradle</b>:
-          </div>          
+          </div>
           <div class="convalida-section-body-spacing-top">
             <code class="prettyprint">
                   dependencies { </br>
@@ -97,14 +97,15 @@
               </code>
           </div>
           <div class="roboto-font convalida-section-body-text">
-            These artifacts above contains all you need to use Convalida with Java Annotations or with Android Data Binding.
+            These artifacts above contains all you need to use Convalida with Java Annotations or with Android Data
+            Binding.
           </div>
           <div class="roboto-font convalida-section-body-text">
-            <b>Note:</b> If you're using Kotlin, you need to add <code>kotlin-kapt</code> plugin 
-            and use <code>kapt</code> instead of <code>annotationProcessor</code>.
+            <b>Note:</b> If you're using Kotlin, you need to add <code class="prettyprint">kotlin-kapt</code> plugin
+            and use <code class="prettyprint">kapt</code> instead of <code class="prettyprint">annotationProcessor</code>.
           </div>
           <div class="roboto-font convalida-section-body-text">
-            Since version 3.0.0, we introduced a new feature that allows to use Convalida 
+            Since version 3.0.0, we introduced a new feature that allows to use Convalida
             with a simple, lightweight and with no code generation Kotlin DSL.
           </div>
           <div class="roboto-font convalida-section-body-text">
@@ -119,14 +120,578 @@
               </code>
           </div>
           <div class="roboto-font convalida-section-body-text">
-            <b>Note:</b> If you're using Convalida 3.0.0 or higher, you must have to use 
+            <b>Note:</b> If you're using Convalida 3.0.0 or higher, you must have to use
             AndroidX artifacts and enable Jetifier in your <b>gradle.properties</b>.
           </div>
         </div>
       </section>
       <section class="mdl-layout__tab-panel" id="fixed-tab-api">
         <div class="page-content convalida-section-body">
-          <!-- Your content goes here -->
+          <div class="roboto-font convalida-section-body-title">
+            <b>Required Validation</b>
+          </div>
+          <div class="roboto-font convalida-section-body-text">
+            Required validation is applied when a field must have a non null or non empty value.
+          </div>
+          <div class="convalida-section-body-spacing-top">
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+              <thead>
+                <tr>
+                  <th class="mdl-data-table__cell--non-numeric">Parameter</th>
+                  <th class="mdl-data-table__cell--non-numeric">Type</th>
+                  <th class="mdl-data-table__cell--non-numeric">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">editText</td>
+                  <td class="mdl-data-table__cell--non-numeric">android.widget.EditText</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the field that will be
+                    validated.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">errorMessage</td>
+                  <td class="mdl-data-table__cell--non-numeric">java.lang.String</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the error message that will
+                    be displayed when field value is invalid.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">autoDismiss</td>
+                  <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter means the error message will disappear
+                    automatically when field value is valid.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="roboto-font convalida-section-body-title">
+            <b>Email Validation</b>
+          </div>
+          <div class="roboto-font convalida-section-body-text">
+            Email validation is applied when a field must accept only an email address.
+          </div>
+          <div class="convalida-section-body-spacing-top">
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+              <thead>
+                <tr>
+                  <th class="mdl-data-table__cell--non-numeric">Parameter</th>
+                  <th class="mdl-data-table__cell--non-numeric">Type</th>
+                  <th class="mdl-data-table__cell--non-numeric">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">editText</td>
+                  <td class="mdl-data-table__cell--non-numeric">android.widget.EditText</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the field that will be
+                    validated.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">errorMessage</td>
+                  <td class="mdl-data-table__cell--non-numeric">java.lang.String</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the error message that will
+                    be displayed when field value is invalid.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">autoDismiss</td>
+                  <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter means the error message will disappear
+                    automatically when field value is valid.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">required</td>
+                  <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter means the field can accept an empty
+                    value or not.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="roboto-font convalida-section-body-title">
+            <b>Confirm Email Validation</b>
+          </div>
+          <div class="roboto-font convalida-section-body-text">
+            Confirm email validation is applied when a field will confirm the email address filled in another email
+            field.
+          </div>
+          <div class="convalida-section-body-spacing-top">
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+              <thead>
+                <tr>
+                  <th class="mdl-data-table__cell--non-numeric">Parameter</th>
+                  <th class="mdl-data-table__cell--non-numeric">Type</th>
+                  <th class="mdl-data-table__cell--non-numeric">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">emailEditText</td>
+                  <td class="mdl-data-table__cell--non-numeric">android.widget.EditText</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the email field that have the
+                    original email address.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">confirmEmailEditText</td>
+                  <td class="mdl-data-table__cell--non-numeric">android.widget.EditText</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the field that will confirm
+                    the email address filled in the original email field.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">errorMessage</td>
+                  <td class="mdl-data-table__cell--non-numeric">java.lang.String</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the error message that will
+                    be displayed when field value is invalid.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">autoDismiss</td>
+                  <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter means the error message will disappear
+                    automatically when field value is valid.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="roboto-font convalida-section-body-title">
+            <b>Length Validation</b>
+          </div>
+          <div class="roboto-font convalida-section-body-text">
+            Length validation is applied when a field need to have a minimum and/or maximum length of characters.
+          </div>
+          <div class="convalida-section-body-spacing-top">
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+              <thead>
+                <tr>
+                  <th class="mdl-data-table__cell--non-numeric">Parameter</th>
+                  <th class="mdl-data-table__cell--non-numeric">Type</th>
+                  <th class="mdl-data-table__cell--non-numeric">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">editText</td>
+                  <td class="mdl-data-table__cell--non-numeric">android.widget.EditText</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the field that will be
+                    validated.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">errorMessage</td>
+                  <td class="mdl-data-table__cell--non-numeric">java.lang.String</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the error message that will
+                    be displayed when field value is invalid.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">min</td>
+                  <td class="mdl-data-table__cell--non-numeric">int</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the minimum length of
+                    characters.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">max</td>
+                  <td class="mdl-data-table__cell--non-numeric">int</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the maximum length of
+                    characters.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">autoDismiss</td>
+                  <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter means the error message will disappear
+                    automatically when field value is valid.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">required</td>
+                  <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter means the field can accept an empty
+                    value or not.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="roboto-font convalida-section-body-title">
+            <b>Numeric Limit Validation</b>
+          </div>
+          <div class="roboto-font convalida-section-body-text">
+            Numeric limit validation is applied when a field must have a minimum and/or maximum numeric value.
+          </div>
+          <div class="convalida-section-body-spacing-top">
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+              <thead>
+                <tr>
+                  <th class="mdl-data-table__cell--non-numeric">Parameter</th>
+                  <th class="mdl-data-table__cell--non-numeric">Type</th>
+                  <th class="mdl-data-table__cell--non-numeric">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">editText</td>
+                  <td class="mdl-data-table__cell--non-numeric">android.widget.EditText</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the field that will be
+                    validated.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">errorMessage</td>
+                  <td class="mdl-data-table__cell--non-numeric">java.lang.String</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the error message that will
+                    be displayed when field value is invalid.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">min</td>
+                  <td class="mdl-data-table__cell--non-numeric">int</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the minimum numeric value.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">max</td>
+                  <td class="mdl-data-table__cell--non-numeric">int</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the maximum numeric value.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">autoDismiss</td>
+                  <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter means the error message will disappear
+                    automatically when field value is valid.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">required</td>
+                  <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter means the field can accept an empty
+                    value or not.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="roboto-font convalida-section-body-title">
+            <b>Only Number Validation</b>
+          </div>
+          <div class="roboto-font convalida-section-body-text">
+            Only number validation is applied when a field must accept only numeric values.
+          </div>
+          <div class="convalida-section-body-spacing-top">
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+              <thead>
+                <tr>
+                  <th class="mdl-data-table__cell--non-numeric">Parameter</th>
+                  <th class="mdl-data-table__cell--non-numeric">Type</th>
+                  <th class="mdl-data-table__cell--non-numeric">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">editText</td>
+                  <td class="mdl-data-table__cell--non-numeric">android.widget.EditText</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the field that will be
+                    validated.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">errorMessage</td>
+                  <td class="mdl-data-table__cell--non-numeric">java.lang.String</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the error message that will
+                    be displayed when field value is invalid.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">autoDismiss</td>
+                  <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter means the error message will disappear
+                    automatically when field value is valid.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">required</td>
+                  <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter means the field can accept an empty
+                    value or not.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="roboto-font convalida-section-body-title">
+            <b>Pattern Validation</b>
+          </div>
+          <div class="roboto-font convalida-section-body-text">
+            Pattern validation is applied when a field must accept values based on a regular expression.
+          </div>
+          <div class="convalida-section-body-spacing-top">
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+              <thead>
+                <tr>
+                  <th class="mdl-data-table__cell--non-numeric">Parameter</th>
+                  <th class="mdl-data-table__cell--non-numeric">Type</th>
+                  <th class="mdl-data-table__cell--non-numeric">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">editText</td>
+                  <td class="mdl-data-table__cell--non-numeric">android.widget.EditText</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the field that will be
+                    validated.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">errorMessage</td>
+                  <td class="mdl-data-table__cell--non-numeric">java.lang.String</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the error message that will
+                    be displayed when field value is invalid.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">pattern</td>
+                  <td class="mdl-data-table__cell--non-numeric">java.lang.String</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the regular expression that
+                    will be applied on field value.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">autoDismiss</td>
+                  <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter means the error message will disappear
+                    automatically when field value is valid.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">required</td>
+                  <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter means the field can accept an empty
+                    value or not.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="roboto-font convalida-section-body-title">
+            <b>Password Validation</b>
+          </div>
+          <div class="roboto-font convalida-section-body-text">
+            Password validation is applied to a field that will be filled with an password value and the value can be a
+            minimum length of characters and the value can also satisfy a regular expression.
+          </div>
+          <div class="convalida-section-body-spacing-top">
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+              <thead>
+                <tr>
+                  <th class="mdl-data-table__cell--non-numeric">Parameter</th>
+                  <th class="mdl-data-table__cell--non-numeric">Type</th>
+                  <th class="mdl-data-table__cell--non-numeric">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">editText</td>
+                  <td class="mdl-data-table__cell--non-numeric">android.widget.EditText</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the field that will be
+                    validated.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">errorMessage</td>
+                  <td class="mdl-data-table__cell--non-numeric">java.lang.String</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the error message that will
+                    be displayed when field value is invalid.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">min</td>
+                  <td class="mdl-data-table__cell--non-numeric">int</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the minimum length of
+                    characters.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">pattern</td>
+                  <td class="mdl-data-table__cell--non-numeric">java.lang.String</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the regular expression that
+                    will be applied on field value.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">autoDismiss</td>
+                  <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter means the error message will disappear
+                    automatically when field value is valid.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">required</td>
+                  <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter means the field can accept an empty
+                    value or not.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="roboto-font convalida-section-body-title">
+            <b>Confirm Password Validation</b>
+          </div>
+          <div class="roboto-font convalida-section-body-text">
+            Confirm password validation is applied when a field will confirm the password filled in another password
+            field.
+          </div>
+          <div class="convalida-section-body-spacing-top">
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+              <thead>
+                <tr>
+                  <th class="mdl-data-table__cell--non-numeric">Parameter</th>
+                  <th class="mdl-data-table__cell--non-numeric">Type</th>
+                  <th class="mdl-data-table__cell--non-numeric">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">passwordEditText</td>
+                  <td class="mdl-data-table__cell--non-numeric">android.widget.EditText</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the password field that have
+                    the
+                    original password value.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">confirmPasswordEditText</td>
+                  <td class="mdl-data-table__cell--non-numeric">android.widget.EditText</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the field that will confirm
+                    the password filled in the original password field.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">errorMessage</td>
+                  <td class="mdl-data-table__cell--non-numeric">java.lang.String</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the error message that will
+                    be displayed when field value is invalid.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">autoDismiss</td>
+                  <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter means the error message will disappear
+                    automatically when field value is valid.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="roboto-font convalida-section-body-title">
+            <b>Between Validation</b>
+          </div>
+          <div class="roboto-font convalida-section-body-text">
+            Between validation is applied to a pair of fields where the value of the second field cannot be greater
+            than the value of the first field.
+          </div>
+          <div class="convalida-section-body-spacing-top">
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+              <thead>
+                <tr>
+                  <th class="mdl-data-table__cell--non-numeric">Parameter</th>
+                  <th class="mdl-data-table__cell--non-numeric">Type</th>
+                  <th class="mdl-data-table__cell--non-numeric">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">startEditText</td>
+                  <td class="mdl-data-table__cell--non-numeric">android.widget.EditText</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the first field of the pair</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">endEditText</td>
+                  <td class="mdl-data-table__cell--non-numeric">android.widget.EditText</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the second field of the pair</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">startErrorMessage</td>
+                  <td class="mdl-data-table__cell--non-numeric">java.lang.String</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the error message that will
+                    be displayed when the value of first field is invalid.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">endErrorMessage</td>
+                  <td class="mdl-data-table__cell--non-numeric">java.lang.String</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the error message that will
+                    be displayed when the value of second field is invalid.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">startAutoDismiss</td>
+                  <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter means the error message will disappear
+                    automatically when the first field value is valid.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">endAutoDismiss</td>
+                  <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter means the error message will disappear
+                    automatically when the second field value is valid.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="roboto-font convalida-section-body-title">
+            <b>Credit Card Validation</b>
+          </div>
+          <div class="roboto-font convalida-section-body-text">
+            Credit Card validation is applied to a field that will filled with a credit card number.
+          </div>
+          <div class="convalida-section-body-spacing-top">
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+              <thead>
+                <tr>
+                  <th class="mdl-data-table__cell--non-numeric">Parameter</th>
+                  <th class="mdl-data-table__cell--non-numeric">Type</th>
+                  <th class="mdl-data-table__cell--non-numeric">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">editText</td>
+                  <td class="mdl-data-table__cell--non-numeric">android.widget.EditText</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the field that will be
+                    validated.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">errorMessage</td>
+                  <td class="mdl-data-table__cell--non-numeric">java.lang.String</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the error message that will
+                    be displayed when field value is invalid.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">autoDismiss</td>
+                  <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter means the error message will disappear
+                    automatically when field value is valid.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">required</td>
+                  <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter means the field can accept an empty
+                    value or not.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="roboto-font convalida-section-body-title">
+            <b>Cpf Validation</b>
+          </div>
+          <div class="roboto-font convalida-section-body-text">
+            Cpf validation is applied to a field that will filled with a Brazillian Personal ID (Cadastro de Pessoa Física).
+          </div>
+          <div class="convalida-section-body-spacing-top">
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+              <thead>
+                <tr>
+                  <th class="mdl-data-table__cell--non-numeric">Parameter</th>
+                  <th class="mdl-data-table__cell--non-numeric">Type</th>
+                  <th class="mdl-data-table__cell--non-numeric">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">editText</td>
+                  <td class="mdl-data-table__cell--non-numeric">android.widget.EditText</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the field that will be
+                    validated.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">errorMessage</td>
+                  <td class="mdl-data-table__cell--non-numeric">java.lang.String</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the error message that will
+                    be displayed when field value is invalid.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">autoDismiss</td>
+                  <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter means the error message will disappear
+                    automatically when field value is valid.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">required</td>
+                  <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter means the field can accept an empty
+                    value or not.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
       <section class="mdl-layout__tab-panel" id="fixed-tab-annotations">
