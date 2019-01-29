@@ -11,16 +11,13 @@ jobs:
     working_directory: ~/convalida
 
     docker:
-      - image: circleci/android:api-27-alpha
+      - image: circleci/android:api-28-alpha
 
     environment:
       JVM_OPTS: -Xmx3200m
 
     steps:
       - checkout
-      
-      - run: yes | sdkmanager --licenses
-      - run: yes | sdkmanager --update || exit 0
       
       - run:
          name: Chmod permissions
