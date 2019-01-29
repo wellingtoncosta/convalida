@@ -45,6 +45,12 @@ a img{
   padding-top: 1.5em;
 }
 
+.convalida-section-body-sub-title {
+  font-size: 22px;
+  font-style: bold;
+  padding-top: 1.5em;
+}
+
 .convalida-section-body-text {
   font-size: 18px;
   line-height: 1.5em;

@@ -81,6 +81,183 @@
               <li class="roboto-font convalida-section-body-li">Works with <b>default Android widgets</b></li>
             </ul>
           </div>
+          <div class="roboto-font convalida-section-body-title">
+            <b>How To Use?</b>
+          </div>
+          <div class="roboto-font convalida-section-body-sub-title">
+            <b>With Annotations</b>
+          </div>
+          <div class="roboto-font convalida-section-body-text">
+            <b>Step 1 - </b>Map the validations
+          </div>
+          <div class="convalida-section-body-spacing-top">
+            <code class="prettyprint lang-java">
+              &nbsp;&nbsp;@Required(errorMessageResId = R.string.field_required) </br>    
+              &nbsp;&nbsp;EditText nameField; </br></br>
+              &nbsp;&nbsp;@Email(errorMessageResId = R.string.invalid_email) </br>    
+              &nbsp;&nbsp;EditText emailField; </br></br>
+              &nbsp;&nbsp;@OnlyNumber(errorMessageResId = R.string.only_numbers) </br>    
+              &nbsp;&nbsp;EditText ageField; </br>
+            </code>
+          </div>
+          <div class="roboto-font convalida-section-body-text">
+            <b>Step 2 - </b>Map the actions
+          </div>
+          <div class="convalida-section-body-spacing-top">
+            <code class="prettyprint lang-java">
+              &nbsp;&nbsp;@ValidateOnClick Button validateButton; </br></br>
+              &nbsp;&nbsp;@ClearValidationsOnClick Button clearValidationsButton; </br>
+            </code>
+          </div>
+          <div class="roboto-font convalida-section-body-text">
+            <b>Step 3 - </b>Map the results
+          </div>
+          <div class="convalida-section-body-spacing-top">
+            <code class="prettyprint lang-java">
+              &nbsp;&nbsp;@OnValidationSuccess public void success() { </br>
+              &nbsp;&nbsp;&nbsp;&nbsp; /* All fields are valid */ </br>
+              &nbsp;&nbsp;} </br></br>
+          
+              &nbsp;&nbsp;@OnValidationError public void error() { </br>
+              &nbsp;&nbsp;&nbsp;&nbsp; /* Some field is invalid */ </br>
+              &nbsp;&nbsp;} </br>
+            </code>
+          </div>
+          <div class="roboto-font convalida-section-body-text">
+            <b>Step 4 - </b>Build project and initialize the generated class
+          </div>
+          <div class="convalida-section-body-spacing-top">
+            <code class="prettyprint lang-java">
+              &nbsp;&nbsp;@Override public void onCreate(Bundle savedInstanceState) { </br>
+              &nbsp;&nbsp;&nbsp;&nbsp; super.onCreate(savedInstanceState); </br>
+              &nbsp;&nbsp;&nbsp;&nbsp; setContentView(R.layout.activity_sample); </br>
+              &nbsp;&nbsp;&nbsp;&nbsp; // Same name of Activity or Fragment with suffix FieldsValidation </br>
+              &nbsp;&nbsp;&nbsp;&nbsp; SampleActivityFieldsValidation.init(this); </br>
+              &nbsp;&nbsp;} </br>
+            </code>
+          </div>
+          <div class="roboto-font convalida-section-body-sub-title">
+            <b>With Data Binding</b>
+          </div>
+          <div class="roboto-font convalida-section-body-text">
+            <b>Step 1 - </b>Map the validations
+          </div>
+          <div class="convalida-section-body-spacing-top">
+            <code class="prettyprint lang-xml">
+              &nbsp;&nbsp;&lt;EditText </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;android:id="@+id/name_field" </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;android:layout_width="match_parent" </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;android:layout_height="wrap_content" </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;android:hint="@string/name" </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;app:requiredErrorMessage="@{@string/field_required}" /&gt; </br></br>
+              
+              &nbsp;&nbsp;&lt;EditText </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;android:id="@+id/email_field" </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;android:layout_width="match_parent" </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;android:layout_height="wrap_content" </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;android:hint="@string/email" </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;app:emailErrorMessage="@{@string/invalid_email}" /&gt; </br> </br>
+
+              &nbsp;&nbsp;&lt;EditText </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;android:id="@+id/age_field" </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;android:layout_width="match_parent" </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;android:layout_height="wrap_content" </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;android:hint="@string/age" </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;app:emailErrorMessage="@{@string/only_numbers}" /&gt; </br>
+            </code>
+          </div>
+          <div class="roboto-font convalida-section-body-text">
+            <b>Step 2 - </b>Map the actions
+          </div>
+          <div class="convalida-section-body-spacing-top">
+            <code class="prettyprint lang-xml">
+              &nbsp;&nbsp;&lt;Button </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;android:id="@+id/validate_button" </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;android:layout_width="match_parent" </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;android:layout_height="match_parent" </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;android:text="@string/validate" </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;app:validationAction="@{@id/validate}" /&gt; </br></br>
+
+              &nbsp;&nbsp;&lt;Button </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;android:id="@+id/clear_validations_button" </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;android:layout_width="match_parent" </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;android:layout_height="match_parent" </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;android:text="@string/clear_validations" </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;app:validationAction="@{@id/clear}" /&gt; </br>
+            </code>
+          </div>
+          <div class="roboto-font convalida-section-body-text">
+            <b>Step 3 - </b>Map the results
+          </div>
+          <div class="convalida-section-body-spacing-top">
+            <code class="prettyprint lang-java">
+              &nbsp;&nbsp;@OnValidationSuccess public void success() { </br>
+              &nbsp;&nbsp;&nbsp;&nbsp; /* All fields are valid */ </br>
+              &nbsp;&nbsp;} </br></br>
+          
+              &nbsp;&nbsp;@OnValidationError public void error() { </br>
+              &nbsp;&nbsp;&nbsp;&nbsp; /* Some field is invalid */ </br>
+              &nbsp;&nbsp;} </br>
+            </code>
+          </div>
+          <div class="roboto-font convalida-section-body-text">
+            <b>Step 4 - </b>Build project and initialize the generated class
+          </div>
+          <div class="convalida-section-body-spacing-top">
+            <code class="prettyprint lang-java">
+                &nbsp;&nbsp; private ActivitySampleBinding binding; </br> </br>
+              &nbsp;&nbsp; @Override public void onCreate(Bundle savedInstanceState) { </br>
+              &nbsp;&nbsp;&nbsp;&nbsp; super.onCreate(savedInstanceState); </br>
+              &nbsp;&nbsp;&nbsp;&nbsp; binding = DataBindingUtil.setContentView(this, R.layout.activity_sample); </br>
+              &nbsp;&nbsp;&nbsp;&nbsp; // Same name of Activity or Fragment with suffix FieldsValidation </br>
+              &nbsp;&nbsp;&nbsp;&nbsp; SampleActivityFieldsValidation.init(this, binding); </br>
+              &nbsp;&nbsp;} </br>
+            </code>
+          </div>
+          <div class="roboto-font convalida-section-body-sub-title">
+            <b>With Kotlin Dsl</b>
+          </div>
+          <div class="roboto-font convalida-section-body-text">
+            <b>Step 1 - </b>Map the validations, actions and results
+          </div>
+          <div class="convalida-section-body-spacing-top">
+            <code class="prettyprint lang-kotlin">
+              &nbsp;&nbsp; private val validations by lazy { </br>
+              &nbsp;&nbsp;&nbsp;&nbsp; validationSet( </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; validations = listOf( </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; name_field.isRequired(errorMessage = fieldRequired), </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; email_field.isEmail(errorMessage = invalidEmail), </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; age_field.onlyNumber(errorMessage = onlyNumbers), </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ), </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; actions = actions </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; validateByClickingOn validate_button </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; clearValidationsByClickingOn clear_button </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; whenOnSuccess ::success </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; whenOnError ::error </br>
+              &nbsp;&nbsp;&nbsp;&nbsp; ) </br>
+              &nbsp;&nbsp; } </br> </br>
+
+              &nbsp;&nbsp; fun success() { </br>
+              &nbsp;&nbsp;&nbsp;&nbsp; /* All fields are valid */ </br>
+              &nbsp;&nbsp; } </br> </br>
+
+              &nbsp;&nbsp; fun error() { </br>
+              &nbsp;&nbsp;&nbsp;&nbsp; /* Some field are invalid */ </br>
+              &nbsp;&nbsp; } </br>
+            </code>
+          </div>
+          <div class="roboto-font convalida-section-body-text">
+            <b>Step 2 - </b>Apply validations
+          </div>
+          <div class="convalida-section-body-spacing-top">
+            <code class="prettyprint lang-kotlin">
+              &nbsp;&nbsp; override fun onCreate(savedInstanceState: Bundle?) { </br>
+              &nbsp;&nbsp;&nbsp;&nbsp; super.onCreate(savedInstanceState) </br>
+              &nbsp;&nbsp;&nbsp;&nbsp; setContentView(R.layout.activity_sample) </br>
+              &nbsp;&nbsp;&nbsp;&nbsp; apply { validations } </br>
+              &nbsp;&nbsp; } </br>
+            </code>
+          </div>
         </div>
       </section>
       <section class="mdl-layout__tab-panel" id="fixed-tab-installation">
@@ -528,8 +705,7 @@
                   <td class="mdl-data-table__cell--non-numeric">passwordEditText</td>
                   <td class="mdl-data-table__cell--non-numeric">android.widget.EditText</td>
                   <td class="mdl-data-table__cell--non-numeric">This parameter represents the password field that have
-                    the
-                    original password value.</td>
+                    the original password value.</td>
                 </tr>
                 <tr>
                   <td class="mdl-data-table__cell--non-numeric">confirmPasswordEditText</td>
@@ -653,7 +829,8 @@
             <b>Cpf Validation</b>
           </div>
           <div class="roboto-font convalida-section-body-text">
-            Cpf validation is applied to a field that will filled with a Brazillian Personal ID (Cadastro de Pessoa Física).
+            Cpf validation is applied to a field that will filled with a Brazillian Personal ID (Cadastro de Pessoa
+            Física).
           </div>
           <div class="convalida-section-body-spacing-top">
             <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
@@ -712,7 +889,7 @@
     </main>
   </div>
   <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?lang=kotlin"></script>
 </body>
 
 </html>
