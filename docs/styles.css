@@ -8,29 +8,70 @@ a img{
 }
 
 .convalida-logo {
-  padding-top: 72px;
+  padding-top: 48px;
   background: center no-repeat;
 }
 
-.logo-font {
+.roboto-font {
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
   line-height: 1;
   color: #767777;
-  font-weight: 500;
 }
 
 .convalida-slogan {
   font-size: 60px;
-  padding-top: 72px;
+  padding-top: 1em;
 }
 
 .convalida-sub-slogan {
-  font-size: 21px;
-  padding-top: 24px;
+  font-size: 24px;
+  padding-top: 1em;
+}
+
+.convalida-section-body {
+  width: 60%;
+  margin: 0 auto;
+  padding-top: 2em;
+  padding-bottom: 2em;
+}
+
+.convalida-section-body-spacing-top {
+  padding-top: 2em;
+}
+
+.convalida-section-body-title {
+  font-size: 28px;
+  font-style: bold;
+  padding-top: 1.5em;
+}
+
+.convalida-section-body-sub-title {
+  font-size: 22px;
+  font-style: bold;
+  padding-top: 1.5em;
+}
+
+.convalida-section-body-text {
+  font-size: 18px;
+  line-height: 1.5em;
+  padding-top: 1.5em;
+}
+
+.convalida-section-body-ul {
+  padding-top: 1.5em;
+}
+
+.convalida-section-body-li {
+  font-size: 18px;
+  line-height: 1.5em;
+}
+
+.convalida-section-body-link {
+  color: #009E88;
 }
 
 /**** Mobile layout ****/
-@media (max-width: 900px) {
+/* @media (max-width: 900px) {
   .convalida-slogan {
     font-size: 26px;
     margin: 0 16px;
@@ -42,4 +83,4 @@ a img{
     margin: 0 16px;
     padding-top: 8px;
   }
-}
+} */
