@@ -6,11 +6,10 @@ import convalida.validators.*
 import convalida.validators.error.ValidationErrorSet
 
 /**
- * @author Wellington Costa on 10/01/19
- *
  * Definition of the core dsl structure and its extension functions
  * to apply the all Convalida validation rules.
  *
+ * @author Wellington Costa on 10/01/19
  */
 
 fun validationSet(
@@ -18,6 +17,7 @@ fun validationSet(
         actions: Actions
 ) {
     val validatorSet = ValidatorSet()
+
     validatorSet.validators.addAll(validations)
 
     actions.validateButton.setOnClickListener {
@@ -140,6 +140,18 @@ fun EditText.isCpf(
         autoDismiss: Boolean = true,
         required: Boolean = true
 ) = CpfValidator(this, errorMessage, autoDismiss, required)
+
+fun EditText.isCnpj(
+        errorMessage: String,
+        autoDismiss: Boolean = true,
+        required: Boolean = true
+) = CnpjValidator(this, errorMessage, autoDismiss, required)
+
+fun EditText.isIsbn(
+        errorMessage: String,
+        autoDismiss: Boolean = true,
+        required: Boolean = true
+) = IsbnValidator(this, errorMessage, autoDismiss, required)
 
 fun EditText.isPassword(
         errorMessage: String,

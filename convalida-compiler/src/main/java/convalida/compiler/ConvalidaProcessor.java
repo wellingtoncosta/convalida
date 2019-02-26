@@ -1,12 +1,54 @@
 package convalida.compiler;
 
 import com.google.auto.common.SuperficialValidation;
-import com.google.auto.service.AutoService;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
 import com.sun.source.util.Trees;
 import com.sun.tools.javac.tree.JCTree;
-import convalida.annotations.*;
+
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.annotation.processing.AbstractProcessor;
+import javax.annotation.processing.Filer;
+import javax.annotation.processing.ProcessingEnvironment;
+import javax.annotation.processing.RoundEnvironment;
+import javax.lang.model.SourceVersion;
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.MirroredTypeException;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
+
+import convalida.annotations.Between;
+import convalida.annotations.ClearValidationsOnClick;
+import convalida.annotations.Cnpj;
+import convalida.annotations.ConfirmEmail;
+import convalida.annotations.ConfirmPassword;
+import convalida.annotations.Cpf;
+import convalida.annotations.CreditCard;
+import convalida.annotations.Email;
+import convalida.annotations.Isbn;
+import convalida.annotations.Length;
+import convalida.annotations.NumberLimit;
+import convalida.annotations.OnValidationError;
+import convalida.annotations.OnValidationSuccess;
+import convalida.annotations.OnlyNumber;
+import convalida.annotations.Password;
+import convalida.annotations.Pattern;
+import convalida.annotations.Required;
+import convalida.annotations.ValidateOnClick;
 import convalida.compiler.internal.Id;
 import convalida.compiler.internal.QualifiedId;
 import convalida.compiler.internal.ValidationClass;
@@ -14,44 +56,20 @@ import convalida.compiler.internal.ValidationField;
 import convalida.compiler.internal.scanners.IdScanner;
 import convalida.compiler.internal.scanners.RClassScanner;
 
-import javax.annotation.processing.*;
-import javax.lang.model.SourceVersion;
-import javax.lang.model.element.*;
-import javax.lang.model.type.MirroredTypeException;
-import javax.lang.model.util.Elements;
-import javax.lang.model.util.Types;
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.util.*;
-
-import static convalida.compiler.Constants.*;
+import static convalida.compiler.Constants.VALIDATION_ERROR;
 import static convalida.compiler.Messager.error;
 import static convalida.compiler.Messager.logParsingError;
-import static convalida.compiler.Preconditions.*;
+import static convalida.compiler.Preconditions.confirmValidationElementsHasError;
+import static convalida.compiler.Preconditions.hasMoreThanOneMethodsAnnotatedWith;
+import static convalida.compiler.Preconditions.hasNoMethodAnnotatedWith;
+import static convalida.compiler.Preconditions.isInaccessible;
+import static convalida.compiler.Preconditions.isInvalid;
+import static convalida.compiler.Preconditions.methodHasNoOneParameterOfType;
+import static convalida.compiler.Preconditions.methodHasParams;
 
 /**
  * @author Wellington Costa on 13/06/2017.
  */
-@AutoService(Processor.class)
-@SupportedAnnotationTypes({
-        REQUIRED_ANNOTATION,
-        EMAIL_ANNOTATION,
-        CONFIRM_EMAIL_VALIDATION,
-        PATTERN_ANNOTATION,
-        LENGTH_ANNOTATION,
-        ONLY_NUMBER_ANNOTATION,
-        PASSWORD_ANNOTATION,
-        CONFIRM_PASSWORD_ANNOTATION,
-        CPF_ANNOTATION,
-        BETWEEN_START_ANNOTATION,
-        BETWEEN_END_ANNOTATION,
-        CREDIT_CARD_ANNOTATION,
-        NUMBER_LIMIT_ANNOTATION,
-        VALIDATE_ON_CLICK_ANNOTATION,
-        CLEAR_VALIDATIONS_ON_CLICK_ANNOTATION,
-        ON_VALIDATION_SUCCESS_ANNOTATION,
-        ON_VALIDATION_ERROR_ANNOTATION
-})
 public class ConvalidaProcessor extends AbstractProcessor {
 
     private Elements elementUtils;
@@ -75,32 +93,45 @@ public class ConvalidaProcessor extends AbstractProcessor {
         } catch (IllegalArgumentException ignored) { }
     }
 
-    private Set<Class<? extends Annotation>> getSupportedAnnotations() {
-        Set<Class<? extends Annotation>> annotations = new LinkedHashSet<>();
+    @Override public Set<String> getSupportedAnnotationTypes() {
+        Set<Class<? extends Annotation>> annotations = getSupportedAnnotations();
+        Set<String> names = new LinkedHashSet<>();
 
-        annotations.add(Required.class);
-        annotations.add(Email.class);
-        annotations.add(ConfirmEmail.class);
-        annotations.add(Pattern.class);
-        annotations.add(Length.class);
-        annotations.add(OnlyNumber.class);
-        annotations.add(Password.class);
-        annotations.add(ConfirmPassword.class);
-        annotations.add(Cpf.class);
-        annotations.add(Between.Start.class);
-        annotations.add(Between.End.class);
-        annotations.add(CreditCard.class);
-        annotations.add(NumberLimit.class);
-        annotations.add(ValidateOnClick.class);
-        annotations.add(ClearValidationsOnClick.class);
-        annotations.add(OnValidationSuccess.class);
-        annotations.add(OnValidationError.class);
+        for(Class<? extends Annotation> annotation : annotations) {
+            names.add(annotation.getCanonicalName());
+        }
 
-        return annotations;
+        return names;
     }
 
     @Override public SourceVersion getSupportedSourceVersion() {
         return SourceVersion.latestSupported();
+    }
+
+    private Set<Class<? extends Annotation>> getSupportedAnnotations() {
+        return new LinkedHashSet<>(
+                Arrays.asList(
+                        Required.class,
+                        Email.class,
+                        ConfirmEmail.class,
+                        Pattern.class,
+                        Length.class,
+                        OnlyNumber.class,
+                        Password.class,
+                        ConfirmPassword.class,
+                        Cpf.class,
+                        Cnpj.class,
+                        Isbn.class,
+                        Between.Start.class,
+                        Between.End.class,
+                        CreditCard.class,
+                        NumberLimit.class,
+                        ValidateOnClick.class,
+                        ClearValidationsOnClick.class,
+                        OnValidationSuccess.class,
+                        OnValidationError.class
+                )
+        );
     }
 
     @Override public boolean process(Set<? extends TypeElement> typeElements, RoundEnvironment env) {
@@ -215,6 +246,26 @@ public class ConvalidaProcessor extends AbstractProcessor {
                 parseCpfValidation(element, parents, validationFields);
             } catch (Exception e) {
                 logParsingError(element, Cpf.class, e);
+            }
+        }
+
+        // Process each @Cnpj element
+        for (Element element : env.getElementsAnnotatedWith(Cnpj.class)) {
+            if (!SuperficialValidation.validateElement(element)) continue;
+            try {
+                parseCnpjValidation(element, parents, validationFields);
+            } catch (Exception e) {
+                logParsingError(element, Cnpj.class, e);
+            }
+        }
+
+        // Process each @Isbn element
+        for (Element element : env.getElementsAnnotatedWith(Isbn.class)) {
+            if (!SuperficialValidation.validateElement(element)) continue;
+            try {
+                parseIsbnValidation(element, parents, validationFields);
+            } catch (Exception e) {
+                logParsingError(element, Isbn.class, e);
             }
         }
 
@@ -666,9 +717,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
             Set<Element> parents,
             List<ValidationField> validationFields
     ) {
-        boolean hasError =
-                isInvalid(Cpf.class, element) ||
-                        isInaccessible(Cpf.class, element);
+        boolean hasError = isInvalid(Cpf.class, element) || isInaccessible(Cpf.class, element);
 
         if (hasError) {
             return;
@@ -687,6 +736,53 @@ public class ConvalidaProcessor extends AbstractProcessor {
         ));
     }
 
+    private void parseCnpjValidation(
+            Element element,
+            Set<Element> parents,
+            List<ValidationField> validationFields
+    ) {
+        boolean hasError = isInvalid(Cnpj.class, element) || isInaccessible(Cnpj.class, element);
+
+        if (hasError) {
+            return;
+        }
+
+        int errorMessageResourceId = element.getAnnotation(Cnpj.class).errorMessageResId();
+        boolean autoDismiss = element.getAnnotation(Cnpj.class).autoDismiss();
+        QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
+
+        parents.add(element.getEnclosingElement());
+        validationFields.add(new ValidationField(
+                element,
+                Cnpj.class,
+                getId(qualifiedId),
+                autoDismiss
+        ));
+    }
+
+    private void parseIsbnValidation(
+            Element element,
+            Set<Element> parents,
+            List<ValidationField> validationFields
+    ) {
+        boolean hasError = isInvalid(Isbn.class, element) || isInaccessible(Isbn.class, element);
+
+        if (hasError) {
+            return;
+        }
+
+        int errorMessageResourceId = element.getAnnotation(Isbn.class).errorMessageResId();
+        boolean autoDismiss = element.getAnnotation(Isbn.class).autoDismiss();
+        QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
+
+        parents.add(element.getEnclosingElement());
+        validationFields.add(new ValidationField(
+                element,
+                Isbn.class,
+                getId(qualifiedId),
+                autoDismiss
+        ));
+    }
 
     private void parseBetweenValidation(
             Element element,

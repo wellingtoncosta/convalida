@@ -2,7 +2,7 @@ package convalida.validators;
 
 import android.widget.EditText;
 
-import convalida.validators.util.EditTextUtils;
+import convalida.validators.util.EditTexts;
 import convalida.validators.util.ExecuteValidationListener;
 
 /**
@@ -19,7 +19,7 @@ public abstract class AbstractValidator {
         this.errorMessage = errorMessage;
 
         if(autoDismiss) {
-            EditTextUtils.addOnTextChangedListener(editText, new ExecuteValidationListener() {
+            EditTexts.addOnTextChangedListener(editText, new ExecuteValidationListener() {
                 @Override
                 public void execute(String value) {
                     executeValidation(value);
@@ -31,12 +31,12 @@ public abstract class AbstractValidator {
     public abstract boolean isValid(String value);
 
     private void executeValidation(String value) {
-        hasError = !EditTextUtils.isVisible(editText) && !isValid(value);
+        hasError = !EditTexts.isVisible(editText) && !isValid(value);
 
         if (hasError) {
-            EditTextUtils.setError(editText, errorMessage);
+            EditTexts.setError(editText, errorMessage);
         } else {
-            EditTextUtils.setError(editText, null);
+            EditTexts.setError(editText, null);
         }
     }
 
@@ -46,7 +46,7 @@ public abstract class AbstractValidator {
     }
 
     public void clear() {
-        EditTextUtils.setError(editText, null);
+        EditTexts.setError(editText, null);
     }
 
 }

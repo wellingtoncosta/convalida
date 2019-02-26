@@ -4,7 +4,7 @@ import android.widget.EditText;
 
 import java.math.BigDecimal;
 
-import convalida.validators.util.EditTextUtils;
+import convalida.validators.util.EditTexts;
 import convalida.validators.util.ExecuteValidationListener;
 
 /**
@@ -29,7 +29,7 @@ public class BetweenValidator extends AbstractValidator {
         this.endErrorMessage = endErrorMessage;
 
         if(endAutoDismiss) {
-            EditTextUtils.addOnTextChangedListener(endEditText, new ExecuteValidationListener() {
+            EditTexts.addOnTextChangedListener(endEditText, new ExecuteValidationListener() {
                 @Override
                 public void execute(String value) {
                     applyValidationToEndField();
@@ -53,11 +53,11 @@ public class BetweenValidator extends AbstractValidator {
     private void applyValidationToEndField() {
         endFieldHasError = !endFieldIsValid();
         if(endFieldIsValid()) {
-            EditTextUtils.setError(editText, null);
-            EditTextUtils.setError(endEditText, null);
+            EditTexts.setError(editText, null);
+            EditTexts.setError(endEditText, null);
         } else {
-            EditTextUtils.setError(editText, errorMessage);
-            EditTextUtils.setError(endEditText, endErrorMessage);
+            EditTexts.setError(editText, errorMessage);
+            EditTexts.setError(endEditText, endErrorMessage);
         }
     }
 

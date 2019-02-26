@@ -14,6 +14,8 @@ class KotlinDslSampleActivity : AppCompatActivity() {
     private val onlyNumbers by lazy { this.getString(R.string.only_numbers) }
     private val invalidPhone by lazy { this.getString(R.string.invalid_phone) }
     private val invalidCpf by lazy { this.getString(R.string.invalid_cpf) }
+    private val invalidCnpj by lazy { this.getString(R.string.invalid_cnpj) }
+    private val invalidIsbn by lazy { this.getString(R.string.invalid_isbn) }
     private val invalidInitialPeriod by lazy { this.getString(R.string.initial_period_not_valid) }
     private val invalidFinalPeriod by lazy { this.getString(R.string.final_period_not_valid) }
     private val invalidEmail by lazy { this.getString(R.string.invalid_email) }
@@ -31,6 +33,8 @@ class KotlinDslSampleActivity : AppCompatActivity() {
                         age_field.onlyNumber(errorMessage = onlyNumbers),
                         phone_field.withPattern(pattern = PHONE_PATTERN, errorMessage = invalidPhone),
                         cpf_field.isCpf(errorMessage = invalidCpf),
+                        cnpj_field.isCnpj(errorMessage = invalidCnpj),
+                        isbn_field.isIsbn(errorMessage = invalidIsbn),
                         initial_period_field.isBetween
                                 .start(errorMessage = invalidInitialPeriod)
                                 .end(field = final_period_field, errorMessage = invalidFinalPeriod)

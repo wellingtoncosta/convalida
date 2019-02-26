@@ -3,10 +3,12 @@
     <string name="app_name">Convalida</string>
     <string name="confirm_email">Confirm Email</string>
     <string name="confirm_password">Confirm Password</string>
+    <string name="cnpj">CNPJ</string>
     <string name="cpf">CPF</string>
     <string name="credit_card">Credit Card</string>
     <string name="email">Email</string>
     <string name="initial_period">Initial Period</string>
+    <string name="isbn">ISBN</string>
     <string name="final_period">Final Period</string>
     <string name="nickname">Nick Name</string>
     <string name="name">Name</string>
@@ -26,7 +28,9 @@
     <string name="only_numbers">Only numbers are allowed</string>
     <string name="passwords_not_match">Passwords does not match</string>
     <string name="emails_not_match">Emails does not match</string>
+    <string name="invalid_cnpj">CNPJ is not valid</string>
     <string name="invalid_cpf">CPF is not valid</string>
+    <string name="invalid_isbn">ISBN is not valid</string>
     <string name="initial_period_not_valid">Initial period is not valid</string>
     <string name="final_period_not_valid">Final period cannot greater initial period</string>
 

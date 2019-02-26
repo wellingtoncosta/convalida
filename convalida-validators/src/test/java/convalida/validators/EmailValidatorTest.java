@@ -3,6 +3,8 @@ package convalida.validators;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 /**
@@ -17,7 +19,7 @@ public class EmailValidatorTest extends BaseTest {
                 true,
                 false);
         when(mockEditText.getText().toString()).thenReturn("");
-        assertEquals(validator.validate(), true);
+        assertTrue(validator.validate());
     }
 
     @Test public void required_emptyValue() {
@@ -27,7 +29,7 @@ public class EmailValidatorTest extends BaseTest {
                 true,
                 true);
         when(mockEditText.getText().toString()).thenReturn("");
-        assertEquals(validator.validate(), false);
+        assertFalse(validator.validate());
     }
 
     @Test public void required_invalidEmail() {
@@ -37,7 +39,7 @@ public class EmailValidatorTest extends BaseTest {
                 true,
                 true);
         when(mockEditText.getText().toString()).thenReturn("test@email");
-        assertEquals(validator.validate(), false);
+        assertFalse(validator.validate());
     }
 
     @Test public void required_validEmail() {
@@ -47,7 +49,7 @@ public class EmailValidatorTest extends BaseTest {
                 true,
                 true);
         when(mockEditText.getText().toString()).thenReturn("test@email.com");
-        assertEquals(validator.validate(), true);
+        assertTrue(validator.validate());
     }
 
 }

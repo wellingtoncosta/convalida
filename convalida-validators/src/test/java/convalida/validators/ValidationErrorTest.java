@@ -1,10 +1,12 @@
-package convalida.validators.error;
+package convalida.validators;
 
 import android.widget.EditText;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import convalida.validators.error.ValidationError;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;

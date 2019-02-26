@@ -33,6 +33,12 @@ public class AnnotataionSampleActivity extends AppCompatActivity {
     @Cpf(errorMessageResId = R.string.invalid_cpf)
     EditText cpfField;
 
+    @Cnpj(errorMessageResId = R.string.invalid_cnpj)
+    EditText cnpjField;
+
+    @Isbn(errorMessageResId = R.string.invalid_isbn)
+    EditText isbnField;
+
     @Between.Start(key = 1, errorMessageResId = R.string.initial_period_not_valid)
     EditText initialPeriodField;
 
@@ -80,6 +86,8 @@ public class AnnotataionSampleActivity extends AppCompatActivity {
         ageField = findViewById(R.id.age_field);
         phoneField = findViewById(R.id.phone_field);
         cpfField = findViewById(R.id.cpf_field);
+        cnpjField = findViewById(R.id.cnpj_field);
+        isbnField = findViewById(R.id.isbn_field);
         initialPeriodField = findViewById(R.id.initial_period_field);
         finalPeriodField = findViewById(R.id.final_period_field);
         emailField = findViewById(R.id.email_field);
