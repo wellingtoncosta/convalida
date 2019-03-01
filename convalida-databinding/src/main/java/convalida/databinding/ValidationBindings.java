@@ -192,6 +192,44 @@ public class ValidationBindings {
     }
 
     @BindingAdapter(value = {
+            "cnpjErrorMessage",
+            "cnpjAutoDismiss",
+            "cnpjRequired"
+    }, requireAll = false)
+    public static void cnpjValidationBindings(
+            @NonNull EditText cnpj,
+            @NonNull String errorMessage,
+            Boolean autoDismiss,
+            Boolean required
+    ) {
+        cnpj.setTag(R.id.validation_type, new CnpjValidator(
+                cnpj,
+                errorMessage,
+                autoDismiss != null ? autoDismiss : true,
+                required != null ? required : true
+        ));
+    }
+
+    @BindingAdapter(value = {
+            "isbnErrorMessage",
+            "isbnAutoDismiss",
+            "isbnRequired"
+    }, requireAll = false)
+    public static void isbnValidationBindings(
+            @NonNull EditText isbnField,
+            @NonNull String errorMessage,
+            Boolean autoDismiss,
+            Boolean required
+    ) {
+        isbnField.setTag(R.id.validation_type, new IsbnValidator(
+                isbnField,
+                errorMessage,
+                autoDismiss != null ? autoDismiss : true,
+                required != null ? required : true
+        ));
+    }
+
+    @BindingAdapter(value = {
             "betweenStartErrorMessage",
             "betweenStartAutoDismiss",
             "betweenEndField",

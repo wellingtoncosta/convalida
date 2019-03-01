@@ -214,6 +214,12 @@ class JavaFiler {
                 case CPF_ANNOTATION:
                     builder.add(createCpfValidationCodeBlock(field));
                     break;
+                case CNPJ_ANNOTATION:
+                    builder.add(createCnpjValidationCodeBlock(field));
+                    break;
+                case ISBN_ANNOTATION:
+                    builder.add(createIsbnValidationCodeBlock(field));
+                    break;
                 case BETWEEN_ANNOTATION:
                     builder.add(createBetweenValidationCodeBlock(validationClass, field));
                     break;
@@ -430,11 +436,53 @@ class JavaFiler {
                 .build();
     }
 
+    private static CodeBlock createCnpjValidationCodeBlock(ValidationField field) {
+        Element element = field.element;
+        Class<Cnpj> annotation = Cnpj.class;
+        boolean hasErrorMessageResId = element.getAnnotation(annotation).errorMessageResId() != -1;
+        String errorMessage = element.getAnnotation(annotation).errorMessage();
+        String block = "validatorSet.addValidator(new $T(target.$N, " +
+                errorMessage(hasErrorMessageResId) +
+                ", $L, $L))";
+
+        return CodeBlock.builder()
+                .addStatement(
+                        block,
+                        CNPJ_VALIDATOR,
+                        field.name,
+                        hasErrorMessageResId ? field.id.code : errorMessage,
+                        field.autoDismiss,
+                        field.element.getAnnotation(annotation).required()
+                )
+                .build();
+    }
+
+    private static CodeBlock createIsbnValidationCodeBlock(ValidationField field) {
+        Element element = field.element;
+        Class<Isbn> annotation = Isbn.class;
+        boolean hasErrorMessageResId = element.getAnnotation(annotation).errorMessageResId() != -1;
+        String errorMessage = element.getAnnotation(annotation).errorMessage();
+        String block = "validatorSet.addValidator(new $T(target.$N, " +
+                errorMessage(hasErrorMessageResId) +
+                ", $L, $L))";
+
+        return CodeBlock.builder()
+                .addStatement(
+                        block,
+                        ISBN_VALIDATOR,
+                        field.name,
+                        hasErrorMessageResId ? field.id.code : errorMessage,
+                        field.autoDismiss,
+                        field.element.getAnnotation(annotation).required()
+                )
+                .build();
+    }
+
     private static CodeBlock createBetweenValidationCodeBlock(ValidationClass validationClass, ValidationField startField) {
         ValidationField endField = null;
 
         for(ValidationField field : validationClass.fields) {
-            if(field.annotationClassName.equals(BETWEEN_END_ANNOTATION)) {
+            if(field.annotationClassName.equals(Between.End.class.getCanonicalName())) {
                 endField = field;
                 break;
             }

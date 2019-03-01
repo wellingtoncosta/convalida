@@ -2,7 +2,8 @@ package convalida.validators;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 /**
@@ -20,7 +21,7 @@ public class CpfValidatorTest extends BaseTest {
                 true
         );
         when(mockEditText.getText().toString()).thenReturn("");
-        assertEquals(validator.validate(), false);
+        assertFalse(validator.validate());
     }
 
     @Test public void required_invalidCpf() {
@@ -31,7 +32,7 @@ public class CpfValidatorTest extends BaseTest {
                 true
         );
         when(mockEditText.getText().toString()).thenReturn("11122233300");
-        assertEquals(validator.validate(), false);
+        assertFalse(validator.validate());
     }
 
     @Test public void required_validCpf() {
@@ -42,7 +43,7 @@ public class CpfValidatorTest extends BaseTest {
                 true
         );
         when(mockEditText.getText().toString()).thenReturn("32454401037");
-        assertEquals(validator.validate(), true);
+        assertTrue(validator.validate());
     }
 
     @Test public void nonRequired_emtpyValue() {
@@ -53,7 +54,7 @@ public class CpfValidatorTest extends BaseTest {
                 false
         );
         when(mockEditText.getText().toString()).thenReturn("");
-        assertEquals(validator.validate(), true);
+        assertTrue(validator.validate());
     }
 
     @Test public void nonRequired_invalidCpf() {
@@ -64,7 +65,7 @@ public class CpfValidatorTest extends BaseTest {
                 false
         );
         when(mockEditText.getText().toString()).thenReturn("11122233300");
-        assertEquals(validator.validate(), false);
+        assertFalse(validator.validate());
     }
 
     @Test public void nonRequired_invalidCpfWithChars() {
@@ -75,7 +76,7 @@ public class CpfValidatorTest extends BaseTest {
                 false
         );
         when(mockEditText.getText().toString()).thenReturn("111abc33300");
-        assertEquals(validator.validate(), false);
+        assertFalse(validator.validate());
     }
 
     @Test public void nonRequired_invalidCpfDigits() {
@@ -86,7 +87,7 @@ public class CpfValidatorTest extends BaseTest {
                 false
         );
         when(mockEditText.getText().toString()).thenReturn("32454401017");
-        assertEquals(validator.validate(), false);
+        assertFalse(validator.validate());
     }
 
     @Test public void nonRequired_validCpf() {
@@ -97,7 +98,7 @@ public class CpfValidatorTest extends BaseTest {
                 false
         );
         when(mockEditText.getText().toString()).thenReturn("32454401037");
-        assertEquals(validator.validate(), true);
+        assertTrue(validator.validate());
     }
 
     @Test public void nonRequired_cpfWithInvalidSize() {
@@ -108,7 +109,7 @@ public class CpfValidatorTest extends BaseTest {
                 false
         );
         when(mockEditText.getText().toString()).thenReturn("123456789");
-        assertEquals(validator.validate(), false);
+        assertFalse(validator.validate());
     }
 
     @Test public void nonRequired_invalidCpf_BlackList() {
@@ -119,7 +120,7 @@ public class CpfValidatorTest extends BaseTest {
                 false
         );
         when(mockEditText.getText().toString()).thenReturn("12345678909");
-        assertEquals(validator.validate(), false);
+        assertFalse(validator.validate());
     }
 
     @Test public void nonRequired_invalidCpf_BlackList_2() {
@@ -130,7 +131,7 @@ public class CpfValidatorTest extends BaseTest {
                 false
         );
         when(mockEditText.getText().toString()).thenReturn("11111111111");
-        assertEquals(validator.validate(), false);
+        assertFalse(validator.validate());
     }
 
 }

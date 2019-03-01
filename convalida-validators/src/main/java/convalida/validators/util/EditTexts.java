@@ -10,7 +10,7 @@ import com.google.android.material.textfield.TextInputLayout;
 /**
  * @author Wellington Costa on 08/02/18.
  */
-public final class EditTextUtils {
+public final class EditTexts {
 
     private static TextInputLayout getTextInputLayout(EditText editText) {
         ViewParent parent = editText.getParent();

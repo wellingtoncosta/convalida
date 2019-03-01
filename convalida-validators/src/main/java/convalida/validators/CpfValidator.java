@@ -9,6 +9,8 @@ public class CpfValidator extends AbstractValidator {
 
     private boolean required;
 
+    private static final int CPF_LENGTH = 11;
+
     public CpfValidator(
             EditText editText,
             String errorMessage,
@@ -26,7 +28,7 @@ public class CpfValidator extends AbstractValidator {
                 .replace("-", "")
                 .replace(" ", "");
 
-        boolean invalidLength = value.length() > 0 && value.length() < 11;
+        boolean invalidLength = value.length() < CPF_LENGTH;
 
         if(required && value.isEmpty()) {
             return false;

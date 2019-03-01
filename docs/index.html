@@ -4,7 +4,8 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="description" content="Convalida - A simple, lightweight and powerful field validation library for Android.">
+  <meta name="description"
+    content="Convalida - A simple, lightweight and powerful field validation library for Android.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 
   <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
@@ -12,7 +13,8 @@
   <title>Convalida</title>
 
   <!-- Page styles -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
   <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.teal-lime.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="styles.css">
@@ -32,9 +34,6 @@
         <a href="#fixed-tab-users-guide" class="mdl-layout__tab">User's Guide</a>
         <a href="#fixed-tab-installation" class="mdl-layout__tab">Installation</a>
         <a href="#fixed-tab-api" class="mdl-layout__tab">API</a>
-        <a href="#fixed-tab-annotations" class="mdl-layout__tab">Annotations</a>
-        <a href="#fixed-tab-data-binding" class="mdl-layout__tab">Data Binding</a>
-        <a href="#fixed-tab-kotlin-dsl" class="mdl-layout__tab">Kotlin Dsl</a>
       </div>
     </header>
     <main class="mdl-layout__content">
@@ -73,7 +72,8 @@
             <ul class="convalida-section-body-ul">
               <li class="roboto-font convalida-section-body-li">You can use with Java Annotations</li>
               <li class="roboto-font convalida-section-body-li">You can use with Android Data Dinding</li>
-              <li class="roboto-font convalida-section-body-li">You can use with a simple and lightweight Kotlin DSL</li>
+              <li class="roboto-font convalida-section-body-li">You can use with a simple and lightweight Kotlin DSL
+              </li>
               <li class="roboto-font convalida-section-body-li">Reflection free</li>
               <li class="roboto-font convalida-section-body-li">Compatible with other popular libraries such as <a
                   class="convalida-section-body-link" href="https://github.com/JakeWharton/butterknife">ButterKinfe</a>,
@@ -268,8 +268,8 @@
           <div class="convalida-section-body-spacing-top">
             <code class="prettyprint">
                   dependencies { </br>
-                  &nbsp;&nbsp; implementation 'io.github.wellingtoncosta:convalida-runtime:3.0.0' </br>
-                  &nbsp;&nbsp; annotationProcessor 'io.github.wellingtoncosta:convalida-compiler:3.0.0' </br>
+                  &nbsp;&nbsp; implementation 'io.github.wellingtoncosta:convalida-runtime:3.1.0' </br>
+                  &nbsp;&nbsp; annotationProcessor 'io.github.wellingtoncosta:convalida-compiler:3.1.0' </br>
                   }
               </code>
           </div>
@@ -279,7 +279,8 @@
           </div>
           <div class="roboto-font convalida-section-body-text">
             <b>Note:</b> If you're using Kotlin, you need to add <code class="prettyprint">kotlin-kapt</code> plugin
-            and use <code class="prettyprint">kapt</code> instead of <code class="prettyprint">annotationProcessor</code>.
+            and use <code class="prettyprint">kapt</code> instead of <code
+              class="prettyprint">annotationProcessor</code>.
           </div>
           <div class="roboto-font convalida-section-body-text">
             Since version 3.0.0, we introduced a new feature that allows to use Convalida
@@ -292,7 +293,7 @@
           <div class="convalida-section-body-spacing-top">
             <code class="prettyprint">
                   dependencies { </br>
-                  &nbsp;&nbsp; implementation 'io.github.wellingtoncosta:convalida-ktx:3.0.0' </br>
+                  &nbsp;&nbsp; implementation 'io.github.wellingtoncosta:convalida-ktx:3.1.0' </br>
                   }
               </code>
           </div>
@@ -340,6 +341,44 @@
                 </tr>
               </tbody>
             </table>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Annotation: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-java">
+                &nbsp;&nbsp;@Required( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;errorMessageResId = R.string.field_required, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true </br>
+                &nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;EditText nameField; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Data Binding: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-xml">
+                &nbsp;&nbsp;&lt;EditText </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:id="@+id/name_field" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_width="match_parent" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_height="wrap_content" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:hint="@string/name" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:requiredErrorMessage="@{@string/field_required}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:requiredAutoDismiss="@{true}" /&gt; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Kotlin Dsl: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-kotlin">
+                &nbsp;&nbsp;val nameField = findViewById(R.id.name_field) as EditText </br>
+                &nbsp;&nbsp;nameField.isRequired( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;errorMessage = getString(R.string.field_required), </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true </br>
+                &nbsp;&nbsp;) </br>
+              </code>
+            </div>
           </div>
           <div class="roboto-font convalida-section-body-title">
             <b>Email Validation</b>
@@ -383,6 +422,47 @@
                 </tr>
               </tbody>
             </table>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Annotation: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-java">
+                &nbsp;&nbsp;@Email( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;errorMessageResId = R.string.invalid_email, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;required = true </br>
+                &nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;EditText emailField; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Data Binding: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-xml">
+                  &nbsp;&nbsp;&lt;EditText </br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;android:id="@+id/email_field" </br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;android:layout_width="match_parent" </br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;android:layout_height="wrap_content" </br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;android:hint="@string/email" </br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;app:emailErrorMessage="@{@string/invalid_email}" </br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;app:emailAutoDismiss="@{true}" </br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;app:emailRequired="@{true}" /&gt; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Kotlin Dsl: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-kotlin">
+                &nbsp;&nbsp;val emailField = findViewById(R.id.email_field) as EditText </br>
+                &nbsp;&nbsp;emailField.isEmail( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;errorMessage = getString(R.string.invalid_email), </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;required = true </br>
+                &nbsp;&nbsp;) </br>
+              </code>
+            </div>
           </div>
           <div class="roboto-font convalida-section-body-title">
             <b>Confirm Email Validation</b>
@@ -427,6 +507,61 @@
                 </tr>
               </tbody>
             </table>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Annotation: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-java">
+                &nbsp;&nbsp;@ConfirmEmail( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;errorMessageResId = R.string.emails_not_match, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true </br>
+                &nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;EditText confirmEmailField; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Data Binding: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-xml">
+                &nbsp;&nbsp;&lt;EditText </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:id="@+id/email_field" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_width="match_parent" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_height="wrap_content" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:hint="@string/email" /&gt; </br> </br>
+
+                &nbsp;&nbsp;&lt;EditText </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:id="@+id/confirm_email_field" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_width="match_parent" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_height="wrap_content" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:hint="@string/confirm_email" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:confirmEmailEmailField="@{emailField}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:confirmEmailErrorMessage="@{@string/emails_not_match}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:confirmEmailAutoDismiss="@{true}" /&gt; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-text">
+              The <b>app:confirmEmailEmailField</b> receive as param a reference of an edit text that represents the
+              email field that is fulfilled by user.
+              In this case, we pass the reference of <b>android:id="@+id/email_field"</b> to
+              <b>app:confirmEmailEmailField</b>. </br> </br>
+              Data Binding converts a separeted underscore notation to a camel case notation. Example:
+              <b>email_field</b> to <b>emailField</b>.
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Kotlin Dsl: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-kotlin">
+                &nbsp;&nbsp;val emailField = findViewById(R.id.email_field) as EditText </br>
+                &nbsp;&nbsp;val confirmEmailField = findViewById(R.id.confirm_email_field) as EditText </br>
+                &nbsp;&nbsp;confirmEmailField.isConfirmEmail( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;emailField = emailField, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;errorMessage = getString(R.string.emails_not_match), </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true </br>
+                &nbsp;&nbsp;) </br>
+              </code>
+            </div>
           </div>
           <div class="roboto-font convalida-section-body-title">
             <b>Length Validation</b>
@@ -482,6 +617,53 @@
                 </tr>
               </tbody>
             </table>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Annotation: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-java">
+                &nbsp;&nbsp;@Length( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;errorMessageResId = R.string.invalid_length, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;min = 3, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;max = 10, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;required = true </br>
+                &nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;EditText lengthField; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Data Binding: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-xml">
+                &nbsp;&nbsp;&lt;EditText </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:id="@+id/length_field" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_width="match_parent" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_height="wrap_content" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:hint="@string/length" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:lengthErrorMessage="@{@string/invalid_length}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:lengthMin="@{3}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:lengthMax="@{10}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:lengthAutoDismiss="@{true}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:lengthRequired="@{true}" /&gt; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Kotlin Dsl: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-kotlin">
+                &nbsp;&nbsp;val lengthField = findViewById(R.id.length_field) as EditText </br>
+                &nbsp;&nbsp;lengthField.withLength( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;min = 3, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;max = 10, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;errorMessage = getString(R.string.invalid_length), </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;required = true, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true </br>
+                &nbsp;&nbsp;) </br>
+              </code>
+            </div>
           </div>
           <div class="roboto-font convalida-section-body-title">
             <b>Numeric Limit Validation</b>
@@ -513,13 +695,17 @@
                 </tr>
                 <tr>
                   <td class="mdl-data-table__cell--non-numeric">min</td>
-                  <td class="mdl-data-table__cell--non-numeric">int</td>
-                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the minimum numeric value.</td>
+                  <td class="mdl-data-table__cell--non-numeric">java.lang.String</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the minimum numeric value.
+                    Internally this is converted to BigDecimal.
+                  </td>
                 </tr>
                 <tr>
                   <td class="mdl-data-table__cell--non-numeric">max</td>
-                  <td class="mdl-data-table__cell--non-numeric">int</td>
-                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the maximum numeric value.</td>
+                  <td class="mdl-data-table__cell--non-numeric">java.lang.String</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the maximum numeric value.
+                    Internally this is converted to BigDecimal.
+                  </td>
                 </tr>
                 <tr>
                   <td class="mdl-data-table__cell--non-numeric">autoDismiss</td>
@@ -535,6 +721,53 @@
                 </tr>
               </tbody>
             </table>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Annotation: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-java">
+                &nbsp;&nbsp;@NumberLimit( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;errorMessageResId = R.string.invalid_number, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;min = "0", </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;max = "99", </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;required = true </br>
+                &nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;EditText numberField; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Data Binding: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-xml">
+                &nbsp;&nbsp;&lt;EditText </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:id="@+id/number_field" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_width="match_parent" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_height="wrap_content" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:hint="@string/number" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:numberLimitErrorMessage="@{@string/invalid_number}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:numberLimitMin='@{"0"}' </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:numberLimitMax='@{"99"}' </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:numberLimitAutoDismiss="@{true}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:numberLimitRequired="@{true}" /&gt; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Kotlin Dsl: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-kotlin">
+                &nbsp;&nbsp;val numberField = findViewById(R.id.number_field) as EditText </br>
+                &nbsp;&nbsp;numberField.withNumericLimit( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;min = "0", </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;max = "99", </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;errorMessage = getString(R.string.invalid_number), </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;required = true, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true </br>
+                &nbsp;&nbsp;) </br>
+              </code>
+            </div>
           </div>
           <div class="roboto-font convalida-section-body-title">
             <b>Only Number Validation</b>
@@ -578,6 +811,47 @@
                 </tr>
               </tbody>
             </table>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Annotation: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-java">
+                &nbsp;&nbsp;@OnlyNumber( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;errorMessageResId = R.string.only_numbers, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;required = true </br>
+                &nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;EditText onlyNumberField; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Data Binding: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-xml">
+                &nbsp;&nbsp;&lt;EditText </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:id="@+id/only_number_field" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_width="match_parent" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_height="wrap_content" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:hint="@string/only_number" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:onlyNumberErrorMessage="@{@string/only_numbers}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:onlyNumberAutoDismiss="@{true}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:onlyNumberRequired="@{true}" /&gt; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Kotlin Dsl: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-kotlin">
+                &nbsp;&nbsp;val onlyNumberField = findViewById(R.id.only_number_field) as EditText </br>
+                &nbsp;&nbsp;onlyNumberField.onlyNumber( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;errorMessage = getString(R.string.only_numbers), </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;required = true </br>
+                &nbsp;&nbsp;) </br>
+              </code>
+            </div>
           </div>
           <div class="roboto-font convalida-section-body-title">
             <b>Pattern Validation</b>
@@ -627,6 +901,50 @@
                 </tr>
               </tbody>
             </table>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Annotation: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-java">
+                &nbsp;&nbsp;@Pattern( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;pattern = MIXED_CAMEL_CASE, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;errorMessageResId = R.string.value_not_match, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;required = true </br>
+                &nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;EditText patternField; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Data Binding: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-xml">
+                &nbsp;&nbsp;&lt;EditText </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:id="@+id/pattern_field" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_width="match_parent" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_height="wrap_content" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:hint="@string/pattern" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:patternPattern="@{Constants.MIXED_CAMEL_CASE}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:patternErrorMessage="@{@string/value_not_match}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:patternAutoDismiss="@{true}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:patternRequired="@{true}" /&gt; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Kotlin Dsl: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-kotlin">
+                &nbsp;&nbsp;val patternField = findViewById(R.id.pattern_field) as EditText </br>
+                &nbsp;&nbsp;patternField.withPattern( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;pattern = MIXED_CAMEL_CASE, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;errorMessage = getString(R.string.value_not_match), </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;required = true </br>
+                &nbsp;&nbsp;) </br>
+              </code>
+            </div>
           </div>
           <div class="roboto-font convalida-section-body-title">
             <b>Password Validation</b>
@@ -683,6 +1001,53 @@
                 </tr>
               </tbody>
             </table>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Annotation: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-java">
+                &nbsp;&nbsp;@Password( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;pattern = MIXED_CASE_NUMERIC, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;min = 3, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;errorMessageResId = R.string.invalid_password, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;required = true </br>
+                &nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;EditText passwordField; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Data Binding: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-xml">
+                &nbsp;&nbsp;&lt;EditText </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:id="@+id/password_field" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_width="match_parent" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_height="wrap_content" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:hint="@string/password" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:passwordMin="@{3}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:passwordPattern="@{Constants.MIXED_CASE_NUMERIC}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:passwordErrorMessage="@{@string/invalid_password}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:passwordAutoDismiss="@{true}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:passwordRequired="@{true}" /&gt; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Kotlin Dsl: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-kotlin">
+                &nbsp;&nbsp;val passwordField = findViewById(R.id.password_field) as EditText </br>
+                &nbsp;&nbsp;passwordField.isPassword( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;pattern = MIXED_CASE_NUMERIC, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;min = 3, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;errorMessage = getString(R.string.invalid_password), </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;required = true </br>
+                &nbsp;&nbsp;) </br>
+              </code>
+            </div>
           </div>
           <div class="roboto-font convalida-section-body-title">
             <b>Confirm Password Validation</b>
@@ -727,6 +1092,62 @@
                 </tr>
               </tbody>
             </table>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Annotation: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-java">
+                &nbsp;&nbsp;@ConfirmPassword( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;errorMessageResId = R.string.passwords_not_match, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true </br>
+                &nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;EditText confirmPasswordField; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Data Binding: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-xml">
+                &nbsp;&nbsp;&lt;EditText </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:id="@+id/password_field" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_width="match_parent" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_height="wrap_content" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:hint="@string/password" /&gt; </br> </br>
+
+                &nbsp;&nbsp;&lt;EditText </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:id="@+id/confirm_password_field" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_width="match_parent" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_height="wrap_content" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:hint="@string/confirm_password" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:confirmPasswordPasswordField="@{passwordField}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:confirmPasswordErrorMessage="@{@string/passwords_not_match}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:confirmPasswordAutoDismiss="@{true}" /&gt; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-text">
+              The <b>app:confirmPasswordPasswordField</b> receive as param a reference of an edit text that represents
+              the
+              password field that is fulfilled by user.
+              In this case, we pass the reference of <b>android:id="@+id/password_field"</b> to
+              <b>app:confirmPasswordPasswordField</b>. </br> </br>
+              Data Binding converts a separeted underscore notation to a camel case notation. Example:
+              <b>password_field</b> to <b>passwordField</b>.
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Kotlin Dsl: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-kotlin">
+                &nbsp;&nbsp;val passwordField = findViewById(R.id.password_field) as EditText </br>
+                &nbsp;&nbsp;val confirmPasswordField = findViewById(R.id.confirm_password_field) as EditText </br>
+                &nbsp;&nbsp;confirmPasswordField.isConfirmPassword( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;passwordField = passwordField, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;errorMessage = getString(R.string.passwords_not_match), </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true </br>
+                &nbsp;&nbsp;) </br>
+              </code>
+            </div>
           </div>
           <div class="roboto-font convalida-section-body-title">
             <b>Between Validation</b>
@@ -748,12 +1169,14 @@
                 <tr>
                   <td class="mdl-data-table__cell--non-numeric">startEditText</td>
                   <td class="mdl-data-table__cell--non-numeric">android.widget.EditText</td>
-                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the first field of the pair</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the first field of the pair
+                  </td>
                 </tr>
                 <tr>
                   <td class="mdl-data-table__cell--non-numeric">endEditText</td>
                   <td class="mdl-data-table__cell--non-numeric">android.widget.EditText</td>
-                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the second field of the pair</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the second field of the pair
+                  </td>
                 </tr>
                 <tr>
                   <td class="mdl-data-table__cell--non-numeric">startErrorMessage</td>
@@ -781,6 +1204,80 @@
                 </tr>
               </tbody>
             </table>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Annotation: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-java">
+                &nbsp;&nbsp;@Between.Start( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;key = 1, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;errorMessageResId = R.string.initial_period_not_valid, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true </br>
+                &nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;EditText initialPerioField; </br> </br>
+
+                &nbsp;&nbsp;@Between.End( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;key = 1, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;errorMessageResId = R.string.final_period_not_valid, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true </br>
+                &nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;EditText finalPeriodField; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-text">
+              The <b>key</b> param is used only in annotations that serves a way to identify the pairs of fields during
+              code generation in compile time.
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Data Binding: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-xml">
+                &nbsp;&nbsp;&lt;EditText </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:id="@+id/initial_period_field" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_width="match_parent" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_height="wrap_content" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:hint="@string/confirm_password" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:betweenStartErrorMessage="@{@string/initial_period_not_valid}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:betweenStartAutoDismiss="@{true}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:betweenEndErrorMessage="@{@string/final_period_not_valid}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:betweenEndAutoDismiss="@{true}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:betweenEndField="@{finalPeriodField}" /&gt; </br> </br>
+
+                &nbsp;&nbsp;&lt;EditText </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:id="@+id/final_period_field" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_width="match_parent" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_height="wrap_content" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:hint="@string/confirm_password" /&gt; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-text">
+              The <b>app:betweenEndField</b> receive as param a reference of an edit text that represents
+              the end field that is fulfilled by user. In this case, we pass the reference of
+              <b>android:id="@+id/final_period_field"</b> to
+              <b>app:betweenEndField</b>. </br> </br>
+              Data Binding converts a separeted underscore notation to a camel case notation. Example:
+              <b>final_period_field</b> to <b>finalPeriodField</b>.
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Kotlin Dsl: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-kotlin">
+                &nbsp;&nbsp;val initialPeriodField = findViewById(R.id.initial_period_field) as EditText </br>
+                &nbsp;&nbsp;val finalPeriodField = findViewById(R.id.final_period_field) as EditText </br>
+                &nbsp;&nbsp;initialPeriodField.isBetween </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;.start( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errorMessage = getString(R.string.initial_period_not_valid), </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;.end( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;field = finalPeriodField, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errorMessage = getString(R.string.final_period_not_valid), </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;).apply()
+              </code>
+            </div>
           </div>
           <div class="roboto-font convalida-section-body-title">
             <b>Credit Card Validation</b>
@@ -824,6 +1321,47 @@
                 </tr>
               </tbody>
             </table>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Annotation: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-java">
+                &nbsp;&nbsp;@CreditCard( </br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;errorMessageResId = R.string.invalid_credit_card, </br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true, </br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;required = true </br>
+                  &nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;EditText creditCardField; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Data Binding: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-xml">
+                    &nbsp;&nbsp;&lt;EditText </br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;android:id="@+id/credit_card_field" </br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;android:layout_width="match_parent" </br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;android:layout_height="wrap_content" </br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;android:hint="@string/credit_card" </br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;app:creditCardErrorMessage="@{@string/invalid_credit_card}" </br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;app:creditCardAutoDismiss="@{true}" </br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;app:creditCardRequired="@{true}" /&gt; </br>
+                </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Kotlin Dsl: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-kotlin">
+                &nbsp;&nbsp;val creditCardField = findViewById(R.id.credit_card_field) as EditText </br>
+                &nbsp;&nbsp;creditCardField.isCreditCard( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;errorMessage = getString(R.string.invalid_credit_card), </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;required = true </br>
+                &nbsp;&nbsp;) </br>
+              </code>
+            </div>
           </div>
           <div class="roboto-font convalida-section-body-title">
             <b>Cpf Validation</b>
@@ -868,22 +1406,218 @@
                 </tr>
               </tbody>
             </table>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Annotation: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-java">
+                &nbsp;&nbsp;@Cpf( </br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;errorMessageResId = R.string.invalid_cpf, </br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true, </br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;required = true </br>
+                  &nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;EditText cpfField; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Data Binding: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-xml">
+                    &nbsp;&nbsp;&lt;EditText </br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;android:id="@+id/cpf_field" </br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;android:layout_width="match_parent" </br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;android:layout_height="wrap_content" </br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;android:hint="@string/cpf" </br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;app:cpfErrorMessage="@{@string/invalid_cpf}" </br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;app:cpfAutoDismiss="@{true}" </br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;app:cpfRequired="@{true}" /&gt; </br>
+                </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Kotlin Dsl: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-kotlin">
+                &nbsp;&nbsp;val cpfField = findViewById(R.id.cpf_field) as EditText </br>
+                &nbsp;&nbsp;cpfField.isCpf( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;errorMessage = getString(R.string.invalid_cpf), </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;required = true </br>
+                &nbsp;&nbsp;) </br>
+              </code>
+            </div>
           </div>
-        </div>
-      </section>
-      <section class="mdl-layout__tab-panel" id="fixed-tab-annotations">
-        <div class="page-content convalida-section-body">
-          <!-- Your content goes here -->
-        </div>
-      </section>
-      <section class="mdl-layout__tab-panel" id="fixed-tab-data-binding">
-        <div class="page-content convalida-section-body">
-          <!-- Your content goes here -->
-        </div>
-      </section>
-      <section class="mdl-layout__tab-panel" id="fixed-tab-kotlin-dsl">
-        <div class="page-content convalida-section-body">
-          <!-- Your content goes here -->
+          <div class="roboto-font convalida-section-body-title">
+            <b>Cnpj Validation</b>
+          </div>
+          <div class="roboto-font convalida-section-body-text">
+            Cnpj validation is applied to a field that will filled with a Brazillian Company ID (Cadastro Nacional de
+            Pessoa
+            Jurídica).
+          </div>
+          <div class="convalida-section-body-spacing-top">
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+              <thead>
+                <tr>
+                  <th class="mdl-data-table__cell--non-numeric">Parameter</th>
+                  <th class="mdl-data-table__cell--non-numeric">Type</th>
+                  <th class="mdl-data-table__cell--non-numeric">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">editText</td>
+                  <td class="mdl-data-table__cell--non-numeric">android.widget.EditText</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the field that will be
+                    validated.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">errorMessage</td>
+                  <td class="mdl-data-table__cell--non-numeric">java.lang.String</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the error message that will
+                    be displayed when field value is invalid.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">autoDismiss</td>
+                  <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter means the error message will disappear
+                    automatically when field value is valid.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">required</td>
+                  <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter means the field can accept an empty
+                    value or not.</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Annotation: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-java">
+                &nbsp;&nbsp;@Cnpj( </br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;errorMessageResId = R.string.invalid_cnpj, </br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true, </br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;required = true </br>
+                  &nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;EditText cnpjField; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Data Binding: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-xml">
+                    &nbsp;&nbsp;&lt;EditText </br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;android:id="@+id/cnpj_field" </br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;android:layout_width="match_parent" </br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;android:layout_height="wrap_content" </br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;android:hint="@string/cnpj" </br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;app:cnpjErrorMessage="@{@string/invalid_cnpj}" </br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;app:cnpjAutoDismiss="@{true}" </br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;app:cnpjRequired="@{true}" /&gt; </br>
+                </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Kotlin Dsl: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-kotlin">
+                &nbsp;&nbsp;val cnpjField = findViewById(R.id.cnpj_field) as EditText </br>
+                &nbsp;&nbsp;cnpjField.isCnpj( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;errorMessage = getString(R.string.invalid_cnpj), </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;required = true </br>
+                &nbsp;&nbsp;) </br>
+              </code>
+            </div>
+          </div>
+          <div class="roboto-font convalida-section-body-title">
+            <b>Isbn Validation</b>
+          </div>
+          <div class="roboto-font convalida-section-body-text">
+            Isbn validation is applied to a field that will filled with a book number ID.
+          </div>
+          <div class="convalida-section-body-spacing-top">
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+              <thead>
+                <tr>
+                  <th class="mdl-data-table__cell--non-numeric">Parameter</th>
+                  <th class="mdl-data-table__cell--non-numeric">Type</th>
+                  <th class="mdl-data-table__cell--non-numeric">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">editText</td>
+                  <td class="mdl-data-table__cell--non-numeric">android.widget.EditText</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the field that will be
+                    validated.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">errorMessage</td>
+                  <td class="mdl-data-table__cell--non-numeric">java.lang.String</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter represents the error message that will
+                    be displayed when field value is invalid.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">autoDismiss</td>
+                  <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter means the error message will disappear
+                    automatically when field value is valid.</td>
+                </tr>
+                <tr>
+                  <td class="mdl-data-table__cell--non-numeric">required</td>
+                  <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                  <td class="mdl-data-table__cell--non-numeric">This parameter means the field can accept an empty
+                    value or not.</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Annotation: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-java">
+                &nbsp;&nbsp;@Isbn( </br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;errorMessageResId = R.string.invalid_isbn, </br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true, </br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;required = true </br>
+                  &nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;EditText isbnField; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Data Binding: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-xml">
+                    &nbsp;&nbsp;&lt;EditText </br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;android:id="@+id/isbn_field" </br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;android:layout_width="match_parent" </br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;android:layout_height="wrap_content" </br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;android:hint="@string/isbn" </br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;app:isbnErrorMessage="@{@string/invalid_isbn}" </br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;app:isbnAutoDismiss="@{true}" </br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;app:isbnRequired="@{true}" /&gt; </br>
+                </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Kotlin Dsl: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-kotlin">
+                &nbsp;&nbsp;val isbnField = findViewById(R.id.isbn_field) as EditText </br>
+                &nbsp;&nbsp;isbnField.isIsbn( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;errorMessage = getString(R.string.invalid_isbn), </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;required = true </br>
+                &nbsp;&nbsp;) </br>
+              </code>
+            </div>
+          </div>
         </div>
       </section>
     </main>
