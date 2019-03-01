@@ -17,8 +17,8 @@ To use Convalida with annotations or Data Binding support, and compile-time code
 
 ```groovy
 dependencies {
-  implementation 'io.github.wellingtoncosta:convalida-runtime:3.0.0'
-  annotationProcessor 'io.github.wellingtoncosta:convalida-compiler:3.0.0'
+  implementation 'io.github.wellingtoncosta:convalida-runtime:3.1.0'
+  annotationProcessor 'io.github.wellingtoncosta:convalida-compiler:3.1.0'
 }
 ```
 
@@ -28,7 +28,7 @@ Or if you want to use only the Convalida Kotlin Dsl:
 
 ```groovy
 dependencies {
-  implementation 'io.github.wellingtoncosta:convalida-ktx:3.0.0'
+  implementation 'io.github.wellingtoncosta:convalida-ktx:3.1.0'
 }
 ```
 
