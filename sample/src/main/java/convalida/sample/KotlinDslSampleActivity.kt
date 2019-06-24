@@ -16,8 +16,8 @@ class KotlinDslSampleActivity : AppCompatActivity() {
     private val invalidCpf by lazy { this.getString(R.string.invalid_cpf) }
     private val invalidCnpj by lazy { this.getString(R.string.invalid_cnpj) }
     private val invalidIsbn by lazy { this.getString(R.string.invalid_isbn) }
-    private val invalidInitialPeriod by lazy { this.getString(R.string.initial_period_not_valid) }
-    private val invalidFinalPeriod by lazy { this.getString(R.string.final_period_not_valid) }
+    private val invalidStartValue by lazy { this.getString(R.string.start_value_not_valid) }
+    private val invalidLimitValue by lazy { this.getString(R.string.limit_value_not_valid) }
     private val invalidEmail by lazy { this.getString(R.string.invalid_email) }
     private val differentEmails by lazy { this.getString(R.string.emails_not_match) }
     private val invalidPassword by lazy { this.getString(R.string.invalid_password) }
@@ -35,9 +35,9 @@ class KotlinDslSampleActivity : AppCompatActivity() {
                         cpf_field.isCpf(errorMessage = invalidCpf),
                         cnpj_field.isCnpj(errorMessage = invalidCnpj),
                         isbn_field.isIsbn(errorMessage = invalidIsbn),
-                        initial_period_field.isBetween
-                                .start(errorMessage = invalidInitialPeriod)
-                                .end(field = final_period_field, errorMessage = invalidFinalPeriod)
+                        start_value_field.isBetween
+                                .start(errorMessage = invalidStartValue)
+                                .end(field = limit_value_field, errorMessage = invalidLimitValue)
                                 .apply(),
                         email_field.isEmail(errorMessage = invalidEmail),
                         confirm_email_field.isConfirmEmail(

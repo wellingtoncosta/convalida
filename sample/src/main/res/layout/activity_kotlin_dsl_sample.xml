@@ -168,7 +168,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/initial_period_layout"
+            android:id="@+id/start_value_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:passwordToggleEnabled="true"
@@ -181,7 +181,7 @@
             app:layout_constraintTop_toBottomOf="@+id/isbn_layout">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/initial_period_field"
+                android:id="@+id/start_value_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/initial_period"
@@ -191,7 +191,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/final_period_layout"
+            android:id="@+id/limit_value_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:passwordToggleEnabled="true"
@@ -201,10 +201,10 @@
             android:layout_marginRight="@dimen/spacing_large"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/initial_period_layout">
+            app:layout_constraintTop_toBottomOf="@+id/start_value_layout">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/final_period_field"
+                android:id="@+id/limit_value_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/final_period"
@@ -223,7 +223,7 @@
             android:layout_marginRight="@dimen/spacing_large"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/final_period_layout">
+            app:layout_constraintTop_toBottomOf="@+id/limit_value_layout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/email_field"

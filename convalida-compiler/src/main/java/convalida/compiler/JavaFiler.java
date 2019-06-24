@@ -482,7 +482,7 @@ class JavaFiler {
         ValidationField endField = null;
 
         for(ValidationField field : validationClass.fields) {
-            if(field.annotationClassName.equals(Between.End.class.getCanonicalName())) {
+            if(field.annotationClassName.equals(Between.Limit.class.getCanonicalName())) {
                 endField = field;
                 break;
             }
@@ -495,9 +495,9 @@ class JavaFiler {
                     startField.element.getAnnotation(Between.Start.class).errorMessage();
 
             boolean hasEndErrorMessageResId =
-                    endField.element.getAnnotation(Between.End.class).errorMessageResId() != -1;
+                    endField.element.getAnnotation(Between.Limit.class).errorMessageResId() != -1;
             String endErrorMessage =
-                    endField.element.getAnnotation(Between.End.class).errorMessage();
+                    endField.element.getAnnotation(Between.Limit.class).errorMessage();
 
             String block = "validatorSet.addValidator(new $T(target.$N, target.$N, " +
                     errorMessage(hasStartErrorMessageResId) +

@@ -31,8 +31,8 @@
     <string name="invalid_cnpj">CNPJ is not valid</string>
     <string name="invalid_cpf">CPF is not valid</string>
     <string name="invalid_isbn">ISBN is not valid</string>
-    <string name="initial_period_not_valid">Initial period is not valid</string>
-    <string name="final_period_not_valid">Final period cannot greater initial period</string>
+    <string name="start_value_not_valid">Start value is not valid</string>
+    <string name="limit_value_not_valid">Limit value cannot be greater start value</string>
 
     <string name="annotations_sample">Annotations Sample</string>
     <string name="databinding_sample">Data Binding Sample</string>

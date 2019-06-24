@@ -78,10 +78,10 @@ public class DatabindingSampleActivityTest {
         onView(withText(R.string.invalid_cpf))
                 .check(doesNotExist());
 
-        onView(withText(R.string.initial_period_not_valid))
+        onView(withText(R.string.start_value_not_valid))
                 .check(doesNotExist());
 
-        onView(withText(R.string.final_period_not_valid))
+        onView(withText(R.string.limit_value_not_valid))
                 .check(doesNotExist());
 
         onView(withText(R.string.invalid_email))

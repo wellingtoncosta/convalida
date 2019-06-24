@@ -123,7 +123,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
                         Cnpj.class,
                         Isbn.class,
                         Between.Start.class,
-                        Between.End.class,
+                        Between.Limit.class,
                         CreditCard.class,
                         NumberLimit.class,
                         ValidateOnClick.class,
@@ -793,8 +793,8 @@ public class ConvalidaProcessor extends AbstractProcessor {
                     isInvalid(Between.Start.class, element) ||
                     isInaccessible(Between.Start.class, element)
                 ) || (
-                    isInvalid(Between.End.class, element) ||
-                    isInaccessible(Between.End.class, element)
+                    isInvalid(Between.Limit.class, element) ||
+                    isInaccessible(Between.Limit.class, element)
                 );
 
         if (hasError) {
@@ -806,8 +806,8 @@ public class ConvalidaProcessor extends AbstractProcessor {
         Element endElement = null;
 
         for (Element elementOfParent : elementsOfParent) {
-            if (elementOfParent.getAnnotation(Between.End.class) != null
-                    && elementOfParent.getAnnotation(Between.End.class).key() == key) {
+            if (elementOfParent.getAnnotation(Between.Limit.class) != null
+                    && elementOfParent.getAnnotation(Between.Limit.class).key() == key) {
                 endElement = elementOfParent;
             }
         }
@@ -819,7 +819,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
                     element.getEnclosingElement().getSimpleName(),
                     Between.Start.class.getSimpleName(),
                     key,
-                    Between.End.class.getSimpleName()
+                    Between.Limit.class.getSimpleName()
             );
             return;
         }
@@ -836,14 +836,14 @@ public class ConvalidaProcessor extends AbstractProcessor {
                 startAutoDismiss
         ));
 
-        int endErrorMessage = endElement.getAnnotation(Between.End.class).errorMessageResId();
-        boolean endAutoDismiss = endElement.getAnnotation(Between.End.class).autoDismiss();
+        int endErrorMessage = endElement.getAnnotation(Between.Limit.class).errorMessageResId();
+        boolean endAutoDismiss = endElement.getAnnotation(Between.Limit.class).autoDismiss();
         QualifiedId endQualifiedId = elementToQualifiedId(endElement, endErrorMessage);
 
         parents.add(endElement.getEnclosingElement());
         validationFields.add(new ValidationField(
                 endElement,
-                Between.End.class,
+                Between.Limit.class,
                 getId(endQualifiedId),
                 endAutoDismiss
         ));

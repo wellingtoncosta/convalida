@@ -39,11 +39,11 @@ public class AnnotataionSampleActivity extends AppCompatActivity {
     @Isbn(errorMessageResId = R.string.invalid_isbn)
     EditText isbnField;
 
-    @Between.Start(key = 1, errorMessageResId = R.string.initial_period_not_valid)
-    EditText initialPeriodField;
+    @Between.Start(key = 1, errorMessageResId = R.string.start_value_not_valid)
+    EditText startValueField;
 
-    @Between.End(key = 1, errorMessageResId = R.string.final_period_not_valid)
-    EditText finalPeriodField;
+    @Between.Limit(key = 1, errorMessageResId = R.string.limit_value_not_valid)
+    EditText limitValueField;
 
     @Email(errorMessageResId = R.string.invalid_email)
     EditText emailField;
@@ -88,8 +88,8 @@ public class AnnotataionSampleActivity extends AppCompatActivity {
         cpfField = findViewById(R.id.cpf_field);
         cnpjField = findViewById(R.id.cnpj_field);
         isbnField = findViewById(R.id.isbn_field);
-        initialPeriodField = findViewById(R.id.initial_period_field);
-        finalPeriodField = findViewById(R.id.final_period_field);
+        startValueField = findViewById(R.id.initial_period_field);
+        limitValueField = findViewById(R.id.final_period_field);
         emailField = findViewById(R.id.email_field);
         confirmEmailField = findViewById(R.id.confirm_email_field);
         passwordField = findViewById(R.id.password_field);

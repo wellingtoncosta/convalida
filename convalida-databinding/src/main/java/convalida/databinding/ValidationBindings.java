@@ -232,25 +232,25 @@ public class ValidationBindings {
     @BindingAdapter(value = {
             "betweenStartErrorMessage",
             "betweenStartAutoDismiss",
-            "betweenEndField",
-            "betweenEndErrorMessage",
-            "betweenEndAutoDismiss"
+            "betweenLimitField",
+            "betweenLimitErrorMessage",
+            "betweenLimitAutoDismiss"
     }, requireAll = false)
     public static void betweenValidationBindings(
             @NonNull EditText startField,
             @NonNull String startErrorMessage,
             Boolean startAutoDismiss,
-            EditText endField,
-            @NonNull String endErrorMessage,
-            Boolean endAutoDismiss
+            EditText limitField,
+            @NonNull String limitErrorMessage,
+            Boolean limitAutoDismiss
     ) {
         startField.setTag(R.id.validation_type, new BetweenValidator(
                 startField,
-                endField,
+                limitField,
                 startErrorMessage,
-                endErrorMessage,
+                limitErrorMessage,
                 startAutoDismiss != null ? startAutoDismiss : true,
-                endAutoDismiss != null ? endAutoDismiss : true
+                limitAutoDismiss != null ? limitAutoDismiss : true
         ));
     }
 

@@ -29,7 +29,7 @@ public @interface Between {
 
     @Target(FIELD)
     @Retention(SOURCE)
-    @interface End {
+    @interface Limit {
 
         int key();
 
