@@ -18,8 +18,8 @@ for (File file : sdkHandler.sdkLoader.repositories) {
 dependencies {
     implementation project(':convalida-annotations')
 
-    implementation deps.google.autoservice
     implementation deps.javapoet
+    implementation deps.google.autocommons
 
     compileOnly files(Jvm.current().getToolsJar())
 }
