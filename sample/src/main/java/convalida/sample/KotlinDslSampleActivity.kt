@@ -25,49 +25,94 @@ class KotlinDslSampleActivity : AppCompatActivity() {
     private val invalidCreditCard by lazy { this.getString(R.string.invalid_credit_card) }
     private val invalidNumericLimit by lazy { this.getString(R.string.invalid_number_limit) }
 
-    private val validations by lazy {
-        validationSet(
-                validations = listOf(
-                        name_field.isRequired(errorMessage = fieldRequired),
-                        nickname_field.withLength(min = 3, errorMessage = min3Characteres),
-                        age_field.onlyNumber(errorMessage = onlyNumbers),
-                        phone_field.withPattern(pattern = PHONE_PATTERN, errorMessage = invalidPhone),
-                        cpf_field.isCpf(errorMessage = invalidCpf),
-                        cnpj_field.isCnpj(errorMessage = invalidCnpj),
-                        isbn_field.isIsbn(errorMessage = invalidIsbn),
-                        start_value_field.isBetween
-                                .start(errorMessage = invalidStartValue)
-                                .end(field = limit_value_field, errorMessage = invalidLimitValue)
-                                .apply(),
-                        email_field.isEmail(errorMessage = invalidEmail),
-                        confirm_email_field.isConfirmEmail(
-                                emailField = email_field,
-                                errorMessage = differentEmails
-                        ),
-                        password_field.isPassword(errorMessage = invalidPassword),
-                        confirm_password_field.isConfirmPassword(
-                                passwordField = password_field,
-                                errorMessage = differentPasswords
-                        ),
-                        credit_card_field.isCreditCard(errorMessage = invalidCreditCard),
-                        number_limit_field.withNumericLimit(
-                                min = "0",
-                                max = "100",
-                                errorMessage = invalidNumericLimit
-                        )
-                ),
-                actions = actions
-                        validateByClickingOn validate_button
-                        clearValidationsByClickingOn clear_button
-                        whenOnSuccess ::onValidationSuccess
-                        whenOnError ::onValidationError
-        )
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_kotlin_dsl_sample)
-        apply { validations }
+
+        convalida {
+            field(name_field) {
+                isRequired(errorMessage = fieldRequired)
+            }
+
+            field(nickname_field) {
+                withLength(min = 3, errorMessage = min3Characteres)
+            }
+
+            field(age_field) {
+                onlyNumber(errorMessage = onlyNumbers)
+            }
+
+            field(phone_field) {
+                withPattern(pattern = PHONE_PATTERN, errorMessage = invalidPhone)
+            }
+
+            field(cpf_field) {
+                isCpf(errorMessage = invalidCpf)
+            }
+
+            field(cnpj_field) {
+                isCnpj(errorMessage = invalidCnpj)
+            }
+
+            field(isbn_field) {
+                isIsbn(errorMessage = invalidIsbn)
+            }
+
+            field(email_field) {
+                isEmail(errorMessage = invalidEmail)
+            }
+
+            field(confirm_email_field) {
+                isConfirmEmail(
+                        emailField = email_field,
+                        errorMessage = differentEmails
+                )
+            }
+
+            field(password_field) {
+                isPassword(errorMessage = invalidPassword)
+            }
+
+            field(confirm_password_field) {
+                isConfirmPassword(
+                        passwordField = password_field,
+                        errorMessage = differentPasswords
+                )
+            }
+
+            field(credit_card_field) {
+                isCreditCard(errorMessage = invalidCreditCard)
+            }
+
+            field(number_limit_field) {
+                withNumericLimit(
+                        min = "0",
+                        max = "100",
+                        errorMessage = invalidNumericLimit
+                )
+            }
+
+            between {
+                start {
+                    field = start_value_field
+                    errorMessage = invalidStartValue
+                }
+
+                limit {
+                    field = limit_value_field
+                    errorMessage = invalidLimitValue
+                }
+            }
+
+            validateOn(validate_button) {
+                onSuccess { onValidationSuccess() }
+                onError { onValidationError() }
+            }
+
+            clearValidationsOn(clear_button)
+
+        }
     }
 
     private fun onValidationSuccess() {

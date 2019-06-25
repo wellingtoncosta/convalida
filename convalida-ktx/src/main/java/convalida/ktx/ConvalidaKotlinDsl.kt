@@ -12,76 +12,95 @@ import convalida.validators.error.ValidationErrorSet
  * @author Wellington Costa on 10/01/19
  */
 
-fun validationSet(
-        validations: List<AbstractValidator>,
-        actions: Actions
-) {
-    val validatorSet = ValidatorSet()
+class ConvalidaBuilder {
 
-    validatorSet.validators.addAll(validations)
+    private val validatorSet = ValidatorSet()
 
-    actions.validateButton.setOnClickListener {
-        if(validatorSet.isValid) {
-            actions.onSuccess()
-        }
-        else {
-            actions.onError?.let { it() }
-            actions.onErrorWithInvalidFields?.let { it(validatorSet.errors) }
+    fun <E, V> field(view: E, validator: E.() -> V) where E : EditText, V : AbstractValidator {
+        validatorSet.addValidator(validator(view))
+    }
+
+    fun between(
+            body: BetweenValidatorBuilder.() -> Unit
+    ) = BetweenValidatorBuilder().apply { body() }
+
+    fun <B> validateOn(
+            button: B,
+            result: SubmitActionBuilder.() -> Unit
+    ) where B : Button = SubmitActionBuilder().apply {
+        result()
+    }.let { action ->
+        button.setOnClickListener {
+            if (validatorSet.isValid) {
+                action.onSuccessAction()
+            } else {
+                action.onErrorAction(validatorSet.errors)
+            }
         }
     }
 
-    actions.clearValidationsButton?.setOnClickListener {
-        validatorSet.clearValidators()
+    fun <B> clearValidationsOn(button: B) where B : Button {
+        button.setOnClickListener { validatorSet.clearValidators() }
     }
 }
 
-infix fun Actions.validateByClickingOn(
-        button: Button
-): Actions {
-    this.validateButton = button
-    return this
-}
+fun convalida(
+        body: ConvalidaBuilder.() -> Unit
+) = ConvalidaBuilder().apply { body() }
 
-infix fun Actions.whenOnSuccess(
-        callback: () -> Unit
-): Actions {
-    this.onSuccess = callback
-    return this
-}
+class SubmitActionBuilder {
 
-infix fun Actions.whenOnError(
-        callback: () -> Unit
-): Actions {
-    this.onError = callback
-    return this
-}
+    lateinit var onSuccessAction: () -> Unit private set
 
-infix fun Actions.whenOnError(
-        callback: (ValidationErrorSet) -> Unit
-): Actions {
-    this.onErrorWithInvalidFields = callback
-    return this
-}
+    lateinit var onErrorAction: (ValidationErrorSet) -> Unit private set
 
-infix fun Actions.clearValidationsByClickingOn(
-        button: Button
-): Actions {
-    this.clearValidationsButton = button
-    return this
-}
+    fun onSuccess(func: () -> Unit) {
+        onSuccessAction = func
+    }
 
-val actions: Actions
-    get() = Actions()
-
-class Actions {
-
-    lateinit var validateButton: Button
-    lateinit var onSuccess: () -> Unit
-    var clearValidationsButton: Button? = null
-    var onError: (() -> Unit)? = null
-    var onErrorWithInvalidFields: ((ValidationErrorSet) -> Unit)? = null
+    fun onError(func: (ValidationErrorSet) -> Unit) {
+        onErrorAction = func
+    }
 
 }
+
+class BetweenValidatorBuilder {
+
+    private var validator: BetweenValidator? = null
+
+    private var start: Between? = null
+
+    private var limit: Between? = null
+
+    fun start(body: Between.() -> Unit) = Between().apply { body() }.also {
+        start = it
+    }
+
+    fun limit(body: Between.() -> Unit) = Between().apply { body() }.also {
+        limit = it
+    }.also {
+        start?.let { start ->
+            limit?.let { limit ->
+                validator = BetweenValidator(
+                        start.field,
+                        limit.field,
+                        start.errorMessage,
+                        limit.errorMessage,
+                        start.autoDismiss,
+                        limit.autoDismiss
+                )
+            }
+        }
+    }
+
+}
+
+class Between {
+    var field: EditText? = null
+    var errorMessage: String? = null
+    var autoDismiss: Boolean = true
+}
+
 
 fun EditText.isRequired(
         errorMessage: String,
@@ -166,33 +185,3 @@ fun EditText.isConfirmPassword(
         autoDismiss: Boolean = true
 ) = ConfirmPasswordValidator(passwordField, this, errorMessage, autoDismiss)
 
-val EditText.isBetween: BetweenBuilder
-    get() = BetweenBuilder(this)
-
-class BetweenBuilder(private val startField: EditText) {
-
-    data class Between(val field: EditText, val errorMessage: String, val autoDismiss: Boolean)
-
-    private lateinit var start: Between
-    private lateinit var end: Between
-
-     fun start(errorMessage: String, autoDismiss: Boolean = true): BetweenBuilder {
-         this.start = Between(startField, errorMessage, autoDismiss)
-         return this
-     }
-
-    fun end(field: EditText, errorMessage: String, autoDismiss: Boolean = true): BetweenBuilder {
-        this.end = Between(field, errorMessage, autoDismiss)
-        return this
-    }
-
-    fun apply() = BetweenValidator(
-            start.field,
-            end.field,
-            start.errorMessage,
-            end.errorMessage,
-            start.autoDismiss,
-            end.autoDismiss
-    )
-
-}
