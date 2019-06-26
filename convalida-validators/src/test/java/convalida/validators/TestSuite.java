@@ -21,7 +21,7 @@ import org.junit.runners.Suite.SuiteClasses;
         BetweenValidatorTest.class,
         ValidatorSetTest.class,
         CreditCardValidatorTest.class,
-        NumberLimitValidatorTest.class,
+        NumericLimitValidatorTest.class,
         IsbnValidatorTest.class,
         CnpjValidatorTest.class,
         ValidationErrorTest.class,

@@ -12,7 +12,7 @@
     <string name="final_period">Final Period</string>
     <string name="nickname">Nick Name</string>
     <string name="name">Name</string>
-    <string name="number_limit">Number Limit</string>
+    <string name="numeric_limit">Numeric Limit</string>
     <string name="phone">Phone</string>
     <string name="password">Password</string>
     <string name="validate_fields">Validate</string>
@@ -21,7 +21,7 @@
     <string name="field_required">Field required</string>
     <string name="invalid_credit_card">Invalid credit card number</string>
     <string name="invalid_email">Invalid email</string>
-    <string name="invalid_number_limit">The value must be between 0 and 100</string>
+    <string name="invalid_numeric_limit">The value must be between 0 and 100</string>
     <string name="invalid_phone">Invalid phone</string>
     <string name="invalid_password">The password must have letters and numbers</string>
     <string name="min_3_characters">Enter at least 3 characters</string>

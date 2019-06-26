@@ -226,8 +226,8 @@ class JavaFiler {
                 case CREDIT_CARD_ANNOTATION:
                     builder.add(createCreditCardValidationCodeBlock(field));
                     break;
-                case NUMBER_LIMIT_ANNOTATION:
-                    builder.add(createNumberLimitValidationCodeBlock(field));
+                case NUMERIC_LIMIT_ANNOTATION:
+                    builder.add(createNumericLimitValidationCodeBlock(field));
                     break;
             }
         }
@@ -541,9 +541,9 @@ class JavaFiler {
                 .build();
     }
 
-    private static CodeBlock createNumberLimitValidationCodeBlock(ValidationField field) {
+    private static CodeBlock createNumericLimitValidationCodeBlock(ValidationField field) {
         Element element = field.element;
-        Class<NumberLimit> annotation = NumberLimit.class;
+        Class<NumericLimit> annotation = NumericLimit.class;
         boolean hasErrorMessageResId = element.getAnnotation(annotation).errorMessageResId() != -1;
         String errorMessage = element.getAnnotation(annotation).errorMessage();
         String block = "validatorSet.addValidator(new $T(target.$N, " +
@@ -553,7 +553,7 @@ class JavaFiler {
         return CodeBlock.builder()
                 .addStatement(
                         block,
-                        NUMBER_LIMIT_VALIDATOR,
+                        NUMERIC_LIMIT_VALIDATOR,
                         field.name,
                         hasErrorMessageResId ? field.id.code : errorMessage,
                         field.autoDismiss,

@@ -24,7 +24,7 @@ class KotlinDslSampleActivity : AppCompatActivity() {
     private val invalidPassword by lazy { this.getString(R.string.invalid_password) }
     private val differentPasswords by lazy { this.getString(R.string.passwords_not_match) }
     private val invalidCreditCard by lazy { this.getString(R.string.invalid_credit_card) }
-    private val invalidNumericLimit by lazy { this.getString(R.string.invalid_number_limit) }
+    private val invalidNumericLimit by lazy { this.getString(R.string.invalid_numeric_limit) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,7 +90,7 @@ class KotlinDslSampleActivity : AppCompatActivity() {
                 isCreditCard(errorMessage = invalidCreditCard)
             }
 
-            field(number_limit_field) {
+            field(numeric_limit_field) {
                 withNumericLimit(
                         min = "0",
                         max = "100",

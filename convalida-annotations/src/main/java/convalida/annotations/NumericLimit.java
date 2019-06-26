@@ -13,7 +13,7 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
  */
 @Target(FIELD)
 @Retention(SOURCE)
-public @interface NumberLimit {
+public @interface NumericLimit {
 
     String min();
 

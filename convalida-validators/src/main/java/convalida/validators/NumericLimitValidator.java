@@ -7,13 +7,13 @@ import java.math.BigDecimal;
 /**
  * @author Wellington Costa on 04/06/18
  */
-public class NumberLimitValidator extends AbstractValidator {
+public class NumericLimitValidator extends AbstractValidator {
 
     private BigDecimal minValue;
     private BigDecimal maxValue;
     private boolean required;
 
-    public NumberLimitValidator(
+    public NumericLimitValidator(
             EditText editText,
             String errorMessage,
             boolean autoDismiss,
@@ -27,8 +27,7 @@ public class NumberLimitValidator extends AbstractValidator {
         this.required = required;
     }
 
-    @Override
-    public boolean isValid(String value) {
+    @Override public boolean isValid(String value) {
         if(required && value.isEmpty()) {
             return false;
         } else {

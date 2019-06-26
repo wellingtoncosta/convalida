@@ -274,13 +274,13 @@ public class ValidationBindings {
     }
 
     @BindingAdapter(value = {
-            "numberLimitErrorMessage",
-            "numberLimitAutoDismiss",
-            "numberLimitMin",
-            "numberLimitMax",
-            "numberLimitRequired"
+            "numericLimitErrorMessage",
+            "numericLimitAutoDismiss",
+            "numericLimitMin",
+            "numericLimitMax",
+            "numericLimitRequired"
     }, requireAll = false)
-    public static void numberLimitValidationBindings(
+    public static void numericLimitValidationBindings(
             @NonNull EditText field,
             @NonNull String errorMessage,
             Boolean autoDismiss,
@@ -288,7 +288,7 @@ public class ValidationBindings {
             @NonNull String max,
             Boolean required
     ) {
-        field.setTag(R.id.validation_type, new NumberLimitValidator(
+        field.setTag(R.id.validation_type, new NumericLimitValidator(
                 field,
                 errorMessage,
                 autoDismiss != null ? autoDismiss : true,

@@ -146,7 +146,7 @@ fun EditText.withNumericLimit(
         errorMessage: String,
         autoDismiss: Boolean = true,
         required: Boolean = true
-) = NumberLimitValidator(this, errorMessage, autoDismiss, min, max, required)
+) = NumericLimitValidator(this, errorMessage, autoDismiss, min, max, required)
 
 fun EditText.isCreditCard(
         errorMessage: String,

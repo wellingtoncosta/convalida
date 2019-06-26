@@ -354,7 +354,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/number_limit_layout"
+                android:id="@+id/numeric_limit_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:passwordToggleEnabled="true"
@@ -367,14 +367,14 @@
                 app:layout_constraintTop_toBottomOf="@+id/credit_card_layout">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/number_limit_field"
+                    android:id="@+id/numeric_limit_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/number_limit"
+                    android:hint="@string/numeric_limit"
                     android:maxLines="1"
-                    app:numberLimitMin='@{"0"}'
-                    app:numberLimitMax='@{"100"}'
-                    app:numberLimitErrorMessage="@{@string/invalid_number_limit}" />
+                    app:numericLimitMin='@{"0"}'
+                    app:numericLimitMax='@{"100"}'
+                    app:numericLimitErrorMessage="@{@string/invalid_numeric_limit}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -391,7 +391,7 @@
                 android:layout_marginRight="@dimen/spacing_large"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/number_limit_layout"
+                app:layout_constraintTop_toBottomOf="@+id/numeric_limit_layout"
                 app:validationAction="@{@id/validate}" />
 
             <androidx.appcompat.widget.AppCompatButton

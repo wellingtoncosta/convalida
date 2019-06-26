@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import com.google.android.material.snackbar.Snackbar;
+
 import convalida.annotations.*;
 
 import static convalida.library.util.Patterns.MIXED_CASE_NUMERIC;
@@ -62,10 +62,10 @@ public class AnnotataionSampleActivity extends AppCompatActivity {
     @CreditCard(errorMessageResId = R.string.invalid_credit_card)
     EditText creditCardField;
 
-    @NumberLimit(
+    @NumericLimit(
             min = "0",
             max = "100",
-            errorMessageResId = R.string.invalid_number_limit
+            errorMessageResId = R.string.invalid_numeric_limit
     )
     EditText numberLimitField;
 
@@ -97,7 +97,7 @@ public class AnnotataionSampleActivity extends AppCompatActivity {
         passwordField = findViewById(R.id.password_field);
         confirmPasswordField = findViewById(R.id.confirm_password_field);
         creditCardField = findViewById(R.id.credit_card_field);
-        numberLimitField = findViewById(R.id.number_limit_field);
+        numberLimitField = findViewById(R.id.numeric_limit_field);
         validateButton = findViewById(R.id.validate_button);
         clearValidationsButton = findViewById(R.id.clear_button);
     }

@@ -104,10 +104,10 @@ public class ConvalidaRobot {
     }
 
     public TypeText numericLimit() {
-        onView(withId(R.id.number_limit_field))
+        onView(withId(R.id.numeric_limit_field))
                 .perform(scrollTo(), clearText());
 
-        return new TypeText(this, R.id.number_limit_field);
+        return new TypeText(this, R.id.numeric_limit_field);
     }
 
     public ConvalidaRobot validate() {
@@ -250,11 +250,11 @@ public class ConvalidaRobot {
         }
 
         public void numericLimitIsInvalid() {
-            isInvalid(R.id.number_limit_field, R.string.invalid_number_limit);
+            isInvalid(R.id.numeric_limit_field, R.string.invalid_numeric_limit);
         }
 
         public void numericLimitIsValid() {
-            isValid(R.id.number_limit_field, R.string.invalid_number_limit);
+            isValid(R.id.numeric_limit_field, R.string.invalid_numeric_limit);
         }
 
         private void isInvalid(
@@ -316,7 +316,7 @@ public class ConvalidaRobot {
             onView(withText(R.string.invalid_credit_card))
                     .check(doesNotExist());
 
-            onView(withText(R.string.invalid_number_limit))
+            onView(withText(R.string.invalid_numeric_limit))
                     .check(doesNotExist());
         }
 

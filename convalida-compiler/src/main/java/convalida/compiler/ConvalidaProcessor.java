@@ -41,7 +41,7 @@ import convalida.annotations.CreditCard;
 import convalida.annotations.Email;
 import convalida.annotations.Isbn;
 import convalida.annotations.Length;
-import convalida.annotations.NumberLimit;
+import convalida.annotations.NumericLimit;
 import convalida.annotations.OnValidationError;
 import convalida.annotations.OnValidationSuccess;
 import convalida.annotations.OnlyNumber;
@@ -125,7 +125,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
                         Between.Start.class,
                         Between.Limit.class,
                         CreditCard.class,
-                        NumberLimit.class,
+                        NumericLimit.class,
                         ValidateOnClick.class,
                         ClearValidationsOnClick.class,
                         OnValidationSuccess.class,
@@ -289,13 +289,13 @@ public class ConvalidaProcessor extends AbstractProcessor {
             }
         }
 
-        // Process each @NumberLimit element
-        for (Element element : env.getElementsAnnotatedWith(NumberLimit.class)) {
+        // Process each @NumericLimit element
+        for (Element element : env.getElementsAnnotatedWith(NumericLimit.class)) {
             if (!SuperficialValidation.validateElement(element)) continue;
             try {
-                parseNumberLimitValidation(element, parents, validationFields);
+                parseNumericLimitValidation(element, parents, validationFields);
             } catch (Exception e) {
-                logParsingError(element, NumberLimit.class, e);
+                logParsingError(element, NumericLimit.class, e);
             }
         }
 
@@ -875,27 +875,27 @@ public class ConvalidaProcessor extends AbstractProcessor {
         ));
     }
 
-    private void parseNumberLimitValidation(
+    private void parseNumericLimitValidation(
             Element element,
             Set<Element> parents,
             List<ValidationField> validationFields
     ) {
         boolean hasError =
-                isInvalid(NumberLimit.class, element) ||
-                        isInaccessible(NumberLimit.class, element);
+                isInvalid(NumericLimit.class, element) ||
+                        isInaccessible(NumericLimit.class, element);
 
         if (hasError) {
             return;
         }
 
-        int errorMessageResourceId = element.getAnnotation(NumberLimit.class).errorMessageResId();
-        boolean autoDismiss = element.getAnnotation(NumberLimit.class).autoDismiss();
+        int errorMessageResourceId = element.getAnnotation(NumericLimit.class).errorMessageResId();
+        boolean autoDismiss = element.getAnnotation(NumericLimit.class).autoDismiss();
         QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
 
         parents.add(element.getEnclosingElement());
         validationFields.add(new ValidationField(
                 element,
-                NumberLimit.class,
+                NumericLimit.class,
                 getId(qualifiedId),
                 autoDismiss
         ));

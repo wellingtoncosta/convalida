@@ -40,7 +40,7 @@ class Constants {
     static final String ISBN_ANNOTATION                             = "convalida.annotations.Isbn";
     static final String BETWEEN_ANNOTATION                          = "convalida.annotations.Between";
     static final String CREDIT_CARD_ANNOTATION                      = "convalida.annotations.CreditCard";
-    static final String NUMBER_LIMIT_ANNOTATION                     = "convalida.annotations.NumberLimit";
+    static final String NUMERIC_LIMIT_ANNOTATION                    = "convalida.annotations.NumericLimit";
 
     static final ClassName REQUIRED_VALIDATOR                       = ClassName.get("convalida.validators", "RequiredValidator");
     static final ClassName EMAIL_VALIDATOR                          = ClassName.get("convalida.validators", "EmailValidator");
@@ -55,6 +55,6 @@ class Constants {
     static final ClassName ISBN_VALIDATOR                           = ClassName.get("convalida.validators", "IsbnValidator");
     static final ClassName BETWEEN_VALIDATOR                        = ClassName.get("convalida.validators", "BetweenValidator");
     static final ClassName CREDIT_CARD_VALIDATOR                    = ClassName.get("convalida.validators", "CreditCardValidator");
-    static final ClassName NUMBER_LIMIT_VALIDATOR                   = ClassName.get("convalida.validators", "NumberLimitValidator");
+    static final ClassName NUMERIC_LIMIT_VALIDATOR                  = ClassName.get("convalida.validators", "NumericLimitValidator");
 
 }
