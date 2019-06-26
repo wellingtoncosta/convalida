@@ -384,7 +384,7 @@
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:text="@string/clear_validations"
+                android:text="@string/validate_fields"
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:layout_marginBottom="@dimen/spacing_large"
                 android:layout_marginLeft="@dimen/spacing_large"

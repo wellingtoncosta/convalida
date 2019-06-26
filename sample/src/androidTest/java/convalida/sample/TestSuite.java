@@ -10,6 +10,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({
         AnnotataionSampleActivityTest.class,
-        DatabindingSampleActivityTest.class
+        DatabindingSampleActivityTest.class,
+        KotlinDslSampleActivityTest.class
 })
 public class TestSuite { }

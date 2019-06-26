@@ -3,6 +3,8 @@ package convalida.sample;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import com.google.android.material.snackbar.Snackbar;
@@ -101,11 +103,11 @@ public class AnnotataionSampleActivity extends AppCompatActivity {
     }
 
     @OnValidationSuccess public void onValidationSuccess() {
-        Snackbar.make(constraintLayout, "Yay!", Snackbar.LENGTH_LONG).show();
+        Toast.makeText(this, "Yay!", Toast.LENGTH_SHORT).show();
     }
 
     @OnValidationError public void onValidationError() {
-        Snackbar.make(constraintLayout, "Something is wrong :(", Snackbar.LENGTH_LONG).show();
+        Toast.makeText(this, "Something is wrong :(", Toast.LENGTH_SHORT).show();
     }
 
 }

@@ -1,9 +1,10 @@
 package convalida.sample
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.snackbar.Snackbar
 import convalida.ktx.*
+import convalida.library.util.Patterns.MIXED_CASE_NUMERIC
 import convalida.sample.Constants.PHONE_PATTERN
 import kotlinx.android.synthetic.main.activity_kotlin_dsl_sample.*
 
@@ -71,7 +72,11 @@ class KotlinDslSampleActivity : AppCompatActivity() {
             }
 
             field(password_field) {
-                isPassword(errorMessage = invalidPassword)
+                isPassword(
+                        min = 3,
+                        pattern = MIXED_CASE_NUMERIC,
+                        errorMessage = invalidPassword
+                )
             }
 
             field(confirm_password_field) {
@@ -116,19 +121,11 @@ class KotlinDslSampleActivity : AppCompatActivity() {
     }
 
     private fun onValidationSuccess() {
-        Snackbar.make(
-                activity_kotlin_dsl_sample,
-                "Yay!",
-                Snackbar.LENGTH_LONG
-        ).show()
+        Toast.makeText(this, "Yay!", Toast.LENGTH_SHORT).show()
     }
 
     private fun onValidationError() {
-        Snackbar.make(
-                activity_kotlin_dsl_sample,
-                "Something is wrong :(",
-                Snackbar.LENGTH_LONG
-        ).show()
+        Toast.makeText(this, "Something is wrong :(", Toast.LENGTH_SHORT).show()
     }
 
 }
