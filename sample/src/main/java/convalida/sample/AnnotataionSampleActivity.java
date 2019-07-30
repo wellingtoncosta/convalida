@@ -8,7 +8,26 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import convalida.annotations.*;
+import convalida.annotations.Between;
+import convalida.annotations.ClearValidationsOnClick;
+import convalida.annotations.Cnpj;
+import convalida.annotations.ConfirmEmail;
+import convalida.annotations.ConfirmPassword;
+import convalida.annotations.Cpf;
+import convalida.annotations.CreditCard;
+import convalida.annotations.Email;
+import convalida.annotations.Ipv4;
+import convalida.annotations.Ipv6;
+import convalida.annotations.Isbn;
+import convalida.annotations.Length;
+import convalida.annotations.NumericLimit;
+import convalida.annotations.OnValidationError;
+import convalida.annotations.OnValidationSuccess;
+import convalida.annotations.OnlyNumber;
+import convalida.annotations.Password;
+import convalida.annotations.Pattern;
+import convalida.annotations.Required;
+import convalida.annotations.ValidateOnClick;
 
 import static convalida.library.util.Patterns.MIXED_CASE_NUMERIC;
 import static convalida.sample.Constants.PHONE_PATTERN;
@@ -72,6 +91,9 @@ public class AnnotataionSampleActivity extends AppCompatActivity {
     @Ipv4(errorMessageResId = R.string.invalid_ipv4)
     EditText ipv4Field;
 
+    @Ipv6(errorMessageResId = R.string.invalid_ipv6)
+    EditText ipv6Field;
+
     @ValidateOnClick Button validateButton;
 
     @ClearValidationsOnClick Button clearValidationsButton;
@@ -102,6 +124,7 @@ public class AnnotataionSampleActivity extends AppCompatActivity {
         creditCardField = findViewById(R.id.credit_card_field);
         numberLimitField = findViewById(R.id.numeric_limit_field);
         ipv4Field = findViewById(R.id.ipv4_field);
+        ipv6Field = findViewById(R.id.ipv6_field);
         validateButton = findViewById(R.id.validate_button);
         clearValidationsButton = findViewById(R.id.clear_button);
     }

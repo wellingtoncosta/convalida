@@ -40,6 +40,7 @@ import convalida.annotations.Cpf;
 import convalida.annotations.CreditCard;
 import convalida.annotations.Email;
 import convalida.annotations.Ipv4;
+import convalida.annotations.Ipv6;
 import convalida.annotations.Isbn;
 import convalida.annotations.Length;
 import convalida.annotations.NumericLimit;
@@ -128,6 +129,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
                         CreditCard.class,
                         NumericLimit.class,
                         Ipv4.class,
+                        Ipv6.class,
                         ValidateOnClick.class,
                         ClearValidationsOnClick.class,
                         OnValidationSuccess.class,
@@ -308,6 +310,16 @@ public class ConvalidaProcessor extends AbstractProcessor {
                 parseIpv4Validation(element, parents, validationFields);
             } catch (Exception e) {
                 logParsingError(element, Ipv4.class, e);
+            }
+        }
+
+        // Process each @Ipv6 element
+        for (Element element : env.getElementsAnnotatedWith(Ipv6.class)) {
+            if (!SuperficialValidation.validateElement(element)) continue;
+            try {
+                parseIpv6Validation(element, parents, validationFields);
+            } catch (Exception e) {
+                logParsingError(element, Ipv6.class, e);
             }
         }
 
@@ -939,6 +951,31 @@ public class ConvalidaProcessor extends AbstractProcessor {
         ));
     }
 
+    private void parseIpv6Validation(
+            Element element,
+            Set<Element> parents,
+            List<ValidationField> validationFields
+    ) {
+        boolean hasError =
+                isInvalid(Ipv6.class, element) ||
+                        isInaccessible(Ipv6.class, element);
+
+        if (hasError) {
+            return;
+        }
+
+        int errorMessageResourceId = element.getAnnotation(Ipv6.class).errorMessageResId();
+        boolean autoDismiss = element.getAnnotation(Ipv6.class).autoDismiss();
+        QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
+
+        parents.add(element.getEnclosingElement());
+        validationFields.add(new ValidationField(
+                element,
+                Ipv6.class,
+                getId(qualifiedId),
+                autoDismiss
+        ));
+    }
 
     private static AnnotationMirror getMirror(
             Element element,

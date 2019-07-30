@@ -275,4 +275,25 @@ public class ConvalidaBaseActivityTest {
 
     }
 
+    @Test public void ipv6Field() {
+        String VALID_IPV6 = "67dc:742c:f48a:2e5e:dc9d:efb1:1210:52d2";
+        String INVALID_IPV6 = "67dc:742c:f48a:2e5e:dc9d:efb1:1210:52dg";
+
+        new ConvalidaRobot()
+                .ipv6().typeText(VALID_IPV6)
+                .validate().result()
+                .ipv6IsValid();
+
+        new ConvalidaRobot()
+                .ipv6().typeText(INVALID_IPV6)
+                .validate().result()
+                .ipv6IsInvalid();
+
+        new ConvalidaRobot()
+                .ipv6().typeText("")
+                .validate().result()
+                .ipv6IsInvalid();
+
+    }
+
 }

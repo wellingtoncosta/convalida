@@ -42,6 +42,7 @@ class Constants {
     static final String CREDIT_CARD_ANNOTATION                      = "convalida.annotations.CreditCard";
     static final String NUMERIC_LIMIT_ANNOTATION                    = "convalida.annotations.NumericLimit";
     static final String IPV4_ANNOTATION                             = "convalida.annotations.Ipv4";
+    static final String IPV6_ANNOTATION                             = "convalida.annotations.Ipv6";
 
     static final ClassName REQUIRED_VALIDATOR                       = ClassName.get("convalida.validators", "RequiredValidator");
     static final ClassName EMAIL_VALIDATOR                          = ClassName.get("convalida.validators", "EmailValidator");
@@ -58,5 +59,6 @@ class Constants {
     static final ClassName CREDIT_CARD_VALIDATOR                    = ClassName.get("convalida.validators", "CreditCardValidator");
     static final ClassName NUMERIC_LIMIT_VALIDATOR                  = ClassName.get("convalida.validators", "NumericLimitValidator");
     static final ClassName IPV4_VALIDATOR                           = ClassName.get("convalida.validators", "Ipv4Validator");
+    static final ClassName IPV6_VALIDATOR                           = ClassName.get("convalida.validators", "Ipv6Validator");
 
 }

@@ -2,9 +2,26 @@
 
  import android.widget.Button;
  import android.widget.EditText;
+
  import androidx.annotation.NonNull;
  import androidx.databinding.BindingAdapter;
- import convalida.validators.*;
+
+ import convalida.validators.BetweenValidator;
+ import convalida.validators.CnpjValidator;
+ import convalida.validators.ConfirmEmailValidator;
+ import convalida.validators.ConfirmPasswordValidator;
+ import convalida.validators.CpfValidator;
+ import convalida.validators.CreditCardValidator;
+ import convalida.validators.EmailValidator;
+ import convalida.validators.Ipv4Validator;
+ import convalida.validators.Ipv6Validator;
+ import convalida.validators.IsbnValidator;
+ import convalida.validators.LengthValidator;
+ import convalida.validators.NumericLimitValidator;
+ import convalida.validators.OnlyNumberValidator;
+ import convalida.validators.PasswordValidator;
+ import convalida.validators.PatternValidator;
+ import convalida.validators.RequiredValidator;
 
 /**
  * @author WellingtonCosta on 29/03/18.
@@ -310,6 +327,25 @@ public class ValidationBindings {
             Boolean required
     ) {
         field.setTag(R.id.validation_type, new Ipv4Validator(
+                field,
+                errorMessage,
+                autoDismiss != null ? autoDismiss : true,
+                required != null ? required : true
+        ));
+    }
+
+    @BindingAdapter(value = {
+            "ipv6ErrorMessage",
+            "ipv6AutoDismiss",
+            "ipv6Required"
+    }, requireAll = false)
+    public static void ipv6ValidationBindings(
+            @NonNull EditText field,
+            @NonNull String errorMessage,
+            Boolean autoDismiss,
+            Boolean required
+    ) {
+        field.setTag(R.id.validation_type, new Ipv6Validator(
                 field,
                 errorMessage,
                 autoDismiss != null ? autoDismiss : true,

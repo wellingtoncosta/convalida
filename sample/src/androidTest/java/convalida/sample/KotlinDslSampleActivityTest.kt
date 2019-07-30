@@ -13,6 +13,7 @@ import convalida.sample.robot.ConvalidaRobotExtension.creditCard
 import convalida.sample.robot.ConvalidaRobotExtension.email
 import convalida.sample.robot.ConvalidaRobotExtension.isbn
 import convalida.sample.robot.ConvalidaRobotExtension.ipv4
+import convalida.sample.robot.ConvalidaRobotExtension.ipv6
 import convalida.sample.robot.ConvalidaRobotExtension.name
 import convalida.sample.robot.ConvalidaRobotExtension.nickName
 import convalida.sample.robot.ConvalidaRobotExtension.numericLimit
@@ -169,8 +170,18 @@ class KotlinDslSampleActivityTest {
         convalida { ipv4 typeText EMPTY_TEXT } validates { ipv4IsInvalid() }
     }
 
+    @Test fun ipv6Field() {
+        convalida { ipv6 typeText VALID_IPV6 } validates { ipv6IsValid() }
+
+        convalida { ipv6 typeText INVALID_IPV6 } validates { ipv6IsInvalid() }
+
+        convalida { ipv6 typeText EMPTY_TEXT } validates { ipv6IsInvalid() }
+    }
+
     companion object {
         const val EMPTY_TEXT = ""
+        const val VALID_IPV6 = "67dc:742c:f48a:2e5e:dc9d:efb1:1210:52d2"
+        const val INVALID_IPV6 = "67dc:742c:f48a:2e5e:dc9d:efb1:1210:52dg"
     }
 
 }

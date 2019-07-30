@@ -26,6 +26,7 @@ class KotlinDslSampleActivity : AppCompatActivity() {
     private val invalidCreditCard by lazy { this.getString(R.string.invalid_credit_card) }
     private val invalidNumericLimit by lazy { this.getString(R.string.invalid_numeric_limit) }
     private val invalidIpv4 by lazy { this.getString(R.string.invalid_ipv4) }
+    private val invalidIpv6 by lazy { this.getString(R.string.invalid_ipv6) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,6 +114,10 @@ class KotlinDslSampleActivity : AppCompatActivity() {
 
             field(ipv4_field) {
                 isIpv4(errorMessage = invalidIpv4)
+            }
+
+            field(ipv6_field) {
+                isIpv6(errorMessage = invalidIpv6)
             }
 
             validateOn(validate_button) {

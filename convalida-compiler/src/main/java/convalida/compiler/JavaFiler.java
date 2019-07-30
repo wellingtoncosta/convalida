@@ -1,15 +1,83 @@
 package convalida.compiler;
 
-import com.squareup.javapoet.*;
-import convalida.annotations.*;
-import convalida.compiler.internal.ValidationClass;
-import convalida.compiler.internal.ValidationField;
+import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.CodeBlock;
+import com.squareup.javapoet.JavaFile;
+import com.squareup.javapoet.MethodSpec;
+import com.squareup.javapoet.ParameterSpec;
+import com.squareup.javapoet.TypeSpec;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 
-import static convalida.compiler.Constants.*;
-import static javax.lang.model.element.Modifier.*;
+import convalida.annotations.Between;
+import convalida.annotations.Cnpj;
+import convalida.annotations.ConfirmEmail;
+import convalida.annotations.ConfirmPassword;
+import convalida.annotations.Cpf;
+import convalida.annotations.CreditCard;
+import convalida.annotations.Email;
+import convalida.annotations.Ipv4;
+import convalida.annotations.Ipv6;
+import convalida.annotations.Isbn;
+import convalida.annotations.Length;
+import convalida.annotations.NumericLimit;
+import convalida.annotations.OnlyNumber;
+import convalida.annotations.Password;
+import convalida.annotations.Pattern;
+import convalida.annotations.Required;
+import convalida.compiler.internal.ValidationClass;
+import convalida.compiler.internal.ValidationField;
+
+import static convalida.compiler.Constants.ABSTRACT_VALIDATOR;
+import static convalida.compiler.Constants.BETWEEN_ANNOTATION;
+import static convalida.compiler.Constants.BETWEEN_VALIDATOR;
+import static convalida.compiler.Constants.BUTTON;
+import static convalida.compiler.Constants.CNPJ_ANNOTATION;
+import static convalida.compiler.Constants.CNPJ_VALIDATOR;
+import static convalida.compiler.Constants.CONFIRM_EMAIL_VALIDATION;
+import static convalida.compiler.Constants.CONFIRM_EMAIL_VALIDATOR;
+import static convalida.compiler.Constants.CONFIRM_PASSWORD_ANNOTATION;
+import static convalida.compiler.Constants.CONFIRM_PASSWORD_VALIDATOR;
+import static convalida.compiler.Constants.CONVALIDA_DATABINDING_R;
+import static convalida.compiler.Constants.CPF_ANNOTATION;
+import static convalida.compiler.Constants.CPF_VALIDATOR;
+import static convalida.compiler.Constants.CREDIT_CARD_ANNOTATION;
+import static convalida.compiler.Constants.CREDIT_CARD_VALIDATOR;
+import static convalida.compiler.Constants.EMAIL_ANNOTATION;
+import static convalida.compiler.Constants.EMAIL_VALIDATOR;
+import static convalida.compiler.Constants.IPV4_ANNOTATION;
+import static convalida.compiler.Constants.IPV4_VALIDATOR;
+import static convalida.compiler.Constants.IPV6_ANNOTATION;
+import static convalida.compiler.Constants.IPV6_VALIDATOR;
+import static convalida.compiler.Constants.ISBN_ANNOTATION;
+import static convalida.compiler.Constants.ISBN_VALIDATOR;
+import static convalida.compiler.Constants.LENGTH_ANNOTATION;
+import static convalida.compiler.Constants.LENGTH_VALIDATOR;
+import static convalida.compiler.Constants.LIST;
+import static convalida.compiler.Constants.NON_NULL;
+import static convalida.compiler.Constants.NUMERIC_LIMIT_ANNOTATION;
+import static convalida.compiler.Constants.NUMERIC_LIMIT_VALIDATOR;
+import static convalida.compiler.Constants.ONLY_NUMBER_ANNOTATION;
+import static convalida.compiler.Constants.ONLY_NUMBER_VALIDATOR;
+import static convalida.compiler.Constants.OVERRIDE;
+import static convalida.compiler.Constants.PASSWORD_ANNOTATION;
+import static convalida.compiler.Constants.PASSWORD_VALIDATOR;
+import static convalida.compiler.Constants.PATTERN_ANNOTATION;
+import static convalida.compiler.Constants.PATTERN_VALIDATOR;
+import static convalida.compiler.Constants.REQUIRED_ANNOTATION;
+import static convalida.compiler.Constants.REQUIRED_VALIDATOR;
+import static convalida.compiler.Constants.UI_THREAD;
+import static convalida.compiler.Constants.VALIDATOR_SET;
+import static convalida.compiler.Constants.VIEW;
+import static convalida.compiler.Constants.VIEWGROUP;
+import static convalida.compiler.Constants.VIEW_DATA_BINDING;
+import static convalida.compiler.Constants.VIEW_ONCLICK_LISTENER;
+import static convalida.compiler.Constants.VIEW_TAG_UTILS;
+import static javax.lang.model.element.Modifier.FINAL;
+import static javax.lang.model.element.Modifier.PRIVATE;
+import static javax.lang.model.element.Modifier.PUBLIC;
+import static javax.lang.model.element.Modifier.STATIC;
 
 /**
  * @author Wellington Costa on 19/06/2017.
@@ -231,6 +299,9 @@ class JavaFiler {
                     break;
                 case IPV4_ANNOTATION:
                     builder.add(createIpv4ValidationCodeBlock(field));
+                    break;
+                case IPV6_ANNOTATION:
+                    builder.add(createIpv6ValidationCodeBlock(field));
                     break;
             }
         }
@@ -580,6 +651,27 @@ class JavaFiler {
                 .addStatement(
                         block,
                         IPV4_VALIDATOR,
+                        field.name,
+                        hasErrorMessageResId ? field.id.code : errorMessage,
+                        field.autoDismiss,
+                        field.element.getAnnotation(annotation).required()
+                )
+                .build();
+    }
+
+    private static CodeBlock createIpv6ValidationCodeBlock(ValidationField field) {
+        Element element = field.element;
+        Class<Ipv6> annotation = Ipv6.class;
+        boolean hasErrorMessageResId = element.getAnnotation(annotation).errorMessageResId() != -1;
+        String errorMessage = element.getAnnotation(annotation).errorMessage();
+        String block = "validatorSet.addValidator(new $T(target.$N, " +
+                errorMessage(hasErrorMessageResId) +
+                ", $L, $L))";
+
+        return CodeBlock.builder()
+                .addStatement(
+                        block,
+                        IPV6_VALIDATOR,
                         field.name,
                         hasErrorMessageResId ? field.id.code : errorMessage,
                         field.autoDismiss,

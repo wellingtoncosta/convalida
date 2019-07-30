@@ -2,7 +2,24 @@ package convalida.ktx
 
 import android.widget.Button
 import android.widget.EditText
-import convalida.validators.*
+import convalida.validators.AbstractValidator
+import convalida.validators.BetweenValidator
+import convalida.validators.CnpjValidator
+import convalida.validators.ConfirmEmailValidator
+import convalida.validators.ConfirmPasswordValidator
+import convalida.validators.CpfValidator
+import convalida.validators.CreditCardValidator
+import convalida.validators.EmailValidator
+import convalida.validators.Ipv4Validator
+import convalida.validators.Ipv6Validator
+import convalida.validators.IsbnValidator
+import convalida.validators.LengthValidator
+import convalida.validators.NumericLimitValidator
+import convalida.validators.OnlyNumberValidator
+import convalida.validators.PasswordValidator
+import convalida.validators.PatternValidator
+import convalida.validators.RequiredValidator
+import convalida.validators.ValidatorSet
 import convalida.validators.error.ValidationErrorSet
 
 /**
@@ -190,3 +207,9 @@ fun EditText.isIpv4(
         autoDismiss: Boolean = true,
         required: Boolean = true
 ) = Ipv4Validator(this, errorMessage, autoDismiss, required)
+
+fun EditText.isIpv6(
+        errorMessage: String,
+        autoDismiss: Boolean = true,
+        required: Boolean = true
+) = Ipv6Validator(this, errorMessage, autoDismiss, required)

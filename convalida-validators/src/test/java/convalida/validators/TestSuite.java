@@ -25,6 +25,8 @@ import org.junit.runners.Suite.SuiteClasses;
         IsbnValidatorTest.class,
         CnpjValidatorTest.class,
         ValidationErrorTest.class,
-        StringsTest.class
+        StringsTest.class,
+        Ipv4ValidatorTest.class,
+        Ipv6ValidatorTest.class
 })
 public class TestSuite { }
