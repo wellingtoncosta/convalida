@@ -14,6 +14,7 @@ import convalida.sample.robot.ConvalidaRobotExtension.email
 import convalida.sample.robot.ConvalidaRobotExtension.isbn
 import convalida.sample.robot.ConvalidaRobotExtension.ipv4
 import convalida.sample.robot.ConvalidaRobotExtension.ipv6
+import convalida.sample.robot.ConvalidaRobotExtension.url
 import convalida.sample.robot.ConvalidaRobotExtension.name
 import convalida.sample.robot.ConvalidaRobotExtension.nickName
 import convalida.sample.robot.ConvalidaRobotExtension.numericLimit
@@ -178,10 +179,32 @@ class KotlinDslSampleActivityTest {
         convalida { ipv6 typeText EMPTY_TEXT } validates { ipv6IsInvalid() }
     }
 
+    @Test fun urlField() {
+        convalida { url typeText VALID_URL } validates { urlIsValid() }
+
+        convalida { url typeText INVALID_URL } validates { urlIsInvalid() }
+
+        convalida { url typeText VALID_LOCAL_URL } validates { urlIsValid() }
+
+        convalida { url typeText INVALID_LOCAL_URL } validates { urlIsInvalid() }
+
+        convalida { url typeText EMPTY_TEXT } validates { urlIsInvalid() }
+    }
+
     companion object {
         const val EMPTY_TEXT = ""
+
         const val VALID_IPV6 = "67dc:742c:f48a:2e5e:dc9d:efb1:1210:52d2"
+
         const val INVALID_IPV6 = "67dc:742c:f48a:2e5e:dc9d:efb1:1210:52dg"
+
+        const val VALID_URL = "https://www.google.com"
+
+        const val VALID_LOCAL_URL = "http://localhost"
+
+        const val INVALID_URL = "google.com"
+
+        const val INVALID_LOCAL_URL = "localhost"
     }
 
 }

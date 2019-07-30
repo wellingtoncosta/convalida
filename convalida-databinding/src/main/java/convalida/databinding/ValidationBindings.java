@@ -22,8 +22,9 @@
  import convalida.validators.PasswordValidator;
  import convalida.validators.PatternValidator;
  import convalida.validators.RequiredValidator;
+ import convalida.validators.UrlValidator;
 
-/**
+ /**
  * @author WellingtonCosta on 29/03/18.
  */
 public class ValidationBindings {
@@ -346,6 +347,25 @@ public class ValidationBindings {
             Boolean required
     ) {
         field.setTag(R.id.validation_type, new Ipv6Validator(
+                field,
+                errorMessage,
+                autoDismiss != null ? autoDismiss : true,
+                required != null ? required : true
+        ));
+    }
+
+    @BindingAdapter(value = {
+            "urlErrorMessage",
+            "urlAutoDismiss",
+            "urlRequired"
+    }, requireAll = false)
+    public static void urlValidationBindings(
+            @NonNull EditText field,
+            @NonNull String errorMessage,
+            Boolean autoDismiss,
+            Boolean required
+    ) {
+        field.setTag(R.id.validation_type, new UrlValidator(
                 field,
                 errorMessage,
                 autoDismiss != null ? autoDismiss : true,

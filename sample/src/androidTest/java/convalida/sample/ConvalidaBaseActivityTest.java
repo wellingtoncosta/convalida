@@ -296,4 +296,37 @@ public class ConvalidaBaseActivityTest {
 
     }
 
+    @Test public void urlField() {
+        String VALID_URL = "https://www.google.com";
+        String VALID_LOCAL_URL = "http://localhost";
+
+        String INVALID_URL = "google.com";
+        String INVALID_LOCAL_URL = "localhost";
+
+        new ConvalidaRobot()
+                .url().typeText(VALID_URL)
+                .validate().result()
+                .urlIsValid();
+
+        new ConvalidaRobot()
+                .url().typeText(INVALID_URL)
+                .validate().result()
+                .urlIsInvalid();
+
+        new ConvalidaRobot()
+                .url().typeText(VALID_LOCAL_URL)
+                .validate().result()
+                .urlIsValid();
+
+        new ConvalidaRobot()
+                .url().typeText(INVALID_LOCAL_URL)
+                .validate().result()
+                .urlIsInvalid();
+
+        new ConvalidaRobot()
+                .url().typeText("")
+                .validate().result()
+                .urlIsInvalid();
+    }
+
 }

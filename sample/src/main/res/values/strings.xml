@@ -17,6 +17,7 @@
     <string name="numeric_limit">Numeric Limit</string>
     <string name="phone">Phone</string>
     <string name="password">Password</string>
+    <string name="url">Url</string>
     <string name="validate_fields">Validate</string>
     <string name="clear_validations">Clear</string>
 
@@ -35,6 +36,7 @@
     <string name="invalid_isbn">ISBN is not valid</string>
     <string name="invalid_ipv4">IPV4 is not valid</string>
     <string name="invalid_ipv6">IPV6 is not valid</string>
+    <string name="invalid_url">URL is not valid</string>
     <string name="start_value_not_valid">Start value is not valid</string>
     <string name="limit_value_not_valid">Limit value cannot be greater start value</string>
 

@@ -50,6 +50,7 @@ import convalida.annotations.OnlyNumber;
 import convalida.annotations.Password;
 import convalida.annotations.Pattern;
 import convalida.annotations.Required;
+import convalida.annotations.Url;
 import convalida.annotations.ValidateOnClick;
 import convalida.compiler.internal.Id;
 import convalida.compiler.internal.QualifiedId;
@@ -130,6 +131,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
                         NumericLimit.class,
                         Ipv4.class,
                         Ipv6.class,
+                        Url.class,
                         ValidateOnClick.class,
                         ClearValidationsOnClick.class,
                         OnValidationSuccess.class,
@@ -320,6 +322,16 @@ public class ConvalidaProcessor extends AbstractProcessor {
                 parseIpv6Validation(element, parents, validationFields);
             } catch (Exception e) {
                 logParsingError(element, Ipv6.class, e);
+            }
+        }
+
+        // Process each @Url element
+        for (Element element : env.getElementsAnnotatedWith(Url.class)) {
+            if (!SuperficialValidation.validateElement(element)) continue;
+            try {
+                parseUrlValidation(element, parents, validationFields);
+            } catch (Exception e) {
+                logParsingError(element, Url.class, e);
             }
         }
 
@@ -972,6 +984,32 @@ public class ConvalidaProcessor extends AbstractProcessor {
         validationFields.add(new ValidationField(
                 element,
                 Ipv6.class,
+                getId(qualifiedId),
+                autoDismiss
+        ));
+    }
+
+    private void parseUrlValidation(
+            Element element,
+            Set<Element> parents,
+            List<ValidationField> validationFields
+    ) {
+        boolean hasError =
+                isInvalid(Url.class, element) ||
+                        isInaccessible(Url.class, element);
+
+        if (hasError) {
+            return;
+        }
+
+        int errorMessageResourceId = element.getAnnotation(Url.class).errorMessageResId();
+        boolean autoDismiss = element.getAnnotation(Url.class).autoDismiss();
+        QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
+
+        parents.add(element.getEnclosingElement());
+        validationFields.add(new ValidationField(
+                element,
+                Url.class,
                 getId(qualifiedId),
                 autoDismiss
         ));

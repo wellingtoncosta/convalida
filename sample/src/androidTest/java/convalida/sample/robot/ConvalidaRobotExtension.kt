@@ -48,6 +48,8 @@ object ConvalidaRobotExtension {
 
     val Robot.ipv6: TypeText get() = this.ipv6()
 
+    val Robot.url: TypeText get() = this.url()
+
     infix fun TypeText.typeText(text: String): Robot = this.typeText(text)
 
     infix fun Robot.results(builder: ResultBuilder) = Result().apply(builder)

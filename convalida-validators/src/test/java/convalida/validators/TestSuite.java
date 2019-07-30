@@ -27,6 +27,7 @@ import org.junit.runners.Suite.SuiteClasses;
         ValidationErrorTest.class,
         StringsTest.class,
         Ipv4ValidatorTest.class,
-        Ipv6ValidatorTest.class
+        Ipv6ValidatorTest.class,
+        UrlValidatorTest.class
 })
 public class TestSuite { }

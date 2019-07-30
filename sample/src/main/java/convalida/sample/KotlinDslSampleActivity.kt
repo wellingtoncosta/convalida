@@ -27,6 +27,7 @@ class KotlinDslSampleActivity : AppCompatActivity() {
     private val invalidNumericLimit by lazy { this.getString(R.string.invalid_numeric_limit) }
     private val invalidIpv4 by lazy { this.getString(R.string.invalid_ipv4) }
     private val invalidIpv6 by lazy { this.getString(R.string.invalid_ipv6) }
+    private val invalidUrl by lazy { this.getString(R.string.invalid_url) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -118,6 +119,10 @@ class KotlinDslSampleActivity : AppCompatActivity() {
 
             field(ipv6_field) {
                 isIpv6(errorMessage = invalidIpv6)
+            }
+
+            field(url_field) {
+                isUrl(errorMessage = invalidUrl)
             }
 
             validateOn(validate_button) {

@@ -124,6 +124,13 @@ public class ConvalidaRobot {
         return new TypeText(this, R.id.ipv6_field);
     }
 
+    public TypeText url() {
+        onView(withId(R.id.url_field))
+                .perform(scrollTo(), clearText());
+
+        return new TypeText(this, R.id.url_field);
+    }
+
     public ConvalidaRobot validate() {
         onView(withId(R.id.validate_button))
                 .perform(closeSoftKeyboard())
@@ -285,6 +292,14 @@ public class ConvalidaRobot {
 
         public void ipv6IsInvalid() {
             isInvalid(R.id.ipv6_field, R.string.invalid_ipv6);
+        }
+
+        public void urlIsValid() {
+            isValid(R.id.url_field, R.string.invalid_url);
+        }
+
+        public void urlIsInvalid() {
+            isInvalid(R.id.url_field, R.string.invalid_url);
         }
 
         private void isInvalid(

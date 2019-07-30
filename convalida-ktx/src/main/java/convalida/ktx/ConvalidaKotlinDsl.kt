@@ -19,6 +19,7 @@ import convalida.validators.OnlyNumberValidator
 import convalida.validators.PasswordValidator
 import convalida.validators.PatternValidator
 import convalida.validators.RequiredValidator
+import convalida.validators.UrlValidator
 import convalida.validators.ValidatorSet
 import convalida.validators.error.ValidationErrorSet
 
@@ -213,3 +214,9 @@ fun EditText.isIpv6(
         autoDismiss: Boolean = true,
         required: Boolean = true
 ) = Ipv6Validator(this, errorMessage, autoDismiss, required)
+
+fun EditText.isUrl(
+        errorMessage: String,
+        autoDismiss: Boolean = true,
+        required: Boolean = true
+) = UrlValidator(this, errorMessage, autoDismiss, required)

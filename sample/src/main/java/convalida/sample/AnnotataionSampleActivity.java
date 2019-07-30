@@ -27,6 +27,7 @@ import convalida.annotations.OnlyNumber;
 import convalida.annotations.Password;
 import convalida.annotations.Pattern;
 import convalida.annotations.Required;
+import convalida.annotations.Url;
 import convalida.annotations.ValidateOnClick;
 
 import static convalida.library.util.Patterns.MIXED_CASE_NUMERIC;
@@ -94,6 +95,9 @@ public class AnnotataionSampleActivity extends AppCompatActivity {
     @Ipv6(errorMessageResId = R.string.invalid_ipv6)
     EditText ipv6Field;
 
+    @Url(errorMessageResId = R.string.invalid_url)
+    EditText urlField;
+
     @ValidateOnClick Button validateButton;
 
     @ClearValidationsOnClick Button clearValidationsButton;
@@ -125,6 +129,7 @@ public class AnnotataionSampleActivity extends AppCompatActivity {
         numberLimitField = findViewById(R.id.numeric_limit_field);
         ipv4Field = findViewById(R.id.ipv4_field);
         ipv6Field = findViewById(R.id.ipv6_field);
+        urlField = findViewById(R.id.url_field);
         validateButton = findViewById(R.id.validate_button);
         clearValidationsButton = findViewById(R.id.clear_button);
     }

@@ -26,6 +26,7 @@ import convalida.annotations.OnlyNumber;
 import convalida.annotations.Password;
 import convalida.annotations.Pattern;
 import convalida.annotations.Required;
+import convalida.annotations.Url;
 import convalida.compiler.internal.ValidationClass;
 import convalida.compiler.internal.ValidationField;
 
@@ -68,6 +69,8 @@ import static convalida.compiler.Constants.PATTERN_VALIDATOR;
 import static convalida.compiler.Constants.REQUIRED_ANNOTATION;
 import static convalida.compiler.Constants.REQUIRED_VALIDATOR;
 import static convalida.compiler.Constants.UI_THREAD;
+import static convalida.compiler.Constants.URL_ANNOTATION;
+import static convalida.compiler.Constants.URL_VALIDATOR;
 import static convalida.compiler.Constants.VALIDATOR_SET;
 import static convalida.compiler.Constants.VIEW;
 import static convalida.compiler.Constants.VIEWGROUP;
@@ -302,6 +305,9 @@ class JavaFiler {
                     break;
                 case IPV6_ANNOTATION:
                     builder.add(createIpv6ValidationCodeBlock(field));
+                    break;
+                case URL_ANNOTATION:
+                    builder.add(createUrlValidationCodeBlock(field));
                     break;
             }
         }
@@ -672,6 +678,27 @@ class JavaFiler {
                 .addStatement(
                         block,
                         IPV6_VALIDATOR,
+                        field.name,
+                        hasErrorMessageResId ? field.id.code : errorMessage,
+                        field.autoDismiss,
+                        field.element.getAnnotation(annotation).required()
+                )
+                .build();
+    }
+
+    private static CodeBlock createUrlValidationCodeBlock(ValidationField field) {
+        Element element = field.element;
+        Class<Url> annotation = Url.class;
+        boolean hasErrorMessageResId = element.getAnnotation(annotation).errorMessageResId() != -1;
+        String errorMessage = element.getAnnotation(annotation).errorMessage();
+        String block = "validatorSet.addValidator(new $T(target.$N, " +
+                errorMessage(hasErrorMessageResId) +
+                ", $L, $L))";
+
+        return CodeBlock.builder()
+                .addStatement(
+                        block,
+                        URL_VALIDATOR,
                         field.name,
                         hasErrorMessageResId ? field.id.code : errorMessage,
                         field.autoDismiss,
