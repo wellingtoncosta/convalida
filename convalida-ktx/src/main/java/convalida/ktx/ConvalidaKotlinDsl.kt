@@ -185,3 +185,8 @@ fun EditText.isConfirmPassword(
         autoDismiss: Boolean = true
 ) = ConfirmPasswordValidator(passwordField, this, errorMessage, autoDismiss)
 
+fun EditText.isIpv4(
+        errorMessage: String,
+        autoDismiss: Boolean = true,
+        required: Boolean = true
+) = Ipv4Validator(this, errorMessage, autoDismiss, required)

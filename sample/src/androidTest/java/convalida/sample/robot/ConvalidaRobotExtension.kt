@@ -44,6 +44,8 @@ object ConvalidaRobotExtension {
 
     val Robot.numericLimit: TypeText get() = this.numericLimit()
 
+    val Robot.ipv4: TypeText get() = this.ipv4()
+
     infix fun TypeText.typeText(text: String): Robot = this.typeText(text)
 
     infix fun Robot.results(builder: ResultBuilder) = Result().apply(builder)

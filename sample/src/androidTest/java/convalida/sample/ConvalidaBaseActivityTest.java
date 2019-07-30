@@ -257,4 +257,22 @@ public class ConvalidaBaseActivityTest {
                 .numericLimitIsInvalid();
     }
 
+    @Test public void ipv4Field() {
+        new ConvalidaRobot()
+                .ipv4().typeText("192.168.1.1")
+                .validate().result()
+                .ipv4IsValid();
+
+        new ConvalidaRobot()
+                .ipv4().typeText("300.1.1.256")
+                .validate().result()
+                .ipv4IsInvalid();
+
+        new ConvalidaRobot()
+                .ipv4().typeText("")
+                .validate().result()
+                .ipv4IsInvalid();
+
+    }
+
 }

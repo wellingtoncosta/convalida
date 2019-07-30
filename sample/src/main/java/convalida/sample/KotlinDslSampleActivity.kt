@@ -25,6 +25,7 @@ class KotlinDslSampleActivity : AppCompatActivity() {
     private val differentPasswords by lazy { this.getString(R.string.passwords_not_match) }
     private val invalidCreditCard by lazy { this.getString(R.string.invalid_credit_card) }
     private val invalidNumericLimit by lazy { this.getString(R.string.invalid_numeric_limit) }
+    private val invalidIpv4 by lazy { this.getString(R.string.invalid_ipv4) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -108,6 +109,10 @@ class KotlinDslSampleActivity : AppCompatActivity() {
                     field = limit_value_field
                     errorMessage = invalidLimitValue
                 }
+            }
+
+            field(ipv4_field) {
+                isIpv4(errorMessage = invalidIpv4)
             }
 
             validateOn(validate_button) {

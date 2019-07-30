@@ -229,6 +229,9 @@ class JavaFiler {
                 case NUMERIC_LIMIT_ANNOTATION:
                     builder.add(createNumericLimitValidationCodeBlock(field));
                     break;
+                case IPV4_ANNOTATION:
+                    builder.add(createIpv4ValidationCodeBlock(field));
+                    break;
             }
         }
         return builder.build();
@@ -559,6 +562,27 @@ class JavaFiler {
                         field.autoDismiss,
                         field.element.getAnnotation(annotation).min(),
                         field.element.getAnnotation(annotation).max(),
+                        field.element.getAnnotation(annotation).required()
+                )
+                .build();
+    }
+
+    private static CodeBlock createIpv4ValidationCodeBlock(ValidationField field) {
+        Element element = field.element;
+        Class<Ipv4> annotation = Ipv4.class;
+        boolean hasErrorMessageResId = element.getAnnotation(annotation).errorMessageResId() != -1;
+        String errorMessage = element.getAnnotation(annotation).errorMessage();
+        String block = "validatorSet.addValidator(new $T(target.$N, " +
+                errorMessage(hasErrorMessageResId) +
+                ", $L, $L))";
+
+        return CodeBlock.builder()
+                .addStatement(
+                        block,
+                        IPV4_VALIDATOR,
+                        field.name,
+                        hasErrorMessageResId ? field.id.code : errorMessage,
+                        field.autoDismiss,
                         field.element.getAnnotation(annotation).required()
                 )
                 .build();

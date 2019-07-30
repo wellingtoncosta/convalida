@@ -12,6 +12,7 @@ import convalida.sample.robot.ConvalidaRobotExtension.cpf
 import convalida.sample.robot.ConvalidaRobotExtension.creditCard
 import convalida.sample.robot.ConvalidaRobotExtension.email
 import convalida.sample.robot.ConvalidaRobotExtension.isbn
+import convalida.sample.robot.ConvalidaRobotExtension.ipv4
 import convalida.sample.robot.ConvalidaRobotExtension.name
 import convalida.sample.robot.ConvalidaRobotExtension.nickName
 import convalida.sample.robot.ConvalidaRobotExtension.numericLimit
@@ -158,6 +159,14 @@ class KotlinDslSampleActivityTest {
         convalida { numericLimit typeText "-1" } validates { numericLimitIsInvalid() }
 
         convalida { numericLimit typeText EMPTY_TEXT } validates { numericLimitIsInvalid() }
+    }
+
+    @Test fun ipv4Field() {
+        convalida { ipv4 typeText "192.168.1.1" } validates { ipv4IsValid() }
+
+        convalida { ipv4 typeText "300.1.1.256" } validates { ipv4IsInvalid() }
+
+        convalida { ipv4 typeText EMPTY_TEXT } validates { ipv4IsInvalid() }
     }
 
     companion object {

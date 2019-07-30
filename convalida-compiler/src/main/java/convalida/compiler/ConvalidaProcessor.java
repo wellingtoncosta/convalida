@@ -39,6 +39,7 @@ import convalida.annotations.ConfirmPassword;
 import convalida.annotations.Cpf;
 import convalida.annotations.CreditCard;
 import convalida.annotations.Email;
+import convalida.annotations.Ipv4;
 import convalida.annotations.Isbn;
 import convalida.annotations.Length;
 import convalida.annotations.NumericLimit;
@@ -126,6 +127,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
                         Between.Limit.class,
                         CreditCard.class,
                         NumericLimit.class,
+                        Ipv4.class,
                         ValidateOnClick.class,
                         ClearValidationsOnClick.class,
                         OnValidationSuccess.class,
@@ -296,6 +298,16 @@ public class ConvalidaProcessor extends AbstractProcessor {
                 parseNumericLimitValidation(element, parents, validationFields);
             } catch (Exception e) {
                 logParsingError(element, NumericLimit.class, e);
+            }
+        }
+
+        // Process each @Ipv4 element
+        for (Element element : env.getElementsAnnotatedWith(Ipv4.class)) {
+            if (!SuperficialValidation.validateElement(element)) continue;
+            try {
+                parseIpv4Validation(element, parents, validationFields);
+            } catch (Exception e) {
+                logParsingError(element, Ipv4.class, e);
             }
         }
 
@@ -896,6 +908,32 @@ public class ConvalidaProcessor extends AbstractProcessor {
         validationFields.add(new ValidationField(
                 element,
                 NumericLimit.class,
+                getId(qualifiedId),
+                autoDismiss
+        ));
+    }
+
+    private void parseIpv4Validation(
+            Element element,
+            Set<Element> parents,
+            List<ValidationField> validationFields
+    ) {
+        boolean hasError =
+                isInvalid(Ipv4.class, element) ||
+                        isInaccessible(Ipv4.class, element);
+
+        if (hasError) {
+            return;
+        }
+
+        int errorMessageResourceId = element.getAnnotation(Ipv4.class).errorMessageResId();
+        boolean autoDismiss = element.getAnnotation(Ipv4.class).autoDismiss();
+        QualifiedId qualifiedId = elementToQualifiedId(element, errorMessageResourceId);
+
+        parents.add(element.getEnclosingElement());
+        validationFields.add(new ValidationField(
+                element,
+                Ipv4.class,
                 getId(qualifiedId),
                 autoDismiss
         ));

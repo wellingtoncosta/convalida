@@ -69,6 +69,9 @@ public class AnnotataionSampleActivity extends AppCompatActivity {
     )
     EditText numberLimitField;
 
+    @Ipv4(errorMessageResId = R.string.invalid_ipv4)
+    EditText ipv4Field;
+
     @ValidateOnClick Button validateButton;
 
     @ClearValidationsOnClick Button clearValidationsButton;
@@ -98,6 +101,7 @@ public class AnnotataionSampleActivity extends AppCompatActivity {
         confirmPasswordField = findViewById(R.id.confirm_password_field);
         creditCardField = findViewById(R.id.credit_card_field);
         numberLimitField = findViewById(R.id.numeric_limit_field);
+        ipv4Field = findViewById(R.id.ipv4_field);
         validateButton = findViewById(R.id.validate_button);
         clearValidationsButton = findViewById(R.id.clear_button);
     }

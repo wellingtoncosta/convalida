@@ -298,6 +298,25 @@ public class ValidationBindings {
         ));
     }
 
+    @BindingAdapter(value = {
+            "ipv4ErrorMessage",
+            "ipv4AutoDismiss",
+            "ipv4Required"
+    }, requireAll = false)
+    public static void ipv4ValidationBindings(
+            @NonNull EditText field,
+            @NonNull String errorMessage,
+            Boolean autoDismiss,
+            Boolean required
+    ) {
+        field.setTag(R.id.validation_type, new Ipv4Validator(
+                field,
+                errorMessage,
+                autoDismiss != null ? autoDismiss : true,
+                required != null ? required : true
+        ));
+    }
+
     @BindingAdapter(value = "validationAction")
     public static void validationActionBindings(Button button, Integer action) {
         button.setTag(R.id.validation_action, action);

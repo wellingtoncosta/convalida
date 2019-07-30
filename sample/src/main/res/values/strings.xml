@@ -8,6 +8,7 @@
     <string name="credit_card">Credit Card</string>
     <string name="email">Email</string>
     <string name="initial_period">Initial Period</string>
+    <string name="ipv4">IPV4</string>
     <string name="isbn">ISBN</string>
     <string name="final_period">Final Period</string>
     <string name="nickname">Nick Name</string>
@@ -31,6 +32,7 @@
     <string name="invalid_cnpj">CNPJ is not valid</string>
     <string name="invalid_cpf">CPF is not valid</string>
     <string name="invalid_isbn">ISBN is not valid</string>
+    <string name="invalid_ipv4">IPV4 is not valid</string>
     <string name="start_value_not_valid">Start value is not valid</string>
     <string name="limit_value_not_valid">Limit value cannot be greater start value</string>
 

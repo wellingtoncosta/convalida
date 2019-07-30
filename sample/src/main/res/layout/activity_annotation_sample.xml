@@ -307,7 +307,6 @@
             android:id="@+id/credit_card_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:passwordToggleEnabled="true"
             android:layout_marginTop="@dimen/spacing_normal"
             android:layout_marginBottom="@dimen/spacing_large"
             android:layout_marginLeft="@dimen/spacing_large"
@@ -329,7 +328,6 @@
             android:id="@+id/numeric_limit_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:passwordToggleEnabled="true"
             android:layout_marginTop="@dimen/spacing_normal"
             android:layout_marginBottom="@dimen/spacing_large"
             android:layout_marginLeft="@dimen/spacing_large"
@@ -347,6 +345,27 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ipv4_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginBottom="@dimen/spacing_large"
+            android:layout_marginLeft="@dimen/spacing_large"
+            android:layout_marginRight="@dimen/spacing_large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/numeric_limit_layout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ipv4_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/ipv4"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/validate_button"
             android:layout_gravity="center"
@@ -360,7 +379,7 @@
             android:layout_marginRight="@dimen/spacing_large"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/numeric_limit_layout" />
+            app:layout_constraintTop_toBottomOf="@+id/ipv4_layout" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/clear_button"
