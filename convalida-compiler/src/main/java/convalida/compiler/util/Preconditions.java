@@ -35,7 +35,7 @@ public class Preconditions {
         return hasParams;
     }
 
-    public static boolean methodHasNoOneParameterOfType(
+    public static boolean methodHasZeroOrOneParameterOfType(
             ExecutableElement method,
             Class<? extends Annotation> annotationClass,
             String type
