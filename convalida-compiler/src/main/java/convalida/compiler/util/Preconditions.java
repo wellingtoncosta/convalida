@@ -1,4 +1,4 @@
-package convalida.compiler;
+package convalida.compiler.util;
 
 import javax.lang.model.element.*;
 import java.lang.annotation.Annotation;
@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static convalida.compiler.Constants.EDIT_TEXT;
-import static convalida.compiler.Messager.error;
+import static convalida.compiler.util.Constants.EDIT_TEXT;
+import static convalida.compiler.util.Messager.error;
 import static javax.lang.model.element.ElementKind.CLASS;
 import static javax.lang.model.element.ElementKind.FIELD;
 import static javax.lang.model.element.Modifier.PRIVATE;
@@ -16,12 +16,12 @@ import static javax.lang.model.element.Modifier.STATIC;
 /**
  * @author wellingtoncosta on 02/04/18
  */
-class Preconditions {
+public class Preconditions {
 
     // Can not be instantiated
     private Preconditions() { }
 
-    static boolean methodHasParams(
+    public static boolean methodHasParams(
             ExecutableElement method,
             Class<? extends Annotation> annotationClass
     ) {
@@ -35,7 +35,7 @@ class Preconditions {
         return hasParams;
     }
 
-    static boolean methodHasNoOneParameterOfType(
+    public static boolean methodHasNoOneParameterOfType(
             ExecutableElement method,
             Class<? extends Annotation> annotationClass,
             String type
@@ -67,7 +67,7 @@ class Preconditions {
         return variable.asType().toString().equals(type);
     }
 
-    static boolean hasMoreThanOneMethodsAnnotatedWith(
+    public static boolean hasMoreThanOneMethodsAnnotatedWith(
             Element parent,
             Class<? extends Annotation> annotationClass) {
         boolean hasMoreThanOneElement = false;
@@ -92,7 +92,7 @@ class Preconditions {
         return hasMoreThanOneElement;
     }
 
-    static boolean hasNoMethodAnnotatedWith(
+    public static boolean hasNoMethodAnnotatedWith(
             Element parent,
             Class<? extends Annotation> annotationClass) {
         boolean hasNoElements = false;
@@ -117,7 +117,7 @@ class Preconditions {
         return hasNoElements;
     }
 
-    static boolean confirmValidationElementsHasError(
+    public static boolean confirmValidationElementsHasError(
             Class<? extends Annotation> primaryAnnotation,
             Class<? extends Annotation> confirmAnnotation,
             Element element) {
@@ -166,7 +166,7 @@ class Preconditions {
         return hasError;
     }
 
-    static boolean isInvalid(Class<? extends Annotation> annotationClass, Element element) {
+    public static boolean isInvalid(Class<? extends Annotation> annotationClass, Element element) {
         TypeElement enclosingElement = (TypeElement) element.getEnclosingElement();
         String elementType = element.asType().toString();
         boolean hasError = false;
@@ -201,7 +201,7 @@ class Preconditions {
         return hasError;
     }
 
-    static boolean isInaccessible(Class<? extends Annotation> annotationClass, Element element) {
+    public static boolean isInaccessible(Class<? extends Annotation> annotationClass, Element element) {
         TypeElement enclosingElement = (TypeElement) element.getEnclosingElement();
         boolean hasError = false;
 

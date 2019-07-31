@@ -54,21 +54,23 @@ import convalida.annotations.Url;
 import convalida.annotations.ValidateOnClick;
 import convalida.compiler.internal.Id;
 import convalida.compiler.internal.QualifiedId;
-import convalida.compiler.internal.ValidationClass;
-import convalida.compiler.internal.ValidationField;
+import convalida.compiler.model.ValidationClass;
+import convalida.compiler.model.ValidationField;
 import convalida.compiler.internal.scanners.IdScanner;
 import convalida.compiler.internal.scanners.RClassScanner;
+import convalida.compiler.util.JavaFiler;
+import convalida.compiler.util.Messager;
 
-import static convalida.compiler.Constants.VALIDATION_ERROR;
-import static convalida.compiler.Messager.error;
-import static convalida.compiler.Messager.logParsingError;
-import static convalida.compiler.Preconditions.confirmValidationElementsHasError;
-import static convalida.compiler.Preconditions.hasMoreThanOneMethodsAnnotatedWith;
-import static convalida.compiler.Preconditions.hasNoMethodAnnotatedWith;
-import static convalida.compiler.Preconditions.isInaccessible;
-import static convalida.compiler.Preconditions.isInvalid;
-import static convalida.compiler.Preconditions.methodHasNoOneParameterOfType;
-import static convalida.compiler.Preconditions.methodHasParams;
+import static convalida.compiler.util.Constants.VALIDATION_ERROR;
+import static convalida.compiler.util.Messager.error;
+import static convalida.compiler.util.Messager.logParsingError;
+import static convalida.compiler.util.Preconditions.confirmValidationElementsHasError;
+import static convalida.compiler.util.Preconditions.hasMoreThanOneMethodsAnnotatedWith;
+import static convalida.compiler.util.Preconditions.hasNoMethodAnnotatedWith;
+import static convalida.compiler.util.Preconditions.isInaccessible;
+import static convalida.compiler.util.Preconditions.isInvalid;
+import static convalida.compiler.util.Preconditions.methodHasNoOneParameterOfType;
+import static convalida.compiler.util.Preconditions.methodHasParams;
 
 /**
  * @author Wellington Costa on 13/06/2017.
@@ -157,11 +159,16 @@ public class ConvalidaProcessor extends AbstractProcessor {
     }
 
     private List<ValidationClass> findAndParseValidations(RoundEnvironment env) {
+
         Set<Element> parents = new HashSet<>();
-        List<ValidationField> validationFields = new ArrayList<>();
-        List<Element> validationActions = new ArrayList<>();
-        List<Element> validationResults = new ArrayList<>();
+
         List<ValidationClass> validationClasses = new ArrayList<>();
+
+        List<ValidationField> validationFields = new ArrayList<>();
+
+        List<Element> validationActions = new ArrayList<>();
+
+        List<Element> validationResults = new ArrayList<>();
 
         scanForRClasses(env);
 
@@ -377,6 +384,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
 
         // Assemble the validation classes and fields
         for (Element parent : parents) {
+
             ValidationClass validationClass = new ValidationClass(parent, this.elementUtils);
 
             processValidationFields(parent, validationClass, validationFields);
@@ -386,6 +394,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
             processValidationResults(parent, validationClass, validationResults);
 
             validationClasses.add(validationClass);
+
         }
 
         return validationClasses;

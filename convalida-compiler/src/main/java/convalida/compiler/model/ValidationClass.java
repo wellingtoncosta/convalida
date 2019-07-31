@@ -1,4 +1,4 @@
-package convalida.compiler.internal;
+package convalida.compiler.model;
 
 import com.squareup.javapoet.TypeName;
 

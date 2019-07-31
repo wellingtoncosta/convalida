@@ -1,4 +1,4 @@
-package convalida.compiler;
+package convalida.compiler.util;
 
 import com.squareup.javapoet.ClassName;
 
@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * @author Wellington Costa on 26/10/2017.
  */
-class Constants {
+public class Constants {
 
     static final ClassName LIST                                     = ClassName.get(List.class);
     static final ClassName OVERRIDE                                 = ClassName.get(Override.class);
@@ -25,7 +25,7 @@ class Constants {
     static final ClassName CONVALIDA_DATABINDING_R                  = ClassName.get("convalida.databinding", "R");
     static final ClassName ABSTRACT_VALIDATOR                       = ClassName.get("convalida.validators", "AbstractValidator");
     static final ClassName VALIDATOR_SET                            = ClassName.get("convalida.validators", "ValidatorSet");
-    static final ClassName VALIDATION_ERROR                         = ClassName.get("convalida.validators.error", "ValidationErrorSet");
+    public  static final ClassName VALIDATION_ERROR                 = ClassName.get("convalida.validators.error", "ValidationErrorSet");
 
     static final String REQUIRED_ANNOTATION                         = "convalida.annotations.Required";
     static final String EMAIL_ANNOTATION                            = "convalida.annotations.Email";

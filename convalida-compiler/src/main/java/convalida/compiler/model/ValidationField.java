@@ -1,8 +1,10 @@
-package convalida.compiler.internal;
+package convalida.compiler.model;
 
 import java.lang.annotation.Annotation;
 
 import javax.lang.model.element.Element;
+
+import convalida.compiler.internal.Id;
 
 /**
  * @author Wellington Costa on 27/09/2017.
