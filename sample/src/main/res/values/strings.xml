@@ -6,6 +6,7 @@
     <string name="cnpj">CNPJ</string>
     <string name="cpf">CPF</string>
     <string name="credit_card">Credit Card</string>
+    <string name="date">Date</string>
     <string name="email">Email</string>
     <string name="initial_period">Initial Period</string>
     <string name="ipv4">IPV4</string>
@@ -33,6 +34,7 @@
     <string name="emails_not_match">Emails does not match</string>
     <string name="invalid_cnpj">CNPJ is not valid</string>
     <string name="invalid_cpf">CPF is not valid</string>
+    <string name="invalid_past_date">Date exceeded the past date limit</string>
     <string name="invalid_isbn">ISBN is not valid</string>
     <string name="invalid_ipv4">IPV4 is not valid</string>
     <string name="invalid_ipv6">IPV6 is not valid</string>

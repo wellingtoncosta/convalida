@@ -50,6 +50,8 @@ object ConvalidaRobotExtension {
 
     val Robot.url: TypeText get() = this.url()
 
+    val Robot.date: TypeText get() = this.date()
+
     infix fun TypeText.typeText(text: String): Robot = this.typeText(text)
 
     infix fun Robot.results(builder: ResultBuilder) = Result().apply(builder)

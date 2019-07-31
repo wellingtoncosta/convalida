@@ -25,7 +25,7 @@ public class Constants {
     static final ClassName CONVALIDA_DATABINDING_R                  = ClassName.get("convalida.databinding", "R");
     static final ClassName ABSTRACT_VALIDATOR                       = ClassName.get("convalida.validators", "AbstractValidator");
     static final ClassName VALIDATOR_SET                            = ClassName.get("convalida.validators", "ValidatorSet");
-    public  static final ClassName VALIDATION_ERROR                 = ClassName.get("convalida.validators.error", "ValidationErrorSet");
+    public static final ClassName VALIDATION_ERROR                 = ClassName.get("convalida.validators.error", "ValidationErrorSet");
 
     static final String REQUIRED_ANNOTATION                         = "convalida.annotations.Required";
     static final String EMAIL_ANNOTATION                            = "convalida.annotations.Email";
@@ -44,6 +44,7 @@ public class Constants {
     static final String IPV4_ANNOTATION                             = "convalida.annotations.Ipv4";
     static final String IPV6_ANNOTATION                             = "convalida.annotations.Ipv6";
     static final String URL_ANNOTATION                              = "convalida.annotations.Url";
+    static final String PAST_DATE_ANNOTATION                        = "convalida.annotations.PastDate";
 
     static final ClassName REQUIRED_VALIDATOR                       = ClassName.get("convalida.validators", "RequiredValidator");
     static final ClassName EMAIL_VALIDATOR                          = ClassName.get("convalida.validators", "EmailValidator");
@@ -62,5 +63,6 @@ public class Constants {
     static final ClassName IPV4_VALIDATOR                           = ClassName.get("convalida.validators", "Ipv4Validator");
     static final ClassName IPV6_VALIDATOR                           = ClassName.get("convalida.validators", "Ipv6Validator");
     static final ClassName URL_VALIDATOR                            = ClassName.get("convalida.validators", "UrlValidator");
+    static final ClassName PAST_DATE_VALIDATOR                      = ClassName.get("convalida.validators", "PastDateValidator");
 
 }

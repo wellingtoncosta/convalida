@@ -17,6 +17,7 @@ import convalida.validators.LengthValidator
 import convalida.validators.NumericLimitValidator
 import convalida.validators.OnlyNumberValidator
 import convalida.validators.PasswordValidator
+import convalida.validators.PastDateValidator
 import convalida.validators.PatternValidator
 import convalida.validators.RequiredValidator
 import convalida.validators.UrlValidator
@@ -220,3 +221,11 @@ fun EditText.isUrl(
         autoDismiss: Boolean = true,
         required: Boolean = true
 ) = UrlValidator(this, errorMessage, autoDismiss, required)
+
+fun EditText.pastDate(
+        errorMessage: String,
+        dateFormat: String,
+        limitDate: String,
+        autoDismiss: Boolean = true,
+        required: Boolean = true
+) = PastDateValidator(this, errorMessage, dateFormat, limitDate, autoDismiss, required)

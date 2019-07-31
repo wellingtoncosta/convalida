@@ -24,6 +24,7 @@ import convalida.annotations.Length;
 import convalida.annotations.NumericLimit;
 import convalida.annotations.OnlyNumber;
 import convalida.annotations.Password;
+import convalida.annotations.PastDate;
 import convalida.annotations.Pattern;
 import convalida.annotations.Required;
 import convalida.annotations.Url;
@@ -64,6 +65,8 @@ import static convalida.compiler.util.Constants.ONLY_NUMBER_VALIDATOR;
 import static convalida.compiler.util.Constants.OVERRIDE;
 import static convalida.compiler.util.Constants.PASSWORD_ANNOTATION;
 import static convalida.compiler.util.Constants.PASSWORD_VALIDATOR;
+import static convalida.compiler.util.Constants.PAST_DATE_ANNOTATION;
+import static convalida.compiler.util.Constants.PAST_DATE_VALIDATOR;
 import static convalida.compiler.util.Constants.PATTERN_ANNOTATION;
 import static convalida.compiler.util.Constants.PATTERN_VALIDATOR;
 import static convalida.compiler.util.Constants.REQUIRED_ANNOTATION;
@@ -308,6 +311,9 @@ public class JavaFiler {
                     break;
                 case URL_ANNOTATION:
                     builder.add(createUrlValidationCodeBlock(field));
+                    break;
+                case PAST_DATE_ANNOTATION:
+                    builder.add(createPastDateValidationCodeBlock(field));
                     break;
             }
         }
@@ -701,6 +707,29 @@ public class JavaFiler {
                         URL_VALIDATOR,
                         field.name,
                         hasErrorMessageResId ? field.id.code : errorMessage,
+                        field.autoDismiss,
+                        field.element.getAnnotation(annotation).required()
+                )
+                .build();
+    }
+
+    private static CodeBlock createPastDateValidationCodeBlock(ValidationField field) {
+        Element element = field.element;
+        Class<PastDate> annotation = PastDate.class;
+        boolean hasErrorMessageResId = element.getAnnotation(annotation).errorMessageResId() != -1;
+        String errorMessage = element.getAnnotation(annotation).errorMessage();
+        String block = "validatorSet.addValidator(new $T(target.$N, " +
+                errorMessage(hasErrorMessageResId) +
+                ", $S, $S, $L, $L))";
+
+        return CodeBlock.builder()
+                .addStatement(
+                        block,
+                        PAST_DATE_VALIDATOR,
+                        field.name,
+                        hasErrorMessageResId ? field.id.code : errorMessage,
+                        field.element.getAnnotation(annotation).dateFormat(),
+                        field.element.getAnnotation(annotation).limitDate(),
                         field.autoDismiss,
                         field.element.getAnnotation(annotation).required()
                 )

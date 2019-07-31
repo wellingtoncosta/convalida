@@ -131,6 +131,13 @@ public class ConvalidaRobot {
         return new TypeText(this, R.id.url_field);
     }
 
+    public TypeText date() {
+        onView(withId(R.id.date_field))
+                .perform(scrollTo(), clearText());
+
+        return new TypeText(this, R.id.date_field);
+    }
+
     public ConvalidaRobot validate() {
         onView(withId(R.id.validate_button))
                 .perform(closeSoftKeyboard())
@@ -300,6 +307,14 @@ public class ConvalidaRobot {
 
         public void urlIsInvalid() {
             isInvalid(R.id.url_field, R.string.invalid_url);
+        }
+
+        public void pastDateIsValid() {
+            isValid(R.id.date_field, R.string.invalid_past_date);
+        }
+
+        public void pastDateIsInvalid() {
+            isInvalid(R.id.date_field, R.string.invalid_past_date);
         }
 
         private void isInvalid(

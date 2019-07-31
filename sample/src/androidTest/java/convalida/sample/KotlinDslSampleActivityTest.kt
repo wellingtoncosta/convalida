@@ -15,6 +15,7 @@ import convalida.sample.robot.ConvalidaRobotExtension.isbn
 import convalida.sample.robot.ConvalidaRobotExtension.ipv4
 import convalida.sample.robot.ConvalidaRobotExtension.ipv6
 import convalida.sample.robot.ConvalidaRobotExtension.url
+import convalida.sample.robot.ConvalidaRobotExtension.date
 import convalida.sample.robot.ConvalidaRobotExtension.name
 import convalida.sample.robot.ConvalidaRobotExtension.nickName
 import convalida.sample.robot.ConvalidaRobotExtension.numericLimit
@@ -191,7 +192,18 @@ class KotlinDslSampleActivityTest {
         convalida { url typeText EMPTY_TEXT } validates { urlIsInvalid() }
     }
 
+    @Test fun dateField() {
+        convalida { date typeText VALID_DATE } validates { pastDateIsValid() }
+
+        convalida { date typeText INVALID_DATE } validates { pastDateIsInvalid() }
+
+        convalida { date typeText INVALID_LOCAL_URL } validates { pastDateIsInvalid() }
+
+        convalida { date typeText INVALID_FORMATTED_DATE } validates { pastDateIsInvalid() }
+    }
+
     companion object {
+
         const val EMPTY_TEXT = ""
 
         const val VALID_IPV6 = "67dc:742c:f48a:2e5e:dc9d:efb1:1210:52d2"
@@ -205,6 +217,13 @@ class KotlinDslSampleActivityTest {
         const val INVALID_URL = "google.com"
 
         const val INVALID_LOCAL_URL = "localhost"
+
+        const val VALID_DATE = "01/01/2010"
+
+        const val INVALID_DATE = "01/01/1990"
+
+        const val INVALID_FORMATTED_DATE = "01-01-2010"
+
     }
 
 }

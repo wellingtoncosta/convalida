@@ -27,6 +27,7 @@ import convalida.annotations.OnValidationError;
 import convalida.annotations.OnValidationSuccess;
 import convalida.annotations.OnlyNumber;
 import convalida.annotations.Password;
+import convalida.annotations.PastDate;
 import convalida.annotations.Pattern;
 import convalida.annotations.Required;
 import convalida.annotations.Url;
@@ -323,6 +324,22 @@ public class AnnotationParsers {
                             Set<Element> parents,
                             List<ValidationField> fields
                     ) { parseUrlValidation(element, parents, fields); }
+                }
+        );
+    }
+
+    public static void processPastDateValidation(
+            RoundEnvironment env,
+            Set<Element> parents,
+            List<ValidationField> fields
+    ) {
+        parseGenericValidation(PastDate.class, env, parents, fields,
+                new ValidationCallBack() {
+                    @Override public void execute(
+                            Element element,
+                            Set<Element> parents,
+                            List<ValidationField> fields
+                    ) { parsePastDateValidation(element, parents, fields); }
                 }
         );
     }
@@ -753,6 +770,21 @@ public class AnnotationParsers {
                 element,
                 element.getAnnotation(Url.class).errorMessageResId(),
                 element.getAnnotation(Url.class).autoDismiss()
+        );
+
+        parseGenericValidation(parameters, parents, fields);
+    }
+
+    private static void parsePastDateValidation(
+            Element element,
+            Set<Element> parents,
+            List<ValidationField> fields
+    ) {
+        CommonValidationParameters parameters = new CommonValidationParameters(
+                PastDate.class,
+                element,
+                element.getAnnotation(PastDate.class).errorMessageResId(),
+                element.getAnnotation(PastDate.class).autoDismiss()
         );
 
         parseGenericValidation(parameters, parents, fields);

@@ -25,12 +25,15 @@ import convalida.annotations.OnValidationError;
 import convalida.annotations.OnValidationSuccess;
 import convalida.annotations.OnlyNumber;
 import convalida.annotations.Password;
+import convalida.annotations.PastDate;
 import convalida.annotations.Pattern;
 import convalida.annotations.Required;
 import convalida.annotations.Url;
 import convalida.annotations.ValidateOnClick;
 
+import static convalida.library.util.Patterns.BR_DATE_FORMAT;
 import static convalida.library.util.Patterns.MIXED_CASE_NUMERIC;
+import static convalida.sample.Constants.JAN_01_2000_DATE;
 import static convalida.sample.Constants.PHONE_PATTERN;
 
 /**
@@ -98,15 +101,28 @@ public class AnnotataionSampleActivity extends AppCompatActivity {
     @Url(errorMessageResId = R.string.invalid_url)
     EditText urlField;
 
+    @PastDate(
+            dateFormat = BR_DATE_FORMAT,
+            limitDate = JAN_01_2000_DATE,
+            errorMessageResId = R.string.invalid_past_date
+    )
+    EditText dateField;
+
     @ValidateOnClick Button validateButton;
 
     @ClearValidationsOnClick Button clearValidationsButton;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_annotation_sample);
+
         bindViews();
-        if(getSupportActionBar() != null) getSupportActionBar().setTitle(R.string.using_annotations);
+
+        if(getSupportActionBar() != null)
+            getSupportActionBar().setTitle(R.string.using_annotations);
+
         AnnotataionSampleActivityFieldsValidation.init(this);
     }
 
@@ -130,6 +146,7 @@ public class AnnotataionSampleActivity extends AppCompatActivity {
         ipv4Field = findViewById(R.id.ipv4_field);
         ipv6Field = findViewById(R.id.ipv6_field);
         urlField = findViewById(R.id.url_field);
+        dateField = findViewById(R.id.date_field);
         validateButton = findViewById(R.id.validate_button);
         clearValidationsButton = findViewById(R.id.clear_button);
     }

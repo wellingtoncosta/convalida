@@ -37,6 +37,7 @@ import convalida.annotations.OnValidationError;
 import convalida.annotations.OnValidationSuccess;
 import convalida.annotations.OnlyNumber;
 import convalida.annotations.Password;
+import convalida.annotations.PastDate;
 import convalida.annotations.Pattern;
 import convalida.annotations.Required;
 import convalida.annotations.Url;
@@ -65,6 +66,7 @@ import static convalida.compiler.parser.AnnotationParsers.processOnValidationErr
 import static convalida.compiler.parser.AnnotationParsers.processOnValidationSuccessResult;
 import static convalida.compiler.parser.AnnotationParsers.processOnlyNumberValidation;
 import static convalida.compiler.parser.AnnotationParsers.processPasswordValidation;
+import static convalida.compiler.parser.AnnotationParsers.processPastDateValidation;
 import static convalida.compiler.parser.AnnotationParsers.processPatternValidation;
 import static convalida.compiler.parser.AnnotationParsers.processRequiredValidation;
 import static convalida.compiler.parser.AnnotationParsers.processUrlValidation;
@@ -131,6 +133,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
                         Ipv4.class,
                         Ipv6.class,
                         Url.class,
+                        PastDate.class,
                         ValidateOnClick.class,
                         ClearValidationsOnClick.class,
                         OnValidationSuccess.class,
@@ -202,6 +205,8 @@ public class ConvalidaProcessor extends AbstractProcessor {
         processIpv6Validation(env, parents, fields);
 
         processUrlValidation(env, parents, fields);
+
+        processPastDateValidation(env, parents, fields);
 
         processValidateOnClickAction(env, parents, actions);
 

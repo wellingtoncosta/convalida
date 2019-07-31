@@ -12,8 +12,11 @@ import static org.mockito.Mockito.when;
  */
 public class BaseTest {
 
+    protected final String EMPTY_VALUE = "";
+
     protected EditText mockEditText;
-    protected String errorMessage = "Field invalid";
+
+    protected final String errorMessage = "Field invalid";
 
     @Before public void setUp() {
         mockEditText = mock(EditText.class);

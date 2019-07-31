@@ -20,6 +20,7 @@
  import convalida.validators.NumericLimitValidator;
  import convalida.validators.OnlyNumberValidator;
  import convalida.validators.PasswordValidator;
+ import convalida.validators.PastDateValidator;
  import convalida.validators.PatternValidator;
  import convalida.validators.RequiredValidator;
  import convalida.validators.UrlValidator;
@@ -368,6 +369,31 @@ public class ValidationBindings {
         field.setTag(R.id.validation_type, new UrlValidator(
                 field,
                 errorMessage,
+                autoDismiss != null ? autoDismiss : true,
+                required != null ? required : true
+        ));
+    }
+
+    @BindingAdapter(value = {
+            "pastDateErrorMessage",
+            "pastDateDateFormat",
+            "pastDateLimitDate",
+            "pastDateAutoDismiss",
+            "pastDateRequired"
+    }, requireAll = false)
+    public static void pastDateValidationBindings(
+            @NonNull EditText field,
+            @NonNull String errorMessage,
+            @NonNull String dateFormat,
+            @NonNull String limitDate,
+            Boolean autoDismiss,
+            Boolean required
+    ) {
+        field.setTag(R.id.validation_type, new PastDateValidator(
+                field,
+                errorMessage,
+                dateFormat,
+                limitDate,
                 autoDismiss != null ? autoDismiss : true,
                 required != null ? required : true
         ));

@@ -9,6 +9,26 @@ import convalida.sample.robot.ConvalidaRobot;
  */
 public class ConvalidaBaseActivityTest {
 
+    private static final String EMPTY_TEXT = "";
+
+    private static final String VALID_IPV6 = "67dc:742c:f48a:2e5e:dc9d:efb1:1210:52d2";
+
+    private static final String INVALID_IPV6 = "67dc:742c:f48a:2e5e:dc9d:efb1:1210:52dg";
+
+    private static final String VALID_URL = "https://www.google.com";
+
+    private static final String VALID_LOCAL_URL = "http://localhost";
+
+    private static final String INVALID_URL = "google.com";
+
+    private static final String INVALID_LOCAL_URL = "localhost";
+
+    private static final String VALID_DATE = "01/01/2010";
+
+    private static final String INVALID_DATE = "01/01/1990";
+
+    private static final String INVALID_FORMATTED_DATE = "01-01-2010";
+
     @Test public void validateWithEmptyFields() {
         new ConvalidaRobot()
                 .validate()
@@ -48,7 +68,7 @@ public class ConvalidaBaseActivityTest {
                 .nickNameIsInvalid();
 
         new ConvalidaRobot()
-                .nickName().typeText("")
+                .nickName().typeText(EMPTY_TEXT)
                 .validate().result()
                 .nickNameIsInvalid();
     }
@@ -65,7 +85,7 @@ public class ConvalidaBaseActivityTest {
                 .ageIsInvalid();
 
         new ConvalidaRobot()
-                .age().typeText("")
+                .age().typeText(EMPTY_TEXT)
                 .validate().result()
                 .ageIsInvalid();
     }
@@ -82,7 +102,7 @@ public class ConvalidaBaseActivityTest {
                 .phoneIsInvalid();
 
         new ConvalidaRobot()
-                .phone().typeText("")
+                .phone().typeText(EMPTY_TEXT)
                 .validate().result()
                 .phoneIsInvalid();
     }
@@ -99,7 +119,7 @@ public class ConvalidaBaseActivityTest {
                 .cpfIsInvalid();
 
         new ConvalidaRobot()
-                .cpf().typeText("")
+                .cpf().typeText(EMPTY_TEXT)
                 .validate().result()
                 .cpfIsInvalid();
     }
@@ -116,7 +136,7 @@ public class ConvalidaBaseActivityTest {
                 .cnpjIsInvalid();
 
         new ConvalidaRobot()
-                .cnpj().typeText("")
+                .cnpj().typeText(EMPTY_TEXT)
                 .validate().result()
                 .cnpjIsInvalid();
     }
@@ -133,7 +153,7 @@ public class ConvalidaBaseActivityTest {
                 .isbnIsInvalid();
 
         new ConvalidaRobot()
-                .isbn().typeText("")
+                .isbn().typeText(EMPTY_TEXT)
                 .validate().result()
                 .isbnIsInvalid();
 
@@ -151,7 +171,7 @@ public class ConvalidaBaseActivityTest {
                 .emailIsInvalid();
 
         new ConvalidaRobot()
-                .email().typeText("")
+                .email().typeText(EMPTY_TEXT)
                 .validate().result()
                 .emailIsInvalid();
     }
@@ -183,7 +203,7 @@ public class ConvalidaBaseActivityTest {
                 .passwordIsInvalid();
 
         new ConvalidaRobot()
-                .password().typeText("")
+                .password().typeText(EMPTY_TEXT)
                 .validate().result()
                 .passwordIsInvalid();
     }
@@ -215,7 +235,7 @@ public class ConvalidaBaseActivityTest {
                 .creditCardIsInvalid();
 
         new ConvalidaRobot()
-                .creditCard().typeText("")
+                .creditCard().typeText(EMPTY_TEXT)
                 .validate().result()
                 .creditCardIsInvalid();
     }
@@ -252,7 +272,7 @@ public class ConvalidaBaseActivityTest {
                 .numericLimitIsInvalid();
 
         new ConvalidaRobot()
-                .numericLimit().typeText("")
+                .numericLimit().typeText(EMPTY_TEXT)
                 .validate().result()
                 .numericLimitIsInvalid();
     }
@@ -269,16 +289,13 @@ public class ConvalidaBaseActivityTest {
                 .ipv4IsInvalid();
 
         new ConvalidaRobot()
-                .ipv4().typeText("")
+                .ipv4().typeText(EMPTY_TEXT)
                 .validate().result()
                 .ipv4IsInvalid();
 
     }
 
     @Test public void ipv6Field() {
-        String VALID_IPV6 = "67dc:742c:f48a:2e5e:dc9d:efb1:1210:52d2";
-        String INVALID_IPV6 = "67dc:742c:f48a:2e5e:dc9d:efb1:1210:52dg";
-
         new ConvalidaRobot()
                 .ipv6().typeText(VALID_IPV6)
                 .validate().result()
@@ -290,19 +307,13 @@ public class ConvalidaBaseActivityTest {
                 .ipv6IsInvalid();
 
         new ConvalidaRobot()
-                .ipv6().typeText("")
+                .ipv6().typeText(EMPTY_TEXT)
                 .validate().result()
                 .ipv6IsInvalid();
 
     }
 
     @Test public void urlField() {
-        String VALID_URL = "https://www.google.com";
-        String VALID_LOCAL_URL = "http://localhost";
-
-        String INVALID_URL = "google.com";
-        String INVALID_LOCAL_URL = "localhost";
-
         new ConvalidaRobot()
                 .url().typeText(VALID_URL)
                 .validate().result()
@@ -324,9 +335,31 @@ public class ConvalidaBaseActivityTest {
                 .urlIsInvalid();
 
         new ConvalidaRobot()
-                .url().typeText("")
+                .url().typeText(EMPTY_TEXT)
                 .validate().result()
                 .urlIsInvalid();
+    }
+
+    @Test public void dateField() {
+        new ConvalidaRobot()
+                .date().typeText(VALID_DATE)
+                .validate().result()
+                .pastDateIsValid();
+
+        new ConvalidaRobot()
+                .date().typeText(INVALID_DATE)
+                .validate().result()
+                .pastDateIsInvalid();
+
+        new ConvalidaRobot()
+                .date().typeText(INVALID_FORMATTED_DATE)
+                .validate().result()
+                .pastDateIsInvalid();
+
+        new ConvalidaRobot()
+                .date().typeText(EMPTY_TEXT)
+                .validate().result()
+                .pastDateIsInvalid();
     }
 
 }
