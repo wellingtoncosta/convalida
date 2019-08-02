@@ -7,6 +7,7 @@ import convalida.ktx.*
 import convalida.library.util.Patterns.BR_DATE_FORMAT
 import convalida.library.util.Patterns.MIXED_CASE_NUMERIC
 import convalida.sample.Constants.JAN_01_2000_DATE
+import convalida.sample.Constants.JAN_01_2010_DATE
 import convalida.sample.Constants.PHONE_PATTERN
 import kotlinx.android.synthetic.main.activity_kotlin_dsl_sample.*
 
@@ -31,6 +32,7 @@ class KotlinDslSampleActivity : AppCompatActivity() {
     private val invalidIpv6 by lazy { this.getString(R.string.invalid_ipv6) }
     private val invalidUrl by lazy { this.getString(R.string.invalid_url) }
     private val invalidPastDate by lazy { this.getString(R.string.invalid_past_date) }
+    private val invalidFutureDate by lazy { this.getString(R.string.invalid_future_date) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -133,6 +135,12 @@ class KotlinDslSampleActivity : AppCompatActivity() {
                         dateFormat = BR_DATE_FORMAT,
                         limitDate = JAN_01_2000_DATE,
                         errorMessage = invalidPastDate
+                )
+
+                futureDate(
+                        dateFormat = BR_DATE_FORMAT,
+                        limitDate = JAN_01_2010_DATE,
+                        errorMessage = invalidFutureDate
                 )
             }
 

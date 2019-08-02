@@ -16,6 +16,7 @@ import convalida.annotations.ConfirmPassword;
 import convalida.annotations.Cpf;
 import convalida.annotations.CreditCard;
 import convalida.annotations.Email;
+import convalida.annotations.FutureDate;
 import convalida.annotations.Ipv4;
 import convalida.annotations.Ipv6;
 import convalida.annotations.Isbn;
@@ -34,6 +35,7 @@ import convalida.annotations.ValidateOnClick;
 import static convalida.library.util.Patterns.BR_DATE_FORMAT;
 import static convalida.library.util.Patterns.MIXED_CASE_NUMERIC;
 import static convalida.sample.Constants.JAN_01_2000_DATE;
+import static convalida.sample.Constants.JAN_01_2010_DATE;
 import static convalida.sample.Constants.PHONE_PATTERN;
 
 /**
@@ -105,6 +107,11 @@ public class AnnotataionSampleActivity extends AppCompatActivity {
             dateFormat = BR_DATE_FORMAT,
             limitDate = JAN_01_2000_DATE,
             errorMessageResId = R.string.invalid_past_date
+    )
+    @FutureDate(
+            dateFormat = BR_DATE_FORMAT,
+            limitDate = JAN_01_2010_DATE,
+            errorMessageResId = R.string.invalid_future_date
     )
     EditText dateField;
 

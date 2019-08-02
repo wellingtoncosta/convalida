@@ -45,6 +45,7 @@ public class Constants {
     static final String IPV6_ANNOTATION                             = "convalida.annotations.Ipv6";
     static final String URL_ANNOTATION                              = "convalida.annotations.Url";
     static final String PAST_DATE_ANNOTATION                        = "convalida.annotations.PastDate";
+    static final String FUTURE_DATE_ANNOTATION                      = "convalida.annotations.FutureDate";
 
     static final ClassName REQUIRED_VALIDATOR                       = ClassName.get("convalida.validators", "RequiredValidator");
     static final ClassName EMAIL_VALIDATOR                          = ClassName.get("convalida.validators", "EmailValidator");
@@ -64,5 +65,6 @@ public class Constants {
     static final ClassName IPV6_VALIDATOR                           = ClassName.get("convalida.validators", "Ipv6Validator");
     static final ClassName URL_VALIDATOR                            = ClassName.get("convalida.validators", "UrlValidator");
     static final ClassName PAST_DATE_VALIDATOR                      = ClassName.get("convalida.validators", "PastDateValidator");
+    static final ClassName FUTURE_DATE_VALIDATOR                    = ClassName.get("convalida.validators", "FutureDateValidator");
 
 }

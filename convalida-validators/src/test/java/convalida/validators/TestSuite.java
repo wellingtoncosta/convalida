@@ -29,6 +29,7 @@ import org.junit.runners.Suite.SuiteClasses;
         Ipv4ValidatorTest.class,
         Ipv6ValidatorTest.class,
         UrlValidatorTest.class,
-        PastDateValidatorTest.class
+        PastDateValidatorTest.class,
+        FutureDateValidatorTest.class
 })
 public class TestSuite { }

@@ -17,6 +17,7 @@ import convalida.annotations.ConfirmPassword;
 import convalida.annotations.Cpf;
 import convalida.annotations.CreditCard;
 import convalida.annotations.Email;
+import convalida.annotations.FutureDate;
 import convalida.annotations.Ipv4;
 import convalida.annotations.Ipv6;
 import convalida.annotations.Isbn;
@@ -48,6 +49,8 @@ import static convalida.compiler.util.Constants.CREDIT_CARD_ANNOTATION;
 import static convalida.compiler.util.Constants.CREDIT_CARD_VALIDATOR;
 import static convalida.compiler.util.Constants.EMAIL_ANNOTATION;
 import static convalida.compiler.util.Constants.EMAIL_VALIDATOR;
+import static convalida.compiler.util.Constants.FUTURE_DATE_ANNOTATION;
+import static convalida.compiler.util.Constants.FUTURE_DATE_VALIDATOR;
 import static convalida.compiler.util.Constants.IPV4_ANNOTATION;
 import static convalida.compiler.util.Constants.IPV4_VALIDATOR;
 import static convalida.compiler.util.Constants.IPV6_ANNOTATION;
@@ -314,6 +317,9 @@ public class JavaFiler {
                     break;
                 case PAST_DATE_ANNOTATION:
                     builder.add(createPastDateValidationCodeBlock(field));
+                    break;
+                case FUTURE_DATE_ANNOTATION:
+                    builder.add(createFutureDateValidationCodeBlock(field));
                     break;
             }
         }
@@ -726,6 +732,29 @@ public class JavaFiler {
                 .addStatement(
                         block,
                         PAST_DATE_VALIDATOR,
+                        field.name,
+                        hasErrorMessageResId ? field.id.code : errorMessage,
+                        field.element.getAnnotation(annotation).dateFormat(),
+                        field.element.getAnnotation(annotation).limitDate(),
+                        field.autoDismiss,
+                        field.element.getAnnotation(annotation).required()
+                )
+                .build();
+    }
+
+    private static CodeBlock createFutureDateValidationCodeBlock(ValidationField field) {
+        Element element = field.element;
+        Class<FutureDate> annotation = FutureDate.class;
+        boolean hasErrorMessageResId = element.getAnnotation(annotation).errorMessageResId() != -1;
+        String errorMessage = element.getAnnotation(annotation).errorMessage();
+        String block = "validatorSet.addValidator(new $T(target.$N, " +
+                errorMessage(hasErrorMessageResId) +
+                ", $S, $S, $L, $L))";
+
+        return CodeBlock.builder()
+                .addStatement(
+                        block,
+                        FUTURE_DATE_VALIDATOR,
                         field.name,
                         hasErrorMessageResId ? field.id.code : errorMessage,
                         field.element.getAnnotation(annotation).dateFormat(),

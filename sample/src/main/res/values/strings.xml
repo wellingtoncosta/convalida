@@ -35,6 +35,7 @@
     <string name="invalid_cnpj">CNPJ is not valid</string>
     <string name="invalid_cpf">CPF is not valid</string>
     <string name="invalid_past_date">Date exceeded the past date limit</string>
+    <string name="invalid_future_date">Date exceeded the future date limit</string>
     <string name="invalid_isbn">ISBN is not valid</string>
     <string name="invalid_ipv4">IPV4 is not valid</string>
     <string name="invalid_ipv6">IPV6 is not valid</string>

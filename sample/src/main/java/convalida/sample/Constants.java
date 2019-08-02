@@ -10,4 +10,6 @@ public class Constants {
 
     public static final String JAN_01_2000_DATE = "01/01/2000";
 
+    public static final String JAN_01_2010_DATE = "01/01/2010";
+
 }

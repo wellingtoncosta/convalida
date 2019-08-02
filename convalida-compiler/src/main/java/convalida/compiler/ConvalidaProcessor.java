@@ -28,6 +28,7 @@ import convalida.annotations.ConfirmPassword;
 import convalida.annotations.Cpf;
 import convalida.annotations.CreditCard;
 import convalida.annotations.Email;
+import convalida.annotations.FutureDate;
 import convalida.annotations.Ipv4;
 import convalida.annotations.Ipv6;
 import convalida.annotations.Isbn;
@@ -57,6 +58,7 @@ import static convalida.compiler.parser.AnnotationParsers.processConfirmPassword
 import static convalida.compiler.parser.AnnotationParsers.processCpfValidation;
 import static convalida.compiler.parser.AnnotationParsers.processCreditCardValidation;
 import static convalida.compiler.parser.AnnotationParsers.processEmailValidation;
+import static convalida.compiler.parser.AnnotationParsers.processFutureDateValidation;
 import static convalida.compiler.parser.AnnotationParsers.processIpv4Validation;
 import static convalida.compiler.parser.AnnotationParsers.processIpv6Validation;
 import static convalida.compiler.parser.AnnotationParsers.processIsbnValidation;
@@ -134,6 +136,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
                         Ipv6.class,
                         Url.class,
                         PastDate.class,
+                        FutureDate.class,
                         ValidateOnClick.class,
                         ClearValidationsOnClick.class,
                         OnValidationSuccess.class,
@@ -207,6 +210,8 @@ public class ConvalidaProcessor extends AbstractProcessor {
         processUrlValidation(env, parents, fields);
 
         processPastDateValidation(env, parents, fields);
+
+        processFutureDateValidation(env, parents, fields);
 
         processValidateOnClickAction(env, parents, actions);
 

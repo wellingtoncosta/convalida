@@ -18,6 +18,7 @@ import convalida.annotations.ConfirmPassword;
 import convalida.annotations.Cpf;
 import convalida.annotations.CreditCard;
 import convalida.annotations.Email;
+import convalida.annotations.FutureDate;
 import convalida.annotations.Ipv4;
 import convalida.annotations.Ipv6;
 import convalida.annotations.Isbn;
@@ -340,6 +341,22 @@ public class AnnotationParsers {
                             Set<Element> parents,
                             List<ValidationField> fields
                     ) { parsePastDateValidation(element, parents, fields); }
+                }
+        );
+    }
+
+    public static void processFutureDateValidation(
+            RoundEnvironment env,
+            Set<Element> parents,
+            List<ValidationField> fields
+    ) {
+        parseGenericValidation(FutureDate.class, env, parents, fields,
+                new ValidationCallBack() {
+                    @Override public void execute(
+                            Element element,
+                            Set<Element> parents,
+                            List<ValidationField> fields
+                    ) { parseFutureDateValidation(element, parents, fields); }
                 }
         );
     }
@@ -785,6 +802,21 @@ public class AnnotationParsers {
                 element,
                 element.getAnnotation(PastDate.class).errorMessageResId(),
                 element.getAnnotation(PastDate.class).autoDismiss()
+        );
+
+        parseGenericValidation(parameters, parents, fields);
+    }
+
+    private static void parseFutureDateValidation(
+            Element element,
+            Set<Element> parents,
+            List<ValidationField> fields
+    ) {
+        CommonValidationParameters parameters = new CommonValidationParameters(
+                FutureDate.class,
+                element,
+                element.getAnnotation(FutureDate.class).errorMessageResId(),
+                element.getAnnotation(FutureDate.class).autoDismiss()
         );
 
         parseGenericValidation(parameters, parents, fields);

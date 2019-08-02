@@ -13,6 +13,7 @@
  import convalida.validators.CpfValidator;
  import convalida.validators.CreditCardValidator;
  import convalida.validators.EmailValidator;
+ import convalida.validators.FutureDateValidator;
  import convalida.validators.Ipv4Validator;
  import convalida.validators.Ipv6Validator;
  import convalida.validators.IsbnValidator;
@@ -398,6 +399,31 @@ public class ValidationBindings {
                 required != null ? required : true
         ));
     }
+
+     @BindingAdapter(value = {
+             "futureDateErrorMessage",
+             "futureDateDateFormat",
+             "futureDateLimitDate",
+             "futureDateAutoDismiss",
+             "futureDateRequired"
+     }, requireAll = false)
+     public static void futureDateValidationBindings(
+             @NonNull EditText field,
+             @NonNull String errorMessage,
+             @NonNull String dateFormat,
+             @NonNull String limitDate,
+             Boolean autoDismiss,
+             Boolean required
+     ) {
+         field.setTag(R.id.validation_type, new FutureDateValidator(
+                 field,
+                 errorMessage,
+                 dateFormat,
+                 limitDate,
+                 autoDismiss != null ? autoDismiss : true,
+                 required != null ? required : true
+         ));
+     }
 
     @BindingAdapter(value = "validationAction")
     public static void validationActionBindings(Button button, Integer action) {

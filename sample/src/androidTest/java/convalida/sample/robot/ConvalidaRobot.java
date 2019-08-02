@@ -317,6 +317,14 @@ public class ConvalidaRobot {
             isInvalid(R.id.date_field, R.string.invalid_past_date);
         }
 
+        public void futureDateIsValid() {
+            isValid(R.id.date_field, R.string.invalid_future_date);
+        }
+
+        public void futureDateIsInvalid() {
+            isInvalid(R.id.date_field, R.string.invalid_future_date);
+        }
+
         private void isInvalid(
                 @IdRes int fieldResId,
                 @StringRes int errorMessageResId

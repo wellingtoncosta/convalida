@@ -462,7 +462,10 @@
                     android:maxLines="1"
                     app:pastDateDateFormat="@{Patterns.BR_DATE_FORMAT}"
                     app:pastDateLimitDate="@{Constants.JAN_01_2000_DATE}"
-                    app:pastDateErrorMessage="@{@string/invalid_past_date}"/>
+                    app:pastDateErrorMessage="@{@string/invalid_past_date}"
+                    app:futureDateDateFormat="@{Patterns.BR_DATE_FORMAT}"
+                    app:futureDateLimitDate="@{Constants.JAN_01_2010_DATE}"
+                    app:futureDateErrorMessage="@{@string/invalid_future_date}"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
