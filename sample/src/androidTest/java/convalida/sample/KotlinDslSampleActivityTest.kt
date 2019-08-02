@@ -193,21 +193,17 @@ class KotlinDslSampleActivityTest {
     }
 
     @Test fun dateField() {
-        convalida { date typeText VALID_PAST_DATE } validates { pastDateIsValid() }
+        convalida { date typeText VALID_DATE } validates { dateIsValid() }
 
-        convalida { date typeText INVALID_PAST_DATE } validates { pastDateIsInvalid() }
+        convalida { date typeText INVALID_PAST_DATE } validates { dateIsInvalid() }
 
-        convalida { date typeText INVALID_FORMATTED_DATE } validates { pastDateIsInvalid() }
+        convalida { date typeText INVALID_FORMATTED_DATE } validates { dateIsInvalid() }
 
-        convalida { date typeText EMPTY_TEXT } validates { pastDateIsInvalid() }
+        convalida { date typeText EMPTY_TEXT } validates { dateIsInvalid() }
 
-        convalida { date typeText VALID_FUTURE_DATE } validates { futureDateIsValid() }
+        convalida { date typeText VALID_DATE } validates { dateIsValid() }
 
-        convalida { date typeText INVALID_FUTURE_DATE } validates { futureDateIsInvalid() }
-
-        convalida { date typeText INVALID_FORMATTED_DATE } validates { futureDateIsInvalid() }
-
-        convalida { date typeText EMPTY_TEXT } validates { futureDateIsInvalid() }
+        convalida { date typeText INVALID_FUTURE_DATE } validates { dateIsInvalid() }
     }
 
     companion object {
@@ -226,15 +222,13 @@ class KotlinDslSampleActivityTest {
 
         const val INVALID_LOCAL_URL = "localhost"
 
-        const val VALID_PAST_DATE = "01/01/2010"
+        const val VALID_DATE = "01/01/2005"
 
         const val INVALID_PAST_DATE = "01/01/1990"
 
         const val INVALID_FORMATTED_DATE = "01-01-2010"
 
-        const val VALID_FUTURE_DATE = "01/01/2015"
-
-        const val INVALID_FUTURE_DATE = "01/01/2000"
+        const val INVALID_FUTURE_DATE = "01/01/2011"
 
 
     }

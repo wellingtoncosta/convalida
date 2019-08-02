@@ -23,15 +23,13 @@ public class ConvalidaBaseActivityTest {
 
     private static final String INVALID_LOCAL_URL = "localhost";
 
-    private static final String VALID_PAST_DATE = "01/01/2005";
+    private static final String VALID_DATE = "01/01/2005";
 
     private static final String INVALID_PAST_DATE = "01/01/1990";
 
     private static final String INVALID_FORMATTED_DATE = "01-01-2010";
 
-    private static final String VALID_FUTURE_DATE = "01/01/2015";
-
-    private static final String INVALID_FUTURE_DATE = "01/01/2000";
+    private static final String INVALID_FUTURE_DATE = "01/01/2011";
 
     @Test public void validateWithEmptyFields() {
         new ConvalidaRobot()
@@ -346,44 +344,34 @@ public class ConvalidaBaseActivityTest {
 
     @Test public void dateField() {
         new ConvalidaRobot()
-                .date().typeText(VALID_PAST_DATE)
+                .date().typeText(VALID_DATE)
                 .validate().result()
-                .pastDateIsValid();
+                .dateIsValid();
 
         new ConvalidaRobot()
                 .date().typeText(INVALID_PAST_DATE)
                 .validate().result()
-                .pastDateIsInvalid();
+                .dateIsInvalid();
 
         new ConvalidaRobot()
                 .date().typeText(INVALID_FORMATTED_DATE)
                 .validate().result()
-                .pastDateIsInvalid();
+                .dateIsInvalid();
 
         new ConvalidaRobot()
                 .date().typeText(EMPTY_TEXT)
                 .validate().result()
-                .pastDateIsInvalid();
+                .dateIsInvalid();
 
         new ConvalidaRobot()
-                .date().typeText(VALID_FUTURE_DATE)
+                .date().typeText(VALID_DATE)
                 .validate().result()
-                .futureDateIsValid();
+                .dateIsValid();
 
         new ConvalidaRobot()
                 .date().typeText(INVALID_FUTURE_DATE)
                 .validate().result()
-                .futureDateIsInvalid();
-
-        new ConvalidaRobot()
-                .date().typeText(INVALID_FORMATTED_DATE)
-                .validate().result()
-                .futureDateIsInvalid();
-
-        new ConvalidaRobot()
-                .date().typeText(EMPTY_TEXT)
-                .validate().result()
-                .futureDateIsInvalid();
+                .dateIsInvalid();
     }
 
 }

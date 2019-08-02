@@ -179,7 +179,14 @@ public class JavaFiler {
                 .addCode("\n")
                 .addCode(CodeBlock.builder().indent().build())
                 .addCode(
-                        "validatorSet.addValidator(($T) view.getTag($T.id.validation_type));",
+                        "java.util.List<$T> validators = (java.util.List<$T>) view.getTag($T.id.validation_type);",
+                        ABSTRACT_VALIDATOR,
+                        ABSTRACT_VALIDATOR,
+                        CONVALIDA_DATABINDING_R
+                )
+                .addCode("\n\n")
+                .addCode(
+                        "validatorSet.addValidators(validators);",
                         ABSTRACT_VALIDATOR,
                         CONVALIDA_DATABINDING_R
                 )

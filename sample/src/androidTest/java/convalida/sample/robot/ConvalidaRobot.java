@@ -16,6 +16,7 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.CoreMatchers.anyOf;
 
 public class ConvalidaRobot {
 
@@ -309,20 +310,18 @@ public class ConvalidaRobot {
             isInvalid(R.id.url_field, R.string.invalid_url);
         }
 
-        public void pastDateIsValid() {
-            isValid(R.id.date_field, R.string.invalid_past_date);
+        public void dateIsValid() {
+            onView(anyOf(
+                    withText(R.string.invalid_past_date),
+                    withText(R.string.invalid_future_date)
+            )).check(doesNotExist());
         }
 
-        public void pastDateIsInvalid() {
-            isInvalid(R.id.date_field, R.string.invalid_past_date);
-        }
-
-        public void futureDateIsValid() {
-            isValid(R.id.date_field, R.string.invalid_future_date);
-        }
-
-        public void futureDateIsInvalid() {
-            isInvalid(R.id.date_field, R.string.invalid_future_date);
+        public void dateIsInvalid() {
+            onView(anyOf(
+                    withText(R.string.invalid_past_date),
+                    withText(R.string.invalid_future_date)
+            )).check(matches(isDisplayed()));
         }
 
         private void isInvalid(

@@ -2,9 +2,13 @@ package convalida.validators.util;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewParent;
 import android.widget.EditText;
+
+import androidx.annotation.NonNull;
+
 import com.google.android.material.textfield.TextInputLayout;
 
 /**
@@ -25,13 +29,29 @@ public final class EditTexts {
         return null;
     }
 
-    public static void setError(EditText editText, String errorMessage) {
+    public static void setError(EditText editText, @NonNull String errorMessage) {
         TextInputLayout layout = getTextInputLayout(editText);
+
         if (layout != null) {
-            layout.setErrorEnabled(errorMessage != null);
-            layout.setError(errorMessage);
+            CharSequence error = layout.getError();
+
+            if(error == null || !error.toString().equals(errorMessage)) {
+                layout.setErrorEnabled(true);
+                layout.setError(errorMessage);
+            }
         } else {
             editText.setError(errorMessage);
+        }
+    }
+
+    public static void removeError(EditText editText) {
+        TextInputLayout layout = getTextInputLayout(editText);
+
+        if (layout != null) {
+            layout.setErrorEnabled(false);
+            layout.setError(null);
+        } else {
+            editText.setError(null);
         }
     }
 

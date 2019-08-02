@@ -53,8 +53,8 @@ public class BetweenValidator extends AbstractValidator {
     private void applyValidationToEndField() {
         endFieldHasError = !endFieldIsValid();
         if(endFieldIsValid()) {
-            EditTexts.setError(editText, null);
-            EditTexts.setError(endEditText, null);
+            EditTexts.removeError(editText);
+            EditTexts.removeError(endEditText);
         } else {
             EditTexts.setError(editText, errorMessage);
             EditTexts.setError(endEditText, endErrorMessage);

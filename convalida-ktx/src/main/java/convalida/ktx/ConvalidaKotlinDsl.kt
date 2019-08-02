@@ -2,7 +2,6 @@ package convalida.ktx
 
 import android.widget.Button
 import android.widget.EditText
-import convalida.validators.AbstractValidator
 import convalida.validators.BetweenValidator
 import convalida.validators.CnpjValidator
 import convalida.validators.ConfirmEmailValidator
@@ -10,6 +9,7 @@ import convalida.validators.ConfirmPasswordValidator
 import convalida.validators.CpfValidator
 import convalida.validators.CreditCardValidator
 import convalida.validators.EmailValidator
+import convalida.validators.FutureDateValidator
 import convalida.validators.Ipv4Validator
 import convalida.validators.Ipv6Validator
 import convalida.validators.IsbnValidator
@@ -35,13 +35,13 @@ class ConvalidaBuilder {
 
     private val validatorSet = ValidatorSet()
 
-    fun <E, V> field(view: E, validator: E.() -> V) where E : EditText, V : AbstractValidator {
-        validatorSet.addValidator(validator(view))
+    fun <E> field(field: E, validator: FieldValidatorBuilder.() -> Unit) where E : EditText {
+        validator(FieldValidatorBuilder(field, validatorSet))
     }
 
     fun between(
             body: BetweenValidatorBuilder.() -> Unit
-    ) = BetweenValidatorBuilder().apply { body() }
+    ) = BetweenValidatorBuilder().apply(body)
 
     fun <B> validateOn(
             button: B,
@@ -65,7 +65,100 @@ class ConvalidaBuilder {
 
 fun convalida(
         body: ConvalidaBuilder.() -> Unit
-) = ConvalidaBuilder().apply { body() }
+) = ConvalidaBuilder().apply(body)
+
+class FieldValidatorBuilder(
+        private val field: EditText,
+        private val validatorSet: ValidatorSet
+) {
+
+    fun isRequired(
+            errorMessage: String, autoDismiss: Boolean = true
+    ) = validatorSet.addValidator(RequiredValidator(field, errorMessage, autoDismiss))
+
+    fun isEmail(
+            errorMessage: String, autoDismiss: Boolean = true, required: Boolean = true
+    ) = validatorSet.addValidator(EmailValidator(field, errorMessage, autoDismiss, required))
+
+    fun isConfirmEmail(
+            emailField: EditText, errorMessage: String, autoDismiss: Boolean = true
+    ) = validatorSet.addValidator(
+            ConfirmEmailValidator(emailField, field,  errorMessage, autoDismiss))
+
+    fun withPattern(
+            pattern: String, errorMessage: String,
+            autoDismiss: Boolean = true, required: Boolean = true
+    ) = validatorSet.addValidator(
+            PatternValidator(field, errorMessage, pattern, autoDismiss, required))
+
+    fun withLength(
+            min: Int, max: Int = 0, errorMessage: String,
+            autoDismiss: Boolean = true, required: Boolean = true
+    ) = validatorSet.addValidator(
+            LengthValidator(field, errorMessage, min, max, autoDismiss, required))
+
+    fun onlyNumber(
+            errorMessage: String, autoDismiss: Boolean = true, required: Boolean = true
+    ) = validatorSet.addValidator(OnlyNumberValidator(field, errorMessage, autoDismiss, required))
+
+    fun withNumericLimit(
+            min: String, max: String, errorMessage: String,
+            autoDismiss: Boolean = true, required: Boolean = true
+    ) = validatorSet.addValidator(
+            NumericLimitValidator(field, errorMessage, autoDismiss, min, max, required))
+
+    fun isCreditCard(
+            errorMessage: String, autoDismiss: Boolean = true, required: Boolean = true
+    ) = validatorSet.addValidator(
+            CreditCardValidator(field, errorMessage, autoDismiss, required))
+
+    fun isPassword(
+            errorMessage: String, min: Int = 0, pattern: String = "", autoDismiss: Boolean = true
+    ) = validatorSet.addValidator(
+            PasswordValidator(field, errorMessage, min, pattern, autoDismiss))
+
+    fun isConfirmPassword(
+            passwordField: EditText, errorMessage: String, autoDismiss: Boolean = true
+    ) = validatorSet.addValidator(
+            ConfirmPasswordValidator(passwordField, field, errorMessage, autoDismiss))
+
+    fun isCpf(
+            errorMessage: String, autoDismiss: Boolean = true, required: Boolean = true
+    ) = validatorSet.addValidator(CpfValidator(field, errorMessage, autoDismiss, required))
+
+    fun isCnpj(
+            errorMessage: String, autoDismiss: Boolean = true, required: Boolean = true
+    ) = validatorSet.addValidator(CnpjValidator(field, errorMessage, autoDismiss, required))
+
+    fun isIsbn(
+            errorMessage: String, autoDismiss: Boolean = true, required: Boolean = true
+    ) = validatorSet.addValidator(IsbnValidator(field, errorMessage, autoDismiss, required))
+
+    fun isIpv4(
+            errorMessage: String, autoDismiss: Boolean = true, required: Boolean = true
+    ) = validatorSet.addValidator(Ipv4Validator(field, errorMessage, autoDismiss, required))
+
+    fun isIpv6(
+            errorMessage: String, autoDismiss: Boolean = true, required: Boolean = true
+    ) = validatorSet.addValidator(Ipv6Validator(field, errorMessage, autoDismiss, required))
+
+    fun isUrl(
+            errorMessage: String, autoDismiss: Boolean = true, required: Boolean = true
+    ) = validatorSet.addValidator(UrlValidator(field, errorMessage, autoDismiss, required))
+
+    fun pastDate(
+            errorMessage: String, dateFormat: String, limitDate: String,
+            autoDismiss: Boolean = true, required: Boolean = true
+    ) = validatorSet.addValidator(
+            PastDateValidator(field, errorMessage, dateFormat, limitDate, autoDismiss, required))
+
+    fun futureDate(
+            errorMessage: String, dateFormat: String, limitDate: String,
+            autoDismiss: Boolean = true, required: Boolean = true
+    ) = validatorSet.addValidator(
+            FutureDateValidator(field, errorMessage, dateFormat, limitDate, autoDismiss, required))
+
+}
 
 class SubmitActionBuilder {
 
@@ -91,11 +184,11 @@ class BetweenValidatorBuilder {
 
     private var limit: Between? = null
 
-    fun start(body: Between.() -> Unit) = Between().apply { body() }.also {
+    fun start(body: Between.() -> Unit) = Between().apply(body).also {
         start = it
     }
 
-    fun limit(body: Between.() -> Unit) = Between().apply { body() }.also {
+    fun limit(body: Between.() -> Unit) = Between().apply(body).also {
         limit = it
     }.also {
         start?.let { start ->
@@ -119,113 +212,3 @@ class Between {
     var errorMessage: String? = null
     var autoDismiss: Boolean = true
 }
-
-
-fun EditText.isRequired(
-        errorMessage: String,
-        autoDismiss: Boolean = true
-) = RequiredValidator(this, errorMessage, autoDismiss)
-
-fun EditText.isEmail(
-        errorMessage: String,
-        autoDismiss: Boolean = true,
-        required: Boolean = true
-) = EmailValidator(this, errorMessage, autoDismiss, required)
-
-fun EditText.isConfirmEmail(
-        emailField: EditText,
-        errorMessage: String,
-        autoDismiss: Boolean = true
-) = ConfirmEmailValidator(emailField, this,  errorMessage, autoDismiss)
-
-fun EditText.withPattern(
-        pattern: String,
-        errorMessage: String,
-        autoDismiss: Boolean = true,
-        required: Boolean = true
-) = PatternValidator(this, errorMessage, pattern, autoDismiss, required)
-
-fun EditText.withLength(
-        min: Int,
-        max: Int = 0,
-        errorMessage: String,
-        autoDismiss: Boolean = true,
-        required: Boolean = true
-) = LengthValidator(this, errorMessage, min, max, autoDismiss, required)
-
-fun EditText.onlyNumber(
-        errorMessage: String,
-        autoDismiss: Boolean = true,
-        required: Boolean = true
-) = OnlyNumberValidator(this, errorMessage, autoDismiss, required)
-
-fun EditText.withNumericLimit(
-        min: String,
-        max: String,
-        errorMessage: String,
-        autoDismiss: Boolean = true,
-        required: Boolean = true
-) = NumericLimitValidator(this, errorMessage, autoDismiss, min, max, required)
-
-fun EditText.isCreditCard(
-        errorMessage: String,
-        autoDismiss: Boolean = true,
-        required: Boolean = true
-) = CreditCardValidator(this, errorMessage, autoDismiss, required)
-
-fun EditText.isCpf(
-        errorMessage: String,
-        autoDismiss: Boolean = true,
-        required: Boolean = true
-) = CpfValidator(this, errorMessage, autoDismiss, required)
-
-fun EditText.isCnpj(
-        errorMessage: String,
-        autoDismiss: Boolean = true,
-        required: Boolean = true
-) = CnpjValidator(this, errorMessage, autoDismiss, required)
-
-fun EditText.isIsbn(
-        errorMessage: String,
-        autoDismiss: Boolean = true,
-        required: Boolean = true
-) = IsbnValidator(this, errorMessage, autoDismiss, required)
-
-fun EditText.isPassword(
-        errorMessage: String,
-        min: Int = 0,
-        pattern: String = "",
-        autoDismiss: Boolean = true
-) = PasswordValidator(this, errorMessage, min, pattern, autoDismiss)
-
-fun EditText.isConfirmPassword(
-        passwordField: EditText,
-        errorMessage: String,
-        autoDismiss: Boolean = true
-) = ConfirmPasswordValidator(passwordField, this, errorMessage, autoDismiss)
-
-fun EditText.isIpv4(
-        errorMessage: String,
-        autoDismiss: Boolean = true,
-        required: Boolean = true
-) = Ipv4Validator(this, errorMessage, autoDismiss, required)
-
-fun EditText.isIpv6(
-        errorMessage: String,
-        autoDismiss: Boolean = true,
-        required: Boolean = true
-) = Ipv6Validator(this, errorMessage, autoDismiss, required)
-
-fun EditText.isUrl(
-        errorMessage: String,
-        autoDismiss: Boolean = true,
-        required: Boolean = true
-) = UrlValidator(this, errorMessage, autoDismiss, required)
-
-fun EditText.pastDate(
-        errorMessage: String,
-        dateFormat: String,
-        limitDate: String,
-        autoDismiss: Boolean = true,
-        required: Boolean = true
-) = PastDateValidator(this, errorMessage, dateFormat, limitDate, autoDismiss, required)
