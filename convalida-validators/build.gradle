@@ -16,7 +16,9 @@ android {
 
 dependencies {
     implementation deps.google.material
-    implementation deps.apache.commons.validator
+    implementation deps.apache.commons.validator, {
+        exclude group: 'commons-logging', module: 'commons-logging'
+    }
 
     testImplementation deps.test.junit
     testImplementation deps.test.mockito.core
