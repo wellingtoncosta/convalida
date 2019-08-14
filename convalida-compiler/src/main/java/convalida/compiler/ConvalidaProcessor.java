@@ -92,14 +92,16 @@ public class ConvalidaProcessor extends AbstractProcessor {
 
         this.filer = processingEnvironment.getFiler();
 
-        AndroidResourceSanner.init(processingEnvironment,getSupportedAnnotations());
+        AndroidResourceSanner.init(processingEnvironment,allAnnotations());
 
         Messager.init(processingEnvironment);
+
+        ProcessingOptions.init(processingEnvironment);
 
     }
 
     @Override public Set<String> getSupportedAnnotationTypes() {
-        Set<Class<? extends Annotation>> annotations = getSupportedAnnotations();
+        Set<Class<? extends Annotation>> annotations = allAnnotations();
 
         Set<String> names = new LinkedHashSet<>();
 
@@ -114,7 +116,17 @@ public class ConvalidaProcessor extends AbstractProcessor {
         return SourceVersion.latestSupported();
     }
 
-    private Set<Class<? extends Annotation>> getSupportedAnnotations() {
+    private Set<Class<? extends Annotation>> allAnnotations() {
+        Set<Class<? extends Annotation>> annotations = new LinkedHashSet<>();
+
+        annotations.addAll(validationAnnotations());
+        annotations.addAll(actionAnnotations());
+        annotations.addAll(resultAnnotations());
+
+        return annotations;
+    }
+
+    private Set<Class<? extends Annotation>> validationAnnotations() {
         return new LinkedHashSet<>(
                 Arrays.asList(
                         Required.class,
@@ -139,6 +151,24 @@ public class ConvalidaProcessor extends AbstractProcessor {
                         FutureDate.class,
                         ValidateOnClick.class,
                         ClearValidationsOnClick.class,
+                        OnValidationSuccess.class,
+                        OnValidationError.class
+                )
+        );
+    }
+
+    private Set<Class<? extends Annotation>> actionAnnotations() {
+        return new LinkedHashSet<>(
+                Arrays.asList(
+                        ValidateOnClick.class,
+                        ClearValidationsOnClick.class
+                )
+        );
+    }
+
+    private Set<Class<? extends Annotation>> resultAnnotations() {
+        return new LinkedHashSet<>(
+                Arrays.asList(
                         OnValidationSuccess.class,
                         OnValidationError.class
                 )
@@ -174,6 +204,21 @@ public class ConvalidaProcessor extends AbstractProcessor {
         List<Element> results = new ArrayList<>();
 
         scanForRClasses(env);
+
+        processValidations(env, parents, fields);
+
+        processActions(env, parents, actions);
+
+        processResults(env, parents, results);
+
+        processAllParsedElements(elementUtils, parents, classes, fields, actions, results);
+
+        return classes;
+    }
+
+    private void processValidations(
+            RoundEnvironment env, Set<Element> parents, List<ValidationField> fields
+    ) {
 
         processRequiredValidation(env, parents, fields);
 
@@ -213,20 +258,21 @@ public class ConvalidaProcessor extends AbstractProcessor {
 
         processFutureDateValidation(env, parents, fields);
 
+    }
+
+    private void processActions(RoundEnvironment env, Set<Element> parents, List<Element> actions) {
         processValidateOnClickAction(env, parents, actions);
 
         processClearValidationsOnClickAction(env, parents, actions);
+    }
 
+    private void processResults(RoundEnvironment env, Set<Element> parents, List<Element> results) {
         processOnValidationSuccessResult(env, parents, results);
 
         processOnValidationErrorResult(env, parents, results);
-
-        processAll(elementUtils, parents, classes, fields, actions, results);
-
-        return classes;
     }
 
-    private static void processAll(
+    private static void processAllParsedElements(
             Elements elementUtils,
             Set<Element> parents,
             List<ValidationClass> classes,
@@ -238,21 +284,22 @@ public class ConvalidaProcessor extends AbstractProcessor {
 
             ValidationClass validationClass = new ValidationClass(parent, elementUtils);
 
-            processAllFields(parent, validationClass, fields);
+            processParsedFields(parent, validationClass, fields);
 
-            processAllActions(parent, validationClass, actions);
+            processParsedActions(parent, validationClass, actions);
 
-            processAllResults(parent, validationClass, results);
+            processParsedResults(parent, validationClass, results);
 
             classes.add(validationClass);
 
         }
     }
 
-    private static void processAllFields(
+    private static void processParsedFields(
             Element parent,
             ValidationClass validationClass,
-            List<ValidationField> validationFields) {
+            List<ValidationField> validationFields
+    ) {
         for (ValidationField validationField : validationFields) {
             Element element = validationField.element;
             if (element.getEnclosingElement().equals(parent)) {
@@ -261,7 +308,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
         }
     }
 
-    private static void processAllActions(
+    private static void processParsedActions(
             Element parent,
             ValidationClass validationClass,
             List<Element> validationActions
@@ -278,7 +325,7 @@ public class ConvalidaProcessor extends AbstractProcessor {
         }
     }
 
-    private static void processAllResults(
+    private static void processParsedResults(
             Element parent,
             ValidationClass validationClass,
             List<Element> validationResults

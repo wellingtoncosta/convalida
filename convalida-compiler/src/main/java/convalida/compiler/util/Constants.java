@@ -25,7 +25,7 @@ public class Constants {
     static final ClassName CONVALIDA_DATABINDING_R                  = ClassName.get("convalida.databinding", "R");
     static final ClassName ABSTRACT_VALIDATOR                       = ClassName.get("convalida.validators", "AbstractValidator");
     static final ClassName VALIDATOR_SET                            = ClassName.get("convalida.validators", "ValidatorSet");
-    public static final ClassName VALIDATION_ERROR                 = ClassName.get("convalida.validators.error", "ValidationErrorSet");
+    public static final ClassName VALIDATION_ERROR                  = ClassName.get("convalida.validators.error", "ValidationErrorSet");
 
     static final String REQUIRED_ANNOTATION                         = "convalida.annotations.Required";
     static final String EMAIL_ANNOTATION                            = "convalida.annotations.Email";

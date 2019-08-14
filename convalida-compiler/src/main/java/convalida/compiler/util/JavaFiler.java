@@ -32,6 +32,7 @@ import convalida.annotations.Url;
 import convalida.compiler.model.ValidationClass;
 import convalida.compiler.model.ValidationField;
 
+import static convalida.compiler.ProcessingOptions.isDatabindingEnabled;
 import static convalida.compiler.util.Constants.ABSTRACT_VALIDATOR;
 import static convalida.compiler.util.Constants.BETWEEN_ANNOTATION;
 import static convalida.compiler.util.Constants.BETWEEN_VALIDATOR;
@@ -97,12 +98,18 @@ public class JavaFiler {
         TypeSpec.Builder validationClassBuilder = TypeSpec.classBuilder(validationClass.className)
                 .addModifiers(PUBLIC)
                 .addField(VALIDATOR_SET, "validatorSet", PRIVATE)
-                .addMethod(createConstructor(validationClass))
-                .addMethod(createDatabindingConstructor(validationClass))
                 .addMethod(createValidateOnClickListener(validationClass))
-                .addMethod(createClearValidationsOnClickListener(validationClass))
-                .addMethod(createInitMethod(validationClass))
-                .addMethod(createInitDatabindingMethod(validationClass));
+                .addMethod(createClearValidationsOnClickListener(validationClass));
+
+        if(isDatabindingEnabled() && validationClass.fields.isEmpty()) {
+            validationClassBuilder
+                    .addMethod(createDatabindingConstructor(validationClass))
+                    .addMethod(createInitDatabindingMethod(validationClass));
+        } else {
+            validationClassBuilder
+                    .addMethod(createConstructor(validationClass))
+                    .addMethod(createInitMethod(validationClass));
+        }
 
         return JavaFile.builder(validationClass.packageName, validationClassBuilder.build())
                 .addFileComment("Generated code from Convalida. Do not modify!")
