@@ -4,20 +4,20 @@ buildscript {
     ext.versions = [
             android: [
                     plugin: [
-                            gradle: '3.4.1',
+                            gradle: '3.5.1',
                             jacoco: '0.1.4'
                     ],
                     sdk: [
-                            compile: 28,
+                            compile: 29,
                             min: 14
                     ]
             ],
             androidx: [
                     annotations: '1.1.0',
-                    appcompat: '1.0.2',
+                    appcompat: '1.1.0',
                     constraintlayout: '1.1.3',
-                    core: '1.0.2',
-                    databinding: '3.4.1',
+                    core: '1.1.0',
+                    databinding: '3.5.1',
                     test: [
                             espresso: '3.2.0',
                             ext: [
@@ -39,10 +39,10 @@ buildscript {
             ],
             java: 1.7,
             javapoet: '1.11.1',
-            kotlin: '1.3.41',
+            kotlin: '1.3.50',
             test: [
                     junit: '4.12',
-                    mockito: '3.0.0'
+                    mockito: '3.1.0'
             ]
     ]
 
@@ -109,7 +109,7 @@ buildscript {
         classpath(deps.android.plugin.jacoco) {
             exclude group: 'org.codehaus.groovy', module: 'groovy-all'
         }
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.21.0'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.27.0'
         classpath 'com.vanniktech:gradle-maven-publish-plugin:0.8.0'
     }
 }
