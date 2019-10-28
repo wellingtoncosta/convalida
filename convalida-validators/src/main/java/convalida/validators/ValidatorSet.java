@@ -118,12 +118,14 @@ public final class ValidatorSet {
     }
 
     private void checkValidationResults() {
+        int totalInvalidFields = 0;
+
         for (Boolean validationResult : validationResults) {
-            if (!validationResult) {
-                valid = false;
-                break;
-            }
+            if (!validationResult)
+                totalInvalidFields ++;
         }
+
+        valid = totalInvalidFields == 0;
     }
 
     public void clearValidators() {
