@@ -10,7 +10,7 @@ defaults: &defaults
   working_directory: ~/convalida
 
   docker:
-    - image: circleci/android:api-28-alpha
+    - image: circleci/android:api-29-alpha
 
   environment:
     JVM_OPTS: -Xmx1024m
