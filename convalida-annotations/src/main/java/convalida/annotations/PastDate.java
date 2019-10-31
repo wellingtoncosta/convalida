@@ -1,27 +1,27 @@
 package convalida.annotations;
 
+import androidx.annotation.StringRes;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-
-import androidx.annotation.StringRes;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 /**
- * @author wellingtoncosta on 01/06/18
+ * @author Wellington Costa on 31/07/2019.
  */
 @Target(FIELD)
 @Retention(SOURCE)
-public @interface NumberLimit {
-
-    String min();
-
-    String max();
+public @interface PastDate {
 
     @StringRes int errorMessageResId() default -1;
 
     String errorMessage() default "";
+
+    String dateFormat();
+
+    String limitDate();
 
     boolean autoDismiss() default true;
 

@@ -3,40 +3,35 @@ package convalida.validators;
 import android.widget.EditText;
 
 import convalida.validators.util.EditTexts;
-import convalida.validators.util.ExecuteValidationListener;
+
+import static convalida.validators.util.EditTexts.removeError;
+import static convalida.validators.util.EditTexts.setError;
 
 /**
  * @author Wellington Costa on 21/06/2017.
  */
 public abstract class AbstractValidator {
 
-    protected EditText editText;
-    protected String errorMessage;
+    public final EditText editText;
+    public final String errorMessage;
+    public final boolean autoDismiss;
     private boolean hasError = false;
 
     public AbstractValidator(EditText editText, String errorMessage, boolean autoDismiss) {
         this.editText = editText;
         this.errorMessage = errorMessage;
-
-        if(autoDismiss) {
-            EditTexts.addOnTextChangedListener(editText, new ExecuteValidationListener() {
-                @Override
-                public void execute(String value) {
-                    executeValidation(value);
-                }
-            });
-        }
+        this.autoDismiss = autoDismiss;
     }
 
-    public abstract boolean isValid(String value);
+    protected abstract boolean isValid(String value);
 
     private void executeValidation(String value) {
         hasError = !EditTexts.isVisible(editText) && !isValid(value);
 
         if (hasError) {
-            EditTexts.setError(editText, errorMessage);
+            setError(editText, errorMessage);
         } else {
-            EditTexts.setError(editText, null);
+            removeError(editText);
         }
     }
 
@@ -45,8 +40,14 @@ public abstract class AbstractValidator {
         return !hasError;
     }
 
-    public void clear() {
-        EditTexts.setError(editText, null);
+    public boolean validate(String value) {
+        executeValidation(value);
+        return !hasError;
     }
+
+    public void clear() {
+        removeError(editText);
+    }
+
 
 }

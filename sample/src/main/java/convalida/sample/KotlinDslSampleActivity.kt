@@ -1,9 +1,13 @@
 package convalida.sample
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.snackbar.Snackbar
 import convalida.ktx.*
+import convalida.library.util.Patterns.BR_DATE_FORMAT
+import convalida.library.util.Patterns.MIXED_CASE_NUMERIC
+import convalida.sample.Constants.JAN_01_2000_DATE
+import convalida.sample.Constants.JAN_01_2010_DATE
 import convalida.sample.Constants.PHONE_PATTERN
 import kotlinx.android.synthetic.main.activity_kotlin_dsl_sample.*
 
@@ -16,74 +20,146 @@ class KotlinDslSampleActivity : AppCompatActivity() {
     private val invalidCpf by lazy { this.getString(R.string.invalid_cpf) }
     private val invalidCnpj by lazy { this.getString(R.string.invalid_cnpj) }
     private val invalidIsbn by lazy { this.getString(R.string.invalid_isbn) }
-    private val invalidInitialPeriod by lazy { this.getString(R.string.initial_period_not_valid) }
-    private val invalidFinalPeriod by lazy { this.getString(R.string.final_period_not_valid) }
+    private val invalidStartValue by lazy { this.getString(R.string.start_value_not_valid) }
+    private val invalidLimitValue by lazy { this.getString(R.string.limit_value_not_valid) }
     private val invalidEmail by lazy { this.getString(R.string.invalid_email) }
     private val differentEmails by lazy { this.getString(R.string.emails_not_match) }
     private val invalidPassword by lazy { this.getString(R.string.invalid_password) }
     private val differentPasswords by lazy { this.getString(R.string.passwords_not_match) }
     private val invalidCreditCard by lazy { this.getString(R.string.invalid_credit_card) }
-    private val invalidNumericLimit by lazy { this.getString(R.string.invalid_number_limit) }
-
-    private val validations by lazy {
-        validationSet(
-                validations = listOf(
-                        name_field.isRequired(errorMessage = fieldRequired),
-                        nickname_field.withLength(min = 3, errorMessage = min3Characteres),
-                        age_field.onlyNumber(errorMessage = onlyNumbers),
-                        phone_field.withPattern(pattern = PHONE_PATTERN, errorMessage = invalidPhone),
-                        cpf_field.isCpf(errorMessage = invalidCpf),
-                        cnpj_field.isCnpj(errorMessage = invalidCnpj),
-                        isbn_field.isIsbn(errorMessage = invalidIsbn),
-                        initial_period_field.isBetween
-                                .start(errorMessage = invalidInitialPeriod)
-                                .end(field = final_period_field, errorMessage = invalidFinalPeriod)
-                                .apply(),
-                        email_field.isEmail(errorMessage = invalidEmail),
-                        confirm_email_field.isConfirmEmail(
-                                emailField = email_field,
-                                errorMessage = differentEmails
-                        ),
-                        password_field.isPassword(errorMessage = invalidPassword),
-                        confirm_password_field.isConfirmPassword(
-                                passwordField = password_field,
-                                errorMessage = differentPasswords
-                        ),
-                        credit_card_field.isCreditCard(errorMessage = invalidCreditCard),
-                        number_limit_field.withNumericLimit(
-                                min = "0",
-                                max = "100",
-                                errorMessage = invalidNumericLimit
-                        )
-                ),
-                actions = actions
-                        validateByClickingOn validate_button
-                        clearValidationsByClickingOn clear_button
-                        whenOnSuccess ::onValidationSuccess
-                        whenOnError ::onValidationError
-        )
-    }
+    private val invalidNumericLimit by lazy { this.getString(R.string.invalid_numeric_limit) }
+    private val invalidIpv4 by lazy { this.getString(R.string.invalid_ipv4) }
+    private val invalidIpv6 by lazy { this.getString(R.string.invalid_ipv6) }
+    private val invalidUrl by lazy { this.getString(R.string.invalid_url) }
+    private val invalidPastDate by lazy { this.getString(R.string.invalid_past_date) }
+    private val invalidFutureDate by lazy { this.getString(R.string.invalid_future_date) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_kotlin_dsl_sample)
-        apply { validations }
+
+        convalida {
+            field(name_field) {
+                isRequired(errorMessage = fieldRequired)
+            }
+
+            field(nickname_field) {
+                withLength(min = 3, errorMessage = min3Characteres)
+            }
+
+            field(age_field) {
+                onlyNumber(errorMessage = onlyNumbers)
+            }
+
+            field(phone_field) {
+                withPattern(pattern = PHONE_PATTERN, errorMessage = invalidPhone)
+            }
+
+            field(cpf_field) {
+                isCpf(errorMessage = invalidCpf)
+            }
+
+            field(cnpj_field) {
+                isCnpj(errorMessage = invalidCnpj)
+            }
+
+            field(isbn_field) {
+                isIsbn(errorMessage = invalidIsbn)
+            }
+
+            field(email_field) {
+                isEmail(errorMessage = invalidEmail)
+            }
+
+            field(confirm_email_field) {
+                isConfirmEmail(
+                        emailField = email_field,
+                        errorMessage = differentEmails
+                )
+            }
+
+            field(password_field) {
+                isPassword(
+                        min = 3,
+                        pattern = MIXED_CASE_NUMERIC,
+                        errorMessage = invalidPassword
+                )
+            }
+
+            field(confirm_password_field) {
+                isConfirmPassword(
+                        passwordField = password_field,
+                        errorMessage = differentPasswords
+                )
+            }
+
+            field(credit_card_field) {
+                isCreditCard(errorMessage = invalidCreditCard)
+            }
+
+            field(numeric_limit_field) {
+                withNumericLimit(
+                        min = "0",
+                        max = "100",
+                        errorMessage = invalidNumericLimit
+                )
+            }
+
+            between {
+                start {
+                    field = start_value_field
+                    errorMessage = invalidStartValue
+                }
+
+                limit {
+                    field = limit_value_field
+                    errorMessage = invalidLimitValue
+                }
+            }
+
+            field(ipv4_field) {
+                isIpv4(errorMessage = invalidIpv4)
+            }
+
+            field(ipv6_field) {
+                isIpv6(errorMessage = invalidIpv6)
+            }
+
+            field(url_field) {
+                isUrl(errorMessage = invalidUrl)
+            }
+
+            field(date_field) {
+                pastDate(
+                        dateFormat = BR_DATE_FORMAT,
+                        limitDate = JAN_01_2000_DATE,
+                        errorMessage = invalidPastDate
+                )
+
+                futureDate(
+                        dateFormat = BR_DATE_FORMAT,
+                        limitDate = JAN_01_2010_DATE,
+                        errorMessage = invalidFutureDate
+                )
+            }
+
+            validateOn(validate_button) {
+                onSuccess { onValidationSuccess() }
+                onError { onValidationError() }
+            }
+
+            clearValidationsOn(clear_button)
+
+        }
     }
 
     private fun onValidationSuccess() {
-        Snackbar.make(
-                activity_kotlin_dsl_sample,
-                "Yay!",
-                Snackbar.LENGTH_LONG
-        ).show()
+        Toast.makeText(this, "Yay!", Toast.LENGTH_SHORT).show()
     }
 
     private fun onValidationError() {
-        Snackbar.make(
-                activity_kotlin_dsl_sample,
-                "Something is wrong :(",
-                Snackbar.LENGTH_LONG
-        ).show()
+        Toast.makeText(this, "Something is wrong :(", Toast.LENGTH_SHORT).show()
     }
 
 }

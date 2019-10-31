@@ -203,9 +203,9 @@
                     android:hint="@string/initial_period"
                     android:inputType="text"
                     android:maxLines="1"
-                    app:betweenStartErrorMessage="@{@string/initial_period_not_valid}"
-                    app:betweenEndField="@{finalPeriodField}"
-                    app:betweenEndErrorMessage="@{@string/final_period_not_valid}" />
+                    app:betweenStartErrorMessage="@{@string/start_value_not_valid}"
+                    app:betweenLimitField="@{finalPeriodField}"
+                    app:betweenLimitErrorMessage="@{@string/limit_value_not_valid}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -334,7 +334,6 @@
                 android:id="@+id/credit_card_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:passwordToggleEnabled="true"
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:layout_marginBottom="@dimen/spacing_large"
                 android:layout_marginLeft="@dimen/spacing_large"
@@ -354,10 +353,9 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/number_limit_layout"
+                android:id="@+id/numeric_limit_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:passwordToggleEnabled="true"
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:layout_marginBottom="@dimen/spacing_large"
                 android:layout_marginLeft="@dimen/spacing_large"
@@ -367,14 +365,107 @@
                 app:layout_constraintTop_toBottomOf="@+id/credit_card_layout">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/number_limit_field"
+                    android:id="@+id/numeric_limit_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/number_limit"
+                    android:hint="@string/numeric_limit"
                     android:maxLines="1"
-                    app:numberLimitMin='@{"0"}'
-                    app:numberLimitMax='@{"100"}'
-                    app:numberLimitErrorMessage="@{@string/invalid_number_limit}" />
+                    app:numericLimitMin='@{"0"}'
+                    app:numericLimitMax='@{"100"}'
+                    app:numericLimitErrorMessage="@{@string/invalid_numeric_limit}" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ipv4_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:layout_marginLeft="@dimen/spacing_large"
+                android:layout_marginRight="@dimen/spacing_large"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/numeric_limit_layout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ipv4_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/ipv4"
+                    android:maxLines="1"
+                    app:ipv4ErrorMessage="@{@string/invalid_ipv4}"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ipv6_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:layout_marginLeft="@dimen/spacing_large"
+                android:layout_marginRight="@dimen/spacing_large"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ipv4_layout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ipv6_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/ipv6"
+                    android:maxLines="1"
+                    app:ipv6ErrorMessage="@{@string/invalid_ipv6}"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/url_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:layout_marginLeft="@dimen/spacing_large"
+                android:layout_marginRight="@dimen/spacing_large"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ipv6_layout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/url_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/url"
+                    android:maxLines="1"
+                    app:urlErrorMessage="@{@string/invalid_url}"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/date_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:layout_marginLeft="@dimen/spacing_large"
+                android:layout_marginRight="@dimen/spacing_large"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/url_layout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/date_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/date"
+                    android:maxLines="1"
+                    app:pastDateDateFormat="@{Patterns.BR_DATE_FORMAT}"
+                    app:pastDateLimitDate="@{Constants.JAN_01_2000_DATE}"
+                    app:pastDateErrorMessage="@{@string/invalid_past_date}"
+                    app:futureDateDateFormat="@{Patterns.BR_DATE_FORMAT}"
+                    app:futureDateLimitDate="@{Constants.JAN_01_2010_DATE}"
+                    app:futureDateErrorMessage="@{@string/invalid_future_date}"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -384,14 +475,14 @@
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:text="@string/clear_validations"
+                android:text="@string/validate_fields"
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:layout_marginBottom="@dimen/spacing_large"
                 android:layout_marginLeft="@dimen/spacing_large"
                 android:layout_marginRight="@dimen/spacing_large"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/number_limit_layout"
+                app:layout_constraintTop_toBottomOf="@+id/date_layout"
                 app:validationAction="@{@id/validate}" />
 
             <androidx.appcompat.widget.AppCompatButton

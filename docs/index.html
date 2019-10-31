@@ -92,11 +92,11 @@
           </div>
           <div class="convalida-section-body-spacing-top">
             <code class="prettyprint lang-java">
-              &nbsp;&nbsp;@Required(errorMessageResId = R.string.field_required) </br>    
+              &nbsp;&nbsp;@Required(errorMessageResId = R.string.field_required) </br>
               &nbsp;&nbsp;EditText nameField; </br></br>
-              &nbsp;&nbsp;@Email(errorMessageResId = R.string.invalid_email) </br>    
+              &nbsp;&nbsp;@Email(errorMessageResId = R.string.invalid_email) </br>
               &nbsp;&nbsp;EditText emailField; </br></br>
-              &nbsp;&nbsp;@OnlyNumber(errorMessageResId = R.string.only_numbers) </br>    
+              &nbsp;&nbsp;@OnlyNumber(errorMessageResId = R.string.only_numbers) </br>
               &nbsp;&nbsp;EditText ageField; </br>
             </code>
           </div>
@@ -117,7 +117,7 @@
               &nbsp;&nbsp;@OnValidationSuccess public void success() { </br>
               &nbsp;&nbsp;&nbsp;&nbsp; /* All fields are valid */ </br>
               &nbsp;&nbsp;} </br></br>
-          
+
               &nbsp;&nbsp;@OnValidationError public void error() { </br>
               &nbsp;&nbsp;&nbsp;&nbsp; /* Some field is invalid */ </br>
               &nbsp;&nbsp;} </br>
@@ -150,7 +150,7 @@
               &nbsp;&nbsp;&nbsp;&nbsp;android:layout_height="wrap_content" </br>
               &nbsp;&nbsp;&nbsp;&nbsp;android:hint="@string/name" </br>
               &nbsp;&nbsp;&nbsp;&nbsp;app:requiredErrorMessage="@{@string/field_required}" /&gt; </br></br>
-              
+
               &nbsp;&nbsp;&lt;EditText </br>
               &nbsp;&nbsp;&nbsp;&nbsp;android:id="@+id/email_field" </br>
               &nbsp;&nbsp;&nbsp;&nbsp;android:layout_width="match_parent" </br>
@@ -163,7 +163,7 @@
               &nbsp;&nbsp;&nbsp;&nbsp;android:layout_width="match_parent" </br>
               &nbsp;&nbsp;&nbsp;&nbsp;android:layout_height="wrap_content" </br>
               &nbsp;&nbsp;&nbsp;&nbsp;android:hint="@string/age" </br>
-              &nbsp;&nbsp;&nbsp;&nbsp;app:emailErrorMessage="@{@string/only_numbers}" /&gt; </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;app:onlyErrorMessage="@{@string/only_numbers}" /&gt; </br>
             </code>
           </div>
           <div class="roboto-font convalida-section-body-text">
@@ -194,7 +194,7 @@
               &nbsp;&nbsp;@OnValidationSuccess public void success() { </br>
               &nbsp;&nbsp;&nbsp;&nbsp; /* All fields are valid */ </br>
               &nbsp;&nbsp;} </br></br>
-          
+
               &nbsp;&nbsp;@OnValidationError public void error() { </br>
               &nbsp;&nbsp;&nbsp;&nbsp; /* Some field is invalid */ </br>
               &nbsp;&nbsp;} </br>
@@ -218,44 +218,38 @@
             <b>With Kotlin Dsl</b>
           </div>
           <div class="roboto-font convalida-section-body-text">
-            <b>Step 1 - </b>Map the validations, actions and results
+            <b>Step 1 - </b>Just apply Convalida Kotlin DSL
           </div>
           <div class="convalida-section-body-spacing-top">
             <code class="prettyprint lang-kotlin">
-              &nbsp;&nbsp; private val validations by lazy { </br>
-              &nbsp;&nbsp;&nbsp;&nbsp; validationSet( </br>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; validations = listOf( </br>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; name_field.isRequired(errorMessage = fieldRequired), </br>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; email_field.isEmail(errorMessage = invalidEmail), </br>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; age_field.onlyNumber(errorMessage = onlyNumbers), </br>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ), </br>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; actions = actions </br>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; validateByClickingOn validate_button </br>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; clearValidationsByClickingOn clear_button </br>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; whenOnSuccess ::success </br>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; whenOnError ::error </br>
-              &nbsp;&nbsp;&nbsp;&nbsp; ) </br>
-              &nbsp;&nbsp; } </br> </br>
+              &nbsp;&nbsp;override fun onCreate(savedInstanceState: Bundle?) { </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;super.onCreate(savedInstanceState) </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;setContentView(R.layout.activity_sample) </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;convalida { </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;field(nameField) { </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isRequired(errorMessage = fieldRequiredErrorMessage) </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;field(emailField) { </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isEmail(errorMessage = invalidEmailErrorMessage) </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;field(ageField) { </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onlyNumber(errorMessage = onlyNumberErrorMessage) </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validateOn(validateButton) { </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onSuccess { onValidationSuccess() } </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onError { onValidationError() } </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clearValidationsOn(clearButton) </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;} </br>
+              &nbsp;&nbsp;} </br> </br>
 
-              &nbsp;&nbsp; fun success() { </br>
-              &nbsp;&nbsp;&nbsp;&nbsp; /* All fields are valid */ </br>
-              &nbsp;&nbsp; } </br> </br>
+              &nbsp;&nbsp;fun onValidationSuccess() { </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;/* All fields are valid */ </br>
+              &nbsp;&nbsp;} </br> </br>
 
-              &nbsp;&nbsp; fun error() { </br>
-              &nbsp;&nbsp;&nbsp;&nbsp; /* Some field are invalid */ </br>
-              &nbsp;&nbsp; } </br>
-            </code>
-          </div>
-          <div class="roboto-font convalida-section-body-text">
-            <b>Step 2 - </b>Apply validations
-          </div>
-          <div class="convalida-section-body-spacing-top">
-            <code class="prettyprint lang-kotlin">
-              &nbsp;&nbsp; override fun onCreate(savedInstanceState: Bundle?) { </br>
-              &nbsp;&nbsp;&nbsp;&nbsp; super.onCreate(savedInstanceState) </br>
-              &nbsp;&nbsp;&nbsp;&nbsp; setContentView(R.layout.activity_sample) </br>
-              &nbsp;&nbsp;&nbsp;&nbsp; apply { validations } </br>
-              &nbsp;&nbsp; } </br>
+              &nbsp;&nbsp;fun onValidationError() { </br>
+              &nbsp;&nbsp;&nbsp;&nbsp;/* Some field is invalid */ </br>
+              &nbsp;&nbsp;} </br>
             </code>
           </div>
         </div>
@@ -268,8 +262,8 @@
           <div class="convalida-section-body-spacing-top">
             <code class="prettyprint">
                   dependencies { </br>
-                  &nbsp;&nbsp; implementation 'io.github.wellingtoncosta:convalida-runtime:3.1.0' </br>
-                  &nbsp;&nbsp; annotationProcessor 'io.github.wellingtoncosta:convalida-compiler:3.1.0' </br>
+                  &nbsp;&nbsp; implementation 'io.github.wellingtoncosta:convalida-runtime:3.2.0' </br>
+                  &nbsp;&nbsp; annotationProcessor 'io.github.wellingtoncosta:convalida-compiler:3.2.0' </br>
                   }
               </code>
           </div>
@@ -293,13 +287,13 @@
           <div class="convalida-section-body-spacing-top">
             <code class="prettyprint">
                   dependencies { </br>
-                  &nbsp;&nbsp; implementation 'io.github.wellingtoncosta:convalida-ktx:3.1.0' </br>
+                  &nbsp;&nbsp; implementation 'io.github.wellingtoncosta:convalida-ktx:3.2.0' </br>
                   }
               </code>
           </div>
           <div class="roboto-font convalida-section-body-text">
             <b>Note:</b> If you're using Convalida 3.0.0 or higher, you must have to use
-            AndroidX artifacts and enable Jetifier in your <b>gradle.properties</b>.
+            AndroidX artifacts and enable Jetifier in your project.
           </div>
         </div>
       </section>
@@ -373,10 +367,12 @@
             <div class="convalida-section-body-spacing-top">
               <code class="prettyprint lang-kotlin">
                 &nbsp;&nbsp;val nameField = findViewById(R.id.name_field) as EditText </br>
-                &nbsp;&nbsp;nameField.isRequired( </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;errorMessage = getString(R.string.field_required), </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true </br>
-                &nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;val fieldRequired = "Field required"
+                &nbsp;&nbsp;convalida { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;field(nameField) { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isRequired(errorMessage = fieldRequired)
+                &nbsp;&nbsp;&nbsp;&nbsp;} </br>
+                &nbsp;&nbsp;} </br>
               </code>
             </div>
           </div>
@@ -456,11 +452,12 @@
             <div class="convalida-section-body-spacing-top">
               <code class="prettyprint lang-kotlin">
                 &nbsp;&nbsp;val emailField = findViewById(R.id.email_field) as EditText </br>
-                &nbsp;&nbsp;emailField.isEmail( </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;errorMessage = getString(R.string.invalid_email), </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true, </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;required = true </br>
-                &nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;val invalidEmail = "Invalid email"
+                &nbsp;&nbsp;convalida { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;field(emailField) { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isEmail(errorMessage = invalidEmail)
+                &nbsp;&nbsp;&nbsp;&nbsp;} </br>
+                &nbsp;&nbsp;} </br>
               </code>
             </div>
           </div>
@@ -555,11 +552,15 @@
               <code class="prettyprint lang-kotlin">
                 &nbsp;&nbsp;val emailField = findViewById(R.id.email_field) as EditText </br>
                 &nbsp;&nbsp;val confirmEmailField = findViewById(R.id.confirm_email_field) as EditText </br>
-                &nbsp;&nbsp;confirmEmailField.isConfirmEmail( </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;emailField = emailField, </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;errorMessage = getString(R.string.emails_not_match), </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true </br>
-                &nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;val invalidEmailConfirmation = "Emails does not match"
+                &nbsp;&nbsp;convalida { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;field(confirmEmailField) { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isConfirmEmail( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;emailField = emailField, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errorMessage = invalidEmailConfirmation </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;} </br>
+                &nbsp;&nbsp;} </br>
               </code>
             </div>
           </div>
@@ -655,13 +656,12 @@
             <div class="convalida-section-body-spacing-top">
               <code class="prettyprint lang-kotlin">
                 &nbsp;&nbsp;val lengthField = findViewById(R.id.length_field) as EditText </br>
-                &nbsp;&nbsp;lengthField.withLength( </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;min = 3, </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;max = 10, </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;errorMessage = getString(R.string.invalid_length), </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;required = true, </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true </br>
-                &nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;val invalidLength = "Invalid length"
+                &nbsp;&nbsp;convalida { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;field(lengthField) { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;withLength(min = 3, max = 10, errorMessage = invalidLength)</br>
+                &nbsp;&nbsp;&nbsp;&nbsp;} </br>
+                &nbsp;&nbsp;} </br>
               </code>
             </div>
           </div>
@@ -758,14 +758,13 @@
             </div>
             <div class="convalida-section-body-spacing-top">
               <code class="prettyprint lang-kotlin">
-                &nbsp;&nbsp;val numberField = findViewById(R.id.number_field) as EditText </br>
-                &nbsp;&nbsp;numberField.withNumericLimit( </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;min = "0", </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;max = "99", </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;errorMessage = getString(R.string.invalid_number), </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;required = true, </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true </br>
-                &nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;val numericField = findViewById(R.id.number_field) as EditText </br>
+                &nbsp;&nbsp;val invalidNumericLimit = "Number exceeds the numeric limit"
+                &nbsp;&nbsp;convalida { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;field(numericField) { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;withNumericLimit(min = "0", max = "100", errorMessage = invalidNumericLimit) </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;} </br>
+                &nbsp;&nbsp;} </br>
               </code>
             </div>
           </div>
@@ -845,11 +844,12 @@
             <div class="convalida-section-body-spacing-top">
               <code class="prettyprint lang-kotlin">
                 &nbsp;&nbsp;val onlyNumberField = findViewById(R.id.only_number_field) as EditText </br>
-                &nbsp;&nbsp;onlyNumberField.onlyNumber( </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;errorMessage = getString(R.string.only_numbers), </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true, </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;required = true </br>
-                &nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;val valueIsNotANumber = "Value is not a number"
+                &nbsp;&nbsp;convalida { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;field(onlyNumberField) { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onlyNumber(errorMessage = valueIsNotANumber) </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;} </br>
+                &nbsp;&nbsp;} </br>
               </code>
             </div>
           </div>
@@ -937,12 +937,12 @@
             <div class="convalida-section-body-spacing-top">
               <code class="prettyprint lang-kotlin">
                 &nbsp;&nbsp;val patternField = findViewById(R.id.pattern_field) as EditText </br>
-                &nbsp;&nbsp;patternField.withPattern( </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;pattern = MIXED_CAMEL_CASE, </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;errorMessage = getString(R.string.value_not_match), </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true, </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;required = true </br>
-                &nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;val valueDoesNotMatchPattern = "Value does not match the pattern"
+                &nbsp;&nbsp;convalida { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;field(patternField) { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;withPattern(pattern = PHONE_PATTERN, errorMessage = valueDoesNotMatchPattern) </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;} </br>
+                &nbsp;&nbsp;} </br>
               </code>
             </div>
           </div>
@@ -1039,13 +1039,12 @@
             <div class="convalida-section-body-spacing-top">
               <code class="prettyprint lang-kotlin">
                 &nbsp;&nbsp;val passwordField = findViewById(R.id.password_field) as EditText </br>
-                &nbsp;&nbsp;passwordField.isPassword( </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;pattern = MIXED_CASE_NUMERIC, </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;min = 3, </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;errorMessage = getString(R.string.invalid_password), </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true, </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;required = true </br>
-                &nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;val invalidPassword = "Invalid password"
+                &nbsp;&nbsp;convalida { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;field(passwordField) { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isPassword(min = 3, pattern = MIXED_CASE_NUMERIC, errorMessage = invalidPassword) </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;} </br>
+                &nbsp;&nbsp;} </br>
               </code>
             </div>
           </div>
@@ -1141,11 +1140,12 @@
               <code class="prettyprint lang-kotlin">
                 &nbsp;&nbsp;val passwordField = findViewById(R.id.password_field) as EditText </br>
                 &nbsp;&nbsp;val confirmPasswordField = findViewById(R.id.confirm_password_field) as EditText </br>
-                &nbsp;&nbsp;confirmPasswordField.isConfirmPassword( </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;passwordField = passwordField, </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;errorMessage = getString(R.string.passwords_not_match), </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true </br>
-                &nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;val invalidPasswordConfirmation = "Invalid password confirmation" </br>
+                &nbsp;&nbsp;convalida { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;field(confirmPasswordField) { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isConfirmPassword(passwordField = passwordField, errorMessage = invalidPasswordConfirmation) </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;} </br>
+                &nbsp;&nbsp;} </br>
               </code>
             </div>
           </div>
@@ -1173,7 +1173,7 @@
                   </td>
                 </tr>
                 <tr>
-                  <td class="mdl-data-table__cell--non-numeric">endEditText</td>
+                  <td class="mdl-data-table__cell--non-numeric">limitEditText</td>
                   <td class="mdl-data-table__cell--non-numeric">android.widget.EditText</td>
                   <td class="mdl-data-table__cell--non-numeric">This parameter represents the second field of the pair
                   </td>
@@ -1185,7 +1185,7 @@
                     be displayed when the value of first field is invalid.</td>
                 </tr>
                 <tr>
-                  <td class="mdl-data-table__cell--non-numeric">endErrorMessage</td>
+                  <td class="mdl-data-table__cell--non-numeric">limitErrorMessage</td>
                   <td class="mdl-data-table__cell--non-numeric">java.lang.String</td>
                   <td class="mdl-data-table__cell--non-numeric">This parameter represents the error message that will
                     be displayed when the value of second field is invalid.</td>
@@ -1197,7 +1197,7 @@
                     automatically when the first field value is valid.</td>
                 </tr>
                 <tr>
-                  <td class="mdl-data-table__cell--non-numeric">endAutoDismiss</td>
+                  <td class="mdl-data-table__cell--non-numeric">limitAutoDismiss</td>
                   <td class="mdl-data-table__cell--non-numeric">boolean</td>
                   <td class="mdl-data-table__cell--non-numeric">This parameter means the error message will disappear
                     automatically when the second field value is valid.</td>
@@ -1214,14 +1214,14 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;errorMessageResId = R.string.initial_period_not_valid, </br>
                 &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true </br>
                 &nbsp;&nbsp;) </br>
-                &nbsp;&nbsp;EditText initialPerioField; </br> </br>
+                &nbsp;&nbsp;EditText startField; </br> </br>
 
-                &nbsp;&nbsp;@Between.End( </br>
+                &nbsp;&nbsp;@Between.Limit( </br>
                 &nbsp;&nbsp;&nbsp;&nbsp;key = 1, </br>
                 &nbsp;&nbsp;&nbsp;&nbsp;errorMessageResId = R.string.final_period_not_valid, </br>
                 &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true </br>
                 &nbsp;&nbsp;) </br>
-                &nbsp;&nbsp;EditText finalPeriodField; </br>
+                &nbsp;&nbsp;EditText limitField; </br>
               </code>
             </div>
             <div class="roboto-font convalida-section-body-text">
@@ -1234,48 +1234,52 @@
             <div class="convalida-section-body-spacing-top">
               <code class="prettyprint lang-xml">
                 &nbsp;&nbsp;&lt;EditText </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;android:id="@+id/initial_period_field" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:id="@+id/start_field" </br>
                 &nbsp;&nbsp;&nbsp;&nbsp;android:layout_width="match_parent" </br>
                 &nbsp;&nbsp;&nbsp;&nbsp;android:layout_height="wrap_content" </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;android:hint="@string/confirm_password" </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;app:betweenStartErrorMessage="@{@string/initial_period_not_valid}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:hint="@string/start_value" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:betweenStartErrorMessage="@{@string/start_value_not_valid}" </br>
                 &nbsp;&nbsp;&nbsp;&nbsp;app:betweenStartAutoDismiss="@{true}" </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;app:betweenEndErrorMessage="@{@string/final_period_not_valid}" </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;app:betweenEndAutoDismiss="@{true}" </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;app:betweenEndField="@{finalPeriodField}" /&gt; </br> </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:betweenLimitErrorMessage="@{@string/limit_value_not_valid}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:betweenLimitAutoDismiss="@{true}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:betweenLimitField="@{limitField}" /&gt; </br> </br>
 
                 &nbsp;&nbsp;&lt;EditText </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;android:id="@+id/final_period_field" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:id="@+id/limit_field" </br>
                 &nbsp;&nbsp;&nbsp;&nbsp;android:layout_width="match_parent" </br>
                 &nbsp;&nbsp;&nbsp;&nbsp;android:layout_height="wrap_content" </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;android:hint="@string/confirm_password" /&gt; </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:hint="@string/limit_value" /&gt; </br>
               </code>
             </div>
             <div class="roboto-font convalida-section-body-text">
-              The <b>app:betweenEndField</b> receive as param a reference of an edit text that represents
+              The <b>app:betweenLimitField</b> receive as param a reference of an edit text that represents
               the end field that is fulfilled by user. In this case, we pass the reference of
               <b>android:id="@+id/final_period_field"</b> to
-              <b>app:betweenEndField</b>. </br> </br>
-              Data Binding converts a separeted underscore notation to a camel case notation. Example:
-              <b>final_period_field</b> to <b>finalPeriodField</b>.
+              <b>app:betweenLimitField</b>. </br> </br>
+              Data Binding converts a separated underscore notation to a camel case notation. Example:
+              <b>limit_field</b> to <b>limitField</b>.
             </div>
             <div class="roboto-font convalida-section-body-sub-title">
               <b>Kotlin Dsl: </b>
             </div>
             <div class="convalida-section-body-spacing-top">
               <code class="prettyprint lang-kotlin">
-                &nbsp;&nbsp;val initialPeriodField = findViewById(R.id.initial_period_field) as EditText </br>
-                &nbsp;&nbsp;val finalPeriodField = findViewById(R.id.final_period_field) as EditText </br>
-                &nbsp;&nbsp;initialPeriodField.isBetween </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;.start( </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errorMessage = getString(R.string.initial_period_not_valid), </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;) </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;.end( </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;field = finalPeriodField, </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errorMessage = getString(R.string.final_period_not_valid), </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;).apply()
+                &nbsp;&nbsp;val startField = findViewById(R.id.start_field) as EditText </br>
+                &nbsp;&nbsp;val limitField = findViewById(R.id.limit_field) as EditText </br>
+                &nbsp;&nbsp;val startValueNotValid = "Start value is invalid" </br>
+                &nbsp;&nbsp;val limitValueNotValid = "Limit value is invalid" </br>
+                &nbsp;&nbsp;convalida { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;between { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;start { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;field = startField </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errorMessage = startValueNotValid </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;field = finalPeriodField </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errorMessage = limitValueNotValid </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;} </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;} </br>
+                &nbsp;&nbsp;}
               </code>
             </div>
           </div>
@@ -1355,11 +1359,12 @@
             <div class="convalida-section-body-spacing-top">
               <code class="prettyprint lang-kotlin">
                 &nbsp;&nbsp;val creditCardField = findViewById(R.id.credit_card_field) as EditText </br>
-                &nbsp;&nbsp;creditCardField.isCreditCard( </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;errorMessage = getString(R.string.invalid_credit_card), </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true, </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;required = true </br>
-                &nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;val invalidCreditCard = "Invalid credit card number" </br>
+                &nbsp;&nbsp;convalida { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;field(creditCardField) { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isCreditCard(errorMessage = invalidCreditCard) </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;} </br>
+                &nbsp;&nbsp;} </br>
               </code>
             </div>
           </div>
@@ -1440,11 +1445,12 @@
             <div class="convalida-section-body-spacing-top">
               <code class="prettyprint lang-kotlin">
                 &nbsp;&nbsp;val cpfField = findViewById(R.id.cpf_field) as EditText </br>
-                &nbsp;&nbsp;cpfField.isCpf( </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;errorMessage = getString(R.string.invalid_cpf), </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true, </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;required = true </br>
-                &nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;val invalidCpf = "Invalid CPF" </br>
+                &nbsp;&nbsp;convalida { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;field(cpfField) { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isCpf(errorMessage = invalidCpf) </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;} </br>
+                &nbsp;&nbsp;} </br>
               </code>
             </div>
           </div>
@@ -1526,11 +1532,12 @@
             <div class="convalida-section-body-spacing-top">
               <code class="prettyprint lang-kotlin">
                 &nbsp;&nbsp;val cnpjField = findViewById(R.id.cnpj_field) as EditText </br>
-                &nbsp;&nbsp;cnpjField.isCnpj( </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;errorMessage = getString(R.string.invalid_cnpj), </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true, </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;required = true </br>
-                &nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;val invalidCnpj = "Invalid cnpj" </br>
+                &nbsp;&nbsp;convalida { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;field(cnpjField) { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isCnpj(errorMessage = invalidCnpj) </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;} </br>
+                &nbsp;&nbsp;} </br>
               </code>
             </div>
           </div>
@@ -1610,11 +1617,473 @@
             <div class="convalida-section-body-spacing-top">
               <code class="prettyprint lang-kotlin">
                 &nbsp;&nbsp;val isbnField = findViewById(R.id.isbn_field) as EditText </br>
-                &nbsp;&nbsp;isbnField.isIsbn( </br>
-                &nbsp;&nbsp;&nbsp;&nbsp;errorMessage = getString(R.string.invalid_isbn), </br>
+                &nbsp;&nbsp;val invalidIsbn = "Invalid isbn" </br>
+                &nbsp;&nbsp;convalida { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;field(isbnField) { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isIsbn(errorMessage = invalidIsbn) </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;} </br>
+                &nbsp;&nbsp;} </br>
+              </code>
+            </div>
+          </div>
+          <div class="roboto-font convalida-section-body-title">
+            <b>Ipv4 Validation</b>
+          </div>
+          <div class="roboto-font convalida-section-body-text">
+            Ipv4 validation is applied to a field that will filled with an Ipv4 address.
+          </div>
+          <div class="convalida-section-body-spacing-top">
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+              <thead>
+              <tr>
+                <th class="mdl-data-table__cell--non-numeric">Parameter</th>
+                <th class="mdl-data-table__cell--non-numeric">Type</th>
+                <th class="mdl-data-table__cell--non-numeric">Description</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric">editText</td>
+                <td class="mdl-data-table__cell--non-numeric">android.widget.EditText</td>
+                <td class="mdl-data-table__cell--non-numeric">This parameter represents the field that will be
+                  validated.</td>
+              </tr>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric">errorMessage</td>
+                <td class="mdl-data-table__cell--non-numeric">java.lang.String</td>
+                <td class="mdl-data-table__cell--non-numeric">This parameter represents the error message that will
+                  be displayed when field value is invalid.</td>
+              </tr>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric">autoDismiss</td>
+                <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                <td class="mdl-data-table__cell--non-numeric">This parameter means the error message will disappear
+                  automatically when field value is valid.</td>
+              </tr>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric">required</td>
+                <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                <td class="mdl-data-table__cell--non-numeric">This parameter means the field can accept an empty
+                  value or not.</td>
+              </tr>
+              </tbody>
+            </table>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Annotation: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-java">
+                &nbsp;&nbsp;@Ipv4( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;errorMessageResId = R.string.invalid_ipv4, </br>
                 &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true, </br>
                 &nbsp;&nbsp;&nbsp;&nbsp;required = true </br>
                 &nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;EditText ipv4Field; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Data Binding: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-xml">
+                &nbsp;&nbsp;&lt;EditText </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:id="@+id/ipv4_field" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_width="match_parent" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_height="wrap_content" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:hint="@string/ipv4" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:ipv4ErrorMessage="@{@string/invalid_ipv4}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:ipv4AutoDismiss="@{true}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:ipv4Required="@{true}" /&gt; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Kotlin Dsl: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-kotlin">
+                &nbsp;&nbsp;val ipv4Field = findViewById(R.id.ipv4_field) as EditText </br>
+                &nbsp;&nbsp;val invalidIpv4 = "Invalid Ipv4" </br>
+                &nbsp;&nbsp;convalida { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;field(isbnField) { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isIpv4(errorMessage = invalidIpv4) </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;} </br>
+                &nbsp;&nbsp;} </br>
+              </code>
+            </div>
+          </div>
+          <div class="roboto-font convalida-section-body-title">
+            <b>Ipv6 Validation</b>
+          </div>
+          <div class="roboto-font convalida-section-body-text">
+            Ipv6 validation is applied to a field that will filled with an Ipv6 address.
+          </div>
+          <div class="convalida-section-body-spacing-top">
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+              <thead>
+              <tr>
+                <th class="mdl-data-table__cell--non-numeric">Parameter</th>
+                <th class="mdl-data-table__cell--non-numeric">Type</th>
+                <th class="mdl-data-table__cell--non-numeric">Description</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric">editText</td>
+                <td class="mdl-data-table__cell--non-numeric">android.widget.EditText</td>
+                <td class="mdl-data-table__cell--non-numeric">This parameter represents the field that will be
+                  validated.</td>
+              </tr>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric">errorMessage</td>
+                <td class="mdl-data-table__cell--non-numeric">java.lang.String</td>
+                <td class="mdl-data-table__cell--non-numeric">This parameter represents the error message that will
+                  be displayed when field value is invalid.</td>
+              </tr>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric">autoDismiss</td>
+                <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                <td class="mdl-data-table__cell--non-numeric">This parameter means the error message will disappear
+                  automatically when field value is valid.</td>
+              </tr>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric">required</td>
+                <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                <td class="mdl-data-table__cell--non-numeric">This parameter means the field can accept an empty
+                  value or not.</td>
+              </tr>
+              </tbody>
+            </table>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Annotation: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-java">
+                &nbsp;&nbsp;@Ipv6( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;errorMessageResId = R.string.invalid_ipv6, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;required = true </br>
+                &nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;EditText ipv6Field; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Data Binding: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-xml">
+                &nbsp;&nbsp;&lt;EditText </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:id="@+id/ipv6_field" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_width="match_parent" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_height="wrap_content" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:hint="@string/ipv6" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:ipv6ErrorMessage="@{@string/invalid_ipv6}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:ipv6AutoDismiss="@{true}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:ipv6Required="@{true}" /&gt; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Kotlin Dsl: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-kotlin">
+                &nbsp;&nbsp;val ipv6Field = findViewById(R.id.ipv6_field) as EditText </br>
+                &nbsp;&nbsp;val invalidIpv6 = "Invalid ipv6" </br>
+                &nbsp;&nbsp;convalida { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;field(ipv6Field) { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isIpv6(errorMessage = invalidIpv6) </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;} </br>
+                &nbsp;&nbsp;} </br>
+              </code>
+            </div>
+          </div>
+          <div class="roboto-font convalida-section-body-title">
+            <b>Url Validation</b>
+          </div>
+          <div class="roboto-font convalida-section-body-text">
+            Url validation is applied to a field that will filled with an Url addres.
+          </div>
+          <div class="convalida-section-body-spacing-top">
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+              <thead>
+              <tr>
+                <th class="mdl-data-table__cell--non-numeric">Parameter</th>
+                <th class="mdl-data-table__cell--non-numeric">Type</th>
+                <th class="mdl-data-table__cell--non-numeric">Description</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric">editText</td>
+                <td class="mdl-data-table__cell--non-numeric">android.widget.EditText</td>
+                <td class="mdl-data-table__cell--non-numeric">This parameter represents the field that will be
+                  validated.</td>
+              </tr>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric">errorMessage</td>
+                <td class="mdl-data-table__cell--non-numeric">java.lang.String</td>
+                <td class="mdl-data-table__cell--non-numeric">This parameter represents the error message that will
+                  be displayed when field value is invalid.</td>
+              </tr>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric">autoDismiss</td>
+                <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                <td class="mdl-data-table__cell--non-numeric">This parameter means the error message will disappear
+                  automatically when field value is valid.</td>
+              </tr>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric">required</td>
+                <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                <td class="mdl-data-table__cell--non-numeric">This parameter means the field can accept an empty
+                  value or not.</td>
+              </tr>
+              </tbody>
+            </table>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Annotation: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-java">
+                &nbsp;&nbsp;@Url( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;errorMessageResId = R.string.invalid_url, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;required = true </br>
+                &nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;EditText urlField; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Data Binding: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-xml">
+                &nbsp;&nbsp;&lt;EditText </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:id="@+id/url_field" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_width="match_parent" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_height="wrap_content" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:hint="@string/url" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:urlErrorMessage="@{@string/invalid_url}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:urlAutoDismiss="@{true}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:urlRequired="@{true}" /&gt; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Kotlin Dsl: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-kotlin">
+                &nbsp;&nbsp;val urlField = findViewById(R.id.url_field) as EditText </br>
+                &nbsp;&nbsp;val invalidUrl = "Invalid url" </br>
+                &nbsp;&nbsp;convalida { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;field(urlField) { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isUrl(errorMessage = invalidUrl) </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;} </br>
+                &nbsp;&nbsp;} </br>
+              </code>
+            </div>
+          </div>
+          <div class="roboto-font convalida-section-body-title">
+            <b>Past Date Validation</b>
+          </div>
+          <div class="roboto-font convalida-section-body-text">
+            Past Date validation is applied to a field that will filled with a date which cannot less than a past date limit.
+          </div>
+          <div class="convalida-section-body-spacing-top">
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+              <thead>
+              <tr>
+                <th class="mdl-data-table__cell--non-numeric">Parameter</th>
+                <th class="mdl-data-table__cell--non-numeric">Type</th>
+                <th class="mdl-data-table__cell--non-numeric">Description</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric">editText</td>
+                <td class="mdl-data-table__cell--non-numeric">android.widget.EditText</td>
+                <td class="mdl-data-table__cell--non-numeric">This parameter represents the field that will be
+                  validated.</td>
+              </tr>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric">limitDate</td>
+                <td class="mdl-data-table__cell--non-numeric">java.lang.String</td>
+                <td class="mdl-data-table__cell--non-numeric">This parameter represents the past date limit.</td>
+              </tr>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric">dateFormat</td>
+                <td class="mdl-data-table__cell--non-numeric">java.lang.String</td>
+                <td class="mdl-data-table__cell--non-numeric">This parameter represents the format of date values to be passed.</td>
+              </tr>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric">errorMessage</td>
+                <td class="mdl-data-table__cell--non-numeric">java.lang.String</td>
+                <td class="mdl-data-table__cell--non-numeric">This parameter represents the error message that will
+                  be displayed when field value is invalid.</td>
+              </tr>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric">autoDismiss</td>
+                <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                <td class="mdl-data-table__cell--non-numeric">This parameter means the error message will disappear
+                  automatically when field value is valid.</td>
+              </tr>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric">required</td>
+                <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                <td class="mdl-data-table__cell--non-numeric">This parameter means the field can accept an empty
+                  value or not.</td>
+              </tr>
+              </tbody>
+            </table>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Annotation: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-java">
+                &nbsp;&nbsp;@PastDate( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;dateFormat = US_DATE_FORMAT, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;limitDate = JAN_01_2000_DATE, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;errorMessageResId = R.string.invalid_past_date, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;required = true </br>
+                &nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;EditText pastDateField; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Data Binding: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-xml">
+                &nbsp;&nbsp;&lt;EditText </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:id="@+id/past_date_field" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_width="match_parent" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_height="wrap_content" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:hint="@string/past_date" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:pastDateDateFormat="@{Patterns.US_DATE_FORMAT}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:pastDateLimitDate="@{Constants.JAN_01_2000_DATE}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:pastDateErrorMessage="@{@string/invalid_past_date}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:pastDateAutoDismiss="@{true}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:pastDateRequired="@{true}" /&gt; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Kotlin Dsl: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-kotlin">
+                &nbsp;&nbsp;val pastDateField = findViewById(R.id.past_date_field) as EditText </br>
+                &nbsp;&nbsp;val invalidPastDate = "Date exceeded the past date limit" </br>
+                &nbsp;&nbsp;convalida { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;field(pastDateField) { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pastDate( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dateFormat = US_DATE_FORMAT, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limitDate = JAN_01_2000_DATE, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errorMessage = invalidPastDate </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;} </br>
+                &nbsp;&nbsp;} </br>
+              </code>
+            </div>
+          </div>
+          <div class="roboto-font convalida-section-body-title">
+            <b>Future Date Validation</b>
+          </div>
+          <div class="roboto-font convalida-section-body-text">
+            Future Date validation is applied to a field that will filled with a date which cannot greater than a future date limit.
+          </div>
+          <div class="convalida-section-body-spacing-top">
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+              <thead>
+              <tr>
+                <th class="mdl-data-table__cell--non-numeric">Parameter</th>
+                <th class="mdl-data-table__cell--non-numeric">Type</th>
+                <th class="mdl-data-table__cell--non-numeric">Description</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric">editText</td>
+                <td class="mdl-data-table__cell--non-numeric">android.widget.EditText</td>
+                <td class="mdl-data-table__cell--non-numeric">This parameter represents the field that will be
+                  validated.</td>
+              </tr>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric">limitDate</td>
+                <td class="mdl-data-table__cell--non-numeric">java.lang.String</td>
+                <td class="mdl-data-table__cell--non-numeric">This parameter represents the future date limit.</td>
+              </tr>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric">dateFormat</td>
+                <td class="mdl-data-table__cell--non-numeric">java.lang.String</td>
+                <td class="mdl-data-table__cell--non-numeric">This parameter represents the format of date values to be passed.</td>
+              </tr>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric">errorMessage</td>
+                <td class="mdl-data-table__cell--non-numeric">java.lang.String</td>
+                <td class="mdl-data-table__cell--non-numeric">This parameter represents the error message that will
+                  be displayed when field value is invalid.</td>
+              </tr>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric">autoDismiss</td>
+                <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                <td class="mdl-data-table__cell--non-numeric">This parameter means the error message will disappear
+                  automatically when field value is valid.</td>
+              </tr>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric">required</td>
+                <td class="mdl-data-table__cell--non-numeric">boolean</td>
+                <td class="mdl-data-table__cell--non-numeric">This parameter means the field can accept an empty
+                  value or not.</td>
+              </tr>
+              </tbody>
+            </table>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Annotation: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-java">
+                &nbsp;&nbsp;@FutureDate( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;dateFormat = US_DATE_FORMAT, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;limitDate = JAN_01_2010_DATE, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;errorMessageResId = R.string.invalid_future_date, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;autoDismiss = true, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;required = true </br>
+                &nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;EditText futureDateField; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Data Binding: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-xml">
+                &nbsp;&nbsp;&lt;EditText </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:id="@+id/future_date_field" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_width="match_parent" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:layout_height="wrap_content" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;android:hint="@string/future_date" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:futureDateDateFormat="@{Patterns.US_DATE_FORMAT}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:futureDateLimitDate="@{Constants.JAN_01_2010_DATE}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:futureDateErrorMessage="@{@string/invalid_future_date}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:futureDateAutoDismiss="@{true}" </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;app:futureDateRequired="@{true}" /&gt; </br>
+              </code>
+            </div>
+            <div class="roboto-font convalida-section-body-sub-title">
+              <b>Kotlin Dsl: </b>
+            </div>
+            <div class="convalida-section-body-spacing-top">
+              <code class="prettyprint lang-kotlin">
+                &nbsp;&nbsp;val futureDateField = findViewById(R.id.future_date_field) as EditText </br>
+                &nbsp;&nbsp;val invalidFutureDate = "Date exceeded the future date limit" </br>
+                &nbsp;&nbsp;convalida { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;field(futureDateField) { </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;futureDate( </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dateFormat = US_DATE_FORMAT, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limitDate = JAN_01_2010_DATE, </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errorMessage = invalidFutureDate </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;) </br>
+                &nbsp;&nbsp;&nbsp;&nbsp;} </br>
+                &nbsp;&nbsp;} </br>
               </code>
             </div>
           </div>

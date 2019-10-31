@@ -2,16 +2,17 @@ package convalida.validators;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 /**
  * @author wellingtoncosta on 04/06/18
  */
-public class NumberLimitValidatorTest extends BaseTest {
+public class NumericLimitValidatorTest extends BaseTest {
 
     @Test public void nonRequired_emptyValue() {
-        NumberLimitValidator validator = new NumberLimitValidator(
+        NumericLimitValidator validator = new NumericLimitValidator(
                 mockEditText,
                 errorMessage,
                 true,
@@ -19,11 +20,11 @@ public class NumberLimitValidatorTest extends BaseTest {
                 "10",
                 false);
         when(mockEditText.getText().toString()).thenReturn("");
-        assertEquals(validator.validate(), true);
+        assertTrue(validator.validate());
     }
 
     @Test public void required_emptyValue() {
-        NumberLimitValidator validator = new NumberLimitValidator(
+        NumericLimitValidator validator = new NumericLimitValidator(
                 mockEditText,
                 errorMessage,
                 true,
@@ -31,11 +32,11 @@ public class NumberLimitValidatorTest extends BaseTest {
                 "10",
                 true);
         when(mockEditText.getText().toString()).thenReturn("");
-        assertEquals(validator.validate(), false);
+        assertFalse(validator.validate());
     }
 
     @Test public void validValueBetween_0_And_10() {
-        NumberLimitValidator validator = new NumberLimitValidator(
+        NumericLimitValidator validator = new NumericLimitValidator(
                 mockEditText,
                 errorMessage,
                 true,
@@ -43,11 +44,11 @@ public class NumberLimitValidatorTest extends BaseTest {
                 "10",
                 true);
         when(mockEditText.getText().toString()).thenReturn("9");
-        assertEquals(validator.validate(), true);
+        assertTrue(validator.validate());
     }
 
     @Test public void invalidValueBetween_0_And_10() {
-        NumberLimitValidator validator = new NumberLimitValidator(
+        NumericLimitValidator validator = new NumericLimitValidator(
                 mockEditText,
                 errorMessage,
                 true,
@@ -55,14 +56,14 @@ public class NumberLimitValidatorTest extends BaseTest {
                 "10",
                 true);
         when(mockEditText.getText().toString()).thenReturn("10.1");
-        assertEquals(validator.validate(), false);
+        assertFalse(validator.validate());
         when(mockEditText.getText().toString()).thenReturn("-1");
-        assertEquals(validator.validate(), false);
+        assertFalse(validator.validate());
     }
 
 
     @Test public void valueIsNotANumber() {
-        NumberLimitValidator validator = new NumberLimitValidator(
+        NumericLimitValidator validator = new NumericLimitValidator(
                 mockEditText,
                 errorMessage,
                 true,
@@ -70,7 +71,7 @@ public class NumberLimitValidatorTest extends BaseTest {
                 "10",
                 true);
         when(mockEditText.getText().toString()).thenReturn("abc");
-        assertEquals(validator.validate(), false);
+        assertFalse(validator.validate());
     }
 
 }

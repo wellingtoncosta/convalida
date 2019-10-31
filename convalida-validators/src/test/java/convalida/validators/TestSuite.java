@@ -21,10 +21,15 @@ import org.junit.runners.Suite.SuiteClasses;
         BetweenValidatorTest.class,
         ValidatorSetTest.class,
         CreditCardValidatorTest.class,
-        NumberLimitValidatorTest.class,
+        NumericLimitValidatorTest.class,
         IsbnValidatorTest.class,
         CnpjValidatorTest.class,
         ValidationErrorTest.class,
-        StringsTest.class
+        StringsTest.class,
+        Ipv4ValidatorTest.class,
+        Ipv6ValidatorTest.class,
+        UrlValidatorTest.class,
+        PastDateValidatorTest.class,
+        FutureDateValidatorTest.class
 })
 public class TestSuite { }

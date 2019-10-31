@@ -18,18 +18,18 @@ public class BetweenValidator extends AbstractValidator {
 
     public BetweenValidator(
             final EditText startEditText,
-            final EditText endEditText,
+            final EditText limitEditText,
             final String startErrorMessage,
-            final String endErrorMessage,
+            final String limitErrorMessage,
             boolean startAutoDismiss,
-            final boolean endAutoDismiss
+            final boolean limitAutoDismiss
     ) {
         super(startEditText, startErrorMessage, startAutoDismiss);
-        this.endEditText = endEditText;
-        this.endErrorMessage = endErrorMessage;
+        this.endEditText = limitEditText;
+        this.endErrorMessage = limitErrorMessage;
 
-        if(endAutoDismiss) {
-            EditTexts.addOnTextChangedListener(endEditText, new ExecuteValidationListener() {
+        if(limitAutoDismiss) {
+            EditTexts.addOnTextChangedListener(limitEditText, new ExecuteValidationListener() {
                 @Override
                 public void execute(String value) {
                     applyValidationToEndField();
@@ -53,8 +53,8 @@ public class BetweenValidator extends AbstractValidator {
     private void applyValidationToEndField() {
         endFieldHasError = !endFieldIsValid();
         if(endFieldIsValid()) {
-            EditTexts.setError(editText, null);
-            EditTexts.setError(endEditText, null);
+            EditTexts.removeError(editText);
+            EditTexts.removeError(endEditText);
         } else {
             EditTexts.setError(editText, errorMessage);
             EditTexts.setError(endEditText, endErrorMessage);

@@ -22,4 +22,7 @@ public class Patterns {
     public static final String ALPHA_NUMERIC_MIXED_CASE = "(?=.*[a-z])(?=.*[A-Z])(?=.*[\\d]).+";
 
     public static final String ALPHA_NUMERIC_MIXED_CASE_SYMBOLS = "(?=.*[a-z])(?=.*[A-Z])(?=.*[\\d])(?=.*([^\\w])).+";
+
+    public static final String BR_DATE_FORMAT = "dd/MM/yyyy";
+
 }

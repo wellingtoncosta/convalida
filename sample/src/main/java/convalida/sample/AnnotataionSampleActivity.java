@@ -3,12 +3,39 @@ package convalida.sample;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import com.google.android.material.snackbar.Snackbar;
-import convalida.annotations.*;
 
+import convalida.annotations.Between;
+import convalida.annotations.ClearValidationsOnClick;
+import convalida.annotations.Cnpj;
+import convalida.annotations.ConfirmEmail;
+import convalida.annotations.ConfirmPassword;
+import convalida.annotations.Cpf;
+import convalida.annotations.CreditCard;
+import convalida.annotations.Email;
+import convalida.annotations.FutureDate;
+import convalida.annotations.Ipv4;
+import convalida.annotations.Ipv6;
+import convalida.annotations.Isbn;
+import convalida.annotations.Length;
+import convalida.annotations.NumericLimit;
+import convalida.annotations.OnValidationError;
+import convalida.annotations.OnValidationSuccess;
+import convalida.annotations.OnlyNumber;
+import convalida.annotations.Password;
+import convalida.annotations.PastDate;
+import convalida.annotations.Pattern;
+import convalida.annotations.Required;
+import convalida.annotations.Url;
+import convalida.annotations.ValidateOnClick;
+
+import static convalida.library.util.Patterns.BR_DATE_FORMAT;
 import static convalida.library.util.Patterns.MIXED_CASE_NUMERIC;
+import static convalida.sample.Constants.JAN_01_2000_DATE;
+import static convalida.sample.Constants.JAN_01_2010_DATE;
 import static convalida.sample.Constants.PHONE_PATTERN;
 
 /**
@@ -39,11 +66,11 @@ public class AnnotataionSampleActivity extends AppCompatActivity {
     @Isbn(errorMessageResId = R.string.invalid_isbn)
     EditText isbnField;
 
-    @Between.Start(key = 1, errorMessageResId = R.string.initial_period_not_valid)
-    EditText initialPeriodField;
+    @Between.Start(key = 1, errorMessageResId = R.string.start_value_not_valid)
+    EditText startValueField;
 
-    @Between.End(key = 1, errorMessageResId = R.string.final_period_not_valid)
-    EditText finalPeriodField;
+    @Between.Limit(key = 1, errorMessageResId = R.string.limit_value_not_valid)
+    EditText limitValueField;
 
     @Email(errorMessageResId = R.string.invalid_email)
     EditText emailField;
@@ -60,22 +87,49 @@ public class AnnotataionSampleActivity extends AppCompatActivity {
     @CreditCard(errorMessageResId = R.string.invalid_credit_card)
     EditText creditCardField;
 
-    @NumberLimit(
+    @NumericLimit(
             min = "0",
             max = "100",
-            errorMessageResId = R.string.invalid_number_limit
+            errorMessageResId = R.string.invalid_numeric_limit
     )
     EditText numberLimitField;
+
+    @Ipv4(errorMessageResId = R.string.invalid_ipv4)
+    EditText ipv4Field;
+
+    @Ipv6(errorMessageResId = R.string.invalid_ipv6)
+    EditText ipv6Field;
+
+    @Url(errorMessageResId = R.string.invalid_url)
+    EditText urlField;
+
+    @PastDate(
+            dateFormat = BR_DATE_FORMAT,
+            limitDate = JAN_01_2000_DATE,
+            errorMessageResId = R.string.invalid_past_date
+    )
+    @FutureDate(
+            dateFormat = BR_DATE_FORMAT,
+            limitDate = JAN_01_2010_DATE,
+            errorMessageResId = R.string.invalid_future_date
+    )
+    EditText dateField;
 
     @ValidateOnClick Button validateButton;
 
     @ClearValidationsOnClick Button clearValidationsButton;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_annotation_sample);
+
         bindViews();
-        if(getSupportActionBar() != null) getSupportActionBar().setTitle(R.string.using_annotations);
+
+        if(getSupportActionBar() != null)
+            getSupportActionBar().setTitle(R.string.using_annotations);
+
         AnnotataionSampleActivityFieldsValidation.init(this);
     }
 
@@ -88,24 +142,28 @@ public class AnnotataionSampleActivity extends AppCompatActivity {
         cpfField = findViewById(R.id.cpf_field);
         cnpjField = findViewById(R.id.cnpj_field);
         isbnField = findViewById(R.id.isbn_field);
-        initialPeriodField = findViewById(R.id.initial_period_field);
-        finalPeriodField = findViewById(R.id.final_period_field);
+        startValueField = findViewById(R.id.initial_period_field);
+        limitValueField = findViewById(R.id.final_period_field);
         emailField = findViewById(R.id.email_field);
         confirmEmailField = findViewById(R.id.confirm_email_field);
         passwordField = findViewById(R.id.password_field);
         confirmPasswordField = findViewById(R.id.confirm_password_field);
         creditCardField = findViewById(R.id.credit_card_field);
-        numberLimitField = findViewById(R.id.number_limit_field);
+        numberLimitField = findViewById(R.id.numeric_limit_field);
+        ipv4Field = findViewById(R.id.ipv4_field);
+        ipv6Field = findViewById(R.id.ipv6_field);
+        urlField = findViewById(R.id.url_field);
+        dateField = findViewById(R.id.date_field);
         validateButton = findViewById(R.id.validate_button);
         clearValidationsButton = findViewById(R.id.clear_button);
     }
 
     @OnValidationSuccess public void onValidationSuccess() {
-        Snackbar.make(constraintLayout, "Yay!", Snackbar.LENGTH_LONG).show();
+        Toast.makeText(this, "Yay!", Toast.LENGTH_SHORT).show();
     }
 
     @OnValidationError public void onValidationError() {
-        Snackbar.make(constraintLayout, "Something is wrong :(", Snackbar.LENGTH_LONG).show();
+        Toast.makeText(this, "Something is wrong :(", Toast.LENGTH_SHORT).show();
     }
 
 }

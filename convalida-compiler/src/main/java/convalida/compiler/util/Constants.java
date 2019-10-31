@@ -1,4 +1,4 @@
-package convalida.compiler;
+package convalida.compiler.util;
 
 import com.squareup.javapoet.ClassName;
 
@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * @author Wellington Costa on 26/10/2017.
  */
-class Constants {
+public class Constants {
 
     static final ClassName LIST                                     = ClassName.get(List.class);
     static final ClassName OVERRIDE                                 = ClassName.get(Override.class);
@@ -25,7 +25,7 @@ class Constants {
     static final ClassName CONVALIDA_DATABINDING_R                  = ClassName.get("convalida.databinding", "R");
     static final ClassName ABSTRACT_VALIDATOR                       = ClassName.get("convalida.validators", "AbstractValidator");
     static final ClassName VALIDATOR_SET                            = ClassName.get("convalida.validators", "ValidatorSet");
-    static final ClassName VALIDATION_ERROR                         = ClassName.get("convalida.validators.error", "ValidationErrorSet");
+    public static final ClassName VALIDATION_ERROR                  = ClassName.get("convalida.validators.error", "ValidationErrorSet");
 
     static final String REQUIRED_ANNOTATION                         = "convalida.annotations.Required";
     static final String EMAIL_ANNOTATION                            = "convalida.annotations.Email";
@@ -40,7 +40,12 @@ class Constants {
     static final String ISBN_ANNOTATION                             = "convalida.annotations.Isbn";
     static final String BETWEEN_ANNOTATION                          = "convalida.annotations.Between";
     static final String CREDIT_CARD_ANNOTATION                      = "convalida.annotations.CreditCard";
-    static final String NUMBER_LIMIT_ANNOTATION                     = "convalida.annotations.NumberLimit";
+    static final String NUMERIC_LIMIT_ANNOTATION                    = "convalida.annotations.NumericLimit";
+    static final String IPV4_ANNOTATION                             = "convalida.annotations.Ipv4";
+    static final String IPV6_ANNOTATION                             = "convalida.annotations.Ipv6";
+    static final String URL_ANNOTATION                              = "convalida.annotations.Url";
+    static final String PAST_DATE_ANNOTATION                        = "convalida.annotations.PastDate";
+    static final String FUTURE_DATE_ANNOTATION                      = "convalida.annotations.FutureDate";
 
     static final ClassName REQUIRED_VALIDATOR                       = ClassName.get("convalida.validators", "RequiredValidator");
     static final ClassName EMAIL_VALIDATOR                          = ClassName.get("convalida.validators", "EmailValidator");
@@ -55,6 +60,11 @@ class Constants {
     static final ClassName ISBN_VALIDATOR                           = ClassName.get("convalida.validators", "IsbnValidator");
     static final ClassName BETWEEN_VALIDATOR                        = ClassName.get("convalida.validators", "BetweenValidator");
     static final ClassName CREDIT_CARD_VALIDATOR                    = ClassName.get("convalida.validators", "CreditCardValidator");
-    static final ClassName NUMBER_LIMIT_VALIDATOR                   = ClassName.get("convalida.validators", "NumberLimitValidator");
+    static final ClassName NUMERIC_LIMIT_VALIDATOR                  = ClassName.get("convalida.validators", "NumericLimitValidator");
+    static final ClassName IPV4_VALIDATOR                           = ClassName.get("convalida.validators", "Ipv4Validator");
+    static final ClassName IPV6_VALIDATOR                           = ClassName.get("convalida.validators", "Ipv6Validator");
+    static final ClassName URL_VALIDATOR                            = ClassName.get("convalida.validators", "UrlValidator");
+    static final ClassName PAST_DATE_VALIDATOR                      = ClassName.get("convalida.validators", "PastDateValidator");
+    static final ClassName FUTURE_DATE_VALIDATOR                    = ClassName.get("convalida.validators", "FutureDateValidator");
 
 }

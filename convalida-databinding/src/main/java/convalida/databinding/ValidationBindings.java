@@ -2,11 +2,33 @@
 
  import android.widget.Button;
  import android.widget.EditText;
+
  import androidx.annotation.NonNull;
  import androidx.databinding.BindingAdapter;
- import convalida.validators.*;
 
-/**
+ import convalida.validators.BetweenValidator;
+ import convalida.validators.CnpjValidator;
+ import convalida.validators.ConfirmEmailValidator;
+ import convalida.validators.ConfirmPasswordValidator;
+ import convalida.validators.CpfValidator;
+ import convalida.validators.CreditCardValidator;
+ import convalida.validators.EmailValidator;
+ import convalida.validators.FutureDateValidator;
+ import convalida.validators.Ipv4Validator;
+ import convalida.validators.Ipv6Validator;
+ import convalida.validators.IsbnValidator;
+ import convalida.validators.LengthValidator;
+ import convalida.validators.NumericLimitValidator;
+ import convalida.validators.OnlyNumberValidator;
+ import convalida.validators.PasswordValidator;
+ import convalida.validators.PastDateValidator;
+ import convalida.validators.PatternValidator;
+ import convalida.validators.RequiredValidator;
+ import convalida.validators.UrlValidator;
+
+ import static convalida.databinding.ViewTagUtils.addValidatorToField;
+
+ /**
  * @author WellingtonCosta on 29/03/18.
  */
 public class ValidationBindings {
@@ -20,7 +42,7 @@ public class ValidationBindings {
             @NonNull String errorMessage,
             Boolean autoDismiss
     ) {
-        field.setTag(R.id.validation_type, new RequiredValidator(
+        addValidatorToField(field, new RequiredValidator(
                 field,
                 errorMessage,
                 autoDismiss != null ? autoDismiss : true
@@ -38,7 +60,7 @@ public class ValidationBindings {
             Boolean autoDismiss,
             Boolean required
     ) {
-        field.setTag(R.id.validation_type, new EmailValidator(
+        addValidatorToField(field, new EmailValidator(
                 field,
                 errorMessage,
                 autoDismiss != null ? autoDismiss : true,
@@ -57,7 +79,7 @@ public class ValidationBindings {
             @NonNull String errorMessage,
             Boolean autoDismiss
     ) {
-        confirmEmailField.setTag(R.id.validation_type, new ConfirmEmailValidator(
+        addValidatorToField(confirmEmailField, new ConfirmEmailValidator(
                 emailField,
                 confirmEmailField,
                 errorMessage,
@@ -78,7 +100,7 @@ public class ValidationBindings {
             Boolean autoDismiss,
             Boolean required
     ) {
-        field.setTag(R.id.validation_type, new PatternValidator(
+        addValidatorToField(field, new PatternValidator(
                 field,
                 errorMessage,
                 pattern,
@@ -102,7 +124,7 @@ public class ValidationBindings {
             Boolean autoDismiss,
             Boolean required
     ) {
-        field.setTag(R.id.validation_type, new LengthValidator(
+        addValidatorToField(field, new LengthValidator(
                 field,
                 errorMessage,
                 min,
@@ -123,7 +145,7 @@ public class ValidationBindings {
             Boolean autoDismiss,
             Boolean required
     ) {
-        field.setTag(R.id.validation_type, new OnlyNumberValidator(
+        addValidatorToField(field, new OnlyNumberValidator(
                 field,
                 errorMessage,
                 autoDismiss != null ? autoDismiss : true,
@@ -144,7 +166,7 @@ public class ValidationBindings {
             String pattern,
             Boolean autoDismiss
     ) {
-        field.setTag(R.id.validation_type, new PasswordValidator(
+        addValidatorToField(field, new PasswordValidator(
                 field,
                 errorMessage,
                 minLength != null ? minLength : 0,
@@ -164,7 +186,7 @@ public class ValidationBindings {
             @NonNull String errorMessage,
             Boolean autoDismiss
     ) {
-        confirmPasswordField.setTag(R.id.validation_type, new ConfirmPasswordValidator(
+        addValidatorToField(confirmPasswordField, new ConfirmPasswordValidator(
                 passwordField,
                 confirmPasswordField,
                 errorMessage,
@@ -178,13 +200,13 @@ public class ValidationBindings {
             "cpfRequired"
     }, requireAll = false)
     public static void cpfValidationBindings(
-            @NonNull EditText cpfField,
+            @NonNull EditText field,
             @NonNull String errorMessage,
             Boolean autoDismiss,
             Boolean required
     ) {
-        cpfField.setTag(R.id.validation_type, new CpfValidator(
-                cpfField,
+        addValidatorToField(field, new CpfValidator(
+                field,
                 errorMessage,
                 autoDismiss != null ? autoDismiss : true,
                 required != null ? required : true
@@ -197,13 +219,13 @@ public class ValidationBindings {
             "cnpjRequired"
     }, requireAll = false)
     public static void cnpjValidationBindings(
-            @NonNull EditText cnpj,
+            @NonNull EditText field,
             @NonNull String errorMessage,
             Boolean autoDismiss,
             Boolean required
     ) {
-        cnpj.setTag(R.id.validation_type, new CnpjValidator(
-                cnpj,
+        addValidatorToField(field, new CnpjValidator(
+                field,
                 errorMessage,
                 autoDismiss != null ? autoDismiss : true,
                 required != null ? required : true
@@ -216,13 +238,13 @@ public class ValidationBindings {
             "isbnRequired"
     }, requireAll = false)
     public static void isbnValidationBindings(
-            @NonNull EditText isbnField,
+            @NonNull EditText field,
             @NonNull String errorMessage,
             Boolean autoDismiss,
             Boolean required
     ) {
-        isbnField.setTag(R.id.validation_type, new IsbnValidator(
-                isbnField,
+        addValidatorToField(field, new IsbnValidator(
+                field,
                 errorMessage,
                 autoDismiss != null ? autoDismiss : true,
                 required != null ? required : true
@@ -232,25 +254,25 @@ public class ValidationBindings {
     @BindingAdapter(value = {
             "betweenStartErrorMessage",
             "betweenStartAutoDismiss",
-            "betweenEndField",
-            "betweenEndErrorMessage",
-            "betweenEndAutoDismiss"
+            "betweenLimitField",
+            "betweenLimitErrorMessage",
+            "betweenLimitAutoDismiss"
     }, requireAll = false)
     public static void betweenValidationBindings(
             @NonNull EditText startField,
             @NonNull String startErrorMessage,
             Boolean startAutoDismiss,
-            EditText endField,
-            @NonNull String endErrorMessage,
-            Boolean endAutoDismiss
+            EditText limitField,
+            @NonNull String limitErrorMessage,
+            Boolean limitAutoDismiss
     ) {
-        startField.setTag(R.id.validation_type, new BetweenValidator(
+        addValidatorToField(startField, new BetweenValidator(
                 startField,
-                endField,
+                limitField,
                 startErrorMessage,
-                endErrorMessage,
+                limitErrorMessage,
                 startAutoDismiss != null ? startAutoDismiss : true,
-                endAutoDismiss != null ? endAutoDismiss : true
+                limitAutoDismiss != null ? limitAutoDismiss : true
         ));
     }
 
@@ -265,7 +287,7 @@ public class ValidationBindings {
             Boolean autoDismiss,
             Boolean required
     ) {
-        field.setTag(R.id.validation_type, new CreditCardValidator(
+        addValidatorToField(field, new CreditCardValidator(
                 field,
                 errorMessage,
                 autoDismiss != null ? autoDismiss : true,
@@ -274,13 +296,13 @@ public class ValidationBindings {
     }
 
     @BindingAdapter(value = {
-            "numberLimitErrorMessage",
-            "numberLimitAutoDismiss",
-            "numberLimitMin",
-            "numberLimitMax",
-            "numberLimitRequired"
+            "numericLimitErrorMessage",
+            "numericLimitAutoDismiss",
+            "numericLimitMin",
+            "numericLimitMax",
+            "numericLimitRequired"
     }, requireAll = false)
-    public static void numberLimitValidationBindings(
+    public static void numericLimitValidationBindings(
             @NonNull EditText field,
             @NonNull String errorMessage,
             Boolean autoDismiss,
@@ -288,7 +310,7 @@ public class ValidationBindings {
             @NonNull String max,
             Boolean required
     ) {
-        field.setTag(R.id.validation_type, new NumberLimitValidator(
+        addValidatorToField(field, new NumericLimitValidator(
                 field,
                 errorMessage,
                 autoDismiss != null ? autoDismiss : true,
@@ -297,6 +319,113 @@ public class ValidationBindings {
                 required != null ? required : true
         ));
     }
+
+    @BindingAdapter(value = {
+            "ipv4ErrorMessage",
+            "ipv4AutoDismiss",
+            "ipv4Required"
+    }, requireAll = false)
+    public static void ipv4ValidationBindings(
+            @NonNull EditText field,
+            @NonNull String errorMessage,
+            Boolean autoDismiss,
+            Boolean required
+    ) {
+        addValidatorToField(field, new Ipv4Validator(
+                field,
+                errorMessage,
+                autoDismiss != null ? autoDismiss : true,
+                required != null ? required : true
+        ));
+    }
+
+    @BindingAdapter(value = {
+            "ipv6ErrorMessage",
+            "ipv6AutoDismiss",
+            "ipv6Required"
+    }, requireAll = false)
+    public static void ipv6ValidationBindings(
+            @NonNull EditText field,
+            @NonNull String errorMessage,
+            Boolean autoDismiss,
+            Boolean required
+    ) {
+        addValidatorToField(field, new Ipv6Validator(
+                field,
+                errorMessage,
+                autoDismiss != null ? autoDismiss : true,
+                required != null ? required : true
+        ));
+    }
+
+    @BindingAdapter(value = {
+            "urlErrorMessage",
+            "urlAutoDismiss",
+            "urlRequired"
+    }, requireAll = false)
+    public static void urlValidationBindings(
+            @NonNull EditText field,
+            @NonNull String errorMessage,
+            Boolean autoDismiss,
+            Boolean required
+    ) {
+        addValidatorToField(field, new UrlValidator(
+                field,
+                errorMessage,
+                autoDismiss != null ? autoDismiss : true,
+                required != null ? required : true
+        ));
+    }
+
+    @BindingAdapter(value = {
+            "pastDateErrorMessage",
+            "pastDateDateFormat",
+            "pastDateLimitDate",
+            "pastDateAutoDismiss",
+            "pastDateRequired"
+    }, requireAll = false)
+    public static void pastDateValidationBindings(
+            @NonNull EditText field,
+            @NonNull String errorMessage,
+            @NonNull String dateFormat,
+            @NonNull String limitDate,
+            Boolean autoDismiss,
+            Boolean required
+    ) {
+        addValidatorToField(field, new PastDateValidator(
+                field,
+                errorMessage,
+                dateFormat,
+                limitDate,
+                autoDismiss != null ? autoDismiss : true,
+                required != null ? required : true
+        ));
+    }
+
+     @BindingAdapter(value = {
+             "futureDateErrorMessage",
+             "futureDateDateFormat",
+             "futureDateLimitDate",
+             "futureDateAutoDismiss",
+             "futureDateRequired"
+     }, requireAll = false)
+     public static void futureDateValidationBindings(
+             @NonNull EditText field,
+             @NonNull String errorMessage,
+             @NonNull String dateFormat,
+             @NonNull String limitDate,
+             Boolean autoDismiss,
+             Boolean required
+     ) {
+         addValidatorToField(field, new FutureDateValidator(
+                 field,
+                 errorMessage,
+                 dateFormat,
+                 limitDate,
+                 autoDismiss != null ? autoDismiss : true,
+                 required != null ? required : true
+         ));
+     }
 
     @BindingAdapter(value = "validationAction")
     public static void validationActionBindings(Button button, Integer action) {
